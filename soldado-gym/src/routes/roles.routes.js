@@ -1,18 +1,24 @@
-const {Router} = require('express')
-const pool = require('../db')
+const { Router } = require("express");
+const pool = require("../db");
 //import de los controladores
-const { getAllRoles, getRol, createRol, updateRol, deleteRol } = require('../controllers/roles.controllers')
+const {
+  getAllRoles,
+  getRol,
+  createRol,
+  updateRol,
+  deleteRol,
+} = require("../controllers/roles.controllers");
 
 const router = Router();
 
-router.get('/roles' , getAllRoles )
+router.get("/roles", getAllRoles);
 
-router.get('/roles/10' , getRol  )
+router.get("/roles/10", getRol);
 
-router.post('/roles' , createRol)
+router.post("/roles", createRol);
 
-router.put('/roles' , updateRol )
+router.put("/roles", updateRol);
 
-router.delete('/roles' , deleteRol)
+router.delete("/roles", deleteRol);
 
 module.exports = router;
