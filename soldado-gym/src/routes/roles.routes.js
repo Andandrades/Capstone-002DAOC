@@ -1,27 +1,18 @@
 const {Router} = require('express')
 const pool = require('../db')
+//import de los controladores
+const { getAllRoles, getRol, createRol, updateRol, deleteRol } = require('../controllers/roles.controllers')
 
 const router = Router();
 
-router.get('/roles' , async (req,res) => {
-    const result = await pool.query('SELECT NOW ()')
-    console.log(result)
-    res.json('executed')
-} )
-router.get('/roles/10' , (req,res) => {
-    res.send('Retornando rol en especifico');
-} )
+router.get('/roles' , getAllRoles )
 
-router.post('/roles' , (req,res) => {
-    res.send('Creando un rol nuevo');
-} )
+router.get('/roles/10' , getRol  )
 
-router.put('/roles' , (req,res) => {
-    res.send('Actualizando un rol');
-} )
+router.post('/roles' , createRol)
 
-router.delete('/roles' , (req,res) => {
-    res.send('Eliminando rol');
-} )
+router.put('/roles' , updateRol )
+
+router.delete('/roles' , deleteRol)
 
 module.exports = router;
