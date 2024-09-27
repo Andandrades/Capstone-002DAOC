@@ -7,6 +7,9 @@ const rolesRoutes = require('./routes/roles.routes');
 const app = express();
 
 app.use(morgan('dev'))
+
+app.use(express.json())
+
 app.use(rolesRoutes);
 
 app.listen(3000)
