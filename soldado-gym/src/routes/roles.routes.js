@@ -14,7 +14,7 @@ const router = Router();
 
 router.get("/roles", getAllRoles);
 
-router.get("/roles/10", getRol);
+router.get("/roles/:id", getRol);
 
 router.post("/roles", createRol);
 
