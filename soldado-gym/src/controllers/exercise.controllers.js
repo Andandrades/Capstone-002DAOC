@@ -28,7 +28,7 @@ const createExercise = async (req, res) => {
     const result = await pool.query(`INSERT INTO public.exercises (history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes) 
                                         VALUES( ${history_id}, ${exercise_name}, ${machine}, ${weight}, ${sets}, ${repetitions}, ${total_reps}, ${notes})`);
     res.status(200);
-    res.json("dsada");
+    res.json("Ejercicio añadido correctamente!.");
 
   } catch (error) {
     console.log({ error: error.detail });
@@ -43,7 +43,7 @@ const updateExercise = async (req, res) => {
     const result = await pool.query(`UPDATE public.exercises SET history_id=${history_id}, exercise_name=${exercise_name}, machine=${machine}, weight=${weight}, "sets"=${sets}, 
       repetitions=${repetitions}, total_reps=${total_reps}, notes=${notes} WHERE exercise_id=${id};`);
     res.status(200);
-    res.json("dsada");
+    res.json("Ejercicio actualizado correctamente!.");
 
   } catch (error) {
     console.log({ error: error.detail });
