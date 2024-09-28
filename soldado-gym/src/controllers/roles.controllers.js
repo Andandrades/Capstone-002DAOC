@@ -4,23 +4,35 @@ const pool = require("../db");
 
 //Obtener todos los roles
 const getAllRoles = async (req, res) => {
-  res.json("");
+  try {
+    const result = await pool.query("SELECT * from roles");
+    res.json(result.rows);
+  } catch (error) {
+    console.log(error.message)
+  }
 };
 
 //Obtener un rol en espercifico
 const getRol = async (req, res) => {
-  res.json("Extrayendo un rol en especifico");
+  console.log(req.params.id)
+  res.json('Retornando una sola tarea')
 };
 
 //Crear un Rol
 const createRol = async (req, res) => {
   const { name, description } = req.body;
-  const result = await pool.query("INSERT INTO roles (name_rol, description) VALUES ($1, $2)", [
-    name,
-    description,
-  ]);
-  console.log(result);
-  res.send("Rol added");
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO roles (name_rol, description) VALUES ($1, $2) RETURNING *",
+      [name, description]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.log({ error: error.detail });
+    res.status(400);
+    res.json({ error: error.detail });
+  }
 };
 
 //Actualizar un rol
