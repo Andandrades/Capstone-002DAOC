@@ -14,18 +14,26 @@ const getAllRoles = async (req, res) => {
 
 //Obtener un rol en espercifico
 const getRol = async (req, res) => {
-  console.log(req.params.id)
-  res.json('Retornando una sola tarea')
+  const { id } = req.params
+
+  const result = await pool.query("SELECT * FROM roles WHERE id=$1", [id])
+
+
+  if (result.rowCount === 0) {
+    return res.status(400).json({ message: "Usuario no encontrado" })
+  }
+
+  res.json(result.rows)
 };
 
 //Crear un Rol
 const createRol = async (req, res) => {
-  const { name, description } = req.body;
+  const { name_rol, description } = req.body;
 
   try {
     const result = await pool.query(
       "INSERT INTO roles (name_rol, description) VALUES ($1, $2) RETURNING *",
-      [name, description]
+      [name_rol, description]
     );
     res.json(result.rows[0]);
   } catch (error) {
@@ -36,13 +44,33 @@ const createRol = async (req, res) => {
 };
 
 //Actualizar un rol
-const updateRol = (req, res) => {
-  res.send("Actualizando un rol");
+const updateRol = async (req, res) => {
+
+  const { id } = req.params;
+  const { name_rol, description } = req.body;
+
+  const result = await pool.query("UPDATE roles SET name_rol = $1 , description = $2 WHERE id = $3 RETURNING *", [name_rol, description, id]);
+
+  if (result.rows.length === 0)
+    return res.status(400).json({ message: "Usuario no encontrado" });
+
+  return res.json(result.rows[0])
 };
 
 //Eliminar un rol
-const deleteRol = (req, res) => {
-  res.send("Eliminando rol");
+const deleteRol = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await pool.query("DELETE FROM roles WHERE id =$1", [id])
+
+  if (result.rowCount === 0) {
+    return res.status(400).json({
+      message: "Usuario no encontrado",
+    })
+  }
+
+  return res.sendStatus(204);
+
 };
 
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo

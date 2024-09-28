@@ -10,6 +10,7 @@ const {
   deleteRol,
 } = require("../controllers/roles.controllers");
 
+
 const router = Router();
 
 router.get("/roles", getAllRoles);
@@ -18,8 +19,8 @@ router.get("/roles/:id", getRol);
 
 router.post("/roles", createRol);
 
-router.put("/roles", updateRol);
+router.put("/roles/:id", updateRol);
 
-router.delete("/roles", deleteRol);
+router.delete("/roles/:id", deleteRol);
 
 module.exports = router;
