@@ -14,19 +14,21 @@ const getExercise = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const result = await pool.query(`SELECT * from exercises where id = ${id}`);
+    const result = await pool.query('SELECT * FROM exercises WHERE exercise_id = $1', [id]);
     res.json(result.rows);
   } catch (error) {
-    console.log(error.message)
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 const createExercise = async (req, res) => {
   const { history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes } = req.body;
   try {
-    const result = await pool.query(`INSERT INTO public.exercises (history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes) 
-                                        VALUES( ${history_id}, ${exercise_name}, ${machine}, ${weight}, ${sets}, ${repetitions}, ${total_reps}, ${notes})`);
+    const result = await pool.query(`INSERT INTO public.exercises  
+                                        VALUES( $1, $2, $3, $4, $5, $5, $6, $7,$8)`,[history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes]);
     res.status(200);
     res.json("Ejercicio añadido correctamente!.");
 
