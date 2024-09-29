@@ -4,6 +4,9 @@ const morgan = require('morgan');
 
 const rolesRoutes = require('./routes/roles.routes');
 const usersRoutes = require('./routes/users.routes')
+const rolesExercise = require('./routes/exercise.Routes');
+const ExercisesRecords = require('./routes/exerciseHistory.Routes');
+
 
 
 const app = express();
@@ -14,6 +17,8 @@ app.use(express.json())
 
 app.use(rolesRoutes);
 app.use(usersRoutes);
+app.use(rolesExercise);
+app.use(ExercisesRecords);
 
 
 app.listen(3000)
