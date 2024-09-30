@@ -11,7 +11,7 @@ const getAll = async (req, res) => {
 };
 
 const getbyid = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     const result = await pool.query(`SELECT * from exercise_history where history_id = ${id}`);
@@ -55,7 +55,7 @@ const update = async (req, res) => {
 
 
 const deletebyid = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     const result = await pool.query(`DELETE FROM public.exercise_history WHERE history_id=0;`);

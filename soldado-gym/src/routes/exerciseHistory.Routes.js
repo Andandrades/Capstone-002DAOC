@@ -9,7 +9,7 @@ const router = Router();
 
 router.get("/ExercisesRecords", getAll);
 
-router.get("/ExercisesRecords/id", getbyid);
+router.get("/ExercisesRecords/:id", getbyid);
 
 router.post("/createExerciseRecords", create);
 

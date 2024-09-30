@@ -11,10 +11,10 @@ const getAllExercise = async (req, res) => {
 };
 
 const getExercise = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
-    const result = await pool.query('SELECT * FROM exercises WHERE exercise_id = $1', [id]);
+    const result = await pool.query(`SELECT * FROM exercises WHERE exercise_id = ${id}`);
     res.json(result.rows);
   } catch (error) {
     console.error(error.message);
@@ -58,7 +58,7 @@ const updateExercise = async (req, res) => {
 
 
 const deleteExercise = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     const result = await pool.query(` DELETE FROM public.exercises WHERE exercise_id= ${id}`);
