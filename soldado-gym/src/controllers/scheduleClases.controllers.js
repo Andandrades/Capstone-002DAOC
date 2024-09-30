@@ -43,7 +43,8 @@ VALUES(${class_id}, ${scheduled_date}, ${actual_cap}, ${gym_schedule_id}, ${clie
 };
 
 const update = async (req, res) => {
-  const { class_id, scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
+  const { class_id} =  req.params;
+  const {  scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
   try {
     const result = await pool.query(`UPDATE public.schedule_classes SET scheduled_date=${scheduled_date}, actual_cap=${actual_cap}, gym_schedule_id=${gym_schedule_id}, 
       client_id=${client_id} WHERE class_id=${class_id};`);

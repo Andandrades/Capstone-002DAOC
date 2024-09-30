@@ -40,7 +40,8 @@ const createExercise = async (req, res) => {
 };
 
 const updateExercise = async (req, res) => {
-  const { id,history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes } = req.body;
+  const { id} =  req.params;
+  const { history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes } = req.body;
   try {
     const result = await pool.query(`UPDATE public.exercises SET history_id=${history_id}, exercise_name=${exercise_name}, machine=${machine}, weight=${weight}, "sets"=${sets}, 
       repetitions=${repetitions}, total_reps=${total_reps}, notes=${notes} WHERE exercise_id=${id};`);
