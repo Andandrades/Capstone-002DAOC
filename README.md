@@ -3,6 +3,6 @@
 Este repositorio busca almacenar los datos de nuestro proyecto de Capstone 
 
 ## Estructura
-
-- [Codigo](#soldado-Gym)
+Fase Uno (Documentacon Fase Uno)
+soldado-Gym(Codigo Sistema)
 
