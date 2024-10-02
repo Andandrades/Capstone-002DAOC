@@ -6,6 +6,42 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET; // Cargar desde variable de entorno
 const tokenExpiry = "1h";
 
+// Endpoint para iniciar sesión
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+      // Busca al usuario en la base de datos
+      const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+      const user = userResult.rows[0];
+
+      // Verifica si el usuario existe
+      if (!user) {
+          return res.status(401).json({ message: 'Credenciales inválidas' });
+      }
+
+      // Verifica la contraseña
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(401).json({ message: 'Credenciales inválidas' });
+      }
+
+      // Genera el token JWT
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      // Establece la cookie
+      res.cookie('token', token, {
+          httpOnly: true, // Para que la cookie no sea accesible desde el cliente
+          secure: process.env.NODE_ENV === 'production', // Solo envía la cookie por HTTPS en producción
+      });
+
+      res.status(200).json({ message: 'Inicio de sesión exitoso' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al iniciar sesión' });
+  }
+};
+
 const registerUser = async (req, res) => {
   const { email, password, fk_rol_id } = req.body;
 
@@ -25,29 +61,17 @@ const registerUser = async (req, res) => {
       "INSERT INTO users(email,password,register_date,fk_rol_id) VALUES ($1,$2,NOW(),$3) RETURNING id,email",
       [email, hashedPassword, fk_rol_id]
     );
-
-    const token = jwt.sign(
-      { userId: newUser.rows[0].id, email: newUser.rows[0].email },
-      jwtSecret,
-      { expiresIn: tokenExpiry }
-    );
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      maxAge: 3600000,
-    });
     res
       .status(201)
       .json({ message: "Usuario registrado con éxito", user: newUser.rows[0] });
   } catch (error) {
     console.error(error);
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Error al registrar el usuario" });
   }
 };
 
 module.exports = {
   registerUser,
+  loginUser
 };
