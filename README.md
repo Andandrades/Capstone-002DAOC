@@ -1,11 +1,8 @@
-# Nombre del Proyecto
+# Soldado Gym 💪🏼
 
-Descripción breve del proyecto y sus objetivos.
+Este repositorio busca almacenar los datos de nuestro proyecto de Capstone 
 
-## Tabla de Contenidos
+## Estructura
 
-- [Características](#características)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Contribuciones](#contribuciones)
-- [Licencia](#licencia)
+- [Codigo](#soldado-Gym)
+
