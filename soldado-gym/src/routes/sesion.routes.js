@@ -7,6 +7,6 @@ const router = Router();
 
 router.post("/login",loginUser )
 router.post("/register", registerUser);
-router.get('/check-auth', checkAuth)
+router.get('/checkauth', checkAuth)
 router.post('/logout' , logOut)
 module.exports = router;
