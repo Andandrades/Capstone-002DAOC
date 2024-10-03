@@ -1,12 +1,10 @@
 import './App.css'
 
+import { RegisterPage } from './Pages/Register/RegisterPage'
+
 function App() {
-
-
   return (
-    <>
-      <h1>Hola Mundo</h1>
-    </>
+      <RegisterPage/>
   )
 }
 

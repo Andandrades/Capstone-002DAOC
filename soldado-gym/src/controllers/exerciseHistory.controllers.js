@@ -40,7 +40,8 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { id,created_date, user_id, class_id, exercise_id } = req.body;
+  const { id} =  req.params;
+  const {created_date, user_id, class_id, exercise_id } = req.body;
   try {
     const result = await pool.query(`UPDATE public.exercise_history SET created_date=${created_date}, user_id=${user_id}, class_id=${class_id}, exercise_id=${exercise_id} 
       WHERE history_id=${id};`);
