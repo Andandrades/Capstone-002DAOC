@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
       }
 
       // Genera el token JWT
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: tokenExpiry });
 
       // Establece la cookie
       res.cookie('token', token, {
@@ -71,7 +71,23 @@ const registerUser = async (req, res) => {
   }
 };
 
+const checkAuth = async (req,res) =>{
+  const token = req.cookies.token;
+
+  if(!token){
+    return res.status(401).json({isAuthenticated : false});
+  }
+
+  try {
+    const decoded = jwt.verify(token , jwtSecret);
+    return res.status(200).json({isAuthenticated : true , userId:decoded.id})
+  } catch (error) {
+    return res.status(400).json({isAuthenticated : false});
+  }
+}
+
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
+  checkAuth
 };
