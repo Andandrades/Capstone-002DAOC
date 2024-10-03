@@ -32,7 +32,7 @@ const loginUser = async (req, res) => {
       // Establece la cookie
       res.cookie('token', token, {
           httpOnly: true, // Para que la cookie no sea accesible desde el cliente
-          secure: process.env.NODE_ENV === 'production', // Solo envía la cookie por HTTPS en producción
+          secure: process.env.NODE_ENV, // Solo envía la cookie por HTTPS en producción
       });
 
       res.status(200).json({ message: 'Inicio de sesión exitoso' });
@@ -71,6 +71,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+//Validar JWT
 const checkAuth = async (req,res) =>{
   const token = req.cookies.token;
 
@@ -86,8 +87,20 @@ const checkAuth = async (req,res) =>{
   }
 }
 
+//Cerrar sesion
+const logOut = async(req,res) =>{
+  res.cookie('token' , '' ,{
+    httpOnly : true,
+    secure : process.env.NODE_ENV,
+    expires : new Date(0)
+  })
+
+  res.status(200).json({message : 'Sesion cerrada'})
+}
+
 module.exports = {
   registerUser,
   loginUser,
-  checkAuth
+  checkAuth,
+  logOut
 };
