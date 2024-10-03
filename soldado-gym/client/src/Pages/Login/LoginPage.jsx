@@ -2,6 +2,6 @@ import React from 'react'
 
 export const LoginPage = () => {
   return (
-    <div>LoginPage</div>
+    <div>LoginPage nmo me wey</div>
   )
 }
