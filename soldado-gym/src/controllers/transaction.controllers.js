@@ -14,16 +14,10 @@ const createTransaction = async (req, res) => {
       amount,
       return_Url
     );
-    console.log(buy_Order)
     return res.json(createResponse);
   } catch (error) {
     res.status(400);
     console.log(error);
-    console.log("buy_Order:", buy_Order);
-    console.log("session_Id:", session_Id);
-    console.log("amount_body:", amount_body);
-    console.log("return_Url:", return_Url);
-    console.log("req.body:", req.body);
     res.json({ error: error.message });
   }
 };
