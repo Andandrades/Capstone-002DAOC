@@ -3,7 +3,7 @@ const pool = require('../db'); // conexión a PostgreSQL
 // Obtener los planes
 const getPlans = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM Plans');
+    const result = await pool.query('SELECT * FROM plans');
     res.json(result.rows);
   } catch (error) {
     console.error('Error al obtener los planes:', error);
@@ -28,13 +28,10 @@ const getPlanById = async (req, res) => {
 
 // Crear un nuevo plan
 const createPlan = async (req, res) => {
-  const { plan_id, name, price, n_class, type } = req.body;
-  const { description } = req.query; 
+  const { plan_id, name, price, n_class,description, type } = req.body;
  
   const missingFields = [];
 
-  
-  if (!plan_id) missingFields.push('plan_id');
   if (!name) missingFields.push('name');
   if (!description) missingFields.push('description'); 
   if (n_class === undefined) missingFields.push('n_class');
@@ -54,8 +51,8 @@ const createPlan = async (req, res) => {
   try {
    
     const result = await pool.query(
-      'INSERT INTO plans (plan_id, name, description, price, n_class, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [plan_id, name, description, price, n_class, type] 
+      'INSERT INTO plans ( name, description, price, n_class, type) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [name, description, price, n_class, type] 
     );
 
     
