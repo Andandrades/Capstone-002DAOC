@@ -1,5 +1,6 @@
 #icon{
     transition: all ease-in-out .2s;
+    background-color: rgba(0,0,0,0.7);
 }
 
 .NavbarContainer{
@@ -10,7 +11,7 @@
     justify-content: end;
     align-items: center;
     height: 120px;
-    z-index: 1000;
+    z-index: 20;
     box-sizing: border-box;
     padding: 20px 50px;
 }
@@ -20,7 +21,7 @@
     scale: 1.1;
     cursor: pointer;
     color: white;
-    background-color: rgba(0,0,0,0.7);
+    
 }
 
 
