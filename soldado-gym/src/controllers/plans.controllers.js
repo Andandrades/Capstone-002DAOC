@@ -28,13 +28,10 @@ const getPlanById = async (req, res) => {
 
 // Crear un nuevo plan
 const createPlan = async (req, res) => {
-  const { plan_id, name, price, n_class, type } = req.body;
-  const { description } = req.query; 
- 
+  const { name, description, price, n_class, type } = req.body;
+
   const missingFields = [];
 
-  
-  if (!plan_id) missingFields.push('plan_id');
   if (!name) missingFields.push('name');
   if (!description) missingFields.push('description'); 
   if (n_class === undefined) missingFields.push('n_class');
@@ -42,34 +39,28 @@ const createPlan = async (req, res) => {
 
   if (missingFields.length > 0) {
     return res.status(400).json({ 
-      error: 'faltan los siguientes datos: ' + missingFields.join(', ') 
+      error: 'Faltan los siguientes datos: ' + missingFields.join(', ') 
     });
   }
 
- 
   if (isNaN(price) || isNaN(n_class)) {
-    return res.status(400).json({ error: 'El precio y la cantidad de clases deben ser numeros' });
+    return res.status(400).json({ error: 'El precio y la cantidad de clases deben ser números' });
   }
 
   try {
-   
     const result = await pool.query(
-      'INSERT INTO plans (plan_id, name, description, price, n_class, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [plan_id, name, description, price, n_class, type] 
+      'INSERT INTO plans (name, description, price, n_class, type) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [name, description, price, n_class, type] 
     );
 
-    
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error al crear el plan:', error);
 
-    
     if (error.code === '23505') {
-      
       return res.status(409).json({ error: 'Ya existe un plan con esta ID' });
     }
 
-    
     res.status(500).json({ error: 'Error al crear el plan.' });
   }
 };
@@ -79,7 +70,6 @@ const updatePlan = async (req, res) => {
   const { id } = req.params; 
   const { name, description, price, n_class, type } = req.body; 
 
-  
   const missingFields = [];
 
   if (!name) missingFields.push('name');
@@ -88,20 +78,17 @@ const updatePlan = async (req, res) => {
   if (n_class === undefined) missingFields.push('n_class');
   if (!type) missingFields.push('type');
 
-  
   if (missingFields.length > 0) {
     return res.status(400).json({ 
       error: 'Faltan datos requeridos. Asegúrese de que los siguientes campos estén presentes: ' + missingFields.join(', ') 
     });
   }
 
-  
   if (isNaN(price) || isNaN(n_class)) {
     return res.status(400).json({ error: 'El precio y el número de clases deben ser números.' });
   }
 
   try {
-    
     const result = await pool.query(
       'UPDATE Plans SET name = $1, description = $2, price = $3, n_class = $4, type = $5 WHERE plan_id = $6 RETURNING *',
       [name, description, price, n_class, type, id]
@@ -111,7 +98,6 @@ const updatePlan = async (req, res) => {
       return res.status(404).json({ error: 'Plan no encontrado' });
     }
 
-  
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error al actualizar el plan:', error);
