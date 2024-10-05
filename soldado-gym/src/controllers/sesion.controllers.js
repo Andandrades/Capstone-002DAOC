@@ -27,12 +27,12 @@ const loginUser = async (req, res) => {
       }
 
       // Genera el token JWT
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: tokenExpiry });
 
       // Establece la cookie
       res.cookie('token', token, {
           httpOnly: true, // Para que la cookie no sea accesible desde el cliente
-          secure: process.env.NODE_ENV === 'production', // Solo envía la cookie por HTTPS en producción
+          secure: process.env.NODE_ENV, // Solo envía la cookie por HTTPS en producción
       });
 
       res.status(200).json({ message: 'Inicio de sesión exitoso' });
@@ -71,7 +71,36 @@ const registerUser = async (req, res) => {
   }
 };
 
+//Validar JWT
+const checkAuth = async (req,res) =>{
+  const token = req.cookies.token;
+
+  if(!token){
+    return res.status(401).json({isAuthenticated : false});
+  }
+
+  try {
+    const decoded = jwt.verify(token , jwtSecret);
+    return res.status(200).json({isAuthenticated : true , userId:decoded.id})
+  } catch (error) {
+    return res.status(400).json({isAuthenticated : false});
+  }
+}
+
+//Cerrar sesion
+const logOut = async(req,res) =>{
+  res.cookie('token' , '' ,{
+    httpOnly : true,
+    secure : process.env.NODE_ENV,
+    expires : new Date(0)
+  })
+
+  res.status(200).json({message : 'Sesion cerrada'})
+}
+
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
+  checkAuth,
+  logOut
 };
