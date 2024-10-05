@@ -1,0 +1,6 @@
+.backgroundPrimary {
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle,
+            rgba(255, 255, 255, 1) 53%,
+            rgba(221, 221, 221, 1) 100%);
+}
