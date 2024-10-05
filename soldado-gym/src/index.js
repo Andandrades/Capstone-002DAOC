@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
 const cors = require("cors");
-
+//importar Rutas
 const rolesRoutes = require("./routes/roles.routes");
 const usersRoutes = require("./routes/users.routes");
 const rolesExercise = require("./routes/exercise.Routes");
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
+//Inicializar Rutas
 app.use(rolesRoutes);
 app.use(usersRoutes);
 app.use(rolesExercise);
