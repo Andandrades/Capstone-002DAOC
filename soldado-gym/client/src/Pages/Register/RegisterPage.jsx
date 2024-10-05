@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import logo from "../../assets/img/Logo.png"
-import "./RegisterPageStyle.css"
-
-
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import logo from "../../assets/img/Logo.png";
+import "./RegisterStyle.css";
 
 export const RegisterPage = () => {
-  
+  const navigate = useNavigate(); // Inicializa useNavigate
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -58,10 +57,8 @@ export const RegisterPage = () => {
           />
         </div>
         <button type="submit" className="btn-primary">Registrarse</button>
-        <button type="button" className="btn-link" onClick={() => setIsRegistering(false)}>Volver</button>
+        <button type="button" className="btn-link" onClick={() => navigate('/login')}>Volver</button> {/* Cambia setIsRegistering */}
       </form>
     </div>
-
-  )
-}
-
+  );
+};

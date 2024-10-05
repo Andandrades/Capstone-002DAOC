@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+import React from 'react';
+import { Link } from 'react-router-dom';
+=======
 import { useState, useEffect, useRef } from "react";
 import { NavBar } from "../../components/NavBar";
 import { Plans } from "../../components/PlansCard";
@@ -10,6 +14,7 @@ import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
 
 import "./LandingPage.css";
+>>>>>>> 5dd5d45ed51a49eeb7cbbad30ef212d8ec316e17
 
 export const LandingPage = () => {
   const [plans, setPlans] = useState([]);
@@ -44,6 +49,17 @@ export const LandingPage = () => {
   }, []);
 
   return (
+<<<<<<< HEAD
+    <div>
+      <h1>Hola Mundo Landing Page</h1>
+      <Link to="/login">
+        <button>Ir a Login</button>
+      </Link>
+    </div>
+  );
+};
+
+=======
     <>
       <NavBar
         scrollToSection={scrollToSection}
@@ -259,3 +275,4 @@ export const LandingPage = () => {
     </>
   );
 };
+>>>>>>> 5dd5d45ed51a49eeb7cbbad30ef212d8ec316e17

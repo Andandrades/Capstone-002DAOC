@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './Pages/Login/LoginPage';
+import LandingPage from './Pages/LandingPage/LandingPage';
+import RegisterPage from './Pages/Register/RegisterPage';
+=======
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -11,35 +18,22 @@ import { useEffect, useState } from "react";
 import {LoginPage} from "./Pages/Login/LoginPage"
 import { Menu } from "./Pages/Menu/Menu";
 
+>>>>>>> 5dd5d45ed51a49eeb7cbbad30ef212d8ec316e17
 
 function App() {
-  //Variable para validad su un usuario esta logeado
-  const [isAuth , setIsAuth] = useState()
-
-  useEffect(() =>{
-    fetch('/checkauth',{
-      method : 'GET',
-      credentials : 'include'
-    })
-    .then(res => res.json())
-    .then(data => setIsAuth(data.isAuth))
-    .catch(() => setIsAuth(false));
-  },[]);
-
-  //Componente para rutas protegidas
-  const ProtectedRoute = ({children}) => {
-    return isAuth ? children : <Navigate to="/login"/>
-  }
-
-
-
   return (
     <Router>
       <Routes>
+<<<<<<< HEAD
+        <Route path="/LandingPage" element={<LandingPage />} />
+        <Route path="/Login" element={<LoginPage />} />
+        <Route path="/Register" element={<RegisterPage />} />
+=======
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/inicio" element={<Menu/>}/>
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
+>>>>>>> 5dd5d45ed51a49eeb7cbbad30ef212d8ec316e17
       </Routes>
     </Router>
   );
