@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
-import logo from "../../assets/img/Logo.png";
+import registrate from "../../assets/img/Registrate.webp"; // Cambia aquí el nombre de la imagen
 import "./RegisterStyle.css";
 
 export const RegisterPage = () => {
@@ -21,9 +21,11 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="registro-container">
-      <img src={logo} alt="Logo" className="logo" />
-      <form onSubmit={handleRegister}>
+    <div className="register-container">
+      <form onSubmit={handleRegister} className="register-form">
+        <div className="logo">
+          <img src={registrate} alt="Registro" /> {/* Cambia aquí a la nueva imagen */}
+        </div>
         <h2>Registrarse</h2>
         {message && <p className="message">{message}</p>}
         <div className="input-group">
