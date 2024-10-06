@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './RecoverStyle.css'; // Manteniendo el mismo archivo CSS
+import login from "../../assets/img/login.webp";
 
 function Recuperar({ setIsRecovering }) {
   const [email, setEmail] = useState(''); // Estado para el correo
@@ -22,6 +23,7 @@ function Recuperar({ setIsRecovering }) {
 
   return (
     <div className="login-container">
+      <img src={login} alt="login" /> {/* Cambia aquí a la nueva imagen */}
       <h2>Recuperar Contraseña</h2>
 
       {/* Mostrar mensaje de éxito */}
@@ -62,4 +64,3 @@ function Recuperar({ setIsRecovering }) {
 }
 
 export default Recuperar;
-
