@@ -11,7 +11,6 @@ import { LoginPage } from "./Pages/Login/LoginPage";
 import RecoverPage from "./Pages/Recover/RecoverPage"; 
 import { Menu } from "./Pages/Menu/Menu";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
-import { LoginPage } from "./Pages/Login/LoginPage";
 
 function App() {
   return (
@@ -22,6 +21,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} /> 
+        <Route path="/Profile" element={<ProfilePage />} /> 
 
       </Routes>
     </Router>
