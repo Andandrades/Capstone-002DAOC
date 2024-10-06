@@ -11,6 +11,8 @@ import { LoginPage } from "./Pages/Login/LoginPage";
 import RecoverPage from "./Pages/Recover/RecoverPage"; 
 import { Menu } from "./Pages/Menu/Menu";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
+import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} /> 
         <Route path="/Profile" element={<ProfilePage />} /> 
+        <Route path="/schedule" element={<SchedulePage />} /> 
+        <Route path="/menu" element={<SchedulePage />} /> 
+        <Route path="/classes" element={<SchedulePage />} /> 
 
       </Routes>
     </Router>
