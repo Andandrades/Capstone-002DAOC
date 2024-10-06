@@ -5,10 +5,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { LandingPage } from "./Pages/LandingPage/LandingPage";
-import { useEffect, useState } from "react";
-import {LoginPage} from "./Pages/Login/LoginPage"
+import { ProfilePage } from "./Pages/Profile/ProfilePage";
+import { LoginPage } from "./Pages/Login/LoginPage";
+
 function App() {
   //Variable para validad su un usuario esta logeado
   const [isAuth , setIsAuth] = useState()
@@ -36,6 +39,8 @@ function App() {
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
+        <Route path="/Profile" element={<ProfilePage/>} />
+
       </Routes>
     </Router>
   );

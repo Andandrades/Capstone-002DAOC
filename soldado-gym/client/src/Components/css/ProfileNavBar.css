@@ -1,0 +1,33 @@
+.navbar{
+    background-color: #1C1C1C;
+    padding-top: 10px;
+
+}
+
+
+
+
+.ButtonNavBar {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en columna (icono arriba, texto abajo) */
+    align-items: center; /* Centra el contenido horizontalmente */
+    justify-content: center; /* Centra el contenido verticalmente */
+    text-align: center; /* Asegura que el texto esté centrado */
+    margin: 0 auto;  
+    display: block;  
+    width: fit-content; 
+  }
+  
+  .ButtonNavBar i {
+    font-size: 24px; /* Tamaño del icono */
+    margin-bottom: 5px; /* Espacio entre el icono y el texto */
+  }
+  
+  .ButtonNavBar span {
+    font-size: 14px; /* Tamaño del texto */
+    color: #fff; /* Color del texto */
+  }
+  
+  .ButtonNavBar h3 {
+    color: white;
+}

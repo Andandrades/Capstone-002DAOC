@@ -1,0 +1,84 @@
+.profile-container {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    width: 350px; /* Ampliado para un poco más de espacio */
+    padding: 25px; /* Espacio adicional para que se vea más equilibrado */
+    margin: 20px auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-profile {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .icono-usuario {
+    width: 120px; /* Aumentado el tamaño de la imagen */
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6b46c1; /* Añadido borde para destacar el perfil */
+  }
+  
+  .icono-usuario img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .icono-editar {
+    position: absolute;
+    right: -10px;
+    bottom: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 7px; /* Tamaño aumentado del ícono de edición */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .icono-editar:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .nombre-usuario {
+    margin: 15px 0;
+    font-size: 26px;
+    font-weight: bold;
+    color: #333; /* Añadido color para mejor contraste */
+  }
+  
+  .seccion-info {
+    margin-top: 20px;
+  }
+  
+  .fila-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd; /* Añadido borde para separar filas */
+  }
+  
+  .texto-info {
+    flex: 1;
+    margin-left: 10px;
+    text-align: left;
+    color: #666; /* Color para el texto informativo */
+  }
+  
+  .boton-editar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #6b46c1;
+    transition: color 0.3s ease;
+  }
+  
+  .boton-editar:hover {
+    color: #4a2e9e; /* Efecto hover para los botones */
+  }
