@@ -57,7 +57,7 @@ export const RegisterPage = () => {
           />
         </div>
         <button type="submit" className="btn-primary">Registrarse</button>
-        <button type="button" className="btn-link" onClick={() => navigate('/login')}>Volver</button> {/* Cambia setIsRegistering */}
+        <button type="button" className="btn-link" onClick={() => navigate('/login')}>Volver</button>
       </form>
     </div>
   );

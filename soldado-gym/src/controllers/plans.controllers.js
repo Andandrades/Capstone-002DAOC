@@ -29,7 +29,7 @@ const getPlanById = async (req, res) => {
 // Crear un nuevo plan
 const createPlan = async (req, res) => {
 
-  const { name, description, price, n_class, type } = req.body;
+    const { name, description, price, n_class, type } = req.body;
 
   const missingFields = [];
 
