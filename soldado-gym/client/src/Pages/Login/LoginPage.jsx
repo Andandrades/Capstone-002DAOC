@@ -15,7 +15,7 @@ export const LoginPage = ({ setIsRegistering, setIsRecovering ,setIsAuth}) => {
     e.preventDefault();
   
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export const LoginPage = ({ setIsRegistering, setIsRecovering ,setIsAuth}) => {
   
       if (response.status === 200) {
         // Una vez que inicias sesión correctamente, verifica el estado de autenticación
-        const authCheckResponse = await fetch("http://localhost:3000/checkauth", {
+        const authCheckResponse = await fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
           method: "GET",
           credentials: "include",
         });
