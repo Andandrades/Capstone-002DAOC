@@ -21,7 +21,7 @@ export const NavBar = ({ scrollToSection, refs }) => {
   return (
     <>
       <nav className="NavbarContainer">
-        <button onClick={toggleSidebar}>
+        <button className="flex justify-end" onClick={toggleSidebar}>
           <MenuIcon
             id="icon"
             sx={{
@@ -41,7 +41,7 @@ export const NavBar = ({ scrollToSection, refs }) => {
         } transition-transform duration-300 ease-in-out`}
       >
         <div className="p-4">
-          <h2 className="text-4xl mb-10 mt-4 text-white font-bold">Menú</h2>
+          <h2 className="text-4xl mb-10 mt-4 text-white font-bold text-center">Menú</h2>
           <ul className="flex justify-center items-center text-[20px] flex-col">
             <li
               onClick={() => {
@@ -87,6 +87,15 @@ export const NavBar = ({ scrollToSection, refs }) => {
               className="mb-2 hover:scale-105 transition-all cursor-pointer ease-in-out"
             >
               Donde Encontrarnos
+            </li>
+            <li
+              onClick={() => {
+                toggleSidebar();
+                scrollToSection(refs.sectionRef6);
+              }}
+              className="mb-2 hover:scale-105 transition-all cursor-pointer ease-in-out"
+            >
+              Nuestro Sistema
             </li>
           </ul>
         </div>

@@ -10,6 +10,8 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
 
+import { useNavigate } from "react-router-dom";
+
 import "./LandingPage.css";
 
 export const LandingPage = () => {
@@ -49,6 +51,8 @@ export const LandingPage = () => {
 
     fetchPlans();
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -230,11 +234,11 @@ export const LandingPage = () => {
         ></iframe>
       </section>
       <section
-        ref={sectionRef6}
+        
         className="bgColor lg:h-[100vh] flex justify-center flex-col py-20 lg:flex-row  items-center"
       >
-        <div className=" lg:w-[500px] pt-10 lg:pt-0">
-          <h1 className="lg:title text-5xl font-bold w-full text-center lg:text-start">
+        <div ref={sectionRef6} className=" lg:w-[500px] pt-10 lg:pt-0">
+          <h1  className="lg:title text-5xl font-bold w-full text-center lg:text-start">
             Nuestro Sistema
           </h1>
           <div className="w-full px-9 lg:px-0 flex justify-center text-center lg:text-start pt-4">
@@ -250,8 +254,8 @@ export const LandingPage = () => {
               </span>
             </p>
           </div>
-
           <div className="w-full flex flex-col lg:flex-row gap-5 justify-center items-center py-4 lg:gap-8">
+
             <button class="relative h-12 w-40 rounded-full overflow-hidden border border-[#3936C1] text-indigo-600 shadow-2xl transition-all duration-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:m-auto before:h-0 before:w-0 before:rounded-sm before:bg-[#3936C1] before:duration-300 before:ease-out hover:text-white hover:shadow-indigo-600 hover:before:h-40 hover:before:w-40 hover:before:opacity-80"
               onClick={() => goto('login')}
             >
