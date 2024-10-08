@@ -10,8 +10,6 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
 
-import { useNavigate } from "react-router-dom";
-
 import "./LandingPage.css";
 
 export const LandingPage = () => {
@@ -52,7 +50,6 @@ export const LandingPage = () => {
     fetchPlans();
   }, []);
 
-  const navigate = useNavigate();
 
   return (
     <>
