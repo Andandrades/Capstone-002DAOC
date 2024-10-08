@@ -20,9 +20,9 @@ export const Plans = ({ name, amount, description, n_class }) => {
           </h2>
         </div>
         <div className="flex flex-col justify-center items-center font-semibold">
-          <p className="flex mt-5 text-lg">
+          <span className="flex mt-5 text-lg">
             Cantidad de clases : <p className="text-yellow-300">{n_class}</p>{" "}
-          </p>
+          </span>
           <span className="w-60 text-[15px] md:text-sm lg:min-h-52 md:w-72 mt-10">{description}</span>
         </div>
       </div>

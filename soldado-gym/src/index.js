@@ -3,7 +3,9 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
-const cors = require("cors");
+
+
+
 //importar Rutas
 const rolesRoutes = require("./routes/roles.routes");
 const usersRoutes = require("./routes/users.routes");
@@ -20,7 +22,7 @@ const app = express();
 app.use(morgan("dev"));
 
 app.use(express.json());
-app.use(cors());
+
 app.use(cookieParser());
 
 //Inicializar Rutas
@@ -35,4 +37,17 @@ app.use(sesionRoutes);
 app.use(plansRoutes);
 
 app.listen(3000);
+const cors = require('cors');
+
+// Configuración de CORS
+const corsOptions = {
+    origin: 'http://localhost:5173', // URL de tu cliente
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
+    credentials: true, // Permitir cookies
+};app.options('/api/sesion/login', cors(corsOptions)); 
+
+// Usar CORS
+app.use(cors(corsOptions));
+
+
 console.log("Sever port: 3000");

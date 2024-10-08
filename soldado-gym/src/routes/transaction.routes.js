@@ -10,5 +10,4 @@ const router = Router();
 
 router.post("/transaction", createTransaction);
 
-
 module.exports = router;
