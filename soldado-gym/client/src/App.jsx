@@ -13,6 +13,8 @@ import RecoverPage from "./Pages/Recover/RecoverPage";
 import { Menu } from "./Pages/Menu/Menu";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+import { ClassesPage } from "./Pages/Classes/ClassesPage";
+
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -89,6 +91,7 @@ function App() {
         />
         /* Ruta por defecto (redirigir si no coincide ninguna ruta) */
         <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </Router>
   );

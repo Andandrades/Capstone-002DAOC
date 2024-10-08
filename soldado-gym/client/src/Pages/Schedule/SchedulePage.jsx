@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProfileNavBar } from "../../Components/ProfileNavBar";
+import { UserNavBar } from "../../Components/UserNavBar";
 
 export const SchedulePage = () => {
     return (
@@ -7,7 +7,7 @@ export const SchedulePage = () => {
 
 
             <div>SchedulePage</div>
-            <ProfileNavBar />
+            <UserNavBar />
         </>
     )
 }

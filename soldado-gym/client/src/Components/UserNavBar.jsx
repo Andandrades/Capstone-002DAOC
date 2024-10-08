@@ -7,7 +7,7 @@ import TodayIcon from '@mui/icons-material/Today';
 import PersonIcon from '@mui/icons-material/Person';
 import './css/ProfileNavBar.css';
 
-export const ProfileNavBar = () => {
+export const UserNavBar = () => {
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -22,7 +22,7 @@ export const ProfileNavBar = () => {
             <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('Menu')} 
+                onClick={() => goto('Inicio')} 
                 className="relative rounded-full text-gray-400 hover:text-white" >
                 <HouseIcon />
                 <h3>Menu</h3>
