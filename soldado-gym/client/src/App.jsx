@@ -48,8 +48,6 @@ function App() {
         />
         <Route path="/login" element={<LoginPage setIsAuth={setIsAuth} />} />
         <Route path="/register" element={<RegisterPage />} />
-
-        
         <Route path="/Planes" element={<PlansPage/>} /> 
 
         <Route
@@ -93,9 +91,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        /* Ruta por defecto (redirigir si no coincide ninguna ruta) */
-        <Route path="*" element={<Navigate to="/" />} />
 
+        <Route path="*" element={<Navigate to="/" />} />
 
       </Routes>
     </Router>
