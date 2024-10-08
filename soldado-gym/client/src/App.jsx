@@ -4,11 +4,13 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { LandingPage } from "./Pages/LandingPage/LandingPage";
 import { LoginPage } from "./Pages/Login/LoginPage";
-import RecoverPage from "./Pages/Recover/RecoverPage"; // Importación corregida
+import RecoverPage from "./Pages/Recover/RecoverPage"; 
 import { Menu } from "./Pages/Menu/Menu";
+import  PlansPage  from "./Pages/Plans/PlansPage";
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         <Route path="/inicio" element={<Menu />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/recover" element={<RecoverPage />} /> {/* Asegúrate de que el componente sea correcto */}
+        <Route path="/recover" element={<RecoverPage />} /> 
+        <Route path="/Planes" element={<PlansPage/>} /> 
+
       </Routes>
     </Router>
   );
