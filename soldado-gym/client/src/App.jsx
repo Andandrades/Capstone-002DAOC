@@ -14,7 +14,7 @@ import { Menu } from "./Pages/Menu/Menu";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
 import { ClassesPage } from "./Pages/Classes/ClassesPage";
-
+import  PlansPage  from "./Pages/Plans/PlansPage";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -48,6 +48,10 @@ function App() {
         />
         <Route path="/login" element={<LoginPage setIsAuth={setIsAuth} />} />
         <Route path="/register" element={<RegisterPage />} />
+
+        
+        <Route path="/Planes" element={<PlansPage/>} /> 
+
         <Route
           path="/recover"
           element={
@@ -91,6 +95,7 @@ function App() {
         />
         /* Ruta por defecto (redirigir si no coincide ninguna ruta) */
         <Route path="*" element={<Navigate to="/" />} />
+
 
       </Routes>
     </Router>
