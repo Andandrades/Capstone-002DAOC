@@ -1,0 +1,22 @@
+
+.genericocontainer {
+  margin: 5% auto;
+  width: 75%;
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+
+.ProfilePhoto {
+  flex-direction: column;
+  justify-content: center; 
+  width: 250px;
+  height: auto;
+}
+
+.profileLabel{
+  padding: 5%;
+  border-radius: 15%;
+}
