@@ -17,8 +17,7 @@ import { ClassesPage } from "./Pages/Classes/ClassesPage";
 
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 
-import  PlansPage  from "./Pages/Plans/PlansPage";
-
+import PlansPage from "./Pages/Plans/PlansPage";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -30,7 +29,7 @@ function App() {
       setIsAuth(JSON.parse(storedAuth)); // Cargar el estado desde localStorage si existe
     }
 
-    fetch("/checkauth", {
+    fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
       method: "GET",
       credentials: "include",
     })
@@ -81,7 +80,7 @@ function App() {
           }
         />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/Planes" element={<PlansPage/>} /> 
+        <Route path="/Planes" element={<PlansPage />} />
 
         <Route
           path="/recover"
