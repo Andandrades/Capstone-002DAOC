@@ -253,15 +253,15 @@ export const LandingPage = () => {
           </div>
           <div className="w-full flex flex-col lg:flex-row gap-5 justify-center items-center py-4 lg:gap-8">
 
-            <button class="relative h-12 w-40 rounded-full overflow-hidden border border-[#3936C1] text-indigo-600 shadow-2xl transition-all duration-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:m-auto before:h-0 before:w-0 before:rounded-sm before:bg-[#3936C1] before:duration-300 before:ease-out hover:text-white hover:shadow-indigo-600 hover:before:h-40 hover:before:w-40 hover:before:opacity-80"
+            <button className="relative h-12 w-40 rounded-full overflow-hidden border border-[#3936C1] text-indigo-600 shadow-2xl transition-all duration-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:m-auto before:h-0 before:w-0 before:rounded-sm before:bg-[#3936C1] before:duration-300 before:ease-out hover:text-white hover:shadow-indigo-600 hover:before:h-40 hover:before:w-40 hover:before:opacity-80"
               onClick={() => goto('login')}
             >
-              <span class="relative z-10">Ingresar</span>
+              <span className="relative z-10">Ingresar</span>
             </button>
-            <button class="before:ease relative rounded-full h-12 w-40 overflow-hidden border border-blue-500 text-blue-500 shadow-2xl transition-all before:absolute before:top-1/2 before:h-0 before:w-64 before:origin-center before:-translate-x-20 before:rotate-45 before:bg-blue-500 before:duration-300 hover:text-white hover:shadow-blue-500 hover:before:h-64 hover:before:-translate-y-32"
+            <button className="before:ease relative rounded-full h-12 w-40 overflow-hidden border border-blue-500 text-blue-500 shadow-2xl transition-all before:absolute before:top-1/2 before:h-0 before:w-64 before:origin-center before:-translate-x-20 before:rotate-45 before:bg-blue-500 before:duration-300 hover:text-white hover:shadow-blue-500 hover:before:h-64 hover:before:-translate-y-32"
               onClick={() => goto('Register')}
             >
-              <span class="relative z-10">Registrarse</span>
+              <span className="relative z-10">Registrarse</span>
             </button>
           </div>
         </div>
