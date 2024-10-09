@@ -38,7 +38,7 @@ export const LandingPage = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await fetch("http://localhost:3000/plans");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/plans`);
         const data = await response.json();
         console.log(data);
         setPlans(data);
