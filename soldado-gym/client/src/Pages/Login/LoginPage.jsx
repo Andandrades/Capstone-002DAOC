@@ -3,7 +3,7 @@ import "./LoginStyle.css"; // Asegúrate de que esta ruta sea correcta
 import Registrate from "../../assets/img/Registrate.webp"; // Importa la imagen
 import { useNavigate } from "react-router-dom";
 
-export const LoginPage = ({ setIsRegistering, setIsRecovering ,setIsAuth}) => {
+export const LoginPage = ({setIsAuth}) => {
 
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
@@ -43,6 +43,7 @@ export const LoginPage = ({ setIsRegistering, setIsRecovering ,setIsAuth}) => {
         console.log("Auth Data:", authData); // Para ver qué se recibe
         setIsAuth(authData.isAuth);
         localStorage.setItem("isAuth", JSON.stringify(true)); // Almacenar en localStorage // Actualiza el estado de isAuth basado en la respuesta
+        localStorage.setItem("userID", JSON.stringify(authData.userId)); // Almacenar en localStorage // Actualiza el estado de isAuth basado en la respuesta
         navigate("/inicio"); // Redirige al usuario al menú
         console.log("Bienvenido");
       } else {

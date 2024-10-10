@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UserNavBar } from "../../Components/UserNavBar";
 import {GymHourCard} from "../../components/GymHourCard";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import "./ScheduleStyles.css";
 import "./SelectDayButton.css";
@@ -35,16 +36,6 @@ export const ScheduleGym = () => {
         <div className="mt-14 z-10">
           <h1 className="text-4xl font-bold text-white">Horarios</h1>
         </div>
-        <div className="z-10 w-full px-6">
-          <div className="flex justify-center items-center gap-10 bg-bg-primary mt-10 px-4 py-2 rounded-full">
-            <button className="bg-[#EFDD37] w-[50%] rounded-full">
-              Mañana
-            </button>
-            <button className="bg-[#3F159A] w-[50%] rounded-full text-white">
-              Tarde
-            </button>
-          </div>
-        </div>
         <div className="w-full px-6 z-10 mt-6">
           <div className="relative w-full inline-block">
             <button
@@ -55,7 +46,7 @@ export const ScheduleGym = () => {
             </button>
             {isOpen && (
               <div className="days-list w-full">
-                <div className="flex flex-row space-x-2 p-2 w-full justify-center items-center bg-white border border-gray-300 rounded-b shadow-lg">
+                <div className="flex flex-row p-2 w-full justify-center items-center bg-white border border-gray-300 rounded-b shadow-lg">
                   {days.map((day, index) => (
                     <div
                       key={index}
@@ -63,7 +54,7 @@ export const ScheduleGym = () => {
                         fetchGymHours(day); // Llamar a la función al hacer clic
                         setIsOpen(false); // Cerrar la lista al seleccionar
                       }}
-                      className="py-2 px-4 bg-blue-100 rounded hover:bg-blue-200 cursor-pointer"
+                      className="py-2 px-4 bg-blue-100 hover:bg-blue-200 cursor-pointer"
                     >
                       {day}
                     </div>
@@ -80,7 +71,10 @@ export const ScheduleGym = () => {
                 <GymHourCard key={hour.gym_schedule_id} schedule={hour} />
               ))
             ) : (
-              <p className="text-center">No hay horas disponibles para el día seleccionado.</p>
+              <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
+                <HelpOutlineIcon sx={{fill : "#f1c21b" , width : "40px" , height : "40px"}}/>
+                <p className="font-semibold text-gray-500">No se encuentran horas registradas para este dia</p>
+              </div>
             )}
             </div>
         </div>
