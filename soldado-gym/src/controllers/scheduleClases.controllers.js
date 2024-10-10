@@ -27,6 +27,22 @@ const getbyid = async (req, res) => {
   }
 };
 
+//traer datos segun al id de la hora
+const getHourByGymId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT * from schedule_classes where gym_schedule_id = ${id}`
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.log(error.message);
+    res.status(400);
+    res.json("error al consultar!.");
+  }
+};
+
 const create = async (req, res) => {
   const { scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
   try {
@@ -80,4 +96,5 @@ module.exports = {
   create,
   update,
   deletebyid,
+  getHourByGymId
 };
