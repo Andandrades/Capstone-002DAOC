@@ -1,20 +1,37 @@
 import { useState } from "react";
 import { UserNavBar } from "../../Components/UserNavBar";
+import {GymHourCard} from "../../components/GymHourCard";
+
 import "./ScheduleStyles.css";
-import "./SelectDayButton.css"; // Asegúrate de crear este archivo CSS
+import "./SelectDayButton.css";
 
 export const ScheduleGym = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const days = ["L", "M", "M", "J", "V", "S", "D"];
+  const [scheduleInfo , setScheduleInfo] = useState("")
+  //Dias de la semana
+  const days = ["L", "M", "X", "J", "V", "S", "D"];
 
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
 
+  // Función para obtener las horas del gimnasio para el día seleccionado
+  const fetchGymHours = async (day) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`);
+      if (!response.ok) {
+        throw new Error("Error al obtener las horas");
+      }
+      const data = await response.json();
+      setScheduleInfo(data); // Guardar los datos en el estado
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
-      <section className="w-screen h-screen flex flex-col justify-start items-center bgImage">
+      <section className="w-screen flex flex-col justify-start items-center bgImage">
         <div className="mt-14 z-10">
           <h1 className="text-4xl font-bold text-white">Horarios</h1>
         </div>
@@ -42,6 +59,10 @@ export const ScheduleGym = () => {
                   {days.map((day, index) => (
                     <div
                       key={index}
+                      onClick={() => {
+                        fetchGymHours(day); // Llamar a la función al hacer clic
+                        setIsOpen(false); // Cerrar la lista al seleccionar
+                      }}
                       className="py-2 px-4 bg-blue-100 rounded hover:bg-blue-200 cursor-pointer"
                     >
                       {day}
@@ -52,9 +73,15 @@ export const ScheduleGym = () => {
             )}
           </div>
         </div>
-        <div className="w-full px-6 z-10 h-full">
-            <div className=" w-full h-full  bg-white ">
-
+        <div className="w-full mb-32 px-6 z-10 h-full">
+            <div className=" w-full h-full flex flex-col ">
+            {scheduleInfo.length > 0 ? (
+              scheduleInfo.map((hour) => (
+                <GymHourCard key={hour.gym_schedule_id} schedule={hour} />
+              ))
+            ) : (
+              <p className="text-center">No hay horas disponibles para el día seleccionado.</p>
+            )}
             </div>
         </div>
       </section>

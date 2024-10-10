@@ -8,7 +8,7 @@ const tokenExpiry = "1h";
 
 // Endpoint para iniciar sesión
 const loginUser = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
   const { email, password } = req.body;
 
