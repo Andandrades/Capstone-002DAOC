@@ -17,7 +17,7 @@ router.post("/schedule", create);
 
 router.put("/schedule", update);
 
-router.delete("/schedule", deletebyid);
+router.delete("/schedule/:id", deletebyid);
 
 
 module.exports = router;

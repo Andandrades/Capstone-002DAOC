@@ -32,14 +32,17 @@ const getHourByGymId = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(
-      `SELECT * from schedule_classes where gym_schedule_id = ${id}`
-    );
-    res.json(result.rows);
+    const result = await pool.query(`
+      SELECT s.class_id, s.scheduled_date, s.actual_cap, s.gym_schedule_id, u.name AS client_name
+      FROM schedule_classes s
+      JOIN users u ON s.client_id = u.id
+      WHERE s.gym_schedule_id = $1
+    `, [id]);
+
+    res.status(200).json(result.rows); // Retorna las filas como respuesta
   } catch (error) {
-    console.log(error.message);
-    res.status(400);
-    res.json("error al consultar!.");
+    console.error("Error al obtener clases con usuario:", error.message);
+    res.status(500).json({ error: "Error al obtener datos." });
   }
 };
 
@@ -75,13 +78,19 @@ const update = async (req, res) => {
 };
 
 const deletebyid = async (req, res) => {
+
   const { id } = req.params;
 
   try {
     const result = await pool.query(
-      `DELETE FROM public.schedule_classes WHERE class_id = ${id}`
+      `DELETE FROM schedule_classes WHERE class_id = $1 RETURNING *` , [id]
     );
-    res.json(result.rows);
+    if (result.rowCount === 0) {
+      return res.status(400).json({
+        message: "Hora no encontrado",
+      });
+    }
+    return res.sendStatus(204);
   } catch (error) {
     console.log(error.message);
     res.status(400);
