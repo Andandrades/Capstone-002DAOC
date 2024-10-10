@@ -15,7 +15,7 @@ export const UserNavBar = () => {
   };
 
   return (
-    <div className="navbar">
+    <div className="navbar z-10 fixed bottom-0">
       <Disclosure as="nav">
         <div>
           <div className="relative flex h-16 items-center">

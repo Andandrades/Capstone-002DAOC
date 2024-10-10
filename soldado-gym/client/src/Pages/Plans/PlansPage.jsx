@@ -1,6 +1,6 @@
 import React from "react";
 import "./PlansStyle.css"; 
-import { Plans } from "../../Components/PlansCard";
+import { Plans } from "../../components/PlansCard";
 
 const PlansPage = () => {
   return (
