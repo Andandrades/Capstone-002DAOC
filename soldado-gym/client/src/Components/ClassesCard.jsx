@@ -3,9 +3,6 @@ import weightlift from "../assets/icons/weightlift.ico"
 import Plus from "../assets/Plus.svg"
 
 
-
-
-
 export const ClassesCard = () => {
     return (
         <div className="w-full">

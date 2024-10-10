@@ -39,6 +39,7 @@ app.use(sesionRoutes);
 app.use(plansRoutes);
 app.use(gymHoursRoutes);
 
+
 app.listen(3000);
 const cors = require('cors');
 
@@ -47,7 +48,8 @@ const corsOptions = {
     origin: 'http://localhost:5173', // URL de tu cliente
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
     credentials: true, // Permitir cookies
-};app.options('/api/sesion/login', cors(corsOptions)); 
+};
+
 
 // Usar CORS
 app.use(cors(corsOptions));
