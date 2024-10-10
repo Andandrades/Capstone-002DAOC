@@ -28,12 +28,11 @@ const getbyid = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { class_id, scheduled_date, actual_cap, gym_schedule_id, client_id } =
-    req.body;
+  const { scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
   try {
-    const result = await pool.query(`INSERT INTO public.schedule_classes
-(class_id, scheduled_date, actual_cap, gym_schedule_id, client_id)
-VALUES(${class_id}, ${scheduled_date}, ${actual_cap}, ${gym_schedule_id}, ${client_id});`);
+    const result = await pool.query(`INSERT INTO schedule_classes
+(scheduled_date, actual_cap, gym_schedule_id, client_id)
+VALUES ($1, $2, $3, $4)` , [scheduled_date, actual_cap, gym_schedule_id, client_id]);
     res.status(200);
     res.json(" añadido correctamente!.");
   } catch (error) {
@@ -74,12 +73,11 @@ const deletebyid = async (req, res) => {
   }
 };
 
-
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAll,
   getbyid,
   create,
   update,
-  deletebyid
+  deletebyid,
 };

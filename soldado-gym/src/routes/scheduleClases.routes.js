@@ -11,11 +11,11 @@ router.get("/schedule", getAll);
 
 router.get("/schedule/:id", getbyid);
 
-router.post("/createSchedule", create);
+router.post("/schedule", create);
 
-router.put("/updateSchedule", update);
+router.put("/schedule", update);
 
-router.delete("/deleteSchedule", deletebyid);
+router.delete("/schedule", deletebyid);
 
 
 module.exports = router;
