@@ -9,6 +9,8 @@ import ClassIcon from "@mui/icons-material/Class";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
+import InstagramIcon from "../../assets/img/instagram.webp";
+import WhatsAppIcon from "../../assets/img/WhatsApp.webp";
 
 import "./LandingPage.css";
 
@@ -267,10 +269,37 @@ export const LandingPage = () => {
         </div>
 
         <div className="relative">
-          <div className="lg:w-96 lg:h-96 z-0 w-52 h-52   circle bg-slate-700 rounded-full"></div>
-          <img className="relative" src={Phone} alt="" />
-        </div>
+  <div className="lg:w-96 lg:h-96 z-0 w-52 h-52 circle bg-slate-700 rounded-full"></div>
+  <img className="relative" src={Phone} alt="" />
+</div>
       </section>
+  <footer className="bg-black text-white py-6">
+    <div className="max-w-screen-lg w-full mx-auto px-6 text-center">
+      <div className="mb-10">
+        <h2 className="text-2xl font-bold">Soldado Gym</h2>
+        <p className="mt-2">Tu mejor opción para mejorar tu salud y bienestar</p>
+      </div>
+      <div className="flex justify-center gap-10 mb-6">
+        <a
+          href="https://www.instagram.com/soldado_gym_la_estrella?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+          className="text-gray-300 hover:text-white flex flex-col items-center"
+        >
+          <img src={InstagramIcon} alt="Instagram" className="w-10 h-10" />
+          <span>Instagram</span>
+        </a>
+        <a
+          href="https://wa.me/34123456789"
+          className="text-gray-300 hover:text-white flex flex-col items-center"
+        >
+          <img src={WhatsAppIcon} alt="WhatsApp" className="w-10 h-10" />
+          <span>WhatsApp</span>
+        </a>
+      </div>
+      <div className="text-gray-500 text-sm">
+        <p>&copy; 2024 Soldado Gym. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
     </>
   );
 };
