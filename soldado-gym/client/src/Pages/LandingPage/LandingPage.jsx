@@ -225,6 +225,7 @@ export const LandingPage = () => {
           className="lg:w-[600px] h-[400px] w-5/6 lg:h-[500px] rounded-lg"
           src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d3299.9288381013075!2d-71.65683056830818!3d-34.199294582292055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e2!4m0!4m3!3m2!1d-34.198618499999995!2d-71.655!5e0!3m2!1ses-419!2scl!4v1728073012288!5m2!1ses-419!2scl"
           style={{ border: 0 }}
+          title="GoogleMapsApi"
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
