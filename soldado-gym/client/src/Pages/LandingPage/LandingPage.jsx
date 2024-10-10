@@ -9,8 +9,8 @@ import ClassIcon from "@mui/icons-material/Class";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
-
-import { useNavigate } from "react-router-dom";
+import InstagramIcon from "../../assets/img/instagram.webp";
+import WhatsAppIcon from "../../assets/img/WhatsApp.webp";
 
 import "./LandingPage.css";
 
@@ -40,7 +40,7 @@ export const LandingPage = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await fetch("http://localhost:3000/plans");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/plans`);
         const data = await response.json();
         console.log(data);
         setPlans(data);
@@ -52,7 +52,6 @@ export const LandingPage = () => {
     fetchPlans();
   }, []);
 
-  const navigate = useNavigate();
 
   return (
     <>
@@ -256,24 +255,51 @@ export const LandingPage = () => {
           </div>
           <div className="w-full flex flex-col lg:flex-row gap-5 justify-center items-center py-4 lg:gap-8">
 
-            <button class="relative h-12 w-40 rounded-full overflow-hidden border border-[#3936C1] text-indigo-600 shadow-2xl transition-all duration-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:m-auto before:h-0 before:w-0 before:rounded-sm before:bg-[#3936C1] before:duration-300 before:ease-out hover:text-white hover:shadow-indigo-600 hover:before:h-40 hover:before:w-40 hover:before:opacity-80"
+            <button className="relative h-12 w-40 rounded-full overflow-hidden border border-[#3936C1] text-indigo-600 shadow-2xl transition-all duration-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:top-0 before:m-auto before:h-0 before:w-0 before:rounded-sm before:bg-[#3936C1] before:duration-300 before:ease-out hover:text-white hover:shadow-indigo-600 hover:before:h-40 hover:before:w-40 hover:before:opacity-80"
               onClick={() => goto('login')}
             >
-              <span class="relative z-10">Ingresar</span>
+              <span className="relative z-10">Ingresar</span>
             </button>
-            <button class="before:ease relative rounded-full h-12 w-40 overflow-hidden border border-blue-500 text-blue-500 shadow-2xl transition-all before:absolute before:top-1/2 before:h-0 before:w-64 before:origin-center before:-translate-x-20 before:rotate-45 before:bg-blue-500 before:duration-300 hover:text-white hover:shadow-blue-500 hover:before:h-64 hover:before:-translate-y-32"
+            <button className="before:ease relative rounded-full h-12 w-40 overflow-hidden border border-blue-500 text-blue-500 shadow-2xl transition-all before:absolute before:top-1/2 before:h-0 before:w-64 before:origin-center before:-translate-x-20 before:rotate-45 before:bg-blue-500 before:duration-300 hover:text-white hover:shadow-blue-500 hover:before:h-64 hover:before:-translate-y-32"
               onClick={() => goto('Register')}
             >
-              <span class="relative z-10">Registrarse</span>
+              <span className="relative z-10">Registrarse</span>
             </button>
           </div>
         </div>
 
         <div className="relative">
-          <div className="lg:w-96 lg:h-96 z-0 w-52 h-52   circle bg-slate-700 rounded-full"></div>
-          <img className="relative" src={Phone} alt="" />
-        </div>
+  <div className="lg:w-96 lg:h-96 z-0 w-52 h-52 circle bg-slate-700 rounded-full"></div>
+  <img className="relative" src={Phone} alt="" />
+</div>
       </section>
+  <footer className="bg-black text-white py-6">
+    <div className="max-w-screen-lg w-full mx-auto px-6 text-center">
+      <div className="mb-10">
+        <h2 className="text-2xl font-bold">Soldado Gym</h2>
+        <p className="mt-2">Tu mejor opción para mejorar tu salud y bienestar</p>
+      </div>
+      <div className="flex justify-center gap-10 mb-6">
+        <a
+          href="https://www.instagram.com/soldado_gym_la_estrella?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+          className="text-gray-300 hover:text-white flex flex-col items-center"
+        >
+          <img src={InstagramIcon} alt="Instagram" className="w-10 h-10" />
+          <span>Instagram</span>
+        </a>
+        <a
+          href="https://wa.me/34123456789"
+          className="text-gray-300 hover:text-white flex flex-col items-center"
+        >
+          <img src={WhatsAppIcon} alt="WhatsApp" className="w-10 h-10" />
+          <span>WhatsApp</span>
+        </a>
+      </div>
+      <div className="text-gray-500 text-sm">
+        <p>&copy; 2024 Soldado Gym. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
     </>
   );
 };
