@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from "../assets/Certificate.svg";
 export const Plans = ({ name, amount, description, n_class }) => {
+  
   const formatPriceWithDots = (amount) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
