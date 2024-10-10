@@ -3,7 +3,11 @@ import "./LoginStyle.css"; // Asegúrate de que esta ruta sea correcta
 import Registrate from "../../assets/img/Registrate.webp"; // Importa la imagen
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
 export const LoginPage = ({ setIsRegistering, setIsRecovering, setIsAuth }) => {
+=======
+export const LoginPage = ({setIsAuth}) => {
+>>>>>>> 12f1a13ca923df08f6aca752848d6416cb1787f5
 
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
@@ -39,8 +43,14 @@ export const LoginPage = ({ setIsRegistering, setIsRecovering, setIsAuth }) => {
         const authData = await authCheckResponse.json();
         console.log("Auth Data:", authData);
         setIsAuth(authData.isAuth);
+<<<<<<< HEAD
         localStorage.setItem("isAuth", JSON.stringify(true));
         navigate("/inicio");
+=======
+        localStorage.setItem("isAuth", JSON.stringify(true)); // Almacenar en localStorage // Actualiza el estado de isAuth basado en la respuesta
+        localStorage.setItem("userID", JSON.stringify(authData.userId)); // Almacenar en localStorage // Actualiza el estado de isAuth basado en la respuesta
+        navigate("/inicio"); // Redirige al usuario al menú
+>>>>>>> 12f1a13ca923df08f6aca752848d6416cb1787f5
         console.log("Bienvenido");
       } else {
         setError("Credenciales inválidas");
