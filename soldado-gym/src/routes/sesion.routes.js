@@ -25,7 +25,7 @@ const corsOptions = {
   
   
 
-router.post("/login", loginUser);
+router.post("/login", loginUser)
 router.options("/login", cors(corsOptions));
 router.post("/register", registerUser);
 router.get("/checkauth", checkAuth);

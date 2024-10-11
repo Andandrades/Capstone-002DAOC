@@ -3,7 +3,7 @@ const pool = require("../db");
 
 //import de los controladores
 
-const {  getAll, getbyid, create, update, deletebyid} = require("../controllers/scheduleClases.controllers");
+const {  getAll, getbyid, create, update, deletebyid , getHourByGymId} = require("../controllers/scheduleClases.controllers");
 
 const router = Router();
 
@@ -11,10 +11,13 @@ router.get("/schedule", getAll);
 
 router.get("/schedule/:id", getbyid);
 
-router.post("/createSchedule", create);
+router.get("/scheduleinfo/:id", getHourByGymId);
 
-router.put("/updateSchedule", update);
+router.post("/schedule", create);
 
-router.delete("/deleteSchedule", deletebyid);
+router.put("/schedule", update);
+
+router.delete("/schedule", deletebyid);
+
 
 module.exports = router;
