@@ -30,6 +30,7 @@ export const GymHourCard = ({ schedule }) => {
       
     }
   }
+  
 
   useEffect(() => {
     const fetchScheduledUsers = async () => {
