@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./LoginStyle.css"; // Asegúrate de que esta ruta sea correcta
+import "./LoginStyle.css"; 
 import Registrate from "../../assets/img/Registrate.webp"; // Importa la imagen
 import { useNavigate } from "react-router-dom";
 
@@ -61,7 +61,7 @@ export const LoginPage = ({setIsAuth}) => {
       <div className="login-form">
         <div className="logo">
           <img src={Registrate} alt="Logo" />{" "}
-          {/* Asegúrate de que esta imagen está en la ruta correcta */}
+          
         </div>
         <h2>Soldados Gym</h2>
 
