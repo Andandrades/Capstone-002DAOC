@@ -39,8 +39,7 @@ export const LoginPage = ({setIsAuth}) => {
         const authData = await authCheckResponse.json();
         console.log("Auth Data:", authData);
         setIsAuth(authData.isAuth);
-        localStorage.setItem("isAuth", JSON.stringify(true)); // Almacenar en localStorage // Actualiza el estado de isAuth basado en la respuesta
-        localStorage.setItem("userID", JSON.stringify(authData.userId)); // Almacenar en localStorage // Actualiza el estado de isAuth basado en la respuesta
+        localStorage.setItem("isAuth", JSON.stringify(true)); 
         navigate("/inicio"); // Redirige al usuario al menú
         console.log("Bienvenido");
       } else {

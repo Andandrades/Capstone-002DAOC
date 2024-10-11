@@ -13,6 +13,7 @@ import { SchedulePage } from "./Pages/Schedule/SchedulePage";
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null); // Estado para almacenar el ID del usuario
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuth");

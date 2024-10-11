@@ -21,7 +21,7 @@ const corsOptions = {
     origin: process.env.FRONTEND_URL, // URL de tu cliente
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Métodos permitidos
     credentials: true, // Permitir cookies
-  };
+};
   
   
 
