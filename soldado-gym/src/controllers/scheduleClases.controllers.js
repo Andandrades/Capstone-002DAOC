@@ -29,6 +29,8 @@ const getbyid = async (req, res) => {
 
 //traer datos segun al id de la hora
 const getHourByGymId = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id } = req.params;
 
   try {
