@@ -12,6 +12,7 @@ const getAll = async (req, res) => {
   }
 };
 
+
 const getbyid = async (req, res) => {
   const { id } = req.params;
 
@@ -51,6 +52,7 @@ const getHourByGymId = async (req, res) => {
 const create = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
+
   const { scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
   try {
     const result = await pool.query(`INSERT INTO schedule_classes

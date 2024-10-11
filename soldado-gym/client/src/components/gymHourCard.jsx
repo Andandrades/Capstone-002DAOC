@@ -76,13 +76,6 @@ export const GymHourCard = ({ schedule }) => {
           }
         );
 
-        // Obtener el nombre del usuario
-        const userResponse = await fetch(
-          `${import.meta.env.VITE_API_URL}/checkauth`,
-          {
-            credentials: "include",
-          }
-        );
         await fetchReservations()
       } else {
         console.log("Error al reservar hora");
