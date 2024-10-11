@@ -153,6 +153,9 @@ const getHourByDay = async (req, res) => {
   }
 };
 
+
+
+//Actualizar capacidad actual
 const updateActualCap = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -184,5 +187,5 @@ module.exports = {
   deleteGymHour,
   getSingleHour,
   getHourByDay,
-  updateActualCap
+  updateActualCap,
 };

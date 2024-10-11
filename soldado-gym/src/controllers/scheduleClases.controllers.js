@@ -218,6 +218,19 @@ const deleteHour = async (req, res) => {
     res.status(500).json({error : 'Error al eliminar asistencia'})
   }
 };
+
+const getUserClasses = async(req,res) => {
+  const {client_id} = req.params
+
+  try {
+    const resultado = await pool.query('SELECT * FROM gym_schedule WHERE client_id = $1' , [client_id])
+    return res.status(200).json(resultado.rows)
+  } catch (error) {
+    res.json({error : error.message})
+  }
+}
+
+
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAll,
@@ -228,5 +241,6 @@ module.exports = {
   getHourByGymId,
   getUserReservation,
   scheduleHour,
-  deleteHour
+  deleteHour,
+  getUserClasses
 };

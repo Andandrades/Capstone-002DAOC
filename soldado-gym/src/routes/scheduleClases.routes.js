@@ -3,7 +3,7 @@ const pool = require("../db");
 
 //import de los controladores
 
-const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , getUserReservation, scheduleHour , deleteHour} = require("../controllers/scheduleClases.controllers");
+const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , getUserReservation, scheduleHour , deleteHour ,getUserClasses} = require("../controllers/scheduleClases.controllers");
 
 const router = Router();
 
@@ -40,6 +40,8 @@ router.delete("/schedule/:id", deletebyid);
 router.post("/scheduleHour", scheduleHour);
 //Eliminar hora registrada(Endpoint usuarios)
 router.delete("/scheduleHour/:class_id", deleteHour);
+//Conseguir horas con por id
+router.get("/schedule/:id", getUserClasses);
 
 
 router.options("/schedule/:id", cors(corsOptions));
