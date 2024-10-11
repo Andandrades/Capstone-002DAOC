@@ -36,7 +36,7 @@ const getHourByGymId = async (req, res) => {
   try {
     const result = await pool.query(
       `
-      SELECT s.class_id, s.scheduled_date, s.actual_cap, s.gym_schedule_id, u.name AS client_name
+      SELECT s.class_id, s.scheduled_date, s.actual_cap, s.gym_schedule_id, s.client_id, u.name AS client_name
       FROM schedule_classes s
       JOIN users u ON s.client_id = u.id
       WHERE s.gym_schedule_id = $1

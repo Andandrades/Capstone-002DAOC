@@ -1,4 +1,4 @@
-import { act, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import User from "../assets/User.svg";
 import Clock from "../assets/Clock.svg";
 import Certificate from "../assets/Verified.svg";
@@ -15,18 +15,36 @@ export const GymHourCard = ({ schedule }) => {
   } = schedule;
 
   const [isModalOpen, setIsModalOpen] = useState(false); //Estado Modal
-  const [isFull, setIsFull] = useState(false); // Verificar si la clase está llena al momento de agendar
   const [scheduledUsers, setScheduledUsers] = useState([]);
-  const [userId, setUserId] = useState(null); //id del usuario el cual ingresa al sistema
-  const [hasReserved, setHasReserved] = useState(false);
-  const [reservationId, setReservationId] = useState("");
-
   
-
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+
+  useEffect(() => {
+    const fetchScheduledUsers = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`);
+        if (!response.ok) {
+          throw new Error("Error al obtener los usuarios agendados");
+        }
+        const data = await response.json();
+        setScheduledUsers(data); // Suponiendo que el array de usuarios está en data
+      } catch (error) {
+        console.error("Error fetching scheduled users:", error);
+      }
+    };
+
+    if (isModalOpen) {
+      fetchScheduledUsers(); // Llama a la API cuando el modal se abre
+      document.body.style.overflow = "hidden"; // Desactivamos el scroll
+    } else {
+      document.body.style.overflow = "auto"; // Volver el scroll a la normalidad al cerrar el modal
+    }
+  }, [isModalOpen, gym_schedule_id]);
+
 
   // Formatear horas en formato de 12 horas con AM/PM
   const formatHour = (hour) => {
@@ -63,6 +81,7 @@ export const GymHourCard = ({ schedule }) => {
       document.body.style.overflow = "auto";
     }
   }, [isModalOpen, gym_schedule_id]);
+
 
   return (
     <div className="mt-10 pb-3 bg-white rounded-lg">
