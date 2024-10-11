@@ -1,17 +1,103 @@
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import User from "../assets/User.svg";
 import Clock from "../assets/Clock.svg";
 import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 export const GymHourCard = ({ schedule }) => {
-  const { gym_schedule_id, start_hour, end_hour, max_cap, actual_cap, schedule_date } =
-    schedule;
+  const {
+    gym_schedule_id,
+    start_hour,
+    end_hour,
+    max_cap,
+    actual_cap,
+    schedule_date,
+  } = schedule;
 
-  //Estado Modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false); //Estado Modal
+  const [isFull, setIsFull] = useState(false); // Verificar si la clase está llena al momento de agendar
   const [scheduledUsers, setScheduledUsers] = useState([]);
+  const [userId, setUserId] = useState(null); //id del usuario el cual ingresa al sistema
+
+  //Traer id de usuario
+  useState(() => {
+    const getUserId = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/checkauth`,
+          { credentials: "include" }
+        );
+        const data = await response.json();
+        setUserId(data.userId);
+      } catch (error) {
+        console.log("error al obtener datos", error);
+      }
+    };
+    getUserId();
+  }, []);
+
+  useEffect(() => {
+    if (actual_cap >= max_cap) {
+      setIsFull(true);
+    }
+  }, [actual_cap, max_cap]);
+
+  const reserveHour = async () => {
+    if (actual_cap >= max_cap) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/schedule`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          scheduled_date: new Date(),
+          actual_cap: actual_cap + 1,
+          gym_schedule_id: gym_schedule_id,
+          client_id: userId,
+        }),
+      });
+
+      if (response.ok) {
+        //Actualizar cacapidad actual
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/gymHours/${gym_schedule_id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              actual_cap: actual_cap + 1, // Incrementamos la capacidad
+            }),
+          }
+        );
+
+        // Obtener el nombre del usuario
+        const userResponse = await fetch(
+          `${import.meta.env.VITE_API_URL}/checkauth`,
+          {
+            credentials: "include",
+          }
+        );
+        const userData = await userResponse.json();
+
+        // Actualizar el estado de los usuarios agendados
+        setScheduledUsers((prevUsers) => [
+          ...prevUsers,
+          { client_name: userData.userName }, // Usa el nombre del usuario
+        ]);
+      } else {
+        console.log("Error al reservar hora");
+      }
+    } catch (error) {
+      console.log("Error al reservar", error);
+    }
+  };
+
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -54,7 +140,6 @@ export const GymHourCard = ({ schedule }) => {
             `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
           );
           const data = await response.json();
-          console.log(gym_schedule_id)
           setScheduledUsers(data); // Guardar los usuarios en el estado
         } catch (error) {
           console.error("Error fetching reservations:", error);
@@ -62,8 +147,7 @@ export const GymHourCard = ({ schedule }) => {
       };
 
       fetchReservations();
-    }
-    else{
+    } else {
       //volver el scroll a la normalidad al cerrar el modal
       document.body.style.overflow = "auto";
     }
@@ -114,10 +198,7 @@ export const GymHourCard = ({ schedule }) => {
             <div className="bg-gray-300 rounded-md w-full my-6 h-[60%] overflow-auto">
               {scheduledUsers.length > 0 ? (
                 scheduledUsers.map((reservation, index) => (
-                  <div
-                    key={index}
-                    className="p-2 bg-white"
-                  >
+                  <div key={index} className="p-2 bg-white">
                     {reservation.client_name}
                   </div>
                 ))
@@ -143,8 +224,14 @@ export const GymHourCard = ({ schedule }) => {
               </div>
             </div>
             <div className="w-full flex justify-center items-center">
-              <button className="bg-[#3936C1] text-white px-8 py-3 rounded-full font-medium">
-                Reservar
+              <button
+                className={`px-8 py-3 rounded-full font-medium ${
+                  isFull ? "bg-red-600" : "bg-[#3936C1] text-white"
+                }`}
+                onClick={reserveHour}
+                disabled={isFull}
+              >
+                {isFull ? "Hora llena" : "Reservar"}
               </button>
             </div>
           </div>
