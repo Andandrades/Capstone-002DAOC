@@ -288,7 +288,7 @@ export const LandingPage = () => {
           <span>Instagram</span>
         </a>
         <a
-          href="https://wa.me/34123456789"
+          href="https://wa.me/+56963009649"
           className="text-gray-300 hover:text-white flex flex-col items-center"
         >
           <img src={WhatsAppIcon} alt="WhatsApp" className="w-10 h-10" />
