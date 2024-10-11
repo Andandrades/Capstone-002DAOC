@@ -18,72 +18,10 @@ export const GymHourCard = ({ schedule }) => {
   const [isFull, setIsFull] = useState(false); // Verificar si la clase está llena al momento de agendar
   const [scheduledUsers, setScheduledUsers] = useState([]);
   const [userId, setUserId] = useState(null); //id del usuario el cual ingresa al sistema
+  const [hasReserved, setHasReserved] = useState(false);
+  const [reservationId, setReservationId] = useState("");
 
-  //Traer id de usuario
-  useState(() => {
-    const getUserId = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/checkauth`,
-          { credentials: "include" }
-        );
-        const data = await response.json();
-        setUserId(data.userId);
-      } catch (error) {
-        console.log("error al obtener datos", error);
-      }
-    };
-    getUserId();
-  }, []);
-
-  useEffect(() => {
-    if (actual_cap >= max_cap) {
-      setIsFull(true);
-    }
-  }, [actual_cap, max_cap]);
-
-  const reserveHour = async () => {
-    if (actual_cap >= max_cap) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/schedule`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          scheduled_date: new Date(),
-          actual_cap: actual_cap + 1,
-          gym_schedule_id: gym_schedule_id,
-          client_id: userId,
-        }),
-      });
-
-      if (response.ok) {
-        //Actualizar cacapidad actual
-        await fetch(
-          `${import.meta.env.VITE_API_URL}/gymHours/${gym_schedule_id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              actual_cap: actual_cap + 1, // Incrementamos la capacidad
-            }),
-          }
-        );
-
-        await fetchReservations()
-      } else {
-        console.log("Error al reservar hora");
-      }
-    } catch (error) {
-      console.log("Error al reservar", error);
-    }
-  };
+  
 
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
@@ -116,29 +54,15 @@ export const GymHourCard = ({ schedule }) => {
     }`;
   };
 
-  // Asegúrate de que fetchReservations esté definida en tu componente
-const fetchReservations = async () => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
-    );
-    const data = await response.json();
-    setScheduledUsers(data); // Guardar los usuarios en el estado
-  } catch (error) {
-    console.error("Error fetching reservations:", error);
-  }
-};
-
-useEffect(() => {
-  if (isModalOpen) {
-    // Desactivamos el scroll en el momento que se abre el modal
-    document.body.style.overflow = "hidden";
-    fetchReservations(); // Llama a la función al abrir el modal
-  } else {
-    // Volver el scroll a la normalidad al cerrar el modal
-    document.body.style.overflow = "auto";
-  }
-}, [isModalOpen, gym_schedule_id]);
+  useEffect(() => {
+    if (isModalOpen) {
+      // Desactivamos el scroll en el momento que se abre el modal
+      document.body.style.overflow = "hidden";
+    } else {
+      // Volver el scroll a la normalidad al cerrar el modal
+      document.body.style.overflow = "auto";
+    }
+  }, [isModalOpen, gym_schedule_id]);
 
   return (
     <div className="mt-10 pb-3 bg-white rounded-lg">
@@ -212,13 +136,9 @@ useEffect(() => {
             </div>
             <div className="w-full flex justify-center items-center">
               <button
-                className={`px-8 py-3 rounded-full font-medium ${
-                  isFull ? "bg-red-600" : "bg-[#3936C1] text-white"
-                }`}
-                onClick={reserveHour}
-                disabled={isFull}
+                className={`bg-[#FCDE3B] rounded-full w-1/2`}
               >
-                {isFull ? "Hora llena" : "Reservar"}
+                Reservar
               </button>
             </div>
           </div>

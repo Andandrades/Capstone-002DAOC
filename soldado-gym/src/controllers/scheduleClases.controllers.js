@@ -12,7 +12,6 @@ const getAll = async (req, res) => {
   }
 };
 
-
 const getbyid = async (req, res) => {
   const { id } = req.params;
 
@@ -35,12 +34,15 @@ const getHourByGymId = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT s.class_id, s.scheduled_date, s.actual_cap, s.gym_schedule_id, u.name AS client_name
       FROM schedule_classes s
       JOIN users u ON s.client_id = u.id
       WHERE s.gym_schedule_id = $1
-    `, [id]);
+    `,
+      [id]
+    );
 
     res.status(200).json(result.rows); // Retorna las filas como respuesta
   } catch (error) {
@@ -55,11 +57,14 @@ const create = async (req, res) => {
 
   const { scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
   try {
-    const result = await pool.query(`INSERT INTO schedule_classes
+    const result = await pool.query(
+      `INSERT INTO schedule_classes
 (scheduled_date, actual_cap, gym_schedule_id, client_id)
-VALUES ($1, $2, $3, $4)` , [scheduled_date, actual_cap, gym_schedule_id, client_id]);
+VALUES ($1, $2, $3, $4) RETURNING class_id`,
+      [scheduled_date, actual_cap, gym_schedule_id, client_id]
+    );
     res.status(200);
-    res.json(" añadido correctamente!.");
+    res.json(result.rows);
   } catch (error) {
     console.log(error.message);
     res.status(400);
@@ -84,12 +89,14 @@ const update = async (req, res) => {
 };
 
 const deletebyid = async (req, res) => {
-
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id } = req.params;
 
   try {
     const result = await pool.query(
-      `DELETE FROM schedule_classes WHERE class_id = $1 RETURNING *` , [id]
+      `DELETE FROM schedule_classes WHERE class_id = $1 RETURNING *`,
+      [id]
     );
     if (result.rowCount === 0) {
       return res.status(400).json({
@@ -104,6 +111,29 @@ const deletebyid = async (req, res) => {
   }
 };
 
+const getUserReservation = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  const { userId, gym_schedule_id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      "SELECT class_id FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id =$2",
+      [userId, gym_schedule_id]
+    );
+
+    if(resultado.rows.length > 0){
+      return res.json(resultado.rows[0])
+    }else{
+      return
+    }
+
+  } catch (error) {
+    return res.status(500).json({message : error})
+  }
+};
+
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAll,
@@ -111,5 +141,6 @@ module.exports = {
   create,
   update,
   deletebyid,
-  getHourByGymId
+  getHourByGymId,
+  getUserReservation
 };

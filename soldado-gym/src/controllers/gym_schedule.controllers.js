@@ -57,6 +57,7 @@ const updateGymHour = async (req, res) => {
 
 //Eliminar Hora
 const deleteGymHour = async (req, res) => {
+  
   const { id } = req.params;
   try {
     const deletedSchedule = await pool.query(
@@ -64,10 +65,11 @@ const deleteGymHour = async (req, res) => {
       [id]
     );
 
-    if (deletedSchedule.rows.length === 0) {
+    if (deletedSchedule.rowCount === 0) {
       return res.status(404).json({ error: "Horario no encontrado" });
     }
     return res.json({ schedule: deletedSchedule.rows[0] });
+
   } catch (error) {
     return res
       .status(400)
