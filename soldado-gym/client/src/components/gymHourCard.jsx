@@ -83,13 +83,7 @@ export const GymHourCard = ({ schedule }) => {
             credentials: "include",
           }
         );
-        const userData = await userResponse.json();
-
-        // Actualizar el estado de los usuarios agendados
-        setScheduledUsers((prevUsers) => [
-          ...prevUsers,
-          { client_name: userData.userName }, // Usa el nombre del usuario
-        ]);
+        await fetchReservations()
       } else {
         console.log("Error al reservar hora");
       }
@@ -129,29 +123,29 @@ export const GymHourCard = ({ schedule }) => {
     }`;
   };
 
-  useEffect(() => {
-    if (isModalOpen) {
-      //Desactivamos el scroll en el momento que se abre el modal
-      document.body.style.overflow = "hidden";
-      // Verifica si el modal está abierto
-      const fetchReservations = async () => {
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
-          );
-          const data = await response.json();
-          setScheduledUsers(data); // Guardar los usuarios en el estado
-        } catch (error) {
-          console.error("Error fetching reservations:", error);
-        }
-      };
+  // Asegúrate de que fetchReservations esté definida en tu componente
+const fetchReservations = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
+    );
+    const data = await response.json();
+    setScheduledUsers(data); // Guardar los usuarios en el estado
+  } catch (error) {
+    console.error("Error fetching reservations:", error);
+  }
+};
 
-      fetchReservations();
-    } else {
-      //volver el scroll a la normalidad al cerrar el modal
-      document.body.style.overflow = "auto";
-    }
-  }, [isModalOpen, gym_schedule_id]);
+useEffect(() => {
+  if (isModalOpen) {
+    // Desactivamos el scroll en el momento que se abre el modal
+    document.body.style.overflow = "hidden";
+    fetchReservations(); // Llama a la función al abrir el modal
+  } else {
+    // Volver el scroll a la normalidad al cerrar el modal
+    document.body.style.overflow = "auto";
+  }
+}, [isModalOpen, gym_schedule_id]);
 
   return (
     <div className="mt-10 pb-3 bg-white rounded-lg">
