@@ -55,7 +55,7 @@ function App() {
         <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
-        <Route path="/Profile" element={<ProtectedRoute> <ProfilePage /></ProtectedRoute>}></Route>,
+        <Route path="/Profile" element={ <ProfilePage />}/>,
         {/* rutas sin implementar*/}
         <Route path="/schedule" element={<ProtectedRoute> <SchedulePage />  </ProtectedRoute>} />,
         <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
