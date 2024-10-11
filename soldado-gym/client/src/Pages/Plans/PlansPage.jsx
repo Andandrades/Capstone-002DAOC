@@ -10,7 +10,6 @@ const PlansPage = () => {
         En esta vista podrías pagar tus planes y tener acceso a tus clases en el gimnasio.
       </p>
 
-      {/* Cuadrados con los planes usando el componente Plans */}
       <Plans 
         name="Una clase" 
         amount={7500} 
