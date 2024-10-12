@@ -43,8 +43,7 @@ const getHourByGymId = async (req, res) => {
     `,
       [id]
     );
-
-    res.status(200).json(result.rows); // Retorna las filas como respuesta
+    res.status(200).json(result.rows);
   } catch (error) {
     console.error("Error al obtener clases con usuario:", error.message);
     res.status(500).json({ error: "Error al obtener datos." });
@@ -162,6 +161,8 @@ const scheduleHour = async (req, res) => {
 
 //Eliminar hora (Endpoint de usuario)
 const deleteHour = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { class_id } = req.params;
 
   try {
@@ -198,21 +199,21 @@ const deleteHour = async (req, res) => {
 };
 
 const getUserClasses = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", '*');
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id, class_id } = req.params;
 
   try {
     const resultado = await pool.query(
-      "SELECT * FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id = $2",
+      "SELECT class_id FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id = $2",
       [id, class_id]
     );
 
     if (resultado.rows.length === 0) {
-      return res.status(404).json({ message: "No se encontro clase registrada" });
+      return 
     }
 
-    res.json({ message: "Clase encontrada" });
+    res.json(resultado.rows);
   } catch (error) {
     return res.json({ error: error.message });
   }
