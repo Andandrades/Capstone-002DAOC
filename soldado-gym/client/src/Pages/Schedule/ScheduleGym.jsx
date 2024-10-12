@@ -5,16 +5,24 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import "./ScheduleStyles.css";
 import "./SelectDayButton.css";
+import { useEffect } from "react";
 
-export const ScheduleGym = () => {
+export const ScheduleGym = ({userId}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scheduleInfo , setScheduleInfo] = useState("")
   //Dias de la semana
   const days = ["L", "M", "X", "J", "V", "S", "D"];
 
+
+
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
+
+useEffect(() => {
+  fetchGymHours("L")
+},[])
+
 
   // Función para obtener las horas del gimnasio para el día seleccionado
   const fetchGymHours = async (day) => {

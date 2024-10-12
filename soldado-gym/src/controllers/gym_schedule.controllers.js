@@ -35,6 +35,9 @@ const createGymHour = async (req, res) => {
 
 //Actualizar hora
 const updateGymHour = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
   const { id } = req.params;
   const { start_hour, end_hour, max_cap, actual_cap, schedule_date } = req.body;
   try {
@@ -54,6 +57,7 @@ const updateGymHour = async (req, res) => {
 
 //Eliminar Hora
 const deleteGymHour = async (req, res) => {
+  
   const { id } = req.params;
   try {
     const deletedSchedule = await pool.query(
@@ -61,10 +65,11 @@ const deleteGymHour = async (req, res) => {
       [id]
     );
 
-    if (deletedSchedule.rows.length === 0) {
+    if (deletedSchedule.rowCount === 0) {
       return res.status(404).json({ error: "Horario no encontrado" });
     }
     return res.json({ schedule: deletedSchedule.rows[0] });
+
   } catch (error) {
     return res
       .status(400)
@@ -148,6 +153,30 @@ const getHourByDay = async (req, res) => {
   }
 };
 
+const updateActualCap = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { id } = req.params; // ID de la clase a actualizar
+  const { actual_cap } = req.body; // Campo a actualizar
+
+  if (actual_cap === undefined) {
+    return res.status(400).json({ message: 'No se proporcionó actual_cap' });
+  }
+
+  try {
+    // Ejecutar la consulta para actualizar solo el actual_cap
+    await pool.query(
+      'UPDATE gym_schedule SET actual_cap = $1 WHERE gym_schedule_id = $2',
+      [actual_cap, id]
+    );
+    
+    return res.status(200).json({ message: 'Capacidad actualizada exitosamente' });
+  } catch (error) {
+    console.error('Error actualizando gym_schedule:', error);
+    return res.status(500).json({ message: 'Error al actualizar la capacidad' });
+  }
+};
+
 module.exports = {
   getGymHours,
   createGymHour,
@@ -155,4 +184,5 @@ module.exports = {
   deleteGymHour,
   getSingleHour,
   getHourByDay,
+  updateActualCap
 };
