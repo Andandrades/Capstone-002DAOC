@@ -35,19 +35,19 @@ export const LandingPage = () => {
     }
   };
 
+  const fetchPlans = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/plans`);
+      const data = await response.json();
+      console.log(data);
+      setPlans(data);
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+    }
+  };
+
   //UseEffect dedicado a buscar los datos de los planes
   useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/plans`);
-        const data = await response.json();
-        console.log(data);
-        setPlans(data);
-      } catch (error) {
-        console.error("Error fetching plans:", error);
-      }
-    };
-
     fetchPlans();
   }, []);
 
@@ -207,7 +207,7 @@ export const LandingPage = () => {
               />
             ))
           ) : (
-            <p>No plans available</p>
+            <p className="Text-white-600">No plans available</p>
           )}
         </div>
       </section>
@@ -233,11 +233,11 @@ export const LandingPage = () => {
         ></iframe>
       </section>
       <section
-        
+
         className="bgColor lg:h-[100vh] flex justify-center flex-col py-20 lg:flex-row  items-center"
       >
         <div ref={sectionRef6} className=" lg:w-[500px] pt-10 lg:pt-0">
-          <h1  className="lg:title text-5xl font-bold w-full text-center lg:text-start">
+          <h1 className="lg:title text-5xl font-bold w-full text-center lg:text-start">
             Nuestro Sistema
           </h1>
           <div className="w-full px-9 lg:px-0 flex justify-center text-center lg:text-start pt-4">
@@ -269,11 +269,11 @@ export const LandingPage = () => {
         </div>
 
         <div className="relative">
-  <div className="lg:w-96 lg:h-96 z-0 w-52 h-52 circle bg-slate-700 rounded-full"></div>
-  <img className="relative" src={Phone} alt="" />
-</div>
+          <div className="lg:w-96 lg:h-96 z-0 w-52 h-52 circle bg-slate-700 rounded-full"></div>
+          <img className="relative" src={Phone} alt="" />
+        </div>
       </section>
- <FooterComponent/>
+      <FooterComponent />
     </>
   );
 };
