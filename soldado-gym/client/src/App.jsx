@@ -9,6 +9,7 @@ import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+import {ClassesPage} from "./Pages/Classes/ClassesPage"
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -56,12 +57,12 @@ function App() {
         <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
-        <Route path="/Profile" element={ <ProfilePage />}/>,
+        <Route path="/Profile" element={ <ProfilePage />}/>
         {/* rutas sin implementar*/}
         <Route path="/schedule" element={<ProtectedRoute> <SchedulePage />  </ProtectedRoute>} />,
         <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
         <Route path="/menu" element={<ProtectedRoute><SchedulePage /> </ProtectedRoute>} />,
-        <Route path="/classes" element={<ProtectedRoute> <SchedulePage /></ProtectedRoute>} />,
+        <Route path="/classes" element={<ClassesPage />} />,
         <Route path="*" element={<Navigate to="/" />} />,
       </Routes>
     </Router>
