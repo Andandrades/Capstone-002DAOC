@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import User from "../assets/User.svg";
 import Clock from "../assets/Clock.svg";
 import Certificate from "../assets/Verified.svg";
@@ -16,26 +16,66 @@ export const GymHourCard = ({ schedule }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false); //Estado Modal
   const [scheduledUsers, setScheduledUsers] = useState([]);
-  const [reservation, setReservation] = useState(null)
+  const [reservation, setReservation] = useState(null);
+  const [userId, setUserId] = useState("");
 
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const searchReservation = async () =>{
-    try {
-      const respuesta = await fetch(`${import.meta.env.VITE_API_URL}/`)
-    } catch (error) {
-      
+  useEffect(() => {
+    getUserId();
+  }, []);
+
+  // Este useEffect se ejecutará cuando userId cambie y sea diferente de una cadena vacía
+  useEffect(() => {
+    if (userId) {
+      searchReservation();
     }
-  }
-  
+  }, [userId]);
+
+  const getUserId = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/checkauth`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      setUserId(data.userId); // Esto disparará el segundo useEffect cuando userId se actualice
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const searchReservation = async () => {
+    try {
+      const respuesta = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/scheduleHour/${userId}/${gym_schedule_id}`
+      );
+      if (respuesta.ok) {
+        setReservation(true);
+        console.log(respuesta);
+      } else {
+        setReservation(false);
+        console.log(respuesta);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchScheduledUsers = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
+        );
         if (!response.ok) {
           throw new Error("Error al obtener los usuarios agendados");
         }
@@ -53,7 +93,6 @@ export const GymHourCard = ({ schedule }) => {
       document.body.style.overflow = "auto"; // Volver el scroll a la normalidad al cerrar el modal
     }
   }, [isModalOpen, gym_schedule_id]);
-
 
   // Formatear horas en formato de 12 horas con AM/PM
   const formatHour = (hour) => {
@@ -91,7 +130,6 @@ export const GymHourCard = ({ schedule }) => {
     }
   }, [isModalOpen, gym_schedule_id]);
 
-
   return (
     <div className="mt-10 pb-3 bg-white rounded-lg">
       <div className="w-full pt-3 flex justify-start text-start px-5">
@@ -120,7 +158,13 @@ export const GymHourCard = ({ schedule }) => {
         onClick={toggleModal}
         className="w-full flex mt-5 justify-center items-center"
       >
-        <button className="bg-[#FCDE3B] rounded-full w-1/2">Reservar</button>
+        {reservation ? (
+          <button className="bg-[#FCDE3B] font-medium rounded-full w-1/2">Reservar</button>
+        ) : (
+          <button className="bg-[#6bf18f] font-medium rounded-full w-1/2">
+            Ver detalles
+          </button>
+        )}
       </div>
 
       {isModalOpen && (
@@ -163,11 +207,15 @@ export const GymHourCard = ({ schedule }) => {
               </div>
             </div>
             <div className="w-full flex justify-center items-center">
-              <button
-                className={`bg-[#FCDE3B] rounded-full w-1/2`}
-              >
-                Reservar
-              </button>
+              {reservation ? (
+                <button className="bg-[#FCDE3B] rounded-full w-1/2">
+                  Reservar
+                </button>
+              ) : (
+                <button className="bg-[#e94c4c] rounded-full text-white w-1/2">
+                  Cancelar Hora
+                </button>
+              )}
             </div>
           </div>
         </div>
