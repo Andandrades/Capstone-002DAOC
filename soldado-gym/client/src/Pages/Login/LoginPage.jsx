@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./LoginStyle.css"; 
+import "./LoginStyle.css"; // Asegúrate de que esta ruta sea correcta
 import Registrate from "../../assets/img/Registrate.webp"; // Importa la imagen
 import { useNavigate } from "react-router-dom";
 
