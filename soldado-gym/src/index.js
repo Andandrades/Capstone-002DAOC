@@ -1,24 +1,28 @@
 //Archivo principal el cual arranca el servidor express
-const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
 
+const express = require("express");
 const app = express();
 const cors = require("cors");
 
-
-
 // Configuración de CORS
 const corsOptions = {
-    origin: process.env.FRONTEND_URL, // URL de tu cliente
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"], // Métodos permitidos
-    credentials: true, // Permitir cookies
+  origin: process.env.FRONTEND_URL, // URL de tu cliente
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"], // Métodos permitidos
+  credentials: true, // Permitir cookies
 };
-  
+
 // Usar CORS
 app.use(cors(corsOptions));
+app.options("*", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.sendStatus(200);
+}); // Habilitar solicitudes preflight (OPTIONS)
 
-
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 //importar Rutas
 const rolesRoutes = require("./routes/roles.routes");
@@ -32,7 +36,6 @@ const sesionRoutes = require("./routes/sesion.routes");
 const plansRoutes = require("./routes/plans.Routes");
 //Endpoint gym_schedule
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
-
 
 app.use(morgan("dev"));
 
@@ -52,8 +55,6 @@ app.use(sesionRoutes);
 app.use(plansRoutes);
 app.use(gymHoursRoutes);
 
-
 app.listen(3000);
-
 
 console.log("Sever port: 3000");

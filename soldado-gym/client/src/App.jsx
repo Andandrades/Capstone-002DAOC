@@ -9,11 +9,15 @@ import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
-
+import { ClassesPage } from "./Pages/Classes/ClassesPage"
+import { AdminPlans } from "./Pages/Admin/AdminPlans/AdminPlans.Page";
+import { AdminMenu } from "./Pages/Admin/AdminMenu/AdminMenu";
+import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
+import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState(null); // Estado para almacenar el ID del usuario
+  //const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuth");
@@ -56,13 +60,20 @@ function App() {
         <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
-        <Route path="/Profile" element={ <ProfilePage />}/>,
+        <Route path="/Profile" element={<ProfilePage />} />
         {/* rutas sin implementar*/}
         <Route path="/schedule" element={<ProtectedRoute> <SchedulePage />  </ProtectedRoute>} />,
         <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
         <Route path="/menu" element={<ProtectedRoute><SchedulePage /> </ProtectedRoute>} />,
-        <Route path="/classes" element={<ProtectedRoute> <SchedulePage /></ProtectedRoute>} />,
+        <Route path="/classes" element={<ClassesPage />} />,
         <Route path="*" element={<Navigate to="/" />} />,
+        {/* rutas de administrador gestionar permisos por rol no implementado*/}
+        <Route path="/Admin/Menu" element={<AdminMenu />} />,
+        <Route path="/Admin/Planes" element={<AdminPlans />} />,
+        <Route path="/Admin/Clases" element={<AdminClasses />} />,
+        <Route path="/Admin/PaginaInicio" element={< AdminLandingPage/>} />,
+
+
       </Routes>
     </Router>
   );

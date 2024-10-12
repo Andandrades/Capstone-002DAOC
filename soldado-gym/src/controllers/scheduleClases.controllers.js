@@ -198,7 +198,7 @@ const deleteHour = async (req, res) => {
 };
 
 const getUserClasses = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Origin", '*');
   res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id, class_id } = req.params;
 
