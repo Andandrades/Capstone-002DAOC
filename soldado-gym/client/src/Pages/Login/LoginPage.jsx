@@ -104,7 +104,7 @@ export const LoginPage = ({setIsAuth}) => {
             ¿Olvidaste tu contraseña?{" "}
             <span
               className="recover-link"
-              onClick={() => setIsRecovering(true)}
+              //onClick={() => setIsRecovering(true)}
             >
               Recupérala aquí
             </span>

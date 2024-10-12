@@ -5,9 +5,10 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import HouseIcon from '@mui/icons-material/House';
 import TodayIcon from '@mui/icons-material/Today';
 import PersonIcon from '@mui/icons-material/Person';
+import HiveIcon from '@mui/icons-material/Hive';
 import './css/ProfileNavBar.css';
 
-export const UserNavBar = () => {
+export const NavBarAdmin = () => {
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -22,7 +23,7 @@ export const UserNavBar = () => {
             <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('Inicio')} 
+                onClick={() => goto('Admin/Menu')} 
                 className="relative rounded-full text-gray-400 hover:text-white" >
                 <HouseIcon />
                 <h3>Menu</h3>
@@ -32,35 +33,46 @@ export const UserNavBar = () => {
             <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('schedule')}
+                onClick={() => goto('Admin/Clases')}
                 className="relative rounded-full text-gray-400 hover:text-white"
               >
                 <TodayIcon />
-                <h3>Agendar</h3>
+                <h3>Clases</h3>
               </button>
             </div>
 
             <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('classes')} 
-                className="relative rounded-full text-gray-400 hover:text-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <FitnessCenterIcon />
-                <h3>Mis clases</h3>
-              </button>
-            </div>
-
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('profile')} 
+                onClick={() => goto('Admin/Clases')} 
                 className="relative rounded-full text-gray-400 hover:text-white"
               >
                 <span className="absolute -inset-1.5" />
                 <PersonIcon />
-                <h3>Perfil</h3>
+                <h3>Usuarios</h3>
+              </button>
+            </div>
+            <div className="ButtonNavBar">
+              <button
+                type="button"
+                onClick={() => goto('Admin/Planes')} 
+                className="relative rounded-full text-gray-400 hover:text-white"
+              >
+                <span className="absolute -inset-1.5" />
+                <FitnessCenterIcon />
+                <h3>Planes</h3>
+              </button>
+            </div>
+
+            <div className="ButtonNavBar">
+              <button
+                type="button"
+                onClick={() => goto('Admin/PaginaInicio')} 
+                className="relative rounded-full text-gray-400 hover:text-white"
+              >
+                <span className="absolute -inset-1.5" />
+                <HiveIcon />
+                <h3>Pagina</h3>
               </button>
             </div>
           </div>
