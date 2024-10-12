@@ -6,6 +6,7 @@ import { LoginPage } from "./Pages/Login/LoginPage";
 import { Menu } from "./Pages/Menu/Menu";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
 import { RecoverPage } from "./Pages/Recover/RecoverPage";
+import PlansPage from "./Pages/Plans/PlansPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
@@ -61,6 +62,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
         <Route path="/Profile" element={<ProfilePage />} />
+        <Route path="/Plans" element={<PlansPage />} />
         {/* rutas sin implementar*/}
         <Route path="/schedule" element={<ProtectedRoute> <SchedulePage />  </ProtectedRoute>} />,
         <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
