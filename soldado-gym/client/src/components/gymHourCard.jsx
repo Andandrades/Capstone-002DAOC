@@ -16,12 +16,21 @@ export const GymHourCard = ({ schedule }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false); //Estado Modal
   const [scheduledUsers, setScheduledUsers] = useState([]);
-  
+  const [reservation, setReservation] = useState(null)
+
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const searchReservation = async () =>{
+    try {
+      const respuesta = await fetch(`${import.meta.env.VITE_API_URL}/`)
+    } catch (error) {
+      
+    }
+  }
+  
 
   useEffect(() => {
     const fetchScheduledUsers = async () => {
