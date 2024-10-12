@@ -111,28 +111,6 @@ const deletebyid = async (req, res) => {
   }
 };
 
-const getUserReservation = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  const { userId, gym_schedule_id } = req.params;
-
-  try {
-    const resultado = await pool.query(
-      "SELECT class_id FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id =$2",
-      [userId, gym_schedule_id]
-    );
-
-    if (resultado.rows.length > 0) {
-      return res.json(resultado.rows[0]);
-    } else {
-      return;
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error });
-  }
-};
-
 //Agendar hora (Endpoint de usuarios)
 const scheduleHour = async (req, res) => {
   const { gym_schedule_id, client_id } = req.body;
@@ -203,7 +181,7 @@ const deleteHour = async (req, res) => {
         .status(400)
         .json({ error: "Error: No se puede restar más cupos" });
     }
-    
+
     await pool.query("DELETE FROM schedule_classes WHERE class_id = $1", [
       class_id,
     ]);
@@ -213,23 +191,32 @@ const deleteHour = async (req, res) => {
       [gym_schedule_id]
     );
 
-    res.status(200).json({message : "Hora eliminada exitosamente"})
+    res.status(200).json({ message: "Hora eliminada exitosamente" });
   } catch (error) {
-    res.status(500).json({error : 'Error al eliminar asistencia'})
+    res.status(500).json({ error: "Error al eliminar asistencia" });
   }
 };
 
-const getUserClasses = async(req,res) => {
-  const {client_id} = req.params
+const getUserClasses = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { id, class_id } = req.params;
 
   try {
-    const resultado = await pool.query('SELECT * FROM gym_schedule WHERE client_id = $1' , [client_id])
-    return res.status(200).json(resultado.rows)
-  } catch (error) {
-    res.json({error : error.message})
-  }
-}
+    const resultado = await pool.query(
+      "SELECT * FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id = $2",
+      [id, class_id]
+    );
 
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({ message: "No se encontro clase registrada" });
+    }
+
+    res.json({ message: "Clase encontrada" });
+  } catch (error) {
+    return res.json({ error: error.message });
+  }
+};
 
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
@@ -239,8 +226,7 @@ module.exports = {
   update,
   deletebyid,
   getHourByGymId,
-  getUserReservation,
   scheduleHour,
   deleteHour,
-  getUserClasses
+  getUserClasses,
 };

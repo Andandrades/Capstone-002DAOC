@@ -2,7 +2,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const app = express();
 
+// Usar CORS
+app.use(cors());
 
 
 
@@ -19,7 +23,6 @@ const plansRoutes = require("./routes/plans.Routes");
 //Endpoint gym_schedule
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
 
-const app = express();
 
 app.use(morgan("dev"));
 
@@ -41,18 +44,9 @@ app.use(gymHoursRoutes);
 
 
 app.listen(3000);
-const cors = require('cors');
-
-// Configuración de CORS
-const corsOptions = {
-    origin: 'http://localhost:5173', // URL de tu cliente
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
-    credentials: true, // Permitir cookies
-};
 
 
-// Usar CORS
-app.use(cors(corsOptions));
+
 
 
 console.log("Sever port: 3000");
