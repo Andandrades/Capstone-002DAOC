@@ -45,7 +45,7 @@ const cors = require('cors');
 
 // Configuración de CORS
 const corsOptions = {
-    origin: 'http://localhost:5173', // URL de tu cliente
+    origin: process.env.FRONTEND_URL, // URL de tu cliente
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
     credentials: true, // Permitir cookies
 };
