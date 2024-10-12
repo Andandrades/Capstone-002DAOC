@@ -21,7 +21,7 @@ const corsOptions = {
 
 router.get("/schedule", getAll);
 
-router.options("/schedule", cors(corsOptions));
+
 
 router.get("/schedule/:id", getbyid);
 
@@ -41,6 +41,8 @@ router.post("/scheduleHour", scheduleHour);
 router.delete("/scheduleHour/:class_id", deleteHour);
 //Conseguir horas de usuario
 router.get("/scheduleHour/:id/:class_id", getUserClasses);
+
+router.get("/scheduleHour/:id/:class_id", cors(corsOptions));
 
 
 router.options("/schedule/:id", cors(corsOptions));
