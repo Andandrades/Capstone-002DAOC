@@ -14,6 +14,7 @@ import { AdminPlans } from "./Pages/Admin/AdminPlans/AdminPlans.Page";
 import { AdminMenu } from "./Pages/Admin/AdminMenu/AdminMenu";
 import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
 import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
+import { AdminUsersManagement } from "./Pages/Admin/AdminUsersManagement/AdminUsersManagement";
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -60,20 +61,23 @@ function App() {
         <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
-        <Route path="/Profile" element={<ProfilePage />} />
+
         {/* rutas sin implementar*/}
+        <Route path="/Profile" element={<ProfilePage />} />
         <Route path="/schedule" element={<ProtectedRoute> <SchedulePage />  </ProtectedRoute>} />,
         <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
         <Route path="/menu" element={<ProtectedRoute><SchedulePage /> </ProtectedRoute>} />,
         <Route path="/classes" element={<ClassesPage />} />,
         <Route path="*" element={<Navigate to="/" />} />,
+        
         {/* rutas de administrador gestionar permisos por rol no implementado*/}
-        <Route path="/Admin/Menu" element={<AdminMenu />} />,
+        <Route path="/Admin" element={<AdminMenu />} />,
         <Route path="/Admin/Planes" element={<AdminPlans />} />,
         <Route path="/Admin/Clases" element={<AdminClasses />} />,
         <Route path="/Admin/PaginaInicio" element={< AdminLandingPage/>} />,
+        <Route path="/Admin/Usuarios" element={< AdminUsersManagement/>} />,
 
-
+        
       </Routes>
     </Router>
   );

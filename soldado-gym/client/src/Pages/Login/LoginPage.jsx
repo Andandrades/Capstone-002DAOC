@@ -21,7 +21,7 @@ export const LoginPage = ({setIsAuth}) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        credentials: "include", // Asegura que las cookies se incluyan en la petición
+        credentials: "include",
       });
 
       if (response.status === 200) {

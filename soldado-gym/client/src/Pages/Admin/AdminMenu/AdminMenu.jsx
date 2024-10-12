@@ -27,7 +27,7 @@ export const AdminMenu = () => {
                 </div>
                 <div className="menu-item-left">
                     <div className="icon-container">
-                        <PersonIcon alt="Icono de Horario"/>
+                        <PersonIcon alt="Icono de Horario" />
                     </div>
                     <span>Usuarios</span>
                 </div>
@@ -37,17 +37,18 @@ export const AdminMenu = () => {
                     </div>
                     <span>Planes</span>
                 </div>
-   
-                
+
+
                 <div className="menu-item-left">
                     <div className="icon-container">
                         <FitnessCenterIcon alt="Icono de Planes" />
                     </div>
-                    <span>Configuraciones </span>
+                    <p>Configuraciones </p>
+
                 </div>
 
-            </div>          
-              <NavBarAdmin />
+            </div>
+            <NavBarAdmin />
         </>
     )
 };
