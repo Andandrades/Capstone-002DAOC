@@ -207,7 +207,7 @@ export const LandingPage = () => {
               />
             ))
           ) : (
-            <p className="Text-white-600">No plans available</p>
+            <p className="text-white">No hay planes disponibles. </p>
           )}
         </div>
       </section>
