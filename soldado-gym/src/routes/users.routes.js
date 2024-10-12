@@ -12,6 +12,15 @@ const {
 
 const router = Router();
 
+const express = require("express");
+const cors = require("cors");
+const app = express();
+
+// Usar CORS
+app.use(cors());
+
+
+
 router.get("/users", getAllUsers);
 
 router.get("/users/:id",getUser);
