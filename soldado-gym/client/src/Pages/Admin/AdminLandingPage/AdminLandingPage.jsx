@@ -1,11 +1,11 @@
 import React from 'react'
 import { NavBarAdmin } from '../../../Components/NavBarAdmin'
 
-export const AdminPlans = () => {
+export const AdminLandingPage = () => {
   return (
     <>
-    <p>planes llenarlo</p>
-    <NavBarAdmin/>
+    <div>AdminLandingPage</div>
+    <NavBarAdmin />
     </>
   )
 }
