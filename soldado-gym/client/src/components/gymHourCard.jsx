@@ -18,6 +18,7 @@ export const GymHourCard = ({ schedule }) => {
   const [scheduledUsers, setScheduledUsers] = useState([]);
   const [reservation, setReservation] = useState(null);
   const [userId, setUserId] = useState("");
+  const [classId, setClassId] = useState({});
 
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
@@ -59,33 +60,35 @@ export const GymHourCard = ({ schedule }) => {
         }/scheduleHour/${userId}/${gym_schedule_id}`
       );
       if (respuesta.ok) {
+        const data = await respuesta.json();
         setReservation(true);
-        console.log(respuesta);
+        setClassId(data[0].class_id);
+        //console.log(respuesta);
       } else {
         setReservation(false);
-        console.log(respuesta);
+        //console.log(respuesta);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    const fetchScheduledUsers = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
-        );
-        if (!response.ok) {
-          throw new Error("Error al obtener los usuarios agendados");
-        }
-        const data = await response.json();
-        setScheduledUsers(data); // Suponiendo que el array de usuarios está en data
-      } catch (error) {
-        console.error("Error fetching scheduled users:", error);
+  const fetchScheduledUsers = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
+      );
+      if (!response.ok) {
+        throw new Error("Error al obtener los usuarios agendados");
       }
-    };
+      const data = await response.json();
+      setScheduledUsers(data);
+    } catch (error) {
+      console.error("Error fetching scheduled users:", error);
+    }
+  };
 
+  useEffect(() => {
     if (isModalOpen) {
       fetchScheduledUsers(); // Llama a la API cuando el modal se abre
       document.body.style.overflow = "hidden"; // Desactivamos el scroll
@@ -118,6 +121,45 @@ export const GymHourCard = ({ schedule }) => {
     return `${hours > 0 ? hours + "h " : ""}${
       remainingMinutes > 0 ? remainingMinutes + "min" : ""
     }`;
+  };
+
+  //Funcion para eliminar hora
+  const eliminateClass = async () => {
+    const resultado = await fetch(
+      `${import.meta.env.VITE_API_URL}/scheduleHour/${classId}`,
+      { method: "DELETE" }
+    );
+    if (resultado.ok) {
+      setReservation(false);
+      fetchScheduledUsers();
+      setClassId(null); // Limpia el classId ya que la reserva ha sido eliminada
+      console.log("Hora eliminada");
+    }
+  };
+
+  //Fuincion para agendar hora
+  const scheduleHour = async () => {
+    const resultado = await fetch(
+      `${import.meta.env.VITE_API_URL}/scheduleHour`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Especifica que el contenido es JSON
+        },
+        body: JSON.stringify({
+          // Convierte el objeto en una cadena JSON
+          gym_schedule_id: gym_schedule_id,
+          client_id: userId,
+        }),
+      }
+    );
+
+    if (resultado.ok) {
+      const data = await resultado.json();
+      setReservation(true); // Cambiar a estado reservado
+      setClassId(data.class_id); // Guardamos el nuevo classId cuando se agende la hora
+      fetchScheduledUsers(); // Actualizar usuarios agendados
+    }
   };
 
   useEffect(() => {
@@ -158,8 +200,10 @@ export const GymHourCard = ({ schedule }) => {
         onClick={toggleModal}
         className="w-full flex mt-5 justify-center items-center"
       >
-        {reservation ? (
-          <button className="bg-[#FCDE3B] font-medium rounded-full w-1/2">Reservar</button>
+        {!reservation ? (
+          <button className="bg-[#FCDE3B] font-medium rounded-full w-1/2">
+            Reservar
+          </button>
         ) : (
           <button className="bg-[#6bf18f] font-medium rounded-full w-1/2">
             Ver detalles
@@ -207,12 +251,18 @@ export const GymHourCard = ({ schedule }) => {
               </div>
             </div>
             <div className="w-full flex justify-center items-center">
-              {reservation ? (
-                <button className="bg-[#FCDE3B] rounded-full w-1/2">
+              {!reservation ? (
+                <button
+                  onClick={scheduleHour}
+                  className="bg-[#FCDE3B] rounded-full w-1/2"
+                >
                   Reservar
                 </button>
               ) : (
-                <button className="bg-[#e94c4c] rounded-full text-white w-1/2">
+                <button
+                  onClick={eliminateClass}
+                  className="bg-[#e94c4c] rounded-full text-white w-1/2"
+                >
                   Cancelar Hora
                 </button>
               )}
