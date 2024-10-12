@@ -2,11 +2,21 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const app = express();
 
+const app = express();
+const cors = require("cors");
+
+
+
+// Configuración de CORS
+const corsOptions = {
+    origin: process.env.FRONTEND_URL, // URL de tu cliente
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"], // Métodos permitidos
+    credentials: true, // Permitir cookies
+};
+  
 // Usar CORS
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 
@@ -44,9 +54,6 @@ app.use(gymHoursRoutes);
 
 
 app.listen(3000);
-
-
-
 
 
 console.log("Sever port: 3000");
