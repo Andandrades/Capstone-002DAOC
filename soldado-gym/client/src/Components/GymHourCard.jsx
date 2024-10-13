@@ -273,16 +273,4 @@ export const GymHourCard = ({ schedule }) => {
     </div>
   );
 };
-            </div>
-            <div className="bg-gray-300 rounded-md w-full my-6 h-[80%]">
-              
-            </div>
-            <div>
-              <button>Reservar</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+
