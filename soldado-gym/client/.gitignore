@@ -25,7 +25,3 @@ dist-ssr
 *.sln
 *.sw?
 .env
-
-
-# Difernecias para no afectar a la main
-gymHourCard.jsx
