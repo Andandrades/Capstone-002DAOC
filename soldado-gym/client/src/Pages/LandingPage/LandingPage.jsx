@@ -12,6 +12,7 @@ import Phone from "../../assets/img/iphone.webp";
 
 import "./LandingPage.css";
 import { FooterComponent } from "../../Components/FooterComponent";
+import { FisicoComponent } from "../../Components/FisicoComponent";
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -188,6 +189,8 @@ export const LandingPage = () => {
         </div>
       </section>
       <div className="separator" />
+      <h1 className="text-3xl font-bold uppercase text-center text-color bg-gray-100">Resultados</h1>
+      <FisicoComponent/>
       <section
         ref={sectionRef4}
         className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col"
