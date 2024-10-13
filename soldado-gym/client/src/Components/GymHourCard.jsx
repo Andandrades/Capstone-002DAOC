@@ -273,4 +273,3 @@ export const GymHourCard = ({ schedule }) => {
     </div>
   );
 };
-
