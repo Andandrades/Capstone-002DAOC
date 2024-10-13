@@ -1,6 +1,3 @@
-//Este archivo es la conexion a la base de datos PostgreSQL
-
-//Pool nos deja crear la coneccion a la base de datos
 const {Pool}= require('pg')
 
 const {db} =  require('./config')

@@ -9,10 +9,13 @@ import ClassIcon from "@mui/icons-material/Class";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
-
 import "./LandingPage.css";
 import { FooterComponent } from "../../Components/FooterComponent";
+<<<<<<< HEAD
 import { FisicoComponent } from "../../Components/FisicoComponent";
+=======
+import { NutriCard } from "../../Components/NutriCard";
+>>>>>>> origin/main
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -22,6 +25,9 @@ export const LandingPage = () => {
   };
 
   const [plans, setPlans] = useState([]);
+  const [dataNutri, setDataNutri] = useState([]);
+
+  
   //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
@@ -29,6 +35,8 @@ export const LandingPage = () => {
   const sectionRef4 = useRef(null);
   const sectionRef5 = useRef(null);
   const sectionRef6 = useRef(null);
+  const sectionRef7 = useRef(null);
+
 
   const scrollToSection = (ref) => {
     if (ref.current) {
@@ -36,19 +44,26 @@ export const LandingPage = () => {
     }
   };
 
-  //UseEffect dedicado a buscar los datos de los planes
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/plans`);
-        const data = await response.json();
-        console.log(data);
-        setPlans(data);
-      } catch (error) {
-        console.error("Error fetching plans:", error);
-      }
-    };
+  const fetchPlans = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/plans');
+      const data = await response.json();
+      setPlans(data);
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+    }
+  };
+  const fetchNutri = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/plans');
+      const data = await response.json();
+      setDataNutri(data);
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchPlans();
   }, []);
 
@@ -64,6 +79,7 @@ export const LandingPage = () => {
           sectionRef4,
           sectionRef5,
           sectionRef6,
+          sectionRef7,
         }}
       />
       <div ref={sectionRef1} className="SoldadoContainer ">
@@ -210,7 +226,31 @@ export const LandingPage = () => {
               />
             ))
           ) : (
-            <p>No plans available</p>
+            <p className="text-white">No hay planes disponibles. </p>
+          )}
+        </div>
+      </section>
+      <div className="separator" />
+      <section
+        ref={sectionRef7}
+        className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col"
+      >
+        <div className="w-full flex justify-center items-center text-center ">
+          <h1 className="text-3xl font-bold uppercase text-white">Consultas nutricionales</h1>
+        </div>
+        <div className="flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
+          {dataNutri && dataNutri.length > 0 ? (
+            dataNutri.map((nutri) => (
+              <NutriCard
+                key={nutri.plan_id}
+                name={nutri.name}
+                n_class={nutri.n_class}
+                amount={nutri.price}
+                description={nutri.description}
+              />
+            ))
+          ) : (
+            <p className="text-white">No hay Consultas nutricionales disponibles. </p>
           )}
         </div>
       </section>
@@ -236,11 +276,11 @@ export const LandingPage = () => {
         ></iframe>
       </section>
       <section
-        
+
         className="bgColor lg:h-[100vh] flex justify-center flex-col py-20 lg:flex-row  items-center"
       >
         <div ref={sectionRef6} className=" lg:w-[500px] pt-10 lg:pt-0">
-          <h1  className="lg:title text-5xl font-bold w-full text-center lg:text-start">
+          <h1 className="lg:title text-5xl font-bold w-full text-center lg:text-start">
             Nuestro Sistema
           </h1>
           <div className="w-full px-9 lg:px-0 flex justify-center text-center lg:text-start pt-4">
@@ -272,11 +312,11 @@ export const LandingPage = () => {
         </div>
 
         <div className="relative">
-  <div className="lg:w-96 lg:h-96 z-0 w-52 h-52 circle bg-slate-700 rounded-full"></div>
-  <img className="relative" src={Phone} alt="" />
-</div>
+          <div className="lg:w-96 lg:h-96 z-0 w-52 h-52 circle bg-slate-700 rounded-full"></div>
+          <img className="relative" src={Phone} alt="" />
+        </div>
       </section>
- <FooterComponent/>
+      <FooterComponent />
     </>
   );
 };
