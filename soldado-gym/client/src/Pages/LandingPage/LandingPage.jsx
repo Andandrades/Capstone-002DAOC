@@ -11,11 +11,11 @@ import Tourist from "../../assets/img/tourist.svg";
 import Phone from "../../assets/img/iphone.webp";
 import "./LandingPage.css";
 import { FooterComponent } from "../../Components/FooterComponent";
-<<<<<<< HEAD
+
 import { FisicoComponent } from "../../Components/FisicoComponent";
-=======
+
 import { NutriCard } from "../../Components/NutriCard";
->>>>>>> origin/main
+
 
 export const LandingPage = () => {
   const navigate = useNavigate();
