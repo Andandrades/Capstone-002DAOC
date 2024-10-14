@@ -15,6 +15,7 @@ import { FooterComponent } from "../../Components/FooterComponent";
 import { FisicoComponent } from "../../Components/FisicoComponent";
 
 import { NutriCard } from "../../Components/NutriCard";
+import { obtenerPlanes } from "../../Components/Endpoints/Endpoints";
 
 
 export const LandingPage = () => {
@@ -44,27 +45,29 @@ export const LandingPage = () => {
     }
   };
 
-  const fetchPlans = async () => {
+  const fetchPlanes = async () => {
     try {
-      const response = await fetch('http://localhost:3000/plans');
-      const data = await response.json();
+      const data = await obtenerPlanes(); 
       setPlans(data);
-    } catch (error) {
-      console.error("Error fetching plans:", error);
+    } catch (err) {
+      setError(err.message);
+    } finally {
     }
   };
+
   const fetchNutri = async () => {
     try {
-      const response = await fetch('http://localhost:3000/plans');
-      const data = await response.json();
+      const data = await obtenerPlanes(); 
       setDataNutri(data);
-    } catch (error) {
-      console.error("Error fetching plans:", error);
+    } catch (err) {
+      setError(err.message);
+    } finally {
     }
   };
 
   useEffect(() => {
-    fetchPlans();
+    fetchPlanes();
+    fetchNutri();
   }, []);
 
 
