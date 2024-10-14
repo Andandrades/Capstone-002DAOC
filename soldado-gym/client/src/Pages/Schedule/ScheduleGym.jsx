@@ -21,7 +21,12 @@ export const ScheduleGym = ({userId}) => {
 
 useEffect(() => {
   fetchGymHours("L")
+  
 },[])
+
+useEffect(() => {
+  console.log(scheduleInfo)
+},[scheduleInfo])
 
 
   // Función para obtener las horas del gimnasio para el día seleccionado
