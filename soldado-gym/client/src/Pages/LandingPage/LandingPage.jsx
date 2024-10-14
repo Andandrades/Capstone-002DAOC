@@ -1,21 +1,21 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
-import { NavBar } from "../../components/NavBar";
-import { Plans } from "../../components/PlansCard";
-import Trainer from "../../assets/img/Sports.webp";
-import Nutri from "../../assets/img/Nutri.webp";
 import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import ClassIcon from "@mui/icons-material/Class";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import Tourist from "../../assets/img/tourist.svg";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Phone from "../../assets/img/iphone.webp";
-import "./LandingPage.css";
+import Nutri from "../../assets/img/Nutri.webp";
+import Trainer from "../../assets/img/Sports.webp";
+import Tourist from "../../assets/img/tourist.svg";
 import { FooterComponent } from "../../Components/FooterComponent";
+import { NavBar } from "../../components/NavBar";
+import { Plans } from "../../components/PlansCard";
+import "./LandingPage.css";
 
 import { FisicoComponent } from "../../Components/FisicoComponent";
 
+import { obtenerPlanes, obtenerNutri } from "../../Components/Endpoints/Endpoints";
 import { NutriCard } from "../../Components/NutriCard";
-import { obtenerPlanes } from "../../Components/Endpoints/Endpoints";
 
 
 export const LandingPage = () => {
@@ -57,7 +57,7 @@ export const LandingPage = () => {
 
   const fetchNutri = async () => {
     try {
-      const data = await obtenerPlanes(); 
+      const data = await obtenerNutri(); 
       setDataNutri(data);
     } catch (err) {
       setError(err.message);

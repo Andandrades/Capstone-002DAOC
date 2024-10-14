@@ -1,7 +1,5 @@
 const { Router } = require("express");
 
-
-//import de los controladores
 const {
     createNutriHour,
     getAllNutriHour,
