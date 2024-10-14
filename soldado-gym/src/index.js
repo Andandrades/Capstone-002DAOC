@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-<<<<<<< HEAD
-=======
 const {config} = require('dotenv');
 
 config()
@@ -26,7 +24,6 @@ console.log("FRONT_URL:", process.env.FRONTEND_URL);
 
 app.use(cors(corsOptions));
 
->>>>>>> b3cb851b68fa5a95c50abde7a99050cc04fa3f1d
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
