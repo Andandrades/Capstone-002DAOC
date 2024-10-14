@@ -15,9 +15,9 @@ app.use((req, res, next) => {
 });
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL, // URL de tu cliente
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"], // Métodos permitidos
-  credentials: true, // Permitir cookies
+  origin: process.env.FRONTEND_URL,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  credentials: true, 
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 console.log("FRONT_URL:", process.env.FRONTEND_URL);

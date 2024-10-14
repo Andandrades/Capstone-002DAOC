@@ -20,3 +20,15 @@ export const obtenerNutri = async () => {
         throw error;
     }
 };
+
+
+export const deletePlan = async (id) => {
+  try {
+    const response = await axios.delete(`${URL}/plans/${id}`);
+    return response.data; // Retorna los datos obtenidos del servidor
+  } catch (error) {
+    console.error(`Error al obtener la consulta nutricional con ID ${id}:`, error);
+    throw error;
+  }
+};
+

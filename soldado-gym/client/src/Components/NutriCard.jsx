@@ -9,11 +9,7 @@ export const NutriCard = ({ name, amount, description, n_class }) => {
 
   return (
     <div className=" flex min-h-96 gap-10 lg:min-h-96 justify-between items-center relative text-white py-7 lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col">
-      <img
-        className="absolute top-[-15px] right-[-15px] m-0 p-0"
-        src={Menu}
-        alt=""
-      />
+
       <div>
         <div className="flex justify-center flex-col items-center">
           <h1 className="text-3xl font-bold ">{name}</h1>
@@ -29,7 +25,7 @@ export const NutriCard = ({ name, amount, description, n_class }) => {
       </div>
       <div className="">
         <button className=" text-base px-4 rounded-full py-2 text-black font-bold  bg-[#EFDD37]">
-          Elegir Plan
+          Reservar
         </button>
       </div>
     </div>

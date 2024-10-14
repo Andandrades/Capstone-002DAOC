@@ -42,8 +42,7 @@ export const LandingPage = () => {
   const scrollToSection = (ref) => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+    }};
 
   const fetchPlanes = async () => {
     try {
@@ -52,8 +51,7 @@ export const LandingPage = () => {
     } catch (err) {
       setError(err.message);
     } finally {
-    }
-  };
+    }};
 
   const fetchNutri = async () => {
     try {

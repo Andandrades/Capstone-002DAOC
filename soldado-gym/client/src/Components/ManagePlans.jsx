@@ -1,12 +1,17 @@
 import React from 'react'
 import Menu from "../assets/Certificate.svg";
+import { deletePlan } from './Endpoints/Endpoints';
 
 
-export const ManagePlans = ({ name, amount, description, n_class }) => {
+export const ManagePlans = ({ id, name, amount, description, n_class }) => {
 
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
+
+    const DeletePlan = (id) => {
+        deletePlan(id)
+    }
     return (
         <div className=" flex min-h-96 gap-10 lg:min-h-96 justify-between items-center relative text-white py-7 lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col w-100 mt-4">
             <img
@@ -34,7 +39,7 @@ export const ManagePlans = ({ name, amount, description, n_class }) => {
                     Modificar 
                 </button>
                 <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#fc0317]"
-                onClick={"s"}>
+                onClick={DeletePlan(1)}>
                     Eliminar
                 </button>
             </div>
