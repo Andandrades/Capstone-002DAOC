@@ -25,7 +25,7 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
                     <h2 className="font-bold   text-[#FFAE3A]">
                         ${formatPriceWithDots(amount)} CLP
                     </h2>
-                    </div>
+                </div>
                 <div className="flex flex-col justify-center items-center font-semibold">
                     <span className="flex mt-5 text-lg">
                         Cantidad de clases : <p className="text-yellow-300">{n_class}</p>{" "}
@@ -34,12 +34,11 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
                 </div>
             </div>
             <div >
-                <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#EFDD37]"
-                onClick={console.log(name)}>
-                    Modificar 
+                <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#EFDD37]">
+                    Modificar
                 </button>
                 <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#fc0317]"
-                onClick={DeletePlan(1)}>
+                    onClick={DeletePlan(id)}>
                     Eliminar
                 </button>
             </div>

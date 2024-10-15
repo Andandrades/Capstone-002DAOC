@@ -117,7 +117,7 @@ const deletePlan = async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'El plan no se ha encontrado' });
     }
-    res.status(204).json({ message: 'Plan eliminado correctamente' });
+    res.status(200).json({ message: 'Plan eliminado correctamente' });
   } catch (error) {
     console.error('Error al eliminar el plan:', error);
     res.status(500).json({ error: 'Error al eliminar el plan' });

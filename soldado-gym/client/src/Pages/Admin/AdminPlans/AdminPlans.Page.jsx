@@ -13,7 +13,7 @@ export const AdminPlans = () => {
       const data = await obtenerPlanes();
       setPlans(data);
     } catch (err) {
-      setError(err.message);
+      console.log(err)
     } finally {
     }
   };
@@ -22,9 +22,10 @@ export const AdminPlans = () => {
   useEffect(() => {
     fetchPlanes();
   }, []);
+
   return (
 
-    <div className="ManagePlans flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
+    <div className="body flex flex-col gap-10 justify-center items-center">
 
       {plans && plans.length > 0 ? (
         plans.map((plan) => (
