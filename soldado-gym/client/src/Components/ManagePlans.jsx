@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from "../assets/Certificate.svg";
-import { deletePlan } from './Endpoints/Endpoints';
+import { deletePlan } from './API/Endpoints';
 
 
 export const ManagePlans = ({ id, name, amount, description, n_class }) => {
@@ -38,7 +38,7 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
                     Modificar
                 </button>
                 <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#fc0317]"
-                    onClick={DeletePlan(id)}>
+                    onClick={DeletePlan()}>
                     Eliminar
                 </button>
             </div>
