@@ -208,7 +208,6 @@ export const LandingPage = () => {
         </div>
       </section>
       <div className="separator" />
-      <h1 className="text-3xl font-bold uppercase text-center text-color bg-gray-100">Resultados</h1>
       <FisicoComponent/>
       <section
         ref={sectionRef4}
