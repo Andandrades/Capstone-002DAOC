@@ -7,16 +7,13 @@ import Phone from "../../assets/img/iphone.webp";
 import Nutri from "../../assets/img/Nutri.webp";
 import Trainer from "../../assets/img/Sports.webp";
 import Tourist from "../../assets/img/tourist.svg";
+import { obtenerNutri, obtenerPlanes } from "../../Components/API/Endpoints";
+import { FisicoComponent } from "../../Components/FisicoComponent";
 import { FooterComponent } from "../../Components/FooterComponent";
 import { NavBar } from "../../components/NavBar";
+import { NutriCard } from "../../Components/NutriCard";
 import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
-
-import { FisicoComponent } from "../../Components/FisicoComponent";
-
-import { obtenerPlanes, obtenerNutri } from "../../Components/Endpoints/Endpoints";
-import { NutriCard } from "../../Components/NutriCard";
-
 
 export const LandingPage = () => {
   const navigate = useNavigate();
