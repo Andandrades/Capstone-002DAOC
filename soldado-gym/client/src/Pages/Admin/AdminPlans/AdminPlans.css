@@ -1,5 +1,6 @@
 .body{
-    padding-top: 20vw;
-    height: 75vw;
+    justify-content: center;
+    height: auto;
+    width: 100vw;
     background-color: #333;
 }
