@@ -1,6 +1,12 @@
-.body{
+.body {
     justify-content: center;
-    height: auto;
-    width: 100vw;
     background-color: #333;
+    width: 85vw;
+    
+}
+
+.planes {
+    width: 150xp;
+    background-color: cadetblue;
+    height: 150xp;
 }

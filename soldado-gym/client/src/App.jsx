@@ -58,7 +58,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/inicio" element={<ProtectedRoute> <Menu /> </ProtectedRoute>} />
+        <Route path="/inicio" element={ <Menu /> } />
         <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
@@ -66,21 +66,22 @@ function App() {
         <Route path="/Plans" element={<PlansPage />} />
 
         {/* rutas sin implementar*/}
-        <Route path="/Profile" element={<ProfilePage />} />
-        <Route path="/schedule" element={<ProtectedRoute> <SchedulePage />  </ProtectedRoute>} />,
-        <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
-        <Route path="/menu" element={<ProtectedRoute><SchedulePage /> </ProtectedRoute>} />,
+        <Route path="/schedule" element={<SchedulePage />} />,
+        <Route path="/schedule/gym" element={<ScheduleGym />} />,
+        <Route path="/menu" element={<SchedulePage />} />,
         <Route path="/classes" element={<ClassesPage />} />,
-        <Route path="*" element={<Navigate to="/" />} />,
-        
+
+
         {/* rutas de administrador gestionar permisos por rol no implementado*/}
         <Route path="/Admin" element={<AdminMenu />} />,
         <Route path="/Admin/Planes" element={<AdminPlans />} />,
         <Route path="/Admin/Clases" element={<AdminClasses />} />,
-        <Route path="/Admin/PaginaInicio" element={< AdminLandingPage/>} />,
-        <Route path="/Admin/Usuarios" element={< AdminUsersManagement/>} />,
+        <Route path="/Admin/PaginaInicio" element={< AdminLandingPage />} />,
+        <Route path="/Admin/Usuarios" element={< AdminUsersManagement />} />,
 
-        
+        {/* ruta general  */}
+        <Route path="*" element={<Navigate to="/" />} />,
+
       </Routes>
     </Router>
   );

@@ -3,7 +3,7 @@ const pool = require("../db");
 
 const getAll = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * from nutritional_consultation");
+    const result = await pool.query("SELECT * from nutrition");
     res.json(result.rows);
   } catch (error) {
     console.log(error.message)
