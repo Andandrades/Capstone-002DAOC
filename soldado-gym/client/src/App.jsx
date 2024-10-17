@@ -1,21 +1,23 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import { Navigate, Route, BrowserRouter as Router, Routes, } from "react-router-dom";
 import "./App.css";
+import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
+import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
+import { AdminMenu } from "./Pages/Admin/AdminMenu/AdminMenu";
+import { AdminPlans } from "./Pages/Admin/AdminPlans/AdminPlans.Page";
+import { AdminUsersManagement } from "./Pages/Admin/AdminUsersManagement/AdminUsersManagement";
+import { ClassesPage } from "./Pages/Classes/ClassesPage";
 import { LandingPage } from "./Pages/LandingPage/LandingPage";
 import { LoginPage } from "./Pages/Login/LoginPage";
 import { Menu } from "./Pages/Menu/Menu";
+import PlansPage from "./Pages/Plans/PlansPage";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
 import { RecoverPage } from "./Pages/Recover/RecoverPage";
-import PlansPage from "./Pages/Plans/PlansPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
-import { ClassesPage } from "./Pages/Classes/ClassesPage"
-import { AdminPlans } from "./Pages/Admin/AdminPlans/AdminPlans.Page";
-import { AdminMenu } from "./Pages/Admin/AdminMenu/AdminMenu";
-import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
-import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
-import { AdminUsersManagement } from "./Pages/Admin/AdminUsersManagement/AdminUsersManagement";
+
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);

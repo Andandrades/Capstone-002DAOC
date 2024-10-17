@@ -12,25 +12,24 @@ export const NavBarAdmin = () => {
   const navigate = useNavigate();
 
   const goto = (url) => {
-    navigate(`/${url}`); 
+    navigate(`/${url}`);
   };
 
   return (
     <div className="navbar z-10 fixed bottom-0">
       <Disclosure as="nav">
         <div>
-          <div className="relative flex h-16 items-center">
-            <div className="ButtonNavBar">
+          <div className="relative flex h-16 items-center ">
+            <div className="ButtonNavBar justify-between ">
               <button
                 type="button"
-                onClick={() => goto('Admin')} 
+                onClick={() => goto('Admin')}
                 className="relative rounded-full text-gray-400 hover:text-white" >
                 <HouseIcon />
                 <h3>Menu</h3>
               </button>
             </div>
 
-            <div className="ButtonNavBar">
               <button
                 type="button"
                 onClick={() => goto('Admin/Clases')}
@@ -39,35 +38,32 @@ export const NavBarAdmin = () => {
                 <TodayIcon />
                 <h3>Clases</h3>
               </button>
-            </div>
 
-            <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('Admin/Usuarios')} 
+                onClick={() => goto('Admin/Usuarios')}
                 className="relative rounded-full text-gray-400 hover:text-white"
               >
                 <span className="absolute -inset-1.5" />
                 <PersonIcon />
                 <h3>Usuarios</h3>
               </button>
-            </div>
-            <div className="ButtonNavBar">
+
               <button
                 type="button"
-                onClick={() => goto('Admin/Planes')} 
+                onClick={() => goto('Admin/Planes')}
                 className="relative rounded-full text-gray-400 hover:text-white"
               >
                 <span className="absolute -inset-1.5" />
                 <FitnessCenterIcon />
                 <h3>Planes</h3>
               </button>
-            </div>
+    
 
             <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('Admin/PaginaInicio')} 
+                onClick={() => goto('Admin/PaginaInicio')}
                 className="relative rounded-full text-gray-400 hover:text-white"
               >
                 <span className="absolute -inset-1.5" />

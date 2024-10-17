@@ -3,20 +3,18 @@ import { ManagePlans } from '../../../Components/ManagePlans';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import "./AdminPlans.css";
 import { obtenerPlanes } from '../../../Components/API/Endpoints';
-import { AddPlanModal } from './Components/AddPlanModal';
+import AddPlanModal from './Components/AddPlanModal';
 
 export const AdminPlans = () => {
-
   const [plans, setPlans] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchPlanes = async () => {
     try {
       const data = await obtenerPlanes();
       setPlans(data);
     } catch (err) {
-      console.log(err)
-    } finally {
+      console.log(err);
     }
   };
 
@@ -26,32 +24,30 @@ export const AdminPlans = () => {
 
   return (
     <>
-    <div className="body">
-      <h1 className='Text[#000] '>Gestionar Planes activos</h1>
-      <button className='bg-[#EFDD37]' >
-        Añadir Plan
-      </button>
+      <div className="body">
+        <h1 className="text-white">Gestionar Planes activos</h1>
+        <button className='bg-[#EFDD37] text-black' onClick={() => setIsModalOpen(true)}>
+          Añadir Plan
+        </button>
 
-
-      {plans && plans.length > 0 ? (
-        plans.map((plan) => (
-          <div className="planes  gap-10 justify-center items-center">
-            <ManagePlans
-              id={plan.plan_id}
-              key={plan.plan_id}
-              name={plan.name}
-              n_class={plan.n_class}
-              amount={plan.price}
-              description={plan.description}
-            />
-          </div>
-        ))
-      ) : (
-        <p className="text-white">No hay planes disponibles. </p>
-      )}
-      <NavBarAdmin />
-      <AddPlanModal/>
-    </div>
+        {plans && plans.length > 0 ? (
+          plans.map((plan) => (
+            <div className="planes gap-10 justify-center items-center" key={plan.plan_id}>
+              <ManagePlans
+                id={plan.plan_id}
+                name={plan.name}
+                n_class={plan.n_class}
+                amount={plan.price}
+                description={plan.description}
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-white">No hay planes disponibles.</p>
+        )}
+        <NavBarAdmin />
+        <AddPlanModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </div>
     </>
-  )
-}
+  );
+};
