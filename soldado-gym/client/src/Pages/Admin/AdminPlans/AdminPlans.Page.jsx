@@ -18,7 +18,6 @@ export const AdminPlans = () => {
     }
   };
 
-
   useEffect(() => {
     fetchPlanes();
   }, []);
