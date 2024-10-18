@@ -16,6 +16,7 @@ import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+import RolesPage from "./Pages/Admin/Roles/Roles.page";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -79,6 +80,7 @@ function App() {
         <Route path="/Admin/Clases" element={<AdminClasses />} />,
         <Route path="/Admin/PaginaInicio" element={< AdminLandingPage />} />,
         <Route path="/Admin/Usuarios" element={< AdminUsersManagement />} />,
+        <Route path="/Admin/Roles" element={< RolesPage />} />
 
         {/* ruta general  */}
         <Route path="*" element={<Navigate to="/" />} />,

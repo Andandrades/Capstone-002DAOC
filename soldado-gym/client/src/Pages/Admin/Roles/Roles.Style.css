@@ -1,0 +1,51 @@
+/* src/pages/Roles.Style.css */
+.roles-container {
+    padding: 20px;
+    margin-bottom: 60px; /* Para asegurar que el NavBar no sobreponga el contenido */
+  }
+  
+  .roles-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .roles-menu {
+    margin-bottom: 20px;
+  }
+  
+  .roles-menuTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #007BFF;
+  }
+  
+  .roles-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  
+  .roles-listItem {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+  
+  /* Estilos Responsivos */
+  @media (max-width: 600px) {
+    .roles-title {
+      font-size: 1.2rem;
+    }
+  
+    .roles-menuTitle {
+      font-size: 1rem;
+    }
+  
+    .roles-listItem {
+      font-size: 0.9rem;
+    }
+  }
+  
