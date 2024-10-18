@@ -11,26 +11,26 @@ const getAllUsers = async (req, res) => {
 };
 
 //Traer Usuario Especifico
-const getUser = async(req,res) => {
-  const {id} = req.params;
+const getUser = async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const result = await pool.query("SELECT * FROM users WHERE id=$1",[id])
+    const result = await pool.query("SELECT * FROM users WHERE id=$1", [id])
 
-    if(result.rowCount===0){
-      return res.json({message : "Usuario no encontrado"})
+    if (result.rowCount === 0) {
+      return res.json({ message: "Usuario no encontrado" })
     }
     return res.json(result.rows)
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message })
   }
 }
 
 //Crear Usuarios
 const createUser = async (req, res) => {
-  const { name, email, password, register_date, fk_rol_id, weight, height } =
+  const { name, email, password, fk_rol_id, weight, height } =
     req.body;
-
+  const register_date = new Date();
   try {
     const result = await pool.query(
       "INSERT INTO users (name,email,password,register_date, fk_rol_id , weight , height) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *",

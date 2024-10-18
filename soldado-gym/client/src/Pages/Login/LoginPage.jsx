@@ -3,7 +3,7 @@ import "./LoginStyle.css"; // Asegúrate de que esta ruta sea correcta
 import Registrate from "../../assets/img/Registrate.webp"; // Importa la imagen
 import { useNavigate } from "react-router-dom";
 
-export const LoginPage = ({setIsAuth}) => {
+export const LoginPage = ({ setIsAuth }) => {
 
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
@@ -39,7 +39,7 @@ export const LoginPage = ({setIsAuth}) => {
         const authData = await authCheckResponse.json();
         console.log("Auth Data:", authData);
         setIsAuth(authData.isAuth);
-        localStorage.setItem("isAuth", JSON.stringify(true)); 
+        localStorage.setItem("isAuth", JSON.stringify(true));
         navigate("/inicio"); // Redirige al usuario al menú
         console.log("Bienvenido");
       } else {
@@ -104,7 +104,7 @@ export const LoginPage = ({setIsAuth}) => {
             ¿Olvidaste tu contraseña?{" "}
             <span
               className="recover-link"
-              //onClick={() => setIsRecovering(true)}
+            //onClick={() => setIsRecovering(true)}
             >
               Recupérala aquí
             </span>

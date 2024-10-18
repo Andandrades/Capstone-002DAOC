@@ -13,9 +13,9 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
         deletePlan(id)
     }
     return (
-        <div className=" flex min-h-96 gap-10 lg:min-h-96 justify-between items-center relative text-white py-7 lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col w-100 mt-4">
+        <div className="flex space-x-4 gap-10 justify-between items-center relative text-white lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col w-80 mt-4 mx-auto">
             <img
-                className="absolute top-[-15px] right-[-15px] m-0 p-0"
+                className="absolute top-[-15px] right-[0px] m-0 p-0"
                 src={Menu}
                 alt=""
             />
@@ -33,11 +33,11 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
 
                 </div>
             </div>
-            <div >
-                <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#EFDD37]">
+            <div className='flex space-x-4'>
+                <button className="text-base rounded-full py-2 pl-3 pr-3 text-black font-bold my-5 bg-[#EFDD37]">
                     Modificar
                 </button>
-                <button className=" text-base px-4 rounded-full py-2 text-black font-bold my-5 bg-[#fc0317]"
+                <button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold my-5 bg-[#fc0317]"
                     onClick={DeletePlan()}>
                     Eliminar
                 </button>
