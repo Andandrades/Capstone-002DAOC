@@ -1,0 +1,40 @@
+.menu {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu h1 {
+    font-size: 30px;
+    color: white;
+}
+
+.menu-item-left {
+    width: 60vw;
+    background-color: #fcd440;
+    border-radius: 0px 50px 50px 0px;
+    padding: 25px;
+    margin-top: 8%;
+    align-items: center;
+    justify-content: flex-start;
+    columns: inherit;
+
+}
+
+.menu-item-right {
+    width: 60vw;
+    background-color: #fcd440;
+    border-radius: 50px 0px 0px 50px;
+    padding: 25px;
+    margin-top: 8%;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: auto;
+}
+
+.icon-container svg {
+    width: 50px; /* Hace que el icono ocupe todo el contenedor */
+    height: 100%; /* Hace que el icono ocupe todo el contenedor */
+}

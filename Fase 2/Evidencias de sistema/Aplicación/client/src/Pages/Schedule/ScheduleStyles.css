@@ -1,0 +1,21 @@
+.bgImage{
+    background-image : url(../../assets/img/scheduleGymBG.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 100vh; /* Para que el contenedor ocupe toda la altura de la ventana */
+}
+
+.bgImage::after {
+    content: ""; /* Necesario para que funcione */
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.724); /* Color negro con 50% de opacidad */
+    z-index: 1; /* Asegúrate de que esté encima del fondo */
+    height: 100%;
+  }
