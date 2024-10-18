@@ -9,7 +9,6 @@ export default {
       colors: {
         "button-primary": "#3936C1",
         "bg-primary": "#232323",
-        
         "gradiant" : "rgb(255, 255, 255);"
       }
     },
