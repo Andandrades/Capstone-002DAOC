@@ -5,12 +5,12 @@ const AddPlanModal = ({ isOpen, onClose }) => {
     return null;
 
   return (
-    <div className="modal fade show " style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade show absolute " style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog " role="document">
         <div className="modal-content bg-[#999]">
           <div className="modal-header ">
             <h3 className="modal-title" id="exampleModalLabel">Añadir Plan</h3>
-            <button type="button" className="close" onClick={onClose} aria-label="Close">
+            <button type="button" className="close absolute" onClick={onClose} aria-label="Close" >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
