@@ -5,7 +5,7 @@ const AddPlanModal = ({ isOpen, onClose }) => {
     return null;
 
   return (
-    <div className="modal fade show absolute " style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade show relative " style={{ display: 'block' }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog " role="document">
         <div className="modal-content bg-[#999]">
           <div className="modal-header ">
