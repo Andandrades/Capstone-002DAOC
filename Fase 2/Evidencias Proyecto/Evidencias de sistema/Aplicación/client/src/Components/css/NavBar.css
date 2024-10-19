@@ -1,0 +1,38 @@
+#icon{
+    transition: all ease-in-out .2s;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.NavbarContainer{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 120px;
+    z-index: 20;
+    box-sizing: border-box;
+    padding: 20px 50px;
+}
+
+#icon:hover{
+    transition: all ease-in-out .2s;
+    scale: 1.1;
+    cursor: pointer;
+    color: white;
+    
+}
+
+
+@media (min-width: 768px) {
+    .NavbarContainer{
+        max-width: 100vw;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        background-color: transparent;
+        padding-right: 30px;
+    }
+}
