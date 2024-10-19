@@ -44,7 +44,7 @@ export const NavBarAdmin = () => {
             <div className="ButtonNavBar">
               <button
                 type="button"
-                onClick={() => goto('Admin/Roles')} 
+                onClick={() => goto('Admin/Usuarios')} 
                 className="relative rounded-full text-gray-400 hover:text-white"
               >
                 <span className="absolute -inset-1.5" />
