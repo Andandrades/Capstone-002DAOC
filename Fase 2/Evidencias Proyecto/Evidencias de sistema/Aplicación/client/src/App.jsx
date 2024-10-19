@@ -16,6 +16,7 @@ import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+import ScheduleNutri from "./Pages/Schedule/ScheduleNutri";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -67,8 +68,9 @@ function App() {
         <Route path="/Plans" element={<PlansPage />} />
 
         {/* rutas sin implementar*/}
-        <Route path="/schedule" element={<SchedulePage />} />,
-        <Route path="/schedule/gym" element={<ScheduleGym />} />,
+        <Route path="/schedule" element={<SchedulePage/>} />,
+        <Route path="/schedule/gym" element={<ScheduleGym/>} />,
+        <Route path="/schedule/nutri" element={<ScheduleNutri/>} />,
         <Route path="/menu" element={<SchedulePage />} />,
         <Route path="/classes" element={<ClassesPage />} />,
 
