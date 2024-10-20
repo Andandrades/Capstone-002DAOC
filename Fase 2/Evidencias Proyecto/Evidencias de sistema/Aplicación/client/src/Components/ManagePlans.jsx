@@ -3,7 +3,7 @@ import Menu from "../assets/Certificate.svg";
 import { deletePlan } from './API/Endpoints';
 
 
-export const ManagePlans = ({ id, name, amount, description, n_class }) => {
+export const ManagePlans = ({ id, name, amount, n_class }) => {
 
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -20,9 +20,9 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
                 alt=""
             />
             <div>
-                <div className="flex flex-col justify-center items-center font-semibold">
-                    <h1 className="text-3xl font-bold ">{name}</h1>
-                    <h2 className="font-bold   text-[#FFAE3A]">
+                <div className="flex flex-col justify-center items-center font-semibold pt-6">
+                    <h1 className="text-3xl font-bold text-aling-center ">{name}</h1>
+                    <h2 className="font-bold   text-[#FFAE3A]  pt-6">
                         ${formatPriceWithDots(amount)} CLP
                     </h2>
                 </div>
@@ -33,7 +33,7 @@ export const ManagePlans = ({ id, name, amount, description, n_class }) => {
 
                 </div>
             </div>
-            <div className='flex space-x-4'>
+            <div >
                 <button className="text-base rounded-full py-2 pl-3 pr-3 text-black font-bold my-5 bg-[#EFDD37] ">
                     Modificar
                 </button>
