@@ -5,7 +5,7 @@ import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
 import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
 import { AdminMenu } from "./Pages/Admin/AdminMenu/AdminMenu";
 import { AdminPlans } from "./Pages/Admin/AdminPlans/AdminPlans.Page";
-import { AdminUsersManagement } from "./Pages/Admin/AdminUsersManagement/AdminUsersManagement";
+import AdminUsersManagement from "./Pages/Admin/AdminUsersManagement/AdminUsersManagement";
 import { ClassesPage } from "./Pages/Classes/ClassesPage";
 import { LandingPage } from "./Pages/LandingPage/LandingPage";
 import { LoginPage } from "./Pages/Login/LoginPage";
@@ -77,8 +77,8 @@ function App() {
         <Route path="/Admin" element={<AdminMenu />} />,
         <Route path="/Admin/Planes" element={<AdminPlans />} />,
         <Route path="/Admin/Clases" element={<AdminClasses />} />,
-        <Route path="/Admin/PaginaInicio" element={< AdminLandingPage />} />,
-        <Route path="/Admin/Usuarios" element={< AdminUsersManagement />} />,
+        <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
+        <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
 
         {/* ruta general  */}
         <Route path="*" element={<Navigate to="/" />} />,
