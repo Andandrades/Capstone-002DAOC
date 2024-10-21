@@ -75,7 +75,7 @@ const getHoursByDate = async (req,res) =>{
   const {date} = req.params;
 
   try {
-    const resultado = await pool.query("SELECT * FROM nutri_schedule WHERE Date = $1" , [date])
+    const resultado = await pool.query("SELECT * FROM nutri_schedule WHERE date = $1" , [date])
     res.json(resultado.rows);
   } catch (error) {
     res.status(500).json({message : error.message})
