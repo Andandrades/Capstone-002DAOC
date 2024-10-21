@@ -4,6 +4,9 @@ import Menu from "../assets/Certificate.svg";
 
 export const NutriCard = ({ name, amount, description }) => {
 
+  const formatPriceWithDots = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
 
   return (
