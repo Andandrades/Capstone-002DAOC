@@ -1,7 +1,6 @@
 import React from "react";
-import Menu from "../assets/Certificate.svg";
-  
-export const NutriCard = ({ name, amount, description, n_class }) => {
+
+export const NutriCard = ({ name, amount, description }) => {
 
   const formatPriceWithDots = (amount) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -13,18 +12,16 @@ export const NutriCard = ({ name, amount, description, n_class }) => {
       <div>
         <div className="flex justify-center flex-col items-center">
           <h1 className="text-3xl font-bold ">{name}</h1>
-          <h2 className="font-bold text-[40px] mt-2 text-[#FFAE3A]">
+          <h2 className="font-bold text-[40px] mt-2 text-[#0036C1]">
             ${formatPriceWithDots(amount)} CLP
           </h2>
         </div>
         <div className="flex flex-col justify-center items-center font-semibold">
-         
           <span className="w-60 text-[15px] md:text-sm lg:min-h-25 md:w-72 mt-10">{description}</span>
-
         </div>
       </div>
       <div className="">
-        <button className=" text-base px-4 rounded-full py-2 text-black font-bold  bg-[#EFDD37]">
+        <button className=" text-base px-4 rounded-full py-2 text-black font-bold  bg-[#0036C1]">
           Reservar
         </button>
       </div>
