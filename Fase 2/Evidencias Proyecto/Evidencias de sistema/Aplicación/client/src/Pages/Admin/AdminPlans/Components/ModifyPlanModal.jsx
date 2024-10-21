@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { addPlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
-const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
+const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
   if (!isOpen) return null;
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -11,10 +11,10 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
   const [selectedColor, setSelectedColor] = useState('#007bff'); // Color por defecto
 
   const colors = [
-    '#007bff', // Azul
-    '#28a745', // Verde
-    '#ffc107', // Dorado
-    '#6f42c1', // Morado
+    '#007bff',
+    '#28a745',
+    '#ffc107',
+    '#6f42c1',
   ];
 
   const handleColorChange = (color) => {
@@ -25,6 +25,7 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
     const payload = {
       ...data,
       color: selectedColor,
+      id: { id }
     };
     addPlan(payload)
       .then(response => {
@@ -34,8 +35,7 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
       .catch(error => {
         console.error('Error al agregar el plan:', error);
       });
-      onClose();
-
+    onClose();
   };
 
   return (
@@ -44,7 +44,7 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
         <div className="modal-content">
           <div className="modal-header flex justify-between items-center">
             <div className="my-6 z-10 items">
-              <h1 className="text-2xl font-bold text-black">Añadir plan</h1>
+              <h1 className="text-2xl font-bold text-black">Modificar plan</h1>
             </div>
           </div>
           <div className="modal-body">
@@ -147,9 +147,9 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
   );
 };
 
-AddPlanModal.propTypes = {
+ModifyPlanModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default AddPlanModal;
+export default ModifyPlanModal;

@@ -7,6 +7,7 @@ import AddPlanModal from './Components/AddPlanModal';
 
 export const AdminPlans = () => {
   const [plans, setPlans] = useState([]);
+  const [fetchPlans, setFetchPlans] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchPlanes = async () => {
@@ -20,15 +21,18 @@ export const AdminPlans = () => {
 
   useEffect(() => {
     fetchPlanes();
-  }, []);
+    setFetchPlans(false);
+  }, [fetchPlans]);
 
   return (
-    <>
-      <div className="body ">
-      <h1 className="text-white text-3xl font-bold text-center py-4">
-      Gestionar Planes activos
-      </h1>
-        <button className='bg-[#EFDD37] text-black py-4' onClick={() => setIsModalOpen(true)}>
+
+    <div className="body ">
+      <section className="w-screen flex flex-col justify-start items-center">
+        <div className="my-6 z-10">
+          <h1 className="text-4xl font-bold text-white">Gestionar planes</h1>
+        </div>
+        <button className="text-base rounded-full py-2 pl-4 pr-4 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
+          onClick={() => setIsModalOpen(true)}>
           Añadir Plan
         </button>
 
@@ -42,6 +46,7 @@ export const AdminPlans = () => {
                   n_class={plan.n_class}
                   amount={plan.price}
                   description={plan.description}
+                  fetchPlans={setFetchPlans}
                 />
               </div>
             ))
@@ -49,9 +54,14 @@ export const AdminPlans = () => {
             <p className="text-white">No hay planes disponibles.</p>
           )}
         </div>
-        <NavBarAdmin />
-        <AddPlanModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      </div>
-    </>
+      </section>
+      <div className="pad pb-10"></div>
+      <NavBarAdmin />
+      <AddPlanModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        fetchPlans={setFetchPlans}
+      />
+    </div>
   );
 };
