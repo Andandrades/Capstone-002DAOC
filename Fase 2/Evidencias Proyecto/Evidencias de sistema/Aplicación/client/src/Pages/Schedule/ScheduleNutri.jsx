@@ -43,6 +43,8 @@ export const ScheduleNutri = () => {
             <div className="w-full px-6 flex flex-col justify-start">
                 {appointments ? <p>Encontrado</p> : <p>No encontrado</p> }
             </div>
+
+            
             <UserNavBar />
         </section>
     )
