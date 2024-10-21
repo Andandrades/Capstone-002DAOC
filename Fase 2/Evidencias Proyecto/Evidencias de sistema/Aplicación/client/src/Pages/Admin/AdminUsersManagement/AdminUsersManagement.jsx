@@ -45,7 +45,7 @@ const AdminUsersManagement = () => {
       {/* Menú para Nutricionistas */}
       <div className="roles-menu">
         <h2 onClick={() => setShowNutritionists(!showNutritionists)} className="roles-menuTitle">
-          <LocalDiningIcon style={{ marginRight: '8px' }} />
+          <LocalDiningIcon style={{ marginRight: '7px' }} />
           Nutricionistas
           <div className="filter-icon">
             <FilterListIcon />
