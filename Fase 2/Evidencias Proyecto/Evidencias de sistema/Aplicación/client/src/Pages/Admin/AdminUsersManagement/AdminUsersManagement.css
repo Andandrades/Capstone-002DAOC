@@ -1,0 +1,77 @@
+.roles-container {
+  padding: 20px;
+  margin-bottom: 60px; 
+}
+
+.roles-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.roles-menu {
+  margin-bottom: 30px; /* Aumentar la separación entre tarjetas */
+  border: 1px solid #ccc; 
+  border-radius: 8px; /* Más curvatura */
+  padding: 20px; /* Aumentar el padding */
+  position: relative; 
+  font-size: 1.1rem; /* Ajustar tamaño del texto */
+}
+
+.roles-menuTitle {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #007BFF;
+}
+
+.filter-icon {
+  margin-left: auto; 
+}
+
+.roles-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.roles-listItem {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  background-color: #f0f0f0;
+  padding: 15px; /* Aumentar padding */
+  margin-bottom: 10px; /* Más separación */
+  border-radius: 8px;
+  font-size: 1rem; /* Ajustar tamaño del texto */
+}
+
+.accessibility-icon {
+  margin-left: auto; 
+}
+
+.list-icon-right {
+  margin-left: auto; 
+  color: #007BFF;
+}
+
+@media (max-width: 600px) {
+  .roles-title {
+    font-size: 1.2rem;
+  }
+
+  .roles-menuTitle {
+    font-size: 1rem;
+  }
+
+  .roles-listItem {
+    font-size: 0.95rem;
+    padding: 12px; 
+  }
+}
+
+
+
