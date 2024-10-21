@@ -24,7 +24,7 @@ export const SchedulePage = () => {
               <h1 className="font-bold text-2xl pr-5">Gimnasio</h1>
             </div>
           </div>
-          <div className="w-full flex justify-center bg-[#9DFB8E] rounded-3xl hover:scale-105 transition-all ease-in-out">
+          <div onClick={() => navigate("/schedule/nutri")} className="w-full flex justify-center bg-[#9DFB8E] rounded-3xl hover:scale-105 transition-all ease-in-out">
             <div className="bg-[#67B488] w-[20%] py-3 px-1  flex justify-center rounded-l-3xl ">
               <img src={Apple} className="w-16" alt="" />
             </div>

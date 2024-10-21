@@ -5,7 +5,8 @@ const {
     getAllNutriHour,
     getNutriHour,
     updateNutriHour,
-    deleteNutriHour
+    deleteNutriHour,
+    getHoursByDate
 } = require("../controllers/nutri_schedule.controllers");
 
 
@@ -14,6 +15,8 @@ const router = Router();
 router.get("/nutriSchedule",getAllNutriHour);
 
 router.get("/nutriSchedule/:id",getNutriHour);
+
+router.get("/nutriScheduleDate/:date",getHoursByDate);
 
 router.post("/nutriSchedule",createNutriHour);
 
