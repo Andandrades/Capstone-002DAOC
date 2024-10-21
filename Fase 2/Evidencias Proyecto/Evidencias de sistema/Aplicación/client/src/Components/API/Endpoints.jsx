@@ -31,3 +31,11 @@ export const deletePlan = async (id) => {
     }
 };
 
+export const addPlan = async (payload) => {
+    try {
+        const response = await axios.post(`${URL}/plans`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al añadir el plan:", error);
+    }
+};

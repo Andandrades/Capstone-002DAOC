@@ -15,19 +15,19 @@ export const AdminPlans = () => {
       setPlans(data);
     } catch (err) {
       console.log(err);
-    }
-  };
+    }};
 
   useEffect(() => {
     fetchPlanes();
   }, []);
 
   return (
-    <>
-      <div className="body ">
-      <h1 className="text-white text-3xl font-bold text-center py-4">
-      Gestionar Planes activos
-      </h1>
+
+    <div className="body ">
+      <section className="w-screen flex flex-col justify-start items-center">
+        <div className="my-6 z-10">
+          <h1 className="text-4xl font-bold text-white">Gestionar planes</h1>
+        </div>
         <button className='bg-[#EFDD37] text-black py-4' onClick={() => setIsModalOpen(true)}>
           Añadir Plan
         </button>
@@ -49,9 +49,10 @@ export const AdminPlans = () => {
             <p className="text-white">No hay planes disponibles.</p>
           )}
         </div>
-        <NavBarAdmin />
-        <AddPlanModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      </div>
-    </>
+      </section>
+      <div className="pad pb-10"></div>
+      <NavBarAdmin />
+      <AddPlanModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div>
   );
 };
