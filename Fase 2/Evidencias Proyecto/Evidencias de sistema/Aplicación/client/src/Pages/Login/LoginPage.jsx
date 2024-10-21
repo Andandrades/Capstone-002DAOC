@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./LoginStyle.css"; // Asegúrate de que esta ruta sea correcta
-import Registrate from "../../assets/img/Registrate.webp"; // Importa la imagen
+import "./LoginStyle.css"; 
+import Registrate from "../../assets/img/Registrate.webp"; 
 import { useNavigate } from "react-router-dom";
 
 export const LoginPage = ({ setIsAuth }) => {
@@ -16,6 +16,7 @@ export const LoginPage = ({ setIsAuth }) => {
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",

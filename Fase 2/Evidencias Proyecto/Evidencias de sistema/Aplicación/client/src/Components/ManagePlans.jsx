@@ -1,16 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Menu from "../assets/Certificate.svg";
 import { deletePlan } from './API/Endpoints';
-
+import ModifyPlanModal from '../Pages/Admin/AdminPlans/Components/ModifyPlanModal';
 
 export const ManagePlans = ({ id, name, amount, n_class }) => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const DeletePlan = (id) => {
-        deletePlan(id)
+        deletePlan(id).then(response => {
+            console.log('Plan modificado:', response);
+        })
+    }
+    const ModifyPlan = (id) => {
+        setIsModalOpen(true);
+
     }
     return (
         <div className="flex space-x-4 gap-10 justify-between items-center relative text-white lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col w-80 mt-4 mx-auto pb-9">
@@ -34,14 +43,23 @@ export const ManagePlans = ({ id, name, amount, n_class }) => {
                 </div>
             </div>
             <div >
-                <button className="text-base rounded-full py-2 pl-3 pr-3 text-black font-bold my-5 bg-[#EFDD37] ">
+                <button className="text-base rounded-full py-2 pl-3 pr-3 text-black font-bold my-5 bg-[#EFDD37] "
+                    onClick={() => {
+                        ModifyPlan()
+                    }}>
                     Modificar
                 </button>
                 <button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold my-5 bg-[#fc0317]"
-                    onClick ={ () => {DeletePlan(id)}}>
+                    onClick={() => { DeletePlan(id) }}>
                     Eliminar
                 </button>
             </div>
+            <ModifyPlanModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                id={id}
+            />
         </div>
+
     );
 }
