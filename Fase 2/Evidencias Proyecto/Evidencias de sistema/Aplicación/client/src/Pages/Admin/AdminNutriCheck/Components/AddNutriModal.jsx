@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { addPlan } from '../../../../Components/API/Endpoints';
+import { addNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
 const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
@@ -8,25 +8,13 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const [selectedColor, setSelectedColor] = useState('#007bff'); // Color por defecto
 
-  const colors = [
-    '#007bff', // Azul
-    '#28a745', // Verde
-    '#ffc107', // Dorado
-    '#6f42c1', // Morado
-  ];
-
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
-  };
 
   const onSubmit = (data) => {
     const payload = {
       ...data,
-      color: selectedColor,
     };
-    addPlan(payload)
+    addNutri(payload)
       .then(response => {
         console.log('Plan agregado:', response);
         fetchPlans(true)
@@ -44,14 +32,14 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
         <div className="modal-content">
           <div className="modal-header flex justify-between items-center">
             <div className="my-6 z-10 items">
-              <h1 className="text-2xl font-bold text-black">Añadir plan</h1>
+              <h1 className="text-2xl font-bold text-black">Añadir consulta nutricional</h1>
             </div>
           </div>
           <div className="modal-body">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-group mb-4">
                 <label htmlFor="planName" className="block text-sm font-medium text-gray-700">
-                  Nombre del Plan
+                  Nombre de la consulta
                 </label>
                 <input
                   type="text"
@@ -63,7 +51,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
               </div>
               <div className="form-group mb-4">
                 <label htmlFor="planDescription" className="block text-sm font-medium text-gray-700">
-                  Descripción del Plan
+                  Descripción de la consulta
                 </label>
                 <input
                   type="text"
@@ -84,52 +72,6 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
                   {...register("price", { required: true })}
                 />
                 {errors.price && <span className="text-red-500">Este campo es obligatorio</span>}
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="planClasses" className="block text-sm font-medium text-gray-700">
-                  N° de clases
-                </label>
-                <input
-                  type="number"
-                  className="form-control w-full p-2 border border-gray-300 rounded-md"
-                  id="planClasses"
-                  {...register("n_class", { required: true })}
-                />
-                {errors.n_class && <span className="text-red-500">Este campo es obligatorio</span>}
-              </div>
-              <div>
-                <label htmlFor="options" className="block text-sm font-medium text-gray-700">
-                  Seleccione tipo de plan
-                </label>
-                <select
-                  id="options"
-                  className="form-select mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  {...register("type")}
-                >
-                  <option value="Individual">Individual</option>
-                  <option value="En parejas">En parejas</option>
-                </select>
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="planColor" className="block text-sm font-medium text-gray-700 py-3">
-                  Color
-                </label>
-                {colors.map((color) => (
-                  <button className='m-3'
-                    type="button"
-                    key={color}
-                    onClick={() => handleColorChange(color)}
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      backgroundColor: color,
-                      border: 'none',
-                      borderRadius: '5px',
-                      cursor: 'pointer',
-                      outline: selectedColor === color ? '2px solid #000' : 'none',
-                    }}
-                  />
-                ))}
               </div>
               <div className="modal-footer flex justify-end mt-4">
                 <button type="button" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md" onClick={onClose}>

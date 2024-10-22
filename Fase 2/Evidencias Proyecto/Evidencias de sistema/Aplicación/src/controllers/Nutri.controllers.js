@@ -8,7 +8,8 @@ const getAll = async (req, res) => {
   } catch (error) {
     console.log(error.message)
     res.status(400);
-    res.json("error al consultar!.");  }
+    res.json("error al consultar!.");
+  }
 };
 
 const getbyid = async (req, res) => {
@@ -20,15 +21,16 @@ const getbyid = async (req, res) => {
   } catch (error) {
     console.log(error.message)
     res.status(400);
-    res.json("error al consultar!.");  }
+    res.json("error al consultar!.");
+  }
 };
 
 
 const create = async (req, res) => {
-  const { history_id, created_date, user_id, class_id, exercise_id } = req.body;
+  const { name, description, price } = req.body;
   try {
-    const result = await pool.query(`INSERT INTO public.exercise_history (history_id, created_date, user_id, class_id, exercise_id) 
-      VALUES(${history_id}, ${created_date}, ${user_id}, ${class_id}, ${exercise_id});`);
+    const result = await pool.query(`INSERT INTO public.nutrition (name, description, price) 
+      VALUES(${name}, ${description}, ${price});`);
     res.status(200);
     res.json(" añadido correctamente!.");
 
@@ -40,22 +42,26 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { id} =  req.params;
-  const {created_date, user_id, class_id, exercise_id } = req.body;
-  try {
-    const result = await pool.query(`UPDATE public.exercise_history SET created_date=${created_date}, user_id=${user_id}, class_id=${class_id}, exercise_id=${exercise_id} 
-      WHERE history_id=${id};`);
+  const { id } = req.params;
+  const { name, description, price } = req.body;
 
-    res.status(200);
-    res.json("Actualizado correctamente!.");
-
-  } catch (error) {
-    console.log(error.message)
-    res.status(400);
-    res.json("error al actualizar!.");
+  if (!name || !description || price === undefined) {
+    return res.status(400).json({ error: "Los campos name, description y price son obligatorios." });
   }
-
-   
+  try {
+    const response = await pool.query(
+      `UPDATE public.nutrition
+       SET "name"=$1, description=$2, price=$3
+       WHERE id=$4;`,
+      [name, description, price, id]
+    );
+    if (response.rowCount === 0) {
+      return res.status(404).json({ error: "No se encontró el registro con el ID proporcionado." }); }
+    res.status(200).json("Actualizado correctamente!");
+  } catch (error) {
+    console.error("Error al actualizar:", error.message);
+    return res.status(400).json({ error: "Error al actualizar: " + error.message });
+  }
 };
 
 
@@ -63,7 +69,7 @@ const deletebyid = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(`DELETE FROM public.exercise_history WHERE history_id=${id};`);
+    const result = await pool.query(`DELETE FROM public.nutrition WHERE id=${id};`);
     res.json(result.rows);
   } catch (error) {
     console.log(error.message)

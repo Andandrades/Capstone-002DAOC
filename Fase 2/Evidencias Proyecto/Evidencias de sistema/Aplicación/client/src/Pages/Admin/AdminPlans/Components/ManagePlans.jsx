@@ -3,7 +3,7 @@ import menu from "../../../../assets/Certificate.svg";
 import { deletePlan } from '../../../../Components/API/Endpoints';
 import ModifyPlanModal from '../../AdminPlans/Components/ModifyPlanModal';
 
-export const ManagePlans = ({ id, name, amount, n_class, fetchPlans }) => {
+export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -61,7 +61,12 @@ export const ManagePlans = ({ id, name, amount, n_class, fetchPlans }) => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 id={id}
-                fetchPlans={fetchPlans}
+                name={name}
+                description= {description}
+                amount= {amount}
+                n_class= {n_class}
+                fetchPlans= {fetchPlans}
+
             />
         </>
     );
