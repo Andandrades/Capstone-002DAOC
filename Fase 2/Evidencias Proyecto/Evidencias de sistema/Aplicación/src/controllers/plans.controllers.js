@@ -29,7 +29,7 @@ const getPlanById = async (req, res) => {
 // Crear un nuevo plan
 const createPlan = async (req, res) => {
 
-    const { name, description, price, n_class, type } = req.body;
+    const { name, description, price, n_class, type, color } = req.body;
 
   const missingFields = [];
 
@@ -51,9 +51,9 @@ const createPlan = async (req, res) => {
   try {
     const result = await pool.query(
 
-      'INSERT INTO plans (name, description, price, n_class, type) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      'INSERT INTO plans (name, description, price, n_class, type, color) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
 
-      [name, description, price, n_class, type] 
+      [name, description, price, n_class, type, color] 
     );
 
     res.status(201).json(result.rows[0]);
@@ -71,7 +71,7 @@ const createPlan = async (req, res) => {
 // Editar el plan
 const updatePlan = async (req, res) => {
   const { id } = req.params; 
-  const { name, description, price, n_class, type } = req.body; 
+  const { name, description, price, n_class, type, color } = req.body; 
 
   const missingFields = [];
 
@@ -93,8 +93,8 @@ const updatePlan = async (req, res) => {
 
   try {
     const result = await pool.query(
-      'UPDATE Plans SET name = $1, description = $2, price = $3, n_class = $4, type = $5 WHERE plan_id = $6 RETURNING *',
-      [name, description, price, n_class, type, id]
+      'UPDATE Plans SET name = $1, description = $2, price = $3, n_class = $4, type = $5, color= $6 WHERE plan_id = $7 RETURNING *',
+      [name, description, price, n_class, type,color, id]
     );
 
     if (result.rows.length === 0) {

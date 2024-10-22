@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { ManagePlans } from '../AdminPlans/Components/ManagePlans';
+import { ManageNutri } from './Components/ManageNutri';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
-import "./AdminPlans.css";
-import { obtenerPlanes } from '../../../Components/API/Endpoints';
-import AddPlanModal from './Components/AddPlanModal';
+import "./AdminNutri.css";
+import { obtenerNutri } from '../../../Components/API/Endpoints';
+import AddPlanModal from './Components/AddNutriModal';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-export const AdminPlans = () => {
-  const [plans, setPlans] = useState([]);
+export const AdminNutri = () => {
+  const [data, setData] = useState([]);
   const [fetchPlans, setFetchPlans] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchPlanes = async () => {
     try {
-      const data = await obtenerPlanes();
-      setPlans(data);
+      const data = await obtenerNutri();
+      setData(data);
     } catch (err) {
       console.log(err);
     }
@@ -31,31 +31,30 @@ export const AdminPlans = () => {
 
       <section>
         <div className="bg[#001C1C] flex flex-col justify-start items-center pt-6">
-          <h1 className="text-3xl font-bold text-white text-center">Gestionar planes</h1>
-          <button className="text-base rounded-full py-2 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
+        <h1 className="text-2xl font-bold text-white text-center">Gestionar Consultas nutricionales</h1>
+        <button className="text-base rounded-full py-2 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
             onClick={() => setIsModalOpen(true)}>
-            Añadir Plan
+            Añadir consulta
           </button>
         </div>
         <div className="planes">
-          {plans && plans.length > 0 ? (
-            plans.map((plan) => (
-              <div className="gap-10 justify-center items-center" key={plan.plan_id}>
-                <ManagePlans
-                  id={plan.plan_id}
-                  name={plan.name}
-                  n_class={plan.n_class}
-                  amount={plan.price}
-                  description={plan.description}
+          {data && data.length > 0 ? (
+            data.map((data) => (
+              <div className="gap-10 justify-center items-center" key={data.id}>
+                <ManageNutri
+                  id={data.id}
+                  name={data.name}
+                  description={data.description}
+                  amount={data.price}
                   fetchPlans={setFetchPlans}
                 />
               </div>
             ))
           ) : (
             <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
-              <HelpOutlineIcon sx={{ fill: "#f1c21b", width: "40px", height: "40px" }} />
-              <p className="font-semibold text-gray-500">No se han encontrado planes!.</p>
-            </div>
+            <HelpOutlineIcon sx={{fill : "#f1c21b" , width : "40px" , height : "40px"}}/>
+            <p className="font-semibold text-gray-500">No se han encontrado planes!.</p>
+          </div>
           )}
         </div>
       </section>

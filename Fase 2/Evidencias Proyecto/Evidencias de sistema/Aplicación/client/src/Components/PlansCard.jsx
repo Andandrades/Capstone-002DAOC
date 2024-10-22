@@ -7,6 +7,7 @@ export const Plans = ({ name, amount, description, n_class }) => {
   };
 
   return (
+    <>
     <div className=" flex min-h-96 gap-10 lg:min-h-96 justify-between items-center relative text-white py-7 lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col">
       <img
         className="absolute top-[-15px] right-[-15px] m-0 p-0"
@@ -34,5 +35,6 @@ export const Plans = ({ name, amount, description, n_class }) => {
         </button>
       </div>
     </div>
+    </>
   );
 };
