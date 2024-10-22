@@ -18,8 +18,8 @@ const AdminUsersManagement = () => {
   const [showTrainers, setShowTrainers] = useState(false);
 
   return (
-    <div className="roles-container">
-      <h1 className="roles-title">Vista de Administración de Roles</h1>
+    <div className="roles-container"> {/* Se aplica el CSS para el fondo aquí */}
+      <h1 className="roles-title">Administrar roles</h1>
 
       {/* Menú para Clientes */}
       <div className="roles-menu">
@@ -45,7 +45,7 @@ const AdminUsersManagement = () => {
       {/* Menú para Nutricionistas */}
       <div className="roles-menu">
         <h2 onClick={() => setShowNutritionists(!showNutritionists)} className="roles-menuTitle">
-          <LocalDiningIcon style={{ marginRight: '7px' }} />
+          <LocalDiningIcon style={{ marginRight: '8px' }} />
           Nutricionistas
           <div className="filter-icon">
             <FilterListIcon />
@@ -56,7 +56,7 @@ const AdminUsersManagement = () => {
             {nutritionists.map((nutritionist, index) => (
               <li key={index} className="roles-listItem">
                 <span>{nutritionist}</span>
-                <LocalDiningIcon className="list-icon-right" /> {/* Icono de nutricionista a la derecha */}
+                <LocalDiningIcon className="list-icon-right" />
               </li>
             ))}
           </ul>
@@ -77,18 +77,24 @@ const AdminUsersManagement = () => {
             {trainers.map((trainer, index) => (
               <li key={index} className="roles-listItem">
                 <span>{trainer}</span>
-                <FitnessCenterIcon className="list-icon-right" /> {/* Nuevo icono a la derecha */}
+                <FitnessCenterIcon className="list-icon-right" />
               </li>
             ))}
           </ul>
         )}
       </div>
-      <NavBarAdmin />
+
+      {/* Centramos el NavBarAdmin */}
+      <div className="navbar-container">
+        <NavBarAdmin />
+      </div>
     </div>
   );
 };
 
 export default AdminUsersManagement;
+
+
 
 
 
