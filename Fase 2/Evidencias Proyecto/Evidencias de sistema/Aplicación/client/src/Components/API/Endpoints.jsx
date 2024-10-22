@@ -39,3 +39,12 @@ export const addPlan = async (payload) => {
         console.error("Error al añadir el plan:", error);
     }
 };
+
+export const updatePlan = async (id,payload) => {
+    try {
+        const response = await axios.put(`${URL}/plans/${id}`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al añadir el plan:", error);
+    }
+};
