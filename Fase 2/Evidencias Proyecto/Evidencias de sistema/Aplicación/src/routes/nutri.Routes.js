@@ -13,8 +13,8 @@ router.get("/Nutri/:id", getbyid);
 
 router.post("/Nutri", create);
 
-router.put("/Nutri", update);
+router.put("/Nutri/:id", update);
 
-router.delete("/DeleteNutri", deletebyid);
+router.delete("/DeleteNutri/:id", deletebyid);
 
 module.exports = router;
