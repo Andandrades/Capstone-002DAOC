@@ -3,7 +3,7 @@ import menu from "../../../../assets/Certificate.svg";
 import { deletePlan } from '../../../../Components/API/Endpoints';
 import ModifyPlanModal from '../../AdminPlans/Components/ModifyPlanModal';
 
-export const ManagePlans = ({ id, name, amount, n_class, fetchPlans }) => {
+export const ManageNutri = ({ id, name, amount, n_class, fetchPlans }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
