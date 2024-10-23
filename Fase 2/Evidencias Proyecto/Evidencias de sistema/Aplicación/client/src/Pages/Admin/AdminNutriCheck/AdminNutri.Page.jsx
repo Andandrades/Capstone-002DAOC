@@ -53,7 +53,7 @@ export const AdminNutri = () => {
           ) : (
             <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
             <HelpOutlineIcon sx={{fill : "#f1c21b" , width : "40px" , height : "40px"}}/>
-            <p className="font-semibold text-gray-500">No se han encontrado planes!.</p>
+            <p className="font-semibold text-gray-500">No se han encontrado consultas nutricionales!.</p>
           </div>
           )}
         </div>
