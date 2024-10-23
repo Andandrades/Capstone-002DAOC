@@ -66,22 +66,3 @@
   margin-left: 8px;
 }
 
-.navbar-container {
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #fff;
-  padding: 10px 0;
-}
-
-.navbar {
-  display: flex;
-  justify-content: center;
-  margin: 0 30px;
-}
-
-.navbar button {
-  padding: 0 10px;
-}
