@@ -30,12 +30,12 @@ const getNutriHour = async (req, res) => {
 
 
 const createNutriHour = async (req, res) => {
-  const { start_hour, end_hour, available, client_id, nutri_id } = req.body;
+  const { start_hour, available, client_id, nutri_id,date } = req.body;
 
   try {
     const resultado = await pool.query(
-      "INSERT INTO nutri_schedule (start_hour, end_hour, available, client_id, nutri_id) VALUES($1,$2,$3,$4,$5) RETURNING *",
-      [start_hour, end_hour, available, client_id, nutri_id]
+      "INSERT INTO nutri_schedule (start_hour, available, client_id, nutri_id,date) VALUES($1,$2,$3,$4,$5) RETURNING *",
+      [start_hour, available, client_id, nutri_id,date]
     );
     res.json(resultado.rows[0]);
   } catch (error) {
@@ -71,10 +71,22 @@ const deleteNutriHour = async (req,res) => {
     }
 }
 
+const getHoursByDate = async (req,res) =>{
+  const {date} = req.params;
+
+  try {
+    const resultado = await pool.query("SELECT * FROM nutri_schedule WHERE date = $1" , [date])
+    res.json(resultado.rows);
+  } catch (error) {
+    res.status(500).json({message : error.message})
+  }
+} 
+
 module.exports = {
   createNutriHour,
   getAllNutriHour,
   getNutriHour,
   updateNutriHour,
-  deleteNutriHour
+  deleteNutriHour,
+  getHoursByDate
 };

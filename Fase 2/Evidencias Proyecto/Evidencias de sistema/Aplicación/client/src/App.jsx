@@ -11,11 +11,13 @@ import { LandingPage } from "./Pages/LandingPage/LandingPage";
 import { LoginPage } from "./Pages/Login/LoginPage";
 import { Menu } from "./Pages/Menu/Menu";
 import PlansPage from "./Pages/Plans/PlansPage";
+import { AdminNutri } from "./Pages/Admin/AdminNutriCheck/AdminNutri.Page";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
 import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+import {ScheduleNutri} from "./Pages/Schedule/ScheduleNutri";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -67,14 +69,15 @@ function App() {
         <Route path="/Plans" element={<PlansPage />} />
 
         {/* rutas sin implementar*/}
-        <Route path="/schedule" element={<SchedulePage />} />,
-        <Route path="/schedule/gym" element={<ScheduleGym />} />,
+        <Route path="/schedule" element={<SchedulePage/>} />,
+        <Route path="/schedule/gym" element={<ScheduleGym/>} />,
+        <Route path="/schedule/nutri" element={<ScheduleNutri/>} />,
         <Route path="/menu" element={<SchedulePage />} />,
         <Route path="/classes" element={<ClassesPage />} />,
 
 
         {/* rutas de administrador gestionar permisos por rol no implementado*/}
-        <Route path="/Admin" element={<AdminMenu />} />,
+        <Route path="/Admin" element={<AdminNutri/>} />,
         <Route path="/Admin/Planes" element={<AdminPlans />} />,
         <Route path="/Admin/Clases" element={<AdminClasses />} />,
         <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,

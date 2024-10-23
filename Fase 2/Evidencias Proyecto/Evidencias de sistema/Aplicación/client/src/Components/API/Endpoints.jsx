@@ -1,6 +1,8 @@
 import axios from "axios";
 const URL = "http://localhost:3000";
 
+
+//rutas de administrar planes
 export const obtenerPlanes = async () => {
     try {
         const response = await axios.get(`${URL}/plans`);
@@ -10,17 +12,6 @@ export const obtenerPlanes = async () => {
         throw error;
     }
 };
-
-export const obtenerNutri = async () => {
-    try {
-        const response = await axios.get(`${URL}/Nutri`);
-        return response.data;
-    } catch (error) {
-        console.error("Error al obtener las consultas nutricionales:", error);
-        throw error;
-    }
-};
-
 
 export const deletePlan = async (id) => {
     try {
@@ -34,6 +25,54 @@ export const deletePlan = async (id) => {
 export const addPlan = async (payload) => {
     try {
         const response = await axios.post(`${URL}/plans`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al añadir el plan:", error);
+    }
+};
+
+export const updatePlan = async (id,payload) => {
+    try {
+        const response = await axios.put(`${URL}/plans/${id}`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al añadir el plan:", error);
+    }
+};
+
+//administrar consultas nutricionales 
+
+export const obtenerNutri = async () => {
+    try {
+        const response = await axios.get(`${URL}/Nutri`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener las consultas nutricionales:", error);
+        throw error;
+    }
+};
+
+export const updateNutri = async (id,payload) => {
+    try {
+        const response = await axios.put(`${URL}/Nutri/${id}`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al modificar la consulta:", error);
+    }
+};
+
+export const deleteNutri = async (id) => {
+    try {
+        const response = await axios.delete(`${URL}/DeleteNutri/${id}`);
+        return response.data 
+    } catch (error) {
+        console.error("Error al eliminar la consulta:", error);
+    }
+};
+
+export const addNutri = async (payload) => {
+    try {
+        const response = await axios.post(`${URL}/Nutri`, payload);
         return response.data 
     } catch (error) {
         console.error("Error al añadir el plan:", error);

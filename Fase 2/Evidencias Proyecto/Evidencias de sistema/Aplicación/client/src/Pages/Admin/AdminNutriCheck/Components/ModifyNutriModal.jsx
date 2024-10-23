@@ -1,36 +1,21 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { updatePlan } from '../../../../Components/API/Endpoints';
+import React from 'react';
+import { updateNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
-const ModifyPlanModal = (props) => {
-  const { isOpen, onClose, id, name, amount, n_class, fetchPlans,description } = props;
+const ModifyNutriModal = (props ) => {
+  const { isOpen, onClose, id, name, price, description, fetchPlans, } = props;
+
   if (!isOpen) return null;
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const [selectedColor, setSelectedColor] = useState('#007bff'); // Color por defecto
-
-  const colors = [
-    '#007bff',
-    '#28a745',
-    '#ffc107',
-    '#6f42c1',
-  ];
-
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
-  };
-
   const onSubmit = (data) => {
     const payload = {
       ...data,
-      color: selectedColor,
-      id: { id }
     };
-    updatePlan(id, payload)
+    updateNutri(id, payload)
       .then(response => {
-        console.log('Plan agregado:', response);
+        console.log('consulta modificada:', response);
         fetchPlans(true)
       })
       .catch(error => {
@@ -38,7 +23,6 @@ const ModifyPlanModal = (props) => {
       });
     onClose();
   };
-  console.log(n_class)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -68,9 +52,9 @@ const ModifyPlanModal = (props) => {
                 <label htmlFor="planDescription" className="block text-sm font-medium text-gray-700">
                   Descripción del Plan
                 </label>
-                <input
+                <textarea
                   type="text"
-                  className="form-control w-full p-2 border border-gray-300 rounded-md"
+                  className="form-control w-full p-2 border border-gray-300 rounded-md pb-24"
                   id="planDescription"
                   defaultValue={description}
                   {...register("description", { required: true })}
@@ -85,60 +69,13 @@ const ModifyPlanModal = (props) => {
                   type="number"
                   className="form-control w-full p-2 border border-gray-300 rounded-md"
                   id="planPrice"
-                  defaultValue={amount}
+                  defaultValue={price}
                   {...register("price", { required: true })}
                 />
                 {errors.price && <span className="text-red-500">Este campo es obligatorio</span>}
               </div>
-              <div className="form-group mb-4">
-                <label htmlFor="planClasses" className="block text-sm font-medium text-gray-700">
-                  N° de clases
-                </label>
-                <input
-                  type="number"
-                  className="form-control w-full p-2 border border-gray-300 rounded-md"
-                  id="planClasses"
-                  defaultValue={n_class}
-                  
-                  {...register("n_class", { required: true })}
-                />
-                {errors.n_class && <span className="text-red-500">Este campo es obligatorio</span>}
-              </div>
-              
-              <div>
-                <label htmlFor="options" className="block text-sm font-medium text-gray-700">
-                  Seleccione tipo de plan
-                </label>
-                <select
-                  id="options"
-                  className="form-select mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  {...register("type")}
-                >
-                  <option value="Individual">Individual</option>
-                  <option value="En parejas">En parejas</option>
-                </select>
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="planColor" className="block text-sm font-medium text-gray-700 py-3">
-                  Color
-                </label>
-                {colors.map((color) => (
-                  <button className='m-3'
-                    type="button"
-                    key={color}
-                    onClick={() => handleColorChange(color)}
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      backgroundColor: color,
-                      border: 'none',
-                      borderRadius: '5px',
-                      cursor: 'pointer',
-                      outline: selectedColor === color ? '2px solid #000' : 'none',
-                    }}
-                  />
-                ))}
-              </div>
+
+
               <div className="modal-footer flex justify-end mt-4">
                 <button type="button" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md" onClick={onClose}>
                   Cerrar
@@ -156,4 +93,4 @@ const ModifyPlanModal = (props) => {
 };
 
 
-export default ModifyPlanModal;
+export default ModifyNutriModal;

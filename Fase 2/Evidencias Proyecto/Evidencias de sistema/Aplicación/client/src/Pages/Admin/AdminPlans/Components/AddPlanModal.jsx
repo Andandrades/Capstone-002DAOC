@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { addPlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
-const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
+const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   if (!isOpen) return null;
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -34,7 +34,7 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
       .catch(error => {
         console.error('Error al agregar el plan:', error);
       });
-      onClose();
+    onClose();
 
   };
 
@@ -106,8 +106,8 @@ const AddPlanModal = ({ isOpen, onClose,fetchPlans }) => {
                   className="form-select mt-1 block w-full p-2 border border-gray-300 rounded-md"
                   {...register("type")}
                 >
-                  <option value="opcion1">Individual</option>
-                  <option value="opcion2">En parejas</option>
+                  <option value="Individual">Individual</option>
+                  <option value="En parejas">En parejas</option>
                 </select>
               </div>
               <div className="form-group mb-4">

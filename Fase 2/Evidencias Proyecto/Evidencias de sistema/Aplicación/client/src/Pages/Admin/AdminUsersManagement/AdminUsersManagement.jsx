@@ -18,31 +18,31 @@ const AdminUsersManagement = () => {
   const [showTrainers, setShowTrainers] = useState(false);
 
   return (
-    <div className="roles-container"> {/* Se aplica el CSS para el fondo aquí */}
+    <div className="roles-container"> {/*css del fondo */}
       <h1 className="roles-title">Administrar roles</h1>
 
-      {/* Menú para Clientes */}
-      <div className="roles-menu">
-        <h2 onClick={() => setShowClients(!showClients)} className="roles-menuTitle">
-          <DirectionsBikeIcon style={{ marginRight: '8px' }} />
-          Clientes
-          <div className="filter-icon">
-            <FilterListIcon />
-          </div>
-        </h2>
-        {showClients && (
-          <ul className="roles-list">
-            {clients.map((client, index) => (
-              <li key={index} className="roles-listItem">
-                <span>{client}</span>
-                <AccessibilityNewIcon className="accessibility-icon" />
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+        {/* Menú para Clientes */}
+        <div className="roles-menu">
+          <h2 onClick={() => setShowClients(!showClients)} className="roles-menuTitle">
+            <DirectionsBikeIcon style={{ marginRight: '8px' }} />
+            Clientes
+            <div className="filter-icon">
+              <FilterListIcon />
+            </div>
+          </h2>
+          {showClients && (
+            <ul className="roles-list">
+              {clients.map((client, index) => (
+                <li key={index} className="roles-listItem">
+                  <span>{client}</span>
+                  <AccessibilityNewIcon className="accessibility-icon" />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-      {/* Menú para Nutricionistas */}
+      {/* Nutricionistas */}
       <div className="roles-menu">
         <h2 onClick={() => setShowNutritionists(!showNutritionists)} className="roles-menuTitle">
           <LocalDiningIcon style={{ marginRight: '8px' }} />
@@ -63,7 +63,7 @@ const AdminUsersManagement = () => {
         )}
       </div>
 
-      {/* Menú para Entrenadores */}
+      {/* Entrenadores */}
       <div className="roles-menu">
         <h2 onClick={() => setShowTrainers(!showTrainers)} className="roles-menuTitle">
           <SportsIcon style={{ marginRight: '8px' }} />
@@ -84,7 +84,7 @@ const AdminUsersManagement = () => {
         )}
       </div>
 
-      {/* Centramos el NavBarAdmin */}
+      {/* NavBarAdmin */}
       <div className="navbar-container">
         <NavBarAdmin />
       </div>
@@ -93,6 +93,7 @@ const AdminUsersManagement = () => {
 };
 
 export default AdminUsersManagement;
+
 
 
 

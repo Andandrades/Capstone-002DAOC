@@ -16,7 +16,6 @@ export const LoginPage = ({ setIsAuth }) => {
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-
         method: "POST",
         headers: {
           "Content-Type": "application/json",
