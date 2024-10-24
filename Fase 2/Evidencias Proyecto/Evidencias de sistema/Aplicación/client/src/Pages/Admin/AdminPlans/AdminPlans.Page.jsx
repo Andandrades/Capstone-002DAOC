@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ManagePlans } from '../AdminPlans/Components/ManagePlans';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
-import "./AdminPlans.css";
 import { obtenerPlanes } from '../../../Components/API/Endpoints';
 import AddPlanModal from './Components/AddPlanModal';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -27,10 +26,10 @@ export const AdminPlans = () => {
 
   return (
 
-    <div className="body h-screen ">
+    <div className="bg-[#333] min-h-screen flex flex-col justify-between mb-10">
 
-      <section>
-        <div className="bg[#001C1C] flex flex-col justify-start items-center pt-6">
+      <div >
+        <div className="bg-[#333] flex flex-col justify-start items-center pt-6">
           <h1 className="text-3xl font-bold text-white text-center">Gestionar planes</h1>
           <button className="text-base rounded-full py-2 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
             onClick={() => setIsModalOpen(true)}>
@@ -58,7 +57,7 @@ export const AdminPlans = () => {
             </div>
           )}
         </div>
-      </section>
+      </div>
       <div className="pad pb-10"></div>
       <NavBarAdmin />
       <AddPlanModal

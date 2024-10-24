@@ -2,7 +2,7 @@ import React from 'react';
 import { updateNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
-const ModifyNutriModal = (props ) => {
+const ModifyNutriModal = (props) => {
   const { isOpen, onClose, id, name, price, description, fetchPlans, } = props;
 
   if (!isOpen) return null;
@@ -73,6 +73,18 @@ const ModifyNutriModal = (props ) => {
                   {...register("price", { required: true })}
                 />
                 {errors.price && <span className="text-red-500">Este campo es obligatorio</span>}
+              </div>
+              <div className="form-group mb-4">
+                <label htmlFor="planPrice" className="block text-sm font-medium text-gray-700">
+                  Precio oferta (no obligatorio)
+                </label>
+                <input
+                  type="number"
+                  className="form-control w-full p-2 border border-gray-300 rounded-md"
+                  id="planPrice"
+                  defaultValue={price}
+                  {...register("offer_price", { required: false })}
+                />
               </div>
 
 

@@ -43,17 +43,16 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price } = req.body;
+  const { name, description, price, offer_price } = req.body;
 
-  if (!name || !description || price === undefined) {
-    return res.status(400).json({ error: "Los campos name, description y price son obligatorios." });
-  }
+  const offerPriceValue = offer_price !== undefined && offer_price !== '' ? offer_price : null;
+
   try {
     const response = await pool.query(
       `UPDATE public.nutrition
-       SET "name"=$1, description=$2, price=$3
-       WHERE id=$4;`,
-      [name, description, price, id]
+       SET "name"=$1, description=$2, price=$3, offer_price=$4
+       WHERE id=$5;`,
+      [name, description, price,offerPriceValue, id]
     );
     if (response.rowCount === 0) {
       return res.status(404).json({ error: "No se encontró el registro con el ID proporcionado." }); }
