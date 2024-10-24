@@ -18,8 +18,9 @@ const AdminUsersManagement = () => {
   const [showTrainers, setShowTrainers] = useState(false);
 
   return (
-    <div className="roles-container"> {/*css del fondo */}
-      <h1 className="roles-title">Administrar roles</h1>
+    <>
+      <div className="roles-container"> {/*css del fondo */}
+        <h1 className="roles-title">Administrar roles</h1>
 
         {/* Menú para Clientes */}
         <div className="roles-menu">
@@ -42,53 +43,50 @@ const AdminUsersManagement = () => {
           )}
         </div>
 
-      {/* Nutricionistas */}
-      <div className="roles-menu">
-        <h2 onClick={() => setShowNutritionists(!showNutritionists)} className="roles-menuTitle">
-          <LocalDiningIcon style={{ marginRight: '8px' }} />
-          Nutricionistas
-          <div className="filter-icon">
-            <FilterListIcon />
-          </div>
-        </h2>
-        {showNutritionists && (
-          <ul className="roles-list">
-            {nutritionists.map((nutritionist, index) => (
-              <li key={index} className="roles-listItem">
-                <span>{nutritionist}</span>
-                <LocalDiningIcon className="list-icon-right" />
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+        {/* Nutricionistas */}
+        <div className="roles-menu">
+          <h2 onClick={() => setShowNutritionists(!showNutritionists)} className="roles-menuTitle">
+            <LocalDiningIcon style={{ marginRight: '8px' }} />
+            Nutricionistas
+            <div className="filter-icon">
+              <FilterListIcon />
+            </div>
+          </h2>
+          {showNutritionists && (
+            <ul className="roles-list">
+              {nutritionists.map((nutritionist, index) => (
+                <li key={index} className="roles-listItem">
+                  <span>{nutritionist}</span>
+                  <LocalDiningIcon className="list-icon-right" />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-      {/* Entrenadores */}
-      <div className="roles-menu">
-        <h2 onClick={() => setShowTrainers(!showTrainers)} className="roles-menuTitle">
-          <SportsIcon style={{ marginRight: '8px' }} />
-          Entrenadores
-          <div className="filter-icon">
-            <FilterListIcon />
-          </div>
-        </h2>
-        {showTrainers && (
-          <ul className="roles-list">
-            {trainers.map((trainer, index) => (
-              <li key={index} className="roles-listItem">
-                <span>{trainer}</span>
-                <FitnessCenterIcon className="list-icon-right" />
-              </li>
-            ))}
-          </ul>
-        )}
+        {/* Entrenadores */}
+        <div className="roles-menu">
+          <h2 onClick={() => setShowTrainers(!showTrainers)} className="roles-menuTitle">
+            <SportsIcon style={{ marginRight: '8px' }} />
+            Entrenadores
+            <div className="filter-icon">
+              <FilterListIcon />
+            </div>
+          </h2>
+          {showTrainers && (
+            <ul className="roles-list">
+              {trainers.map((trainer, index) => (
+                <li key={index} className="roles-listItem">
+                  <span>{trainer}</span>
+                  <FitnessCenterIcon className="list-icon-right" />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-
-      {/* NavBarAdmin */}
-      <div className="navbar-container">
-        <NavBarAdmin />
-      </div>
-    </div>
+      <NavBarAdmin />
+    </>
   );
 };
 

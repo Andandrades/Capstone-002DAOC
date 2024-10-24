@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import HouseIcon from '@mui/icons-material/House';
 import TodayIcon from '@mui/icons-material/Today';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
