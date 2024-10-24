@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ManageNutri } from './Components/ManageNutri';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
-import "./AdminNutri.css";
 import { obtenerNutri } from '../../../Components/API/Endpoints';
 import AddPlanModal from './Components/AddNutriModal';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -27,7 +26,7 @@ export const AdminNutri = () => {
 
   return (
 
-    <div className="body h-screen ">
+    <div className="bg-[#333] min-h-screen flex flex-col justify-between mb-10">
 
       <section>
         <div className="bg[#001C1C] flex flex-col justify-start items-center pt-6">
