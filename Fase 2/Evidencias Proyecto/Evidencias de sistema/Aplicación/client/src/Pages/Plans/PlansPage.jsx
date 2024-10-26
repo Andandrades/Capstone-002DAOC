@@ -17,12 +17,9 @@ const PlansPage = () => {
           credentials: "include", 
         });
         
-        
         if (!response.ok) {
           throw new Error("Error al obtener los planes");
-        }
-
-        
+        }        
         const data = await response.json();
 
         

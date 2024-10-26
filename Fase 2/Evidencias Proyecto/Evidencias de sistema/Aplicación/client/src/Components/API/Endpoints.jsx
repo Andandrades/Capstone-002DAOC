@@ -78,3 +78,24 @@ export const addNutri = async (payload) => {
         console.error("Error al añadir el plan:", error);
     }
 };
+
+//Manejo de sesiónes
+
+export const Login = async (payload) => {
+    try {
+        const response = await axios.post(`${URL}/Nutri`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al añadir el plan:", error);
+    }
+};
+
+export const Register = async (payload) => {
+    try {
+        const response = await axios.post(`${URL}/register`, payload);
+        return response.data 
+    } catch (error) {
+        console.error("Error al añadir el plan:", error);
+    }
+};
+

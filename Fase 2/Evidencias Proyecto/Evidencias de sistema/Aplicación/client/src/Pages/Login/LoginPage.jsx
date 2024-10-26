@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./LoginStyle.css"; 
-import Registrate from "../../assets/img/Registrate.webp"; 
+import "./LoginStyle.css";
+import Registrate from "../../assets/img/Registrate.webp";
 import { useNavigate } from "react-router-dom";
 
 export const LoginPage = ({ setIsAuth }) => {
@@ -8,8 +8,13 @@ export const LoginPage = ({ setIsAuth }) => {
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
   const [error, setError] = useState("");
-
+  
   const navigate = useNavigate();
+  
+  const goto = (url) => {
+    navigate(`/${url}`);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +30,6 @@ export const LoginPage = ({ setIsAuth }) => {
       });
 
       if (response.status === 200) {
-        // Una vez que inicias sesión correctamente, verifica el estado de autenticación
         const authCheckResponse = await fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
           method: "GET",
           credentials: "include",
@@ -94,7 +98,7 @@ export const LoginPage = ({ setIsAuth }) => {
           <button
             type="button"
             className="btn-secondary"
-            onClick={() => setIsRegistering(true)}
+            onClick={() => goto('Register')}
           >
             Registrarse
           </button>

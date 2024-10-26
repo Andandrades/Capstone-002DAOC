@@ -1,33 +1,45 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
-import registrate from "../../assets/img/Registrate.webp"; // Cambia aquí el nombre de la imagen
+import { useNavigate } from "react-router-dom";
+import registrate from "../../assets/img/Registrate.webp";
+import { Register } from "../../Components/API/Endpoints";
 import "./RegisterStyle.css";
 
 export const RegisterPage = () => {
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setMessage('Las contraseñas no coinciden');
-    } else {
-      setMessage('Registro exitoso');
-      // Aquí puedes añadir la lógica para manejar el registro
-    }
-  };
 
+  const onSubmit = (data) => {
+    event.preventDefault();
+
+    const payload = {
+      email: email,
+      password: password,
+      fk_rol_id: 3,
+    };
+    console.log(payload);
+    Register(payload)
+      .then(response => {
+        setMessage(`Usuario registrado correctamente: ${response}`);
+      })
+      .catch(error => {
+          setMessage(`Error al registrar: ${error.message}`);    
+      });
+  };
+  
   return (
-    <div className="register-container">
-      <form onSubmit={handleRegister} className="register-form">
+    <div className="register-container flex-col">
+      {message && <p className="message">{message}</p>}
+
+      <form onSubmit={onSubmit}
+        className="register-form">
         <div className="logo">
-          <img src={registrate} alt="Registro" /> {/* Cambia aquí a la nueva imagen */}
+          <img src={registrate} alt="Registro" />
         </div>
         <h2>Registrarse</h2>
-        {message && <p className="message">{message}</p>}
         <div className="input-group">
           <label htmlFor="email">Correo Electrónico</label>
           <input
@@ -36,8 +48,10 @@ export const RegisterPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+
           />
         </div>
+
         <div className="input-group">
           <label htmlFor="password">Contraseña</label>
           <input
@@ -46,8 +60,10 @@ export const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+
           />
         </div>
+
         <div className="input-group">
           <label htmlFor="confirmPassword">Confirmar Contraseña</label>
           <input
@@ -56,6 +72,7 @@ export const RegisterPage = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+
           />
         </div>
         <button type="submit" className="btn-primary">Registrarse</button>
