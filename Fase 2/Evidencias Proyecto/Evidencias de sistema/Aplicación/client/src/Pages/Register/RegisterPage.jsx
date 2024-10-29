@@ -1,22 +1,42 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
-import registrate from "../../assets/img/Registrate.webp"; // Cambia aquí el nombre de la imagen
-import "./RegisterStyle.css";
+import { useNavigate } from "react-router-dom";
+import registrate from "../../assets/img/Registrate.webp"; 
+import "./RegisterStyle.css"; 
 
 export const RegisterPage = () => {
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       setMessage('Las contraseñas no coinciden');
-    } else {
-      setMessage('Registro exitoso');
-      // Aquí puedes añadir la lógica para manejar el registro
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }), // email y password
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('Registro exitoso');
+        navigate('/login'); // Redirigir al login 
+      } else {
+        setMessage('Error: ' + data.error);
+      }
+    } catch (error) {
+      setMessage('Error en el servidor: ' + error.message);
     }
   };
 
@@ -24,7 +44,7 @@ export const RegisterPage = () => {
     <div className="register-container">
       <form onSubmit={handleRegister} className="register-form">
         <div className="logo">
-          <img src={registrate} alt="Registro" /> {/* Cambia aquí a la nueva imagen */}
+          <img src={registrate} alt="Registro" /> 
         </div>
         <h2>Registrarse</h2>
         {message && <p className="message">{message}</p>}
