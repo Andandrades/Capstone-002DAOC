@@ -29,7 +29,6 @@ export const GymHourCard = ({ schedule }) => {
     getUserId();
   }, []);
 
-  // Este useEffect se ejecutará cuando userId cambie y sea diferente de una cadena vacía
   useEffect(() => {
     if (userId) {
       searchReservation();
