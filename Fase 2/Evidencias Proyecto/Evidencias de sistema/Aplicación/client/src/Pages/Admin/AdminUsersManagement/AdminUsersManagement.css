@@ -1,77 +1,68 @@
 .roles-container {
   padding: 20px;
-  margin-bottom: 60px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../../../assets/img/Users.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  opacity: 0.9; 
 }
 
 .roles-title {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2em;
   margin-bottom: 20px;
+  color: white; 
+  background-color: #00000090; 
 }
 
 .roles-menu {
-  margin-bottom: 31px; /* Aumentar la separación entre tarjetas */
-  border: 1px solid #ccc; 
-  border-radius: 8px; /* Más curvatura */
-  padding: 20px; /* Aumentar el padding */
-  position: relative; 
-  font-size: 1.1rem; /* Ajustar tamaño del texto */
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .roles-menuTitle {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  font-size: 1.2rem;
-  font-weight: bold;
   cursor: pointer;
-  color: #007BFF;
+  font-size: 1.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  width: 100%;
 }
 
 .filter-icon {
-  margin-left: auto; 
+  margin-left: auto;
 }
 
 .roles-list {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 10px;
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .roles-listItem {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  background-color: #f0f0f0;
-  padding: 15px; /* Aumentar padding */
-  margin-bottom: 10px; /* Más separación */
-  border-radius: 8px;
-  font-size: 1rem; /* Ajustar tamaño del texto */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #eaeaea;
+  border-radius: 6px;
+  margin: 5px 0;
+  width: 100%;
+  max-width: 400px;
 }
 
-.accessibility-icon {
-  margin-left: auto; 
-}
-
+.accessibility-icon,
 .list-icon-right {
-  margin-left: auto; 
-  color: #007BFF;
+  margin-left: 8px;
 }
-
-@media (max-width: 600px) {
-  .roles-title {
-    font-size: 1.2rem;
-  }
-
-  .roles-menuTitle {
-    font-size: 1rem;
-  }
-
-  .roles-listItem {
-    font-size: 0.95rem;
-    padding: 12px; 
-  }
-}
-
-
 

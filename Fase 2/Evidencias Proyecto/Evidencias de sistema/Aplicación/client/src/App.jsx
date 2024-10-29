@@ -16,13 +16,16 @@ import { LandingPage } from "./Pages/LandingPage/LandingPage";
 import { LoginPage } from "./Pages/Login/LoginPage";
 import { Menu } from "./Pages/Menu/Menu";
 import PlansPage from "./Pages/Plans/PlansPage";
+import { AdminNutri } from "./Pages/Admin/AdminNutriCheck/AdminNutri.Page";
 import { ProfilePage } from "./Pages/Profile/ProfilePage";
 import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
+
 import ScheduleNutri from "./Pages/Schedule/ScheduleNutri";
 import { ToastContainer } from "react-toastify";
+
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -104,6 +107,7 @@ function App() {
         </Routes>
       </Router>
     </>
+
   );
 }
 

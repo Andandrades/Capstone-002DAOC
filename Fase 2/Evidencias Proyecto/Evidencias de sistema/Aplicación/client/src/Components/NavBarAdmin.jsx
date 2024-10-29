@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import HouseIcon from '@mui/icons-material/House';
 import TodayIcon from '@mui/icons-material/Today';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
 import HiveIcon from '@mui/icons-material/Hive';
 import './css/ProfileNavBar.css';
@@ -20,16 +20,6 @@ export const NavBarAdmin = () => {
       <Disclosure as="nav">
         <div>
           <div className="relative flex h-16 items-center">
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin')} 
-                className="relative rounded-full text-gray-400 hover:text-white" >
-                <HouseIcon />
-                <h3>Menu</h3>
-              </button>
-            </div>
-
             <div className="ButtonNavBar">
               <button
                 type="button"
@@ -61,6 +51,15 @@ export const NavBarAdmin = () => {
                 <span className="absolute -inset-1.5" />
                 <FitnessCenterIcon />
                 <h3>Planes</h3>
+              </button>
+            </div>
+            <div className="ButtonNavBar">
+              <button
+                type="button"
+                onClick={() => goto('Admin')} 
+                className="relative rounded-full text-gray-400 hover:text-white" >
+                <FavoriteIcon />
+                <h3>Consultas</h3>
               </button>
             </div>
 
