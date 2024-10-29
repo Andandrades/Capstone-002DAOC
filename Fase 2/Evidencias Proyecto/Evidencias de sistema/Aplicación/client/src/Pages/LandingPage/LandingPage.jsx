@@ -25,7 +25,7 @@ export const LandingPage = () => {
   const [plans, setPlans] = useState([]);
   const [dataNutri, setDataNutri] = useState([]);
 
-  
+
   //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
@@ -39,20 +39,22 @@ export const LandingPage = () => {
   const scrollToSection = (ref) => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" });
-    }};
+    }
+  };
 
   const fetchPlanes = async () => {
     try {
-      const data = await obtenerPlanes(); 
+      const data = await obtenerPlanes();
       setPlans(data);
     } catch (err) {
       setError(err.message);
     } finally {
-    }};
+    }
+  };
 
   const fetchNutri = async () => {
     try {
-      const data = await obtenerNutri(); 
+      const data = await obtenerNutri();
       setDataNutri(data);
     } catch (err) {
       setError(err.message);
@@ -203,7 +205,7 @@ export const LandingPage = () => {
         </div>
       </section>
       <div className="separator" />
-      <FisicoComponent/>
+      <FisicoComponent />
       <section
         ref={sectionRef4}
         className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col"
@@ -237,11 +239,10 @@ export const LandingPage = () => {
         </div>
         <div className="flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
           {dataNutri && dataNutri.length > 0 ? (
-            dataNutri.map((nutri) => (
+            dataNutri.map((nutri, index) => (
               <NutriCard
-                key={nutri.plan_id}
+                key={nutri.id || index}
                 name={nutri.name}
-                n_class={nutri.n_class}
                 amount={nutri.price}
                 description={nutri.description}
               />

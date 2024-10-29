@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { addPlan } from '../../../../Components/API/Endpoints';
+import { updatePlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
-const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
+const ModifyPlanModal = (props) => {
+  const { isOpen, onClose, id, name, amount, n_class, fetchPlans,description } = props;
   if (!isOpen) return null;
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -27,7 +28,7 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
       color: selectedColor,
       id: { id }
     };
-    addPlan(payload)
+    updatePlan(id, payload)
       .then(response => {
         console.log('Plan agregado:', response);
         fetchPlans(true)
@@ -37,6 +38,7 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
       });
     onClose();
   };
+  console.log(n_class)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -57,6 +59,7 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
                   type="text"
                   className="form-control w-full p-2 border border-gray-300 rounded-md"
                   id="planName"
+                  defaultValue={name}
                   {...register("name", { required: true })}
                 />
                 {errors.name && <span className="text-red-500">Este campo es obligatorio</span>}
@@ -69,6 +72,7 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
                   type="text"
                   className="form-control w-full p-2 border border-gray-300 rounded-md"
                   id="planDescription"
+                  defaultValue={description}
                   {...register("description", { required: true })}
                 />
                 {errors.description && <span className="text-red-500">Este campo es obligatorio</span>}
@@ -81,9 +85,21 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
                   type="number"
                   className="form-control w-full p-2 border border-gray-300 rounded-md"
                   id="planPrice"
+                  defaultValue={amount}
                   {...register("price", { required: true })}
                 />
                 {errors.price && <span className="text-red-500">Este campo es obligatorio</span>}
+              </div>
+              <div className="form-group mb-4">
+                <label htmlFor="planPrice" className="block text-sm font-medium text-gray-700">
+                  Precio oferta (no obligatorio) 
+                </label>
+                <input
+                  type="number"
+                  className="form-control w-full p-2 border border-gray-300 rounded-md"
+                  id="planPrice"
+                  {...register("offer_price", { required: false })}
+                />
               </div>
               <div className="form-group mb-4">
                 <label htmlFor="planClasses" className="block text-sm font-medium text-gray-700">
@@ -93,10 +109,13 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
                   type="number"
                   className="form-control w-full p-2 border border-gray-300 rounded-md"
                   id="planClasses"
+                  defaultValue={n_class}
+                  
                   {...register("n_class", { required: true })}
                 />
                 {errors.n_class && <span className="text-red-500">Este campo es obligatorio</span>}
               </div>
+              
               <div>
                 <label htmlFor="options" className="block text-sm font-medium text-gray-700">
                   Seleccione tipo de plan
@@ -106,8 +125,8 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
                   className="form-select mt-1 block w-full p-2 border border-gray-300 rounded-md"
                   {...register("type")}
                 >
-                  <option value="opcion1">Individual</option>
-                  <option value="opcion2">En parejas</option>
+                  <option value="Individual">Individual</option>
+                  <option value="En parejas">En parejas</option>
                 </select>
               </div>
               <div className="form-group mb-4">
@@ -147,9 +166,5 @@ const ModifyPlanModal = ({ isOpen, onClose, fetchPlans, id }) => {
   );
 };
 
-ModifyPlanModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
 
 export default ModifyPlanModal;

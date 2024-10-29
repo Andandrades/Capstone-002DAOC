@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ManagePlans } from '../../../Components/ManagePlans';
+import { ManagePlans } from '../AdminPlans/Components/ManagePlans';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
-import "./AdminPlans.css";
 import { obtenerPlanes } from '../../../Components/API/Endpoints';
 import AddPlanModal from './Components/AddPlanModal';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export const AdminPlans = () => {
   const [plans, setPlans] = useState([]);
@@ -26,16 +26,16 @@ export const AdminPlans = () => {
 
   return (
 
-    <div className="body ">
-      <section className="w-screen flex flex-col justify-start items-center">
-        <div className="my-6 z-10">
-          <h1 className="text-4xl font-bold text-white">Gestionar planes</h1>
-        </div>
-        <button className="text-base rounded-full py-2 pl-4 pr-4 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
-          onClick={() => setIsModalOpen(true)}>
-          Añadir Plan
-        </button>
+    <div className="bg-[#333] min-h-screen flex flex-col justify-between mb-10">
 
+      <div >
+        <div className="bg-[#333] flex flex-col justify-start items-center pt-6">
+          <h1 className="text-3xl font-bold text-white text-center">Gestionar planes</h1>
+          <button className="text-base rounded-full py-2 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
+            onClick={() => setIsModalOpen(true)}>
+            Añadir Plan
+          </button>
+        </div>
         <div className="planes">
           {plans && plans.length > 0 ? (
             plans.map((plan) => (
@@ -51,10 +51,13 @@ export const AdminPlans = () => {
               </div>
             ))
           ) : (
-            <p className="text-white">No hay planes disponibles.</p>
+            <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
+              <HelpOutlineIcon sx={{ fill: "#f1c21b", width: "40px", height: "40px" }} />
+              <p className="font-semibold text-gray-500">No se han encontrado planes!.</p>
+            </div>
           )}
         </div>
-      </section>
+      </div>
       <div className="pad pb-10"></div>
       <NavBarAdmin />
       <AddPlanModal
@@ -62,6 +65,6 @@ export const AdminPlans = () => {
         onClose={() => setIsModalOpen(false)}
         fetchPlans={setFetchPlans}
       />
-    </div>
+    </div >
   );
 };
