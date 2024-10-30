@@ -180,6 +180,78 @@ const updateActualCap = async (req, res) => {
   }
 };
 
+
+//Copiar esquema de clases
+const copyClassesToDays = async (req, res) => {
+  const { originalDay, targetDays } = req.body;
+
+  try {
+    // 1. Obtener las clases del día original usando tu función existente
+    const query = `
+      SELECT * 
+      FROM gym_schedule
+      WHERE EXTRACT(DOW FROM schedule_date) = $1
+      AND schedule_date >= DATE_TRUNC('week', CURRENT_DATE)
+      AND schedule_date < DATE_TRUNC('week', CURRENT_DATE) + INTERVAL '7 days';
+    `;
+
+    const originalClasses = await pool.query(query, [getDayOfWeek(originalDay)]);
+    
+    // 2. Insertar las clases en los días seleccionados
+    const insertQuery = `
+      INSERT INTO gym_schedule (start_hour, end_hour, max_cap, actual_cap, admin_id, schedule_date)
+      VALUES ($1, $2, $3, $4, $5, $6);
+    `;
+
+    for (const day of targetDays) {
+      const newDate = getNewDateForDay(day);  // Obtener la nueva fecha para cada día
+
+      for (const clase of originalClasses.rows) {
+        await pool.query(insertQuery, [
+          clase.start_hour,
+          clase.end_hour,
+          clase.max_cap,
+          clase.actual_cap,
+          clase.admin_id,
+          newDate
+        ]);
+      }
+    }
+
+    res.status(200).send({ message: 'Clases copiadas correctamente' });
+  } catch (err) {
+    console.error('Error copiando clases:', err);
+    res.status(500).send('Error en el servidor');
+  }
+};
+
+// Función auxiliar para convertir días en números
+const getDayOfWeek = (day) => {
+  switch (day.toUpperCase()) {
+    case "L": return 1;
+    case "M": return 2;
+    case "X": return 3;
+    case "J": return 4;
+    case "V": return 5;
+    case "S": return 6;
+    case "D": return 0;
+    default: return null;
+  }
+};
+
+// Función para obtener la nueva fecha en la semana actual según el día seleccionado
+const getNewDateForDay = (day) => {
+  const today = new Date();
+  const currentDay = today.getDay();
+  const targetDay = getDayOfWeek(day);
+  
+  const diff = targetDay - currentDay;
+  const newDate = new Date(today);
+  newDate.setDate(today.getDate() + diff);
+  
+  return newDate.toISOString().split('T')[0];  // Retorna la fecha en formato YYYY-MM-DD
+};
+
 module.exports = {
   getGymHours,
   createGymHour,
@@ -188,4 +260,5 @@ module.exports = {
   getSingleHour,
   getHourByDay,
   updateActualCap,
+  copyClassesToDays
 };

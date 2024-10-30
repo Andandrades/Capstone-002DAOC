@@ -6,7 +6,9 @@ const {
     getNutriHour,
     updateNutriHour,
     deleteNutriHour,
-    getHoursByDate
+    getHoursByDate,
+    scheduleHour,
+    cancelHour
 } = require("../controllers/nutri_schedule.controllers");
 
 
@@ -23,5 +25,9 @@ router.post("/nutriSchedule",createNutriHour);
 router.put("/nutriSchedule/:id",updateNutriHour);
 
 router.delete("/nutriSchedule/:id",deleteNutriHour);
+
+//Endpoints Cliente
+router.patch("/nutriScheduleClient/:id",scheduleHour);
+router.patch("/nutriScheduleClientcancel/:id",cancelHour);
 
 module.exports = router;

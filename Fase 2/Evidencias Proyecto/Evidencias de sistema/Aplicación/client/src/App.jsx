@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, BrowserRouter as Router, Routes, } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import "./App.css";
 import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
 import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
@@ -17,12 +22,15 @@ import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
-import { ScheduleNutri } from "./Pages/Schedule/ScheduleNutri";
+
+import ScheduleNutri from "./Pages/Schedule/ScheduleNutri";
+import { ToastContainer } from "react-toastify";
+
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
-  //const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuth");
@@ -39,6 +47,7 @@ function App() {
         setIsAuth(data.isAuth);
         setLoading(false);
         localStorage.setItem("isAuth", JSON.stringify(data.isAuth));
+        setUserId(data.userId);
       })
       .catch((err) => {
         console.error("Error fetching /checkauth:", err);
@@ -58,6 +67,8 @@ function App() {
   };
 
   return (
+    <>
+    <ToastContainer/>
     <Router>
       <Routes>
         {/*Principal*/}
@@ -91,6 +102,7 @@ function App() {
 
       </Routes>
     </Router>
+    </>
   );
 }
 
