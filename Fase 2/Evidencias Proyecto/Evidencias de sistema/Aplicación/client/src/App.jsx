@@ -17,7 +17,7 @@ import { RecoverPage } from "./Pages/Recover/RecoverPage";
 import { RegisterPage } from "./Pages/Register/RegisterPage";
 import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
 import { SchedulePage } from "./Pages/Schedule/SchedulePage";
-import {ScheduleNutri} from "./Pages/Schedule/ScheduleNutri";
+import { ScheduleNutri } from "./Pages/Schedule/ScheduleNutri";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -60,31 +60,34 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/*Principal*/}
+        <Route path="*" element={<Navigate to="/" />} />,
         <Route path="/" element={<LandingPage />} />
-        <Route path="/inicio" element={ <Menu /> } />
+        <Route path="/inicio" element={<Menu />} />
+
+        {/*Manejo de sesiones*/}
         <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/recover" element={<RecoverPage />} />
-        <Route path="/Profile" element={<ProfilePage />} />
-        <Route path="/Plans" element={<PlansPage />} />
 
-        {/* rutas sin implementar*/}
-        <Route path="/schedule" element={<SchedulePage/>} />,
-        <Route path="/schedule/gym" element={<ScheduleGym/>} />,
-        <Route path="/schedule/nutri" element={<ScheduleNutri/>} />,
-        <Route path="/menu" element={<SchedulePage />} />,
-        <Route path="/classes" element={<ClassesPage />} />,
+        {/* Perfil usuario*/}
+        <Route path="/schedule" element={<ProtectedRoute> <SchedulePage /> </ProtectedRoute>} />,
+        <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
+        <Route path="/schedule/nutri" element={<ProtectedRoute> <ScheduleNutri /> </ProtectedRoute>} />,
+        <Route path="/menu" element={<ProtectedRoute> <SchedulePage /> </ProtectedRoute>} />,
+        <Route path="/classes" element={<ProtectedRoute> <ClassesPage /> </ProtectedRoute>} />,
+        <Route path="/Profile" element={<ProtectedRoute> <ProfilePage /> </ProtectedRoute>} />
 
 
         {/* rutas de administrador gestionar permisos por rol no implementado*/}
-        <Route path="/Admin" element={<AdminNutri/>} />,
+        <Route path="/Admin" element={<AdminNutri />} />,
         <Route path="/Admin/Planes" element={<AdminPlans />} />,
         <Route path="/Admin/Clases" element={<AdminClasses />} />,
         <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
         <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
 
-        {/* ruta general  */}
-        <Route path="*" element={<Navigate to="/" />} />,
+        {/* sin implementar */}
+        <Route path="/Plans" element={<PlansPage />} />
 
       </Routes>
     </Router>

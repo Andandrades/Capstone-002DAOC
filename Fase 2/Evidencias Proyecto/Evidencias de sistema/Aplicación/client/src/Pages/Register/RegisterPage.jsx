@@ -20,13 +20,16 @@ export const RegisterPage = () => {
       password: password,
       fk_rol_id: 3,
     };
-    console.log(payload);
+       
     Register(payload)
       .then(response => {
-        setMessage(`Usuario registrado correctamente: ${response}`);
+        console.log("response",response)
+        setMessage(`Usuario registrado correctamente: ${response.message}`);
       })
       .catch(error => {
-          setMessage(`Error al registrar: ${error.message}`);    
+        console.log("error",error)
+
+        setMessage(`Error al registrar: ${error.message}`);
       });
   };
   
