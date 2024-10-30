@@ -68,46 +68,41 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
-      <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/inicio" element={<Menu />} />
-          <Route
-            path="/login"
-            element={
-              <RedirectIfAuthenticated>
-                {" "}
-                <LoginPage setIsAuth={setIsAuth} />{" "}
-              </RedirectIfAuthenticated>
-            }
-          />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/recover" element={<RecoverPage />} />
-          <Route path="/Profile" element={<ProfilePage />} />
-          <Route path="/Plans" element={<PlansPage />} />
-          {/* rutas sin implementar*/}
-          <Route path="/schedule" element={<SchedulePage />} />,
-          <Route path="/schedule/gym" element={<ScheduleGym />} />,
-          <Route
-            path="/schedule/nutri"
-            element={<ScheduleNutri userId={userId} />}
-          />
-          ,
-          <Route path="/menu" element={<SchedulePage />} />,
-          <Route path="/classes" element={<ClassesPage />} />,
-          {/* rutas de administrador gestionar permisos por rol no implementado*/}
-          <Route path="/Admin" element={<AdminMenu />} />,
-          <Route path="/Admin/Planes" element={<AdminPlans />} />,
-          <Route path="/Admin/Clases" element={<AdminClasses />} />,
-          <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
-          <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
-          {/* ruta general  */}
-          <Route path="*" element={<Navigate to="/" />} />,
-        </Routes>
-      </Router>
-    </>
+    <ToastContainer/>
+    <Router>
+      <Routes>
+        {/*Principal*/}
+        <Route path="*" element={<Navigate to="/" />} />,
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/inicio" element={<Menu />} />
 
+        {/*Manejo de sesiones*/}
+        <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/recover" element={<RecoverPage />} />
+
+        {/* Perfil usuario*/}
+        <Route path="/schedule" element={<ProtectedRoute> <SchedulePage /> </ProtectedRoute>} />,
+        <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
+        <Route path="/schedule/nutri" element={<ProtectedRoute> <ScheduleNutri /> </ProtectedRoute>} />,
+        <Route path="/menu" element={<ProtectedRoute> <SchedulePage /> </ProtectedRoute>} />,
+        <Route path="/classes" element={<ProtectedRoute> <ClassesPage /> </ProtectedRoute>} />,
+        <Route path="/Profile" element={<ProtectedRoute> <ProfilePage /> </ProtectedRoute>} />
+
+
+        {/* rutas de administrador gestionar permisos por rol no implementado*/}
+        <Route path="/Admin" element={<AdminNutri />} />,
+        <Route path="/Admin/Planes" element={<AdminPlans />} />,
+        <Route path="/Admin/Clases" element={<AdminClasses />} />,
+        <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
+        <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
+
+        {/* sin implementar */}
+        <Route path="/Plans" element={<PlansPage />} />
+
+      </Routes>
+    </Router>
+    </>
   );
 }
 
