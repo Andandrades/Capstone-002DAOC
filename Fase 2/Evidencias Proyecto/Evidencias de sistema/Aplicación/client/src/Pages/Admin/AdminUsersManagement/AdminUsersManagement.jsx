@@ -35,9 +35,7 @@ const AdminUsersManagement = () => {
   };
 
   const confirmDelete = () => {
-    if (userType === 'client') {
-      setClients(clients.filter(client => client !== selectedUser));
-    } else if (userType === 'nutritionist') {
+    if (userType === 'nutritionist') {
       setNutritionists(nutritionists.filter(nutritionist => nutritionist !== selectedUser));
     } else if (userType === 'trainer') {
       setTrainers(trainers.filter(trainer => trainer !== selectedUser));
@@ -92,7 +90,6 @@ const AdminUsersManagement = () => {
                     </button>
                     {showDropdowns.clients === index && (
                       <div className="dropdown-content">
-                        <button className="delete-button" onClick={() => handleDeleteClick(client, 'client')}>Borrar</button>
                         <button className="edit-button" onClick={() => alert('Editar funcionalidad en desarrollo')}>Editar</button>
                       </div>
                     )}
@@ -198,3 +195,4 @@ const AdminUsersManagement = () => {
 };
 
 export default AdminUsersManagement;
+
