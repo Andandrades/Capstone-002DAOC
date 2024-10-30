@@ -5,7 +5,7 @@
 -- Dumped from database version 15.8
 -- Dumped by pg_dump version 15.8
 
--- Started on 2024-10-23 15:49:47
+-- Started on 2024-10-29 23:23:24
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -91,7 +91,7 @@ CREATE TABLE public.plans (
     name text NOT NULL,
     description text NOT NULL,
     price integer NOT NULL,
-    offer_price integer NOT NULL,
+    offer_price integer,
     type text NOT NULL,
     n_class integer NOT NULL,
     color character varying
@@ -408,7 +408,8 @@ CREATE TABLE public.nutrition (
     id integer NOT NULL,
     name character varying,
     description character varying,
-    price character varying
+    price character varying,
+    offer_price integer
 );
 
 
@@ -548,6 +549,9 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public."Users
 -- Data for Name: nutrition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.nutrition VALUES (3, '1', '1', '1', NULL);
+INSERT INTO public.nutrition VALUES (4, '1', '1', '1', NULL);
+INSERT INTO public.nutrition VALUES (2, '1', '1', '1', 1);
 
 
 --
@@ -556,6 +560,11 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public."Users
 -- Data for Name: plans; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.plans VALUES (49, '1', '1', 1, 1, 'Individual', 1, '#007bff');
+INSERT INTO public.plans VALUES (46, '1', '1', 1, NULL, 'Individual', 1, '#28a745');
+INSERT INTO public.plans VALUES (48, '1', '1', 1, NULL, 'Individual', 1, '#007bff');
+INSERT INTO public.plans VALUES (47, '1', '1', 1, NULL, 'Individual', 1, '#6f42c1');
+INSERT INTO public.plans VALUES (50, '1', '1', 1, NULL, 'Individual', 1, '#28a745');
 
 
 --
@@ -616,7 +625,7 @@ SELECT pg_catalog.setval('public."Exercise_history_history_id_seq"', 1, false);
 -- Name: Plans_plan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Plans_plan_id_seq"', 45, true);
+SELECT pg_catalog.setval('public."Plans_plan_id_seq"', 50, true);
 
 
 --
@@ -679,7 +688,7 @@ SELECT pg_catalog.setval('public.nutri_schedule_nutri_schedule_id_seq', 1, false
 -- Name: nutrition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.nutrition_id_seq', 1, true);
+SELECT pg_catalog.setval('public.nutrition_id_seq', 4, true);
 
 
 --
@@ -925,7 +934,7 @@ ALTER TABLE ONLY public.transactions
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2024-10-23 15:49:47
+-- Completed on 2024-10-29 23:23:24
 
 --
 -- PostgreSQL database dump complete
