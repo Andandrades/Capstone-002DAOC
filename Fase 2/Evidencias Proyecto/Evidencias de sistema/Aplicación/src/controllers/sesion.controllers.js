@@ -58,7 +58,7 @@ const registerUser = async (req, res) => {
       "SELECT * FROM users WHERE email = $1",
       [email]
     );
-    if (userExists.rows.lenght > 0) {
+    if (userExists.rows.length > 0) {
       return res
         .status(400)
         .json({ message: "Usuario ya se encuentra registrado" });
@@ -69,7 +69,7 @@ const registerUser = async (req, res) => {
       "INSERT INTO users(email,password,register_date,fk_rol_id) VALUES ($1,$2,NOW(),$3) RETURNING id,email",
       [email, hashedPassword, fk_rol_id]
     );
-    res
+    return res
       .status(201)
       .json({ message: "Usuario registrado con éxito", user: newUser.rows[0] });
   } catch (error) {
