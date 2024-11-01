@@ -6,6 +6,7 @@ import "react-day-picker/style.css";
 import "./ScheduleNutriStyle.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
+
 export const ScheduleNutri = ({ userId }) => {
   const [date, setDate] = useState(new Date());
   const [appointments, setAppointments] = useState([]);
