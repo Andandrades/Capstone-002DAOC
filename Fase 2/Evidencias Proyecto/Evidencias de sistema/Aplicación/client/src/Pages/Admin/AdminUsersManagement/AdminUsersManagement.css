@@ -8,15 +8,17 @@
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
-  opacity: 0.9; 
+  opacity: 0.9;
 }
 
 .roles-title {
   text-align: center;
   font-size: 2em;
   margin-bottom: 20px;
-  color: white; 
-  background-color: #00000090; 
+  color: white;
+  background-color: #00000090;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .roles-menu {
@@ -37,10 +39,6 @@
   width: 100%;
 }
 
-.filter-icon {
-  margin-left: auto;
-}
-
 .roles-list {
   list-style: none;
   padding-left: 0;
@@ -59,10 +57,98 @@
   margin: 5px 0;
   width: 100%;
   max-width: 400px;
+  position: relative; /* Para el menú desplegable */
 }
 
-.accessibility-icon,
-.list-icon-right {
-  margin-left: 8px;
+.dropdown {
+  position: relative;
+}
+
+.dropdown-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  position: absolute;
+  right: 0;
+  min-width: 100px;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-button {
+  color: white;
+  background-color: #ff0000;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.edit-button {
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.popup-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.confirm-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
 }
 

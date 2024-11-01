@@ -48,6 +48,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
             </div>
           </div>
           <div className="modal-body">
+            
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-group mb-4">
                 <label htmlFor="planName" className="block text-sm font-medium text-gray-700">
@@ -61,6 +62,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
                 />
                 {errors.name && <span className="text-red-500">Este campo es obligatorio</span>}
               </div>
+
               <div className="form-group mb-4">
                 <label htmlFor="planDescription" className="block text-sm font-medium text-gray-700">
                   Descripción del Plan
@@ -73,6 +75,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
                 />
                 {errors.description && <span className="text-red-500">Este campo es obligatorio</span>}
               </div>
+
               <div className="form-group mb-4">
                 <label htmlFor="planPrice" className="block text-sm font-medium text-gray-700">
                   Precio
@@ -85,6 +88,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
                 />
                 {errors.price && <span className="text-red-500">Este campo es obligatorio</span>}
               </div>
+
               <div className="form-group mb-4">
                 <label htmlFor="planPrice" className="block text-sm font-medium text-gray-700">
                   Precio oferta (no obligatorio) 
