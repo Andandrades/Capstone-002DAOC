@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import axios from "axios";
+import CreateGymHourModal from "../../../Components/CreateGymHourModal";
 import CopyClassesModal from "../../../Components/CopyClassesModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { GymHourCard } from "../../../Components/GymHourCard";
@@ -9,7 +10,8 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-export const AdminClasses = () => {
+export const AdminClasses = ({}) => {
+
   const [schedueInfo, setScheduleInfo] = useState([]);
 
   const [day, setDay] = useState("X");
@@ -48,7 +50,6 @@ export const AdminClasses = () => {
 
   useEffect(() => {
     fetchGymHours(day);
-    console.log(schedueInfo);
   }, []);
 
   const openModalDays = async () => {
@@ -64,7 +65,7 @@ export const AdminClasses = () => {
 
   return (
     <>
-      <div className="w-full h-screen flex justify-start relative flex-col">
+      <div className="w-full flex justify-start relative flex-col">
         <div className="w-full text-2xl font-semibold flex justify-center py-10">
           <h1>Administrar Clases</h1>
         </div>
@@ -113,18 +114,7 @@ export const AdminClasses = () => {
         ) : null}
 
         {createModal ? (
-          <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-            <div className="bg-white w-[90%] p-3 rounded-lg">
-              <div className="w-full flex justify-end">
-                <HighlightOffIcon
-                  className="text-black cursor-pointer"
-                  onClick={() => setCreateModal(false)}
-                ></HighlightOffIcon>
-              </div>
-              <h1 className="font-semibold text-2xl">Crear Clase</h1>
-
-            </div>
-          </div>
+          <CreateGymHourModal setCreateModal={setCreateModal} />
         ) : null}
       </div>
 

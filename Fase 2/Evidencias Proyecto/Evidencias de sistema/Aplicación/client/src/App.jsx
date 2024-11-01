@@ -93,7 +93,7 @@ function App() {
         {/* rutas de administrador gestionar permisos por rol no implementado*/}
         <Route path="/Admin" element={<AdminNutri />} />,
         <Route path="/Admin/Planes" element={<AdminPlans />} />,
-        <Route path="/Admin/Clases" element={<AdminClasses />} />,
+        <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />,
         <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
         <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
 
