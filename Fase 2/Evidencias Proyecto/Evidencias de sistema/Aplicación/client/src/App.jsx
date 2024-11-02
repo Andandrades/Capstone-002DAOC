@@ -64,11 +64,11 @@ function App() {
     <>
       <ToastContainer />
       <Router>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading pagina...</div>}>
           <Routes>
             {/*Principal*/}
             <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage isAuth={isAuth} />} />
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
