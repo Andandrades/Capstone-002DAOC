@@ -4,7 +4,7 @@ import registrate from "../../assets/img/Registrate.webp";
 import { Register } from "../../Components/API/Endpoints";
 import "./RegisterStyle.css";
 
-export const RegisterPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -84,3 +84,5 @@ export const RegisterPage = () => {
     </div>
   );
 };
+
+export default RegisterPage;

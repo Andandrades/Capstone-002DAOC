@@ -5,7 +5,7 @@ import { obtenerNutri } from '../../../Components/API/Endpoints';
 import AddPlanModal from './Components/AddNutriModal';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-export const AdminNutri = () => {
+ const AdminNutri = () => {
   const [data, setData] = useState([]);
   const [fetchPlans, setFetchPlans] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,3 +67,5 @@ export const AdminNutri = () => {
     </div >
   );
 };
+
+export default AdminNutri;

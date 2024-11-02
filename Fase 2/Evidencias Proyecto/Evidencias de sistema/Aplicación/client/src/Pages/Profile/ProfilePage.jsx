@@ -5,7 +5,7 @@ import userIcon from "../../assets/img/userIcon.webp";
 import "./ProfileStyle.css"
 import { Logout } from "../../Components/API/sesion";
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   return (
     <div className="genericocontainer h-screen flex flex-col justify-between">
       <section className="backgroundPrimary w-full flex flex-col items-center  h-full">
@@ -80,3 +80,5 @@ export const ProfilePage = () => {
     </div>
   );
 }
+
+export default ProfilePage;

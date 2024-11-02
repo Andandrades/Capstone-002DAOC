@@ -7,7 +7,7 @@ import "./ScheduleStyles.css";
 import "./SelectDayButton.css";
 import { useEffect } from "react";
 
-export const ScheduleGym = ({userId}) => {
+const ScheduleGym = ({userId}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scheduleInfo , setScheduleInfo] = useState("")
   //Dias de la semana
@@ -96,3 +96,5 @@ useEffect(() => {
     </>
   );
 };
+
+export default ScheduleGym;

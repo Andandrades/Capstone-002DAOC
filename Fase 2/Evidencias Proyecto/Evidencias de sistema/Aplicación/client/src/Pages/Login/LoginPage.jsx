@@ -3,7 +3,7 @@ import "./LoginStyle.css";
 import Registrate from "../../assets/img/Registrate.webp";
 import { useNavigate } from "react-router-dom";
 
-export const LoginPage = ({ setIsAuth }) => {
+const LoginPage = ({ setIsAuth }) => {
 
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
@@ -118,3 +118,5 @@ export const LoginPage = ({ setIsAuth }) => {
     </div>
   );
 };
+
+export default LoginPage;

@@ -3,7 +3,7 @@ import "../../Components/css/BackgroundRadius.css"
 import { NextClass } from "../../Components/NextClass"
 import { UserNavBar } from "../../Components/UserNavBar"
 
-export const Menu = () => {
+const Menu = () => {
     return (
         <>
         <section className="w-full flex justify-start py-10 flex-col px-4 backgroundPrimary h-[100vh] ">
@@ -20,3 +20,5 @@ export const Menu = () => {
          </>
     )
 }
+
+export default Menu;
