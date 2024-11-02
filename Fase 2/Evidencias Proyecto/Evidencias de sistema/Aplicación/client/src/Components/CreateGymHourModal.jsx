@@ -3,14 +3,18 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const CreateGymHourModal = ({ setCreateModal }) => {
+const CreateGymHourModal = ({ setCreateModal ,storedUser , setRefresh , refresh}) => {
   
+
   const [formData, setFormData] = useState({
     start_hour: "00:00",
     end_hour: "00:00",
     max_cap: 0,
+    actual_cap: 0,
     schedule_date: "",
+    admin_id: parseInt(storedUser)
   });
 
 
@@ -35,18 +39,19 @@ const CreateGymHourModal = ({ setCreateModal }) => {
       );
       console.log("Respuesta:", response.data);
       setCreateModal(false);
+      toast.success("Hora añadida correctamente");
+      setRefresh(!refresh)
     } catch (error) {
       console.log("Error al crear la clase", error);
+      toast.error("Error al agendar la hora");
     }
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userID"); // Cambia a "userID"
+    
     if (storedUser) {
         setFormData({
             ...formData,
-            actual_cap: 0, // Valor predeterminado
-            admin_id: parseInt(storedUser), // Asegúrate de convertirlo a número
         });
     } else {
         console.error("No se encontró userID en localStorage");

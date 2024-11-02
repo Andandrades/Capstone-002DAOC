@@ -7,8 +7,8 @@ import { Logout } from "../../Components/API/sesion";
 
 export const ProfilePage = () => {
   return (
-    <div className="genericocontainer h-screen flex flex-col justify-between">
-      <section className="backgroundPrimary w-full flex flex-col items-center  h-full">
+    <div className="genericocontainer pb-32 flex flex-col justify-between">
+      <section className="backgroundPrimary w-full flex flex-col items-center ">
         <div className="w-full flex justify-center items-center pt-10 pb-10">
           <h1 className="text-3xl font-bold">Mi perfil</h1>
         </div>

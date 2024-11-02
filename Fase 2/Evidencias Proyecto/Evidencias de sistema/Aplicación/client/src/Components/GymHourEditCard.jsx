@@ -3,7 +3,7 @@ import User from "../assets/User.svg";
 import Clock from "../assets/Clock.svg";
 import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-
+import { DayPicker } from "react-day-picker";
 export const GymHourEditCard = ({ schedule }) => {
   const {
     gym_schedule_id,
@@ -19,21 +19,14 @@ export const GymHourEditCard = ({ schedule }) => {
   const [reservation, setReservation] = useState(null);
   const [userId, setUserId] = useState("");
   const [classId, setClassId] = useState({});
+  const [editModal, setEditModal] = useState(false);
 
   //Funcion para cambiar el estado del Modal
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+
 
   useEffect(() => {
     getUserId();
   }, []);
-
-  useEffect(() => {
-    if (userId) {
-      searchReservation();
-    }
-  }, [userId]);
 
   const getUserId = async () => {
     try {
@@ -51,26 +44,7 @@ export const GymHourEditCard = ({ schedule }) => {
     }
   };
 
-  const searchReservation = async () => {
-    try {
-      const respuesta = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/scheduleHour/${userId}/${gym_schedule_id}`
-      );
-      if (respuesta.ok) {
-        const data = await respuesta.json();
-        setReservation(true);
-        setClassId(data[0].class_id);
-        //console.log(respuesta);
-      } else {
-        setReservation(false);
-        //console.log(respuesta);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   const fetchScheduledUsers = async () => {
     try {
@@ -117,9 +91,8 @@ export const GymHourEditCard = ({ schedule }) => {
     const remainingMinutes = minutes % 60; // Calcular los minutos restantes
 
     // Retornar la duración en formato 'X horas Y minutos'
-    return `${hours > 0 ? hours + "h " : ""}${
-      remainingMinutes > 0 ? remainingMinutes + "min" : ""
-    }`;
+    return `${hours > 0 ? hours + "h " : ""}${remainingMinutes > 0 ? remainingMinutes + "min" : ""
+      }`;
   };
 
   //Funcion para eliminar hora
@@ -196,79 +169,120 @@ export const GymHourEditCard = ({ schedule }) => {
         </div>
       </div>
       <div
-        onClick={toggleModal}
+
         className="w-full flex mt-5 justify-center items-center"
       >
-        {!reservation ? (
-          <button className="bg-[#FCDE3B] font-medium rounded-full w-1/2">
-            Reservar
+        <div className="w-full flex justify-center items-center gap-4 px-4">
+          <button className="bg-[#FCDE3B] font-medium rounded-full w-1/2" onClick={() => setEditModal(true)}>
+            Editar
           </button>
-        ) : (
-          <button className="bg-[#6bf18f] font-medium rounded-full w-1/2">
-            Ver detalles
+          <button className="bg-red-500 text-white font-medium rounded-full w-1/2">
+            Eliminar
           </button>
-        )}
-      </div>
+        </div>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 px-6 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white flex justify-around flex-col w-full h-[70%] p-5 rounded-lg shadow-lg relative">
-            <div className=" flex justify-center items-center flex-row">
-              <div className="w-[90%] text-[#3936C1] font-bold">
-                <p>{`${formatHour(start_hour)} - ${formatHour(end_hour)}`}</p>
+      </div>
+      {editModal ? (
+        <div className="fixed py-32 inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+          <div className="bg-white flex flex-col p-6 rounded-lg">
+            <div className="flex justify-between items-center flex-row">
+              <h1>Editar Hora</h1>
+              <HighlightOffIcon
+                className="text-black cursor-pointer"
+                onClick={() => setEditModal(false)}
+              ></HighlightOffIcon>
+            </div>
+            <form
+              className="space-y-4 p-4 max-w-md mx-auto"
+            >
+              <div>
+                <label
+                  htmlFor="start_hour"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Hora Inicio:
+                </label>
+                <input
+                  type="time"
+                  id="start_hour"
+                  name="start_hour"
+
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
               </div>
-              <button className="w-[10%] text-lg" onClick={toggleModal}>
-                <HighlightOffIcon sx={{ width: "30px", height: "30px" }} />
+
+              <div>
+                <label
+                  htmlFor="end_hour"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Hora Termino:
+                </label>
+                <input
+                  type="time"
+                  id="end_hour"
+                  name="end_hour"
+
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="max_cap"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Capacidad Maxima:
+                </label>
+                <select
+                  id="max_cap"
+                  name="max_cap"
+
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                >
+                  <option value="">Capacidad Maxima</option>
+                  {[...Array(101).keys()].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="schedule_date"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Fecha Clase:
+                </label>
+                <div className="mt-1 w-full max-w-xs sm:max-w-md mx-auto overflow-hidden rounded-md border border-gray-300 shadow-sm">
+                  <DayPicker
+                    mode="single"
+
+                    className="p-2"
+                    styles={{
+                      day: { maxWidth: "2rem" },
+                      months: { display: "flex", justifyContent: "center" },
+                    }}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Submit
               </button>
-            </div>
-            <div className="bg-gray-300 rounded-md w-full my-6 h-[60%] overflow-auto">
-              {scheduledUsers.length > 0 ? (
-                scheduledUsers.map((reservation, index) => (
-                  <div key={index} className="p-2 bg-white">
-                    {reservation.client_name}
-                  </div>
-                ))
-              ) : (
-                <p>No hay reservas para esta clase.</p>
-              )}
-            </div>
-            <div className="flex justify-around items-center">
-              <div className="flex gap-1 justify-center items-center flex-col">
-                <img className="w-6" src={User} alt="" />
-                <p className="text-[12px] font-semibold">{max_cap} cupos</p>
-              </div>
-              <div className="flex gap-1 justify-center items-center flex-col">
-                <img className="w-6" src={Clock} alt="" />
-                <p className="text-[12px] font-semibold">{`Duración: ${calculateDuration(
-                  start_hour,
-                  end_hour
-                )}`}</p>
-              </div>
-              <div className="flex gap-1 justify-center items-center flex-col">
-                <img className="w-6" src={Certificate} alt="" />
-                <p className="text-[12px] font-semibold">{`${actual_cap} Reservas`}</p>
-              </div>
-            </div>
-            <div className="w-full flex justify-center items-center">
-              {!reservation ? (
-                <button
-                  onClick={scheduleHour}
-                  className="bg-[#FCDE3B] rounded-full w-1/2"
-                >
-                  Reservar
-                </button>
-              ) : (
-                <button
-                  onClick={eliminateClass}
-                  className="bg-[#e94c4c] rounded-full text-white w-1/2"
-                >
-                  Cancelar Hora
-                </button>
-              )}
-            </div>
+            </form>
           </div>
         </div>
-      )}
+      ) : null}
+
     </div>
   );
 };

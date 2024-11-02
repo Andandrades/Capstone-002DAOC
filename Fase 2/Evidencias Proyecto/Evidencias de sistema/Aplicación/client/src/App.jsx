@@ -47,6 +47,7 @@ function App() {
         setIsAuth(data.isAuth);
         setLoading(false);
         localStorage.setItem("isAuth", JSON.stringify(data.isAuth));
+        localStorage.setItem("userID", JSON.stringify(data.userId));
         setUserId(data.userId);
       })
       .catch((err) => {
