@@ -1,31 +1,25 @@
-import { useEffect, useState } from "react";
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { useEffect, useState, lazy, Suspense } from "react";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import { AdminClasses } from "./Pages/Admin/AdminClasses/AdminClasses";
-import { AdminLandingPage } from "./Pages/Admin/AdminLandingPage/AdminLandingPage";
-import { AdminMenu } from "./Pages/Admin/AdminMenu/AdminMenu";
-import { AdminPlans } from "./Pages/Admin/AdminPlans/AdminPlans.Page";
-import AdminUsersManagement from "./Pages/Admin/AdminUsersManagement/AdminUsersManagement";
-import { ClassesPage } from "./Pages/Classes/ClassesPage";
-import { LandingPage } from "./Pages/LandingPage/LandingPage";
-import { LoginPage } from "./Pages/Login/LoginPage";
-import { Menu } from "./Pages/Menu/Menu";
-import PlansPage from "./Pages/Plans/PlansPage";
-import { AdminNutri } from "./Pages/Admin/AdminNutriCheck/AdminNutri.Page";
-import { ProfilePage } from "./Pages/Profile/ProfilePage";
-import { RecoverPage } from "./Pages/Recover/RecoverPage";
-import { RegisterPage } from "./Pages/Register/RegisterPage";
-import { ScheduleGym } from "./Pages/Schedule/ScheduleGym";
-import { SchedulePage } from "./Pages/Schedule/SchedulePage";
-
-import ScheduleNutri from "./Pages/Schedule/ScheduleNutri";
 import { ToastContainer } from "react-toastify";
 
+// Importación de páginas con lazy loading
+const AdminClasses = lazy(() => import("./Pages/Admin/AdminClasses/AdminClasses"));
+const AdminLandingPage = lazy(() => import("./Pages/Admin/AdminLandingPage/AdminLandingPage"));
+const AdminNutri = lazy(() => import("./Pages/Admin/AdminNutriCheck/AdminNutri.Page"));
+const AdminPlans = lazy(() => import("./Pages/Admin/AdminPlans/AdminPlans.Page"));
+const AdminUsersManagement = lazy(() => import("./Pages/Admin/AdminUsersManagement/AdminUsersManagement"));
+const ClassesPage = lazy(() => import("./Pages/Classes/ClassesPage"));
+const LandingPage = lazy(() => import("./Pages/LandingPage/LandingPage"));
+const LoginPage = lazy(() => import("./Pages/Login/LoginPage"));
+const Menu = lazy(() => import("./Pages/Menu/Menu"));
+const PlansPage = lazy(() => import("./Pages/Plans/PlansPage"));
+const ProfilePage = lazy(() => import("./Pages/Profile/ProfilePage"));
+const RecoverPage = lazy(() => import("./Pages/Recover/RecoverPage"));
+const RegisterPage = lazy(() => import("./Pages/Register/RegisterPage"));
+const ScheduleGym = lazy(() => import("./Pages/Schedule/ScheduleGym"));
+const SchedulePage = lazy(() => import("./Pages/Schedule/SchedulePage"));
+const ScheduleNutri = lazy(() => import("./Pages/Schedule/ScheduleNutri"));
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -68,40 +62,47 @@ function App() {
 
   return (
     <>
-    <ToastContainer/>
-    <Router>
-      <Routes>
-        {/*Principal*/}
-        <Route path="*" element={<Navigate to="/" />} />,
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/inicio" element={<Menu />} />
+      <ToastContainer />
+      <Router>
+        <Suspense fallback={<div>Loading pagina...</div>}>
+          <Routes>
+            {/*Principal*/}
+            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/" element={<LandingPage isAuth={isAuth} />} />
+            <Route path="/inicio" element={<Menu />} />
 
-        {/*Manejo de sesiones*/}
-        <Route path="/login" element={<RedirectIfAuthenticated> <LoginPage setIsAuth={setIsAuth} /> </RedirectIfAuthenticated>} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/recover" element={<RecoverPage />} />
+            {/* Manejo de sesiones */}
+            <Route
+              path="/login"
+              element={
+                <RedirectIfAuthenticated>
+                  <LoginPage setIsAuth={setIsAuth} />
+                </RedirectIfAuthenticated>
+              }
+            />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/recover" element={<RecoverPage />} />
 
-        {/* Perfil usuario*/}
-        <Route path="/schedule" element={<ProtectedRoute> <SchedulePage /> </ProtectedRoute>} />,
-        <Route path="/schedule/gym" element={<ProtectedRoute> <ScheduleGym /> </ProtectedRoute>} />,
-        <Route path="/schedule/nutri" element={<ProtectedRoute> <ScheduleNutri /> </ProtectedRoute>} />,
-        <Route path="/menu" element={<ProtectedRoute> <SchedulePage /> </ProtectedRoute>} />,
-        <Route path="/classes" element={<ProtectedRoute> <ClassesPage /> </ProtectedRoute>} />,
-        <Route path="/Profile" element={<ProtectedRoute> <ProfilePage /> </ProtectedRoute>} />
+            {/* Perfil usuario */}
+            <Route path="/schedule" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
+            <Route path="/schedule/gym" element={<ProtectedRoute><ScheduleGym /></ProtectedRoute>} />
+            <Route path="/schedule/nutri" element={<ProtectedRoute><ScheduleNutri /></ProtectedRoute>} />
+            <Route path="/menu" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
+            <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
+            {/* Rutas de administrador gestionar permisos por rol no implementado */}
+            <Route path="/admin" element={<AdminNutri />} />
+            <Route path="/admin/planes" element={<AdminPlans />} />
+            <Route path="/admin/clases" element={<AdminClasses />} />
+            <Route path="/admin/paginainicio" element={<AdminLandingPage />} />
+            <Route path="/admin/usuarios" element={<AdminUsersManagement />} />
 
-        {/* rutas de administrador gestionar permisos por rol no implementado*/}
-        <Route path="/Admin" element={<AdminNutri />} />,
-        <Route path="/Admin/Planes" element={<AdminPlans />} />,
-        <Route path="/Admin/Clases" element={<AdminClasses />} />,
-        <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
-        <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
-
-        {/* sin implementar */}
-        <Route path="/Plans" element={<PlansPage />} />
-
-      </Routes>
-    </Router>
+            {/* Sin implementar */}
+            <Route path="/plans" element={<PlansPage />} />
+          </Routes>
+        </Suspense>
+      </Router>
     </>
   );
 }

@@ -14,7 +14,6 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
 
     const DeleteNutri= (id) => {
         deleteNutri(id).then(response => {
-            console.log('Plan modificado:', response);
             fetchPlans(true)
         })
     }

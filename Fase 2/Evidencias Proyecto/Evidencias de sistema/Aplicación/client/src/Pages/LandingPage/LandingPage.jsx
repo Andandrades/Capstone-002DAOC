@@ -15,7 +15,8 @@ import { NutriCard } from "../../Components/NutriCard";
 import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
 
-export const LandingPage = () => {
+const LandingPage = (props) => {
+  const {isAuth } = props;
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -222,6 +223,7 @@ export const LandingPage = () => {
                 n_class={plan.n_class}
                 amount={plan.price}
                 description={plan.description}
+                isAuth={isAuth}
               />
             ))
           ) : (
@@ -285,7 +287,6 @@ export const LandingPage = () => {
             <p className="lg:text-lg text-xl">
               Contamos con un{" "}
               <span className="text-green-500 font-semibold">
-                {" "}
                 sistema moderno
               </span>{" "}
               y eficiente, el cual le permite a nuestros usuarios acceder a{" "}
@@ -318,3 +319,5 @@ export const LandingPage = () => {
     </>
   );
 };
+
+export default LandingPage;

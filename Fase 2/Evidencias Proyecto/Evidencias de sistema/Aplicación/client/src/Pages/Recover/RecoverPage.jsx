@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './RecoverStyle.css'; // Manteniendo el mismo archivo CSS
 import login from "../../assets/img/login.webp";
 
-export const RecoverPage = () => {
+const RecoverPage = () => {
 
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -62,3 +62,5 @@ export const RecoverPage = () => {
   </div>
   )
 }
+
+export default RecoverPage;

@@ -5,7 +5,7 @@ import { obtenerPlanes } from '../../../Components/API/Endpoints';
 import AddPlanModal from './Components/AddPlanModal';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-export const AdminPlans = () => {
+const AdminPlans = () => {
   const [plans, setPlans] = useState([]);
   const [fetchPlans, setFetchPlans] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,3 +68,5 @@ export const AdminPlans = () => {
     </div >
   );
 };
+
+export default AdminPlans;

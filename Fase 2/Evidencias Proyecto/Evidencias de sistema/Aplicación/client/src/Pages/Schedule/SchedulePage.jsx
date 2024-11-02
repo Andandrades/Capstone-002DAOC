@@ -4,7 +4,7 @@ import Barbell from "../../assets/icons/Barbell.svg";
 import Apple from '../../assets/icons/apple.svg'
 import { useNavigate } from "react-router-dom";
 
-export const SchedulePage = () => {
+const SchedulePage = () => {
 
   const navigate = useNavigate();
 
@@ -38,3 +38,5 @@ export const SchedulePage = () => {
     </>
   );
 };
+
+export default SchedulePage;
