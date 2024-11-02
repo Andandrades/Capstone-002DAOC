@@ -5,7 +5,7 @@ import { ExerciseHistory } from "../../Components/ExerciseHistory"
 import { ClassesCard } from '../../Components/ClassesCard'
 import "./ClassesStyle.css"
 
-export const ClassesPage = () => {
+const ClassesPage = () => {
   return (
     <>
 
@@ -23,3 +23,5 @@ export const ClassesPage = () => {
     </>
   )
 }
+
+export default ClassesPage;

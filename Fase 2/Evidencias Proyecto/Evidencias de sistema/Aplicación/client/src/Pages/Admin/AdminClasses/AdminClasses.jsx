@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
-import { NavBarAdmin } from "../../../Components/NavBarAdmin";
-import axios from "axios";
-import CopyClassesModal from "../../../Components/CopyClassesModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { useEffect, useState } from "react";
+import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 
-export const AdminClasses = () => {
+const AdminClasses = () => {
   const [schedueInfo, setScheduleInfo] = useState([]);
   const [day, setDay] = useState("J");
   const [dayModal, setDayModal] = useState();
@@ -69,3 +67,5 @@ export const AdminClasses = () => {
     </>
   );
 };
+
+export default AdminClasses;

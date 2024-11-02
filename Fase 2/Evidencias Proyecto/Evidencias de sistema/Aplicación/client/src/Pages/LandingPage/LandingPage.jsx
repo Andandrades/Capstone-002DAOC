@@ -15,7 +15,7 @@ import { NutriCard } from "../../Components/NutriCard";
 import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
 
-export const LandingPage = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -318,3 +318,6 @@ export const LandingPage = () => {
     </>
   );
 };
+
+export default LandingPage;
+ 
