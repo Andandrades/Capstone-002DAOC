@@ -5,6 +5,7 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SportsIcon from '@mui/icons-material/Sports';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import GroupsIcon from '@mui/icons-material/Groups'; // Icono del administrador
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import axios from 'axios';
 
@@ -12,15 +13,18 @@ const AdminUsersManagement = () => {
   const [clients, setClients] = useState([]);
   const [nutritionists, setNutritionists] = useState([]);
   const [trainers, setTrainers] = useState([]);
+  const [administrators, setAdministrators] = useState([]); // Nuevo estado para administradores
 
   const [showClients, setShowClients] = useState(false);
   const [showNutritionists, setShowNutritionists] = useState(false);
   const [showTrainers, setShowTrainers] = useState(false);
+  const [showAdministrators, setShowAdministrators] = useState(false); // Mostrar/ocultar administradores
 
   const [showDropdowns, setShowDropdowns] = useState({
     clients: null,
     nutritionists: null,
     trainers: null,
+    administrators: null, // Dropdown de administradores
   });
 
   const [showPopup, setShowPopup] = useState(false);
@@ -38,6 +42,7 @@ const AdminUsersManagement = () => {
         setClients(response.data.clients.map(user => user.name));
         setNutritionists(response.data.nutritionists.map(user => user.name));
         setTrainers(response.data.trainers.map(user => user.name));
+        setAdministrators(response.data.administrators.map(user => user.name)); // Administradores
       } catch (error) {
         console.error('Error al obtener los usuarios por rol:', error);
       }
@@ -53,10 +58,14 @@ const AdminUsersManagement = () => {
   };
 
   const confirmDelete = () => {
-    if (userType === 'nutritionist') {
+    if (userType === 'client') {
+      setClients(clients.filter(client => client !== selectedUser));
+    } else if (userType === 'nutritionist') {
       setNutritionists(nutritionists.filter(nutritionist => nutritionist !== selectedUser));
     } else if (userType === 'trainer') {
       setTrainers(trainers.filter(trainer => trainer !== selectedUser));
+    } else if (userType === 'administrator') {
+      setAdministrators(administrators.filter(admin => admin !== selectedUser));
     }
     setShowPopup(false);
   };
@@ -83,6 +92,8 @@ const AdminUsersManagement = () => {
       setNutritionists([...nutritionists, newUserName]);
     } else if (userType === 'trainer') {
       setTrainers([...trainers, newUserName]);
+    } else if (userType === 'administrator') {
+      setAdministrators([...administrators, newUserName]);
     }
     setNewUserName('');
     setShowAddPopup(false);
@@ -102,6 +113,8 @@ const AdminUsersManagement = () => {
       setNutritionists(nutritionists.map(nutritionist => (nutritionist === selectedUser ? editUserName : nutritionist)));
     } else if (userType === 'trainer') {
       setTrainers(trainers.map(trainer => (trainer === selectedUser ? editUserName : trainer)));
+    } else if (userType === 'administrator') {
+      setAdministrators(administrators.map(admin => (admin === selectedUser ? editUserName : admin)));
     }
     setShowEditPopup(false); 
   };
@@ -130,6 +143,7 @@ const AdminUsersManagement = () => {
                     </button>
                     {selectedUser === client && (
                       <div className="dropdown-content">
+                        <button className="delete-button" onClick={() => handleDeleteClick(client, 'client')}>Borrar</button>
                         <button className="edit-button" onClick={() => handleEditClick(client, 'client')}>Editar</button>
                       </div>
                     )}
@@ -197,57 +211,92 @@ const AdminUsersManagement = () => {
             </ul>
           )}
         </div>
+
+        {/* Administradores */}
+        <div className="roles-menu">
+          <h2 onClick={() => setShowAdministrators(!showAdministrators)} className="roles-menuTitle" style={{ color: 'green' }}>
+            <GroupsIcon style={{ marginRight: '8px' }} />
+            Administradores
+            <AddBoxIcon style={{ marginLeft: '8px', color: 'green', cursor: 'pointer' }} onClick={() => handleAddUser('administrator')} />
+          </h2>
+          {showAdministrators && (
+            <ul className="roles-list">
+              {administrators.map((admin, index) => (
+                <li key={index} className="roles-listItem">
+                  <span>{admin}</span>
+                  <div className="dropdown">
+                    <button className="dropdown-button" onClick={() => toggleDropdown(admin, 'administrator')}>
+                      <KeyboardDoubleArrowDownIcon />
+                    </button>
+                    {selectedUser === admin && (
+                      <div className="dropdown-content">
+                        <button className="delete-button" onClick={() => handleDeleteClick(admin, 'administrator')}>Borrar</button>
+                        <button className="edit-button" onClick={() => handleEditClick(admin, 'administrator')}>Editar</button>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Popups */}
+        {showPopup && (
+          <div className="popup-overlay">
+            <div className="popup">
+              <h3>¿Estás seguro de que deseas borrar a {selectedUser}?</h3>
+              <div className="popup-buttons">
+                <button className="confirm-button" onClick={confirmDelete}>Confirmar</button>
+                <button className="cancel-button" onClick={() => setShowPopup(false)}>Cancelar</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showAddPopup && (
+          <div className="popup-overlay">
+            <div className="popup">
+              <h3>Agregar nuevo {userType}</h3>
+              <input
+                type="text"
+                placeholder="Nombre del usuario"
+                value={newUserName}
+                onChange={(e) => setNewUserName(e.target.value)}
+              />
+              <div className="popup-buttons">
+                <button className="confirm-button" onClick={confirmAddUser}>Agregar</button>
+                <button className="cancel-button" onClick={() => setShowAddPopup(false)}>Cancelar</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showEditPopup && (
+          <div className="popup-overlay">
+            <div className="popup">
+              <h3>Editar nombre de {selectedUser}</h3>
+              <input
+                type="text"
+                placeholder="Nuevo nombre"
+                value={editUserName}
+                onChange={(e) => setEditUserName(e.target.value)}
+              />
+              <div className="popup-buttons">
+                <button className="confirm-button" onClick={confirmEditUser}>Guardar</button>
+                <button className="cancel-button" onClick={() => setShowEditPopup(false)}>Cancelar</button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
-
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <p>¿Estás seguro de que deseas borrar a {selectedUser}?</p>
-            <div className="popup-buttons">
-              <button className="popup-button confirm-button" onClick={confirmDelete}>Sí, borrar</button>
-              <button className="popup-button cancel-button" onClick={() => setShowPopup(false)}>Cancelar</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showAddPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <p>Agregar nuevo {userType}</p>
-            <input
-              type="text"
-              value={newUserName}
-              onChange={(e) => setNewUserName(e.target.value)}
-              placeholder="Nombre del nuevo usuario"
-            />
-            <div className="popup-buttons">
-              <button className="popup-button confirm-button" onClick={confirmAddUser}>Agregar</button>
-              <button className="popup-button cancel-button" onClick={() => setShowAddPopup(false)}>Cancelar</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showEditPopup && ( // Popup de edición
-        <div className="popup-overlay">
-          <div className="popup">
-            <p>Editar {userType}</p>
-            <input
-              type="text"
-              value={editUserName}
-              onChange={(e) => setEditUserName(e.target.value)}
-              placeholder="Nuevo nombre"
-            />
-            <div className="popup-buttons">
-              <button className="popup-button confirm-button" onClick={confirmEditUser}>Confirmar</button>
-              <button className="popup-button cancel-button" onClick={() => setShowEditPopup(false)}>Cancelar</button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
 
 export default AdminUsersManagement;
+
+
+
+
