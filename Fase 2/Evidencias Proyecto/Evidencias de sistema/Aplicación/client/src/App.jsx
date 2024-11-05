@@ -2,7 +2,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
-
+import Spinner from "./Components/Spriner";
 // Importación de páginas con lazy loading
 const AdminClasses = lazy(() => import("./Pages/Admin/AdminClasses/AdminClasses"));
 const AdminLandingPage = lazy(() => import("./Pages/Admin/AdminLandingPage/AdminLandingPage"));
@@ -51,7 +51,7 @@ function App() {
 
   const ProtectedRoute = ({ children }) => {
     if (loading) {
-      return <div>Loading...</div>;
+      return <Spinner/>;
     }
     return isAuth ? children : <Navigate to="/login" />;
   };
@@ -64,7 +64,7 @@ function App() {
     <>
       <ToastContainer />
       <Router>
-        <Suspense fallback={<div>Loading pagina...</div>}>
+        <Suspense fallback={<Spinner/>}>
           <Routes>
             {/*Principal*/}
             <Route path="*" element={<Navigate to="/" />} />
