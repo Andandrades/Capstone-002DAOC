@@ -11,34 +11,39 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
-
-  const onSubmit = (data) => {
+  const onSubmit = (event) => {
     event.preventDefault();
+
+    if (password !== confirmPassword) {
+      setMessage("Las contraseñas no coinciden.");
+      return;
+    }
 
     const payload = {
       email: email,
       password: password,
       fk_rol_id: 3,
     };
-       
+
     Register(payload)
       .then(response => {
-        console.log("response",response)
+        console.log("response", response);
         setMessage(`Usuario registrado correctamente: ${response.message}`);
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       })
       .catch(error => {
-        console.log("error",error)
-
+        console.log("error", error);
         setMessage(`Error al registrar: ${error.message}`);
       });
   };
-  
+
   return (
     <div className="register-container flex-col">
       {message && <p className="message">{message}</p>}
 
-      <form onSubmit={onSubmit}
-        className="register-form">
+      <form onSubmit={onSubmit} className="register-form">
         <div className="logo">
           <img src={registrate} alt="Registro" />
         </div>
@@ -51,7 +56,6 @@ const RegisterPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-
           />
         </div>
 
@@ -63,7 +67,6 @@ const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-
           />
         </div>
 
@@ -75,7 +78,6 @@ const RegisterPage = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-
           />
         </div>
         <button type="submit" className="btn-primary">Registrarse</button>
