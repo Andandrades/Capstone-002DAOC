@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Menu from "../assets/Certificate.svg";
-import PlanDescriptionModal from "../Pages/LandingPage/Components/PlanDescriptionModal";
+import BuyModal from "../Pages/LandingPage/Components/BuyModal";
 
 export const Plans = (props) => {
   const { name, amount, description, n_class, isAuth } = props;
@@ -49,7 +49,7 @@ export const Plans = (props) => {
           </button>
         </div>
 
-        <PlanDescriptionModal
+        <BuyModal
           isOpen={isModalOpen}
           onClose={closeModal}
           name={name}
