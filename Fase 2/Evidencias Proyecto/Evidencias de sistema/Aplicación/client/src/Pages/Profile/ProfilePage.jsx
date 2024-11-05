@@ -6,6 +6,12 @@ import "./ProfileStyle.css"
 import { Logout } from "../../Components/API/sesion";
 
 const ProfilePage = () => {
+
+  const LogoutSesion = () => {
+    Logout();
+    window.location.reload();
+  }
+
   return (
     <div className="genericocontainer h-screen flex flex-col justify-between">
       <section className="backgroundPrimary w-full flex flex-col items-center  h-full">
@@ -69,7 +75,7 @@ const ProfilePage = () => {
         </form>
         <button
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white"
-          onClick={() => Logout()}
+          onClick={() => LogoutSesion()}
         >
           Cerrar sesión
         </button>
