@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 const BuyModal = (props) => {
-  const { isOpen, onClose, name, amount, description, n_class, isAuth, setIsAuth } = props;
+  const { isOpen, onClose, name, amount, description, n_class, isAuth, setIsAuth, isPlan } = props;
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -68,32 +70,27 @@ const BuyModal = (props) => {
               &times;
             </button>
 
-            <div className="modal-content">
-              <div className="modal-header flex flex-col justify-between items-center">
-                <h2 className="text-xl font-bold mb-4 text-black">Detalles del Plan</h2>
-                <p className="text-lg font-semibold text-black">{name}</p>
-                <p className="text-black">{description}</p>
-                <p className="text-lg font-semibold text-green-500">
-                  ${amount} CLP
-                </p>
-                <p className="text-sm text-gray-600">
-                  Cantidad de clases: {n_class}
-                </p>
-                <button
-                  className="mt-5 bg-yellow-500 text-black font-bold py-2 px-4 rounded-full"
-                  onClick={() => {
-                    console.log("Procediendo al pago...");
-                  }}
-                >
-                  Proceder al Pago
-                </button>
-              </div>
+            <div className="modal-content text-center">
+              <h2 className="text-xl font-bold mb-4 text-black">{isPlan ? "Detalles del plan" : "Detalles de la consulta"}</h2>
+              <p className="text-lg font-semibold text-black">{name}</p>
+              {isPlan && <p className="text-sm text-gray-600">Cantidad de clases: {n_class}</p>}
+              <p className="text-black">{description}</p>
+              <p className="text-lg font-semibold text-green-500">${amount} CLP</p>
+         
+              <button
+                className="mt-5 bg-yellow-500 text-black font-bold py-2 px-4 rounded-full"
+                onClick={() => {
+                  console.log("Procediendo al pago...");
+                }}
+              >
+                Proceder al Pago
+              </button>
             </div>
           </div>
         </div>
       ) : (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop" 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"
           onClick={handleBackdropClick}
         >
           <div
@@ -109,9 +106,7 @@ const BuyModal = (props) => {
 
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">Soldados Gym</h2>
-              <p className="mt-2 text-gray-600">
-                Para continuar con la compra, por favor inicia sesión o regístrate.
-              </p>
+              <p className="mt-2 text-gray-600">Para continuar con la compra, por favor inicia sesión o regístrate.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -122,7 +117,7 @@ const BuyModal = (props) => {
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)} // Actualiza el estado del email
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -133,7 +128,7 @@ const BuyModal = (props) => {
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Actualiza el estado de la contraseña
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
@@ -147,19 +142,17 @@ const BuyModal = (props) => {
               <button
                 type="button"
                 className="w-full py-2 mt-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                onClick={() => goto('Register')}
+                onClick={() =>  navigate('/Register')}
               >
                 Registrarse
               </button>
 
               <p className="mt-4 text-sm text-center text-gray-600">
                 ¿Olvidaste tu contraseña?{' '}
-                <span className="text-blue-600 cursor-pointer hover:underline">
-                  Recupérala aquí
-                </span>
+                <span className="text-blue-600 cursor-pointer hover:underline">Recupérala aquí</span>
               </p>
             </form>
-            {error && <p className="mt-4 text-red-600 text-center">{error}</p>} {/* Mensaje de error */}
+            {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
           </div>
         </div>
       )}

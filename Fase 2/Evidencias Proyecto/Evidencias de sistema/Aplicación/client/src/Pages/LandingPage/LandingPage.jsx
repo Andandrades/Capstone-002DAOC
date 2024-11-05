@@ -248,6 +248,8 @@ const LandingPage = (props) => {
                 name={nutri.name}
                 amount={nutri.price}
                 description={nutri.description}
+                isAuth={isAuth}
+                setIsAuth={setIsAuth}
               />
             ))
           ) : (

@@ -55,6 +55,7 @@ export const Plans = (props) => {
           name={name}
           amount={amount}
           description={description}
+          isPlan={true}
           n_class={n_class}
           isAuth={isAuth}
           setIsAuth={setIsAuth}
