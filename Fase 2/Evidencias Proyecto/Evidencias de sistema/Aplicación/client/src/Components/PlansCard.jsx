@@ -3,7 +3,7 @@ import Menu from "../assets/Certificate.svg";
 import BuyModal from "../Pages/LandingPage/Components/BuyModal";
 
 export const Plans = (props) => {
-  const { name, amount, description, n_class, isAuth } = props;
+  const { name, amount, description, n_class, isAuth,setIsAuth } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formatPriceWithDots = (amount) => {
@@ -57,6 +57,7 @@ export const Plans = (props) => {
           description={description}
           n_class={n_class}
           isAuth={isAuth}
+          setIsAuth={setIsAuth}
         />
 
       </div>

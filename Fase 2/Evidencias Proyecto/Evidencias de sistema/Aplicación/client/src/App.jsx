@@ -68,7 +68,7 @@ function App() {
           <Routes>
             {/*Principal*/}
             <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/" element={<LandingPage isAuth={isAuth} />} />
+            <Route path="/" element={<LandingPage isAuth={isAuth} setIsAuth={setIsAuth} />} />
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}

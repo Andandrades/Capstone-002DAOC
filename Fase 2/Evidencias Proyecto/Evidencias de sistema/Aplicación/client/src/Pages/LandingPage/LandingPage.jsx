@@ -16,7 +16,7 @@ import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
 
 const LandingPage = (props) => {
-  const {isAuth } = props;
+  const {isAuth,setIsAuth } = props;
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -224,6 +224,7 @@ const LandingPage = (props) => {
                 amount={plan.price}
                 description={plan.description}
                 isAuth={isAuth}
+                setIsAuth={setIsAuth}
               />
             ))
           ) : (
