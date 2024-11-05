@@ -2,7 +2,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
-import Spinner from "./Components/Spriner";
+import Spinner from "./Components/Spinner";
 // Importación de páginas con lazy loading
 const AdminClasses = lazy(() => import("./Pages/Admin/AdminClasses/AdminClasses"));
 const AdminLandingPage = lazy(() => import("./Pages/Admin/AdminLandingPage/AdminLandingPage"));

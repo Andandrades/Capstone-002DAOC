@@ -82,6 +82,15 @@ export const NavBar = ({ scrollToSection, refs }) => {
             <li
               onClick={() => {
                 toggleSidebar();
+                scrollToSection(refs.sectionRef7);
+              }}
+              className="mb-2 hover:scale-105 transition-all cursor-pointer ease-in-out"
+            >
+              Consultas
+            </li>
+            <li
+              onClick={() => {
+                toggleSidebar();
                 scrollToSection(refs.sectionRef5);
               }}
               className="mb-2 hover:scale-105 transition-all cursor-pointer ease-in-out"
