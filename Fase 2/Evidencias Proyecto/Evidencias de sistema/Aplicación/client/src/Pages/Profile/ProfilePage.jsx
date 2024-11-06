@@ -4,6 +4,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import userIcon from "../../assets/img/userIcon.webp";
 import "./ProfileStyle.css"
 import { Logout } from "../../Components/API/sesion";
+import { Navigate } from "react-router-dom";
 
 const ProfilePage = () => {
 
