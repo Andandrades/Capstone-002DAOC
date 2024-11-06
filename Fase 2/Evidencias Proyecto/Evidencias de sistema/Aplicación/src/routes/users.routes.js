@@ -19,8 +19,6 @@ const app = express();
 // Usar CORS
 app.use(cors());
 
-
-
 router.get("/users", getAllUsers);
 
 router.get("/users/:id",getUser);
