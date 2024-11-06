@@ -5,7 +5,7 @@
 -- Dumped from database version 15.8
 -- Dumped by pg_dump version 15.8
 
--- Started on 2024-11-02 08:58:38
+-- Started on 2024-11-06 12:20:58
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,6 +18,61 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public.transactions DROP CONSTRAINT fk_user_id;
+ALTER TABLE ONLY public.exercise_history DROP CONSTRAINT fk_user_id;
+ALTER TABLE ONLY public.suscription DROP CONSTRAINT fk_user_id;
+ALTER TABLE ONLY public.users DROP CONSTRAINT fk_rol_id;
+ALTER TABLE ONLY public.transactions DROP CONSTRAINT fk_plan_id;
+ALTER TABLE ONLY public.nutri_schedule DROP CONSTRAINT fk_nutri_id;
+ALTER TABLE ONLY public.exercises DROP CONSTRAINT fk_history_id;
+ALTER TABLE ONLY public.schedule_classes DROP CONSTRAINT "fk_gym _schedule_id";
+ALTER TABLE ONLY public.schedule_classes DROP CONSTRAINT fk_client_id;
+ALTER TABLE ONLY public.nutri_schedule DROP CONSTRAINT fk_client_id;
+ALTER TABLE ONLY public.exercise_history DROP CONSTRAINT fk_class_id;
+ALTER TABLE ONLY public.gym_schedule DROP CONSTRAINT fk_admin_id;
+ALTER TABLE ONLY public.suscription DROP CONSTRAINT fk_additional_user;
+ALTER TABLE ONLY public.suscription DROP CONSTRAINT "fk_ plan_id";
+ALTER TABLE ONLY public.roles DROP CONSTRAINT roles_name_rol_key;
+ALTER TABLE ONLY public.nutrition DROP CONSTRAINT nutrition_pk;
+ALTER TABLE ONLY public.nutri_schedule DROP CONSTRAINT nutri_schedule_pkey;
+ALTER TABLE ONLY public.gym_schedule DROP CONSTRAINT gym_schedule_pkey;
+ALTER TABLE ONLY public.exercises DROP CONSTRAINT exercises_pkey;
+ALTER TABLE ONLY public.users DROP CONSTRAINT email;
+ALTER TABLE ONLY public.users DROP CONSTRAINT "Users_pkey";
+ALTER TABLE ONLY public.transactions DROP CONSTRAINT "Transactions_pkey";
+ALTER TABLE ONLY public.suscription DROP CONSTRAINT "Suscription_pkey";
+ALTER TABLE ONLY public.schedule_classes DROP CONSTRAINT "Schedule_classes_pkey";
+ALTER TABLE ONLY public.roles DROP CONSTRAINT "Roles_pkey";
+ALTER TABLE ONLY public.plans DROP CONSTRAINT "Plans_pkey";
+ALTER TABLE ONLY public.exercise_history DROP CONSTRAINT "Exercise_history_pkey";
+ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.transactions ALTER COLUMN transaction_id DROP DEFAULT;
+ALTER TABLE public.schedule_classes ALTER COLUMN class_id DROP DEFAULT;
+ALTER TABLE public.roles ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.plans ALTER COLUMN plan_id DROP DEFAULT;
+ALTER TABLE public.nutri_schedule ALTER COLUMN nutri_schedule_id DROP DEFAULT;
+ALTER TABLE public.gym_schedule ALTER COLUMN gym_schedule_id DROP DEFAULT;
+ALTER TABLE public.exercise_history ALTER COLUMN history_id DROP DEFAULT;
+DROP TABLE public.suscription;
+DROP TABLE public.nutrition;
+DROP SEQUENCE public.nutri_schedule_nutri_schedule_id_seq;
+DROP TABLE public.nutri_schedule;
+DROP SEQUENCE public.gym_schedule_gym_schedule_id_seq;
+DROP TABLE public.gym_schedule;
+DROP TABLE public.exercises;
+DROP SEQUENCE public."Users_id_seq";
+DROP TABLE public.users;
+DROP SEQUENCE public."Transactions_transaction_id_seq";
+DROP TABLE public.transactions;
+DROP SEQUENCE public."Schedule_classes_class_id_seq";
+DROP TABLE public.schedule_classes;
+DROP SEQUENCE public."Roles_id_seq";
+DROP TABLE public.roles;
+DROP SEQUENCE public."Plans_plan_id_seq";
+DROP TABLE public.plans;
+DROP SEQUENCE public."Exercise_history_history_id_seq";
+DROP TABLE public.exercise_history;
+DROP SCHEMA public;
 --
 -- TOC entry 5 (class 2615 OID 2200)
 -- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
@@ -212,14 +267,16 @@ ALTER SEQUENCE public."Schedule_classes_class_id_seq" OWNED BY public.schedule_c
 
 CREATE TABLE public.transactions (
     transaction_id integer NOT NULL,
-    amount integer NOT NULL,
-    transaction_status character varying(20) NOT NULL,
-    transaction_date date NOT NULL,
-    webpay_token text NOT NULL,
-    response_code text NOT NULL,
-    payment_type text NOT NULL,
-    user_id integer NOT NULL,
-    plan_id integer NOT NULL
+    buy_order character varying NOT NULL,
+    session_id character varying NOT NULL,
+    token character varying NOT NULL,
+    authorization_code character varying(50),
+    payment_type_code character varying(50),
+    user_id integer,
+    plan_id integer,
+    amount numeric NOT NULL,
+    status character varying(50),
+    transaction_date timestamp without time zone
 );
 
 
@@ -558,9 +615,8 @@ COPY public.nutri_schedule (nutri_schedule_id, start_hour, available, client_id,
 --
 
 COPY public.nutrition (id, name, description, price, offer_price) FROM stdin;
-4	1	1	1	\N
-2	1	1	1	1
-3	1	1	1	1
+4	Consulta basica	Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto fina	30000	30000
+3	Consulta Premium 	Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto fina	60000	60000
 \.
 
 
@@ -571,11 +627,8 @@ COPY public.nutrition (id, name, description, price, offer_price) FROM stdin;
 --
 
 COPY public.plans (plan_id, name, description, price, offer_price, type, n_class, color) FROM stdin;
-49	1	1	1	1	Individual	1	#007bff
-46	1	1	1	\N	Individual	1	#28a745
-48	1	1	1	\N	Individual	1	#007bff
-47	1	1	1	\N	Individual	1	#6f42c1
-50	1	1	1	\N	Individual	1	#28a745
+50	Plan premium	Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto fina	20000	\N	Individual	1	#007bff
+49	Plan basico	Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto fina	10000	\N	Individual	1	#6f42c1
 \.
 
 
@@ -616,7 +669,10 @@ COPY public.suscription (suscription_id, start_date, end_date, additional_user, 
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.transactions (transaction_id, amount, transaction_status, transaction_date, webpay_token, response_code, payment_type, user_id, plan_id) FROM stdin;
+COPY public.transactions (transaction_id, buy_order, session_id, token, authorization_code, payment_type_code, user_id, plan_id, amount, status, transaction_date) FROM stdin;
+4	orden_compra_12345	mi_sesion	01abc3538fdcfb4473c6dc17ba06977e7c3e135f3b0bea632ca6755be65f8a5f	\N	\N	\N	\N	10000	\N	\N
+5	orden_compra_12345	mi_sesion	01ab7e294845093fa627a15769a300b7a7032ae2ce9214a594b5e3609697ef3b	\N	\N	\N	\N	10000	\N	\N
+6	orden_compra_12345	mi_sesion	01ab531fcb32664c3177b460e09134e2c86d5c61d9fe728013dc47c4c84ef3a9	\N	\N	\N	\N	10000	\N	\N
 \.
 
 
@@ -628,6 +684,9 @@ COPY public.transactions (transaction_id, amount, transaction_status, transactio
 
 COPY public.users (id, name, email, password, register_date, fk_rol_id, weight, height) FROM stdin;
 21	\N	a@a.cl	$2b$10$b71WmR/vGNa0SqkgL45Mhef8mrZ3qaPY8CM3mILCW41CQsTDGgD/q	2024-11-02	3	\N	\N
+22	\N	a@a.cl4	$2b$10$7eC2SSSM6j0hbFsiz2tdoexNqW814.8FiAV4PE1xMlYouuJ69tGMi	2024-11-04	3	\N	\N
+23	\N	a@a.cl33	$2b$10$MzF6m9KwcODeCKOs8kWh4OiQ.vfQb78U.qwRwpSNvYj09W8lUSDV6	2024-11-04	3	\N	\N
+24	\N	a@a.cl333	$2b$10$rbEfz9W4ccr23pg0PT2Boe62rSeAvwuNuY1qwgfUvB8iOmqCU7H.O	2024-11-04	3	\N	\N
 \.
 
 
@@ -673,7 +732,7 @@ SELECT pg_catalog.setval('public."Schedule_classes_class_id_seq"', 1, false);
 -- Name: Transactions_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Transactions_transaction_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Transactions_transaction_id_seq"', 6, true);
 
 
 --
@@ -682,7 +741,7 @@ SELECT pg_catalog.setval('public."Transactions_transaction_id_seq"', 1, false);
 -- Name: Users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Users_id_seq"', 21, true);
+SELECT pg_catalog.setval('public."Users_id_seq"', 24, true);
 
 
 --
@@ -955,7 +1014,7 @@ ALTER TABLE ONLY public.transactions
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2024-11-02 08:58:39
+-- Completed on 2024-11-06 12:20:59
 
 --
 -- PostgreSQL database dump complete
