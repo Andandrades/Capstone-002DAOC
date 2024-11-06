@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
 
 const BuyModal = (props) => {
   const { isOpen, onClose, name, amount, description, n_class, isAuth, setIsAuth, isPlan } = props;
@@ -76,11 +77,23 @@ const BuyModal = (props) => {
               {isPlan && <p className="text-sm text-gray-600">Cantidad de clases: {n_class}</p>}
               <p className="text-black">{description}</p>
               <p className="text-lg font-semibold text-green-500">${amount} CLP</p>
-         
+
               <button
                 className="mt-5 bg-yellow-500 text-black font-bold py-2 px-4 rounded-full"
-                onClick={() => {
-                  console.log("Procediendo al pago...");
+                onClick={async () => {
+                  try {
+                    const response = await iniciarTransaccion({
+                      amount,
+                      name,
+                      description,
+                      returnUrl: `${window.location.origin}/confirmar-pago`
+                    });
+                    if (response && response.url) {
+                      window.location.href = `${response.url}?token_ws=${response.token}`;
+                    }
+                  } catch (error) {
+                    console.error("Error al iniciar transacción:", error);
+                  }
                 }}
               >
                 Proceder al Pago
@@ -142,7 +155,7 @@ const BuyModal = (props) => {
               <button
                 type="button"
                 className="w-full py-2 mt-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                onClick={() =>  navigate('/Register')}
+                onClick={() => navigate('/Register')}
               >
                 Registrarse
               </button>
