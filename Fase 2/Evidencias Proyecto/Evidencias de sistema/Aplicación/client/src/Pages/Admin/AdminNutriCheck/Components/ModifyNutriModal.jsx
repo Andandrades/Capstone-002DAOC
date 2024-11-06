@@ -30,7 +30,7 @@ const ModifyNutriModal = (props) => {
         <div className="modal-content">
           <div className="modal-header flex justify-between items-center">
             <div className="my-6 z-10 items">
-              <h1 className="text-2xl font-bold text-black">Modificar plan</h1>
+              <h1 className="text-2xl font-bold text-black">Modificar consulta nutricional</h1>
             </div>
           </div>
           <div className="modal-body">

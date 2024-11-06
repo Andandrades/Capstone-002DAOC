@@ -11,3 +11,4 @@ export const AdminLandingPage = () => {
     </>
   )
 }
+ export default AdminLandingPage;

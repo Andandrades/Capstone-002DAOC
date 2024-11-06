@@ -3,14 +3,14 @@ import "./LoginStyle.css";
 import Registrate from "../../assets/img/Registrate.webp";
 import { useNavigate } from "react-router-dom";
 
-export const LoginPage = ({ setIsAuth }) => {
+const LoginPage = ({ setIsAuth }) => {
 
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
   const [error, setError] = useState("");
-  
+
   const navigate = useNavigate();
-  
+
   const goto = (url) => {
     navigate(`/${url}`);
   };
@@ -44,7 +44,7 @@ export const LoginPage = ({ setIsAuth }) => {
         console.log("Auth Data:", authData);
         setIsAuth(authData.isAuth);
         localStorage.setItem("isAuth", JSON.stringify(true));
-        navigate("/inicio"); // Redirige al usuario al menú
+        navigate("/inicio");
         console.log("Bienvenido");
       } else {
         setError("Credenciales inválidas");
@@ -93,7 +93,6 @@ export const LoginPage = ({ setIsAuth }) => {
           <button type="submit" className="btn-primary">
             Iniciar sesión
           </button>
-
           {/* Botón para registrarse */}
           <button
             type="button"
@@ -102,13 +101,11 @@ export const LoginPage = ({ setIsAuth }) => {
           >
             Registrarse
           </button>
-
           {/* Recuperación de contraseña */}
           <p className="forgot-password">
             ¿Olvidaste tu contraseña?{" "}
             <span
               className="recover-link"
-            //onClick={() => setIsRecovering(true)}
             >
               Recupérala aquí
             </span>
@@ -118,3 +115,5 @@ export const LoginPage = ({ setIsAuth }) => {
     </div>
   );
 };
+
+export default LoginPage;

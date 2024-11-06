@@ -1,13 +1,22 @@
-import React from "react";
-
-export const NutriCard = ({ name, amount, description }) => {
+import React, { useState } from "react";
+import BuyModal from "../Pages/LandingPage/Components/BuyModal";
+export const NutriCard = ({ name, amount, description, isAuth,setIsAuth }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formatPriceWithDots = (amount) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    
+  };
+  const NutriInfo = () => {
+    setIsModalOpen(true);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
+    <>
     <div className=" flex min-h-96 gap-10 lg:min-h-96 justify-between items-center relative text-white py-7 lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col">
       <div>
         <div className="flex justify-center flex-col items-center">
@@ -21,10 +30,22 @@ export const NutriCard = ({ name, amount, description }) => {
         </div>
       </div>
       <div className="">
-        <button className=" text-base px-4 rounded-full py-2 text-black font-bold  bg-[#0036C1]">
+        <button className=" text-base px-4 rounded-full py-2 text-black font-bold  bg-[#0036C1]"
+        onClick={NutriInfo}>
           Reservar
         </button>
       </div>
     </div>
+     <BuyModal
+     isOpen={isModalOpen}
+     onClose={closeModal}
+     name={name}
+     amount={amount}
+     description={description}
+     isPlan={false}
+     isAuth={isAuth}
+     setIsAuth={setIsAuth}
+   />
+   </>
   );
 }

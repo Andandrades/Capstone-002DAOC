@@ -4,8 +4,15 @@ import LockIcon from '@mui/icons-material/Lock';
 import userIcon from "../../assets/img/userIcon.webp";
 import "./ProfileStyle.css"
 import { Logout } from "../../Components/API/sesion";
+import { Navigate } from "react-router-dom";
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
+
+  const LogoutSesion = () => {
+    Logout();
+    window.location.reload();
+  }
+
   return (
     <div className="genericocontainer pb-32 flex flex-col justify-between">
       <section className="backgroundPrimary w-full flex flex-col items-center ">
@@ -69,7 +76,7 @@ export const ProfilePage = () => {
         </form>
         <button
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white"
-          onClick={() => Logout()}
+          onClick={() => LogoutSesion()}
         >
           Cerrar sesión
         </button>
@@ -80,3 +87,5 @@ export const ProfilePage = () => {
     </div>
   );
 }
+
+export default ProfilePage;

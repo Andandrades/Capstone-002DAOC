@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import axios from "axios";
@@ -13,6 +14,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 
 export const AdminClasses = ({ }) => {
+
+
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
+
+const AdminClasses = () => {
 
   const [schedueInfo, setScheduleInfo] = useState([]);
 
@@ -138,3 +145,5 @@ export const AdminClasses = ({ }) => {
     </>
   );
 };
+
+export default AdminClasses;

@@ -33,7 +33,7 @@ const sesionRoutes = require("./routes/sesion.routes");
 const plansRoutes = require("./routes/plans.Routes");
 const Nutri = require("./routes/nutri.Routes");
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
-
+const webpay = require("./routes/Webpay.Routes");
 // Inicializar Rutas
 app.use(rolesRoutes);
 app.use(usersRoutes);
@@ -46,6 +46,7 @@ app.use(transactionRoutes);
 app.use(sesionRoutes);
 app.use(plansRoutes);
 app.use(gymHoursRoutes);
+app.use(webpay);
 
 // Puerto del servidor
 app.listen(3000, () => {
