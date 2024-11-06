@@ -98,7 +98,7 @@ export const GymHourCard = ({ schedule }) => {
 
   // Formatear horas en formato de 12 horas con AM/PM
   const formatHour = (hour) => {
-    const date = new Date(`1970-01-01T${hour}Z`);
+    const date = new Date(`1970-01-01T${hour}`);
     return date.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
@@ -108,8 +108,8 @@ export const GymHourCard = ({ schedule }) => {
 
   // Función para calcular duracion de clase
   const calculateDuration = (start, end) => {
-    const startDate = new Date(`1970-01-01T${start}Z`);
-    const endDate = new Date(`1970-01-01T${end}Z`);
+    const startDate = new Date(`1970-01-01T${start}`);
+    const endDate = new Date(`1970-01-01T${end}`);
 
     const durationMs = endDate - startDate; // Diferencia en milisegundos
     const minutes = Math.floor(durationMs / 1000 / 60); // Convertir milisegundos a minutos

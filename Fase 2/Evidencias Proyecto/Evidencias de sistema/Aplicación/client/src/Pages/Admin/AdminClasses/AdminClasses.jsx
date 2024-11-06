@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import axios from "axios";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
+
 import CopyClassesModal from "../../../Components/CopyClassesModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
 import { GymHourCard } from "../../../Components/GymHourCard";
 import { GymHourEditCard } from "../../../Components/GymHourEditCard";
 //DayPicker
@@ -13,47 +15,28 @@ import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 
-export const AdminClasses = ({ }) => {
-
-
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-
 
 const AdminClasses = () => {
 
   const [schedueInfo, setScheduleInfo] = useState([]);
 
-  const [day, setDay] = useState("S");
   const [dayModal, setDayModal] = useState();
   const [date, setDate] = useState(new Date());
   const [createModal, setCreateModal] = useState(false);
 
   const storedUser = localStorage.getItem("userID"); // Cambia a "userID"
-  const [refresh, setRefresh] = useState(false)
 
-
-  const days = [
-    {
-      days: [
-        { id: "L", dia: "Lunes" },
-        { id: "M", dia: "Martes" },
-        { id: "X", dia: "Miercoles" },
-        { id: "J", dia: "Jueves" },
-        { id: "V", dia: "Viernes" },
-        { id: "S", dia: "Sabado" },
-      ],
-    },
-  ];
 
   // Función para obtener las horas del gimnasio para el día seleccionado
-  const fetchGymHours = async (day) => {
+  const fetchGymHours = async (date) => {
+
+    const formattedDate = date.toISOString().split("T")[0];
+
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`
+        `${import.meta.env.VITE_API_URL}/gymHoursDate/${formattedDate}`
       );
-      if (!response.ok) {
-        throw new Error("Error al obtener las horas");
-      }
+
       const data = await response.json();
       setScheduleInfo(data); // Guardar los datos en el estado
     } catch (error) {
@@ -62,12 +45,9 @@ const AdminClasses = () => {
   };
 
   useEffect(() => {
-    fetchGymHours(day);
-  }, []);
+    fetchGymHours(date);
+  }, [date]);
 
-  useEffect(() => {
-    fetchGymHours(day);
-  }, [refresh]);
 
   const openModalDays = async () => {
     setDayModal(!dayModal);
@@ -77,13 +57,14 @@ const AdminClasses = () => {
     if (selectedDate) {
       setDate(selectedDate);
       setDayModal(false);
+      fetchGymHours(selectedDate);
     }
   };
 
 
   return (
     <>
-      <div className="w-full flex justify-start relative pb-32 flex-col">
+      <div className="w-full flex justify-start relative pb-32 flex-col bg-slate-200">
         <div className="w-full text-2xl font-semibold flex justify-center py-10">
           <h1>Administrar Clases</h1>
         </div>
@@ -108,7 +89,7 @@ const AdminClasses = () => {
         <div className="px-6">
           {schedueInfo.length > 0 ? (
             schedueInfo.map((schedue) => (
-              <GymHourEditCard key={schedue.gym_schedule_id} schedule={schedue} />
+              <GymHourEditCard refreshGymHours={() => fetchGymHours(date)}  key={schedue.gym_schedule_id} schedule={schedue} />
             ))
           ) : (
             <h1>No se encuentran clases</h1>
@@ -137,7 +118,7 @@ const AdminClasses = () => {
         ) : null}
 
         {createModal ? (
-          <CreateGymHourModal refresh={refresh} setRefresh={setRefresh} storedUser={storedUser} setCreateModal={setCreateModal} />
+          <CreateGymHourModal  storedUser={storedUser} setCreateModal={setCreateModal} />
         ) : null}
       </div>
 

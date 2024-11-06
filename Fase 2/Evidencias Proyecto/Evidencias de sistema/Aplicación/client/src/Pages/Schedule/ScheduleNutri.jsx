@@ -7,9 +7,6 @@ import "./ScheduleNutriStyle.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 
-
-export const ScheduleNutri = ({ userId }) => {
-
 const ScheduleNutri = ({ userId }) => {
 
   const [date, setDate] = useState(new Date());
