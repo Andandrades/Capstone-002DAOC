@@ -1,62 +1,165 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const CreateGymHourModal = ({ selectedSlot, onSave, closeModal }) => {
-  const [eventData, setEventData] = useState({
-    title: '',
-    maxCapacity: '',
+const CreateGymHourModal = ({ setCreateModal ,storedUser , setRefresh , refresh}) => {
+  
+
+  const [formData, setFormData] = useState({
+    start_hour: "00:00",
+    end_hour: "00:00",
+    max_cap: 0,
+    actual_cap: 0,
+    schedule_date: "",
+    admin_id: parseInt(storedUser)
   });
 
-  const handleSubmit = () => {
-    const newEvent = {
-      title: eventData.title,
-      start: selectedSlot.startStr,
-      end: selectedSlot.endStr,
-      extendedProps: {
-        maxCapacity: eventData.maxCapacity,
-      },
-    };
-    onSave(newEvent);  // Llama la función onSave del componente padre
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
+  const handleDateChange = (selectedDate) => {
+    setFormData({ ...formData, schedule_date: selectedDate });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/gymHours`,
+        formData
+      );
+      console.log("Respuesta:", response.data);
+      setCreateModal(false);
+      toast.success("Hora añadida correctamente");
+      setRefresh(!refresh)
+    } catch (error) {
+      console.log("Error al crear la clase", error);
+      toast.error("Error al agendar la hora");
+    }
+  };
+
+  useEffect(() => {
+    
+    if (storedUser) {
+        setFormData({
+            ...formData,
+        });
+    } else {
+        console.error("No se encontró userID en localStorage");
+    }
+}, [setFormData]);
+
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4 sm:mx-auto">
-        <h3 className="text-xl font-bold mb-4 text-center">Agregar evento para {selectedSlot.startStr}</h3>
-
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Título del evento"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={eventData.title}
-            onChange={(e) => setEventData({ ...eventData, title: e.target.value })}
-          />
+    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-auto">
+      <div className="bg-white pt-3 pb-32 w-[90%] max-h-screen p-3 rounded-lg overflow-y-auto">
+        <div className="w-full flex justify-end">
+          <HighlightOffIcon
+            className="text-black cursor-pointer"
+            onClick={() => setCreateModal(false)}
+          ></HighlightOffIcon>
         </div>
+        <h1 className="font-semibold text-2xl">Crear Clase</h1>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 p-4 max-w-md mx-auto"
+        >
+          <div>
+            <label
+              htmlFor="start_hour"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Hora Inicio:
+            </label>
+            <input
+              type="time"
+              id="start_hour"
+              name="start_hour"
+              value={formData.start_hour || ""}
+              onChange={handleOnChange}
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+          </div>
 
-        <div className="mb-4">
-          <input
-            type="number"
-            placeholder="Capacidad máxima"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={eventData.maxCapacity}
-            onChange={(e) => setEventData({ ...eventData, maxCapacity: e.target.value })}
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="end_hour"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Hora Termino:
+            </label>
+            <input
+              type="time"
+              id="end_hour"
+              name="end_hour"
+              value={formData.end_hour || ""}
+              onChange={handleOnChange}
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+          </div>
 
-        <div className="flex justify-end space-x-2">
+          <div>
+            <label
+              htmlFor="max_cap"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Capacidad Maxima:
+            </label>
+            <select
+              id="max_cap"
+              name="max_cap"
+              value={formData.max_cap || ""}
+              onChange={handleOnChange}
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="">Capacidad Maxima</option>
+              {[...Array(101).keys()].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="schedule_date"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Fecha Clase:
+            </label>
+            <div className="mt-1 w-full max-w-xs sm:max-w-md mx-auto overflow-hidden rounded-md border border-gray-300 shadow-sm">
+              <DayPicker
+                mode="single"
+                selected={formData.schedule_date}
+                onSelect={handleDateChange}
+                className="p-2"
+                styles={{
+                  day: { maxWidth: "2rem" },
+                  months: { display: "flex", justifyContent: "center" },
+                }}
+              />
+            </div>
+          </div>
+
           <button
-            onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            Guardar
+            Submit
           </button>
-          <button
-            onClick={closeModal}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg"
-          >
-            Cancelar
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   );

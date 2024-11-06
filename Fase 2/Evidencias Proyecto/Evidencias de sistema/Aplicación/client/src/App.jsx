@@ -41,6 +41,7 @@ function App() {
         setIsAuth(data.isAuth);
         setLoading(false);
         localStorage.setItem("isAuth", JSON.stringify(data.isAuth));
+        localStorage.setItem("userID", JSON.stringify(data.userId));
         setUserId(data.userId);
       })
       .catch((err) => {
@@ -83,6 +84,13 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/recover" element={<RecoverPage />} />
 
+        {/* rutas de administrador gestionar permisos por rol no implementado*/}
+        <Route path="/Admin" element={<AdminNutri />} />,
+        <Route path="/Admin/Planes" element={<AdminPlans />} />,
+        <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />,
+        <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
+        <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
+
             {/* Perfil usuario */}
             <Route path="/schedule" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
             <Route path="/schedule/gym" element={<ProtectedRoute><ScheduleGym /></ProtectedRoute>} />
@@ -91,12 +99,6 @@ function App() {
             <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-            {/* Rutas de administrador gestionar permisos por rol no implementado */}
-            <Route path="/admin" element={<AdminNutri />} />
-            <Route path="/admin/planes" element={<AdminPlans />} />
-            <Route path="/admin/clases" element={<AdminClasses />} />
-            <Route path="/admin/paginainicio" element={<AdminLandingPage />} />
-            <Route path="/admin/usuarios" element={<AdminUsersManagement />} />
 
             {/* Sin implementar */}
             <Route path="/plans" element={<PlansPage />} />

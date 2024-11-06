@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UserNavBar } from "../../Components/UserNavBar";
-import {GymHourCard} from "../../components/GymHourCard";
+import {GymHourCard} from "../../Components/GymHourCard";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import "./ScheduleStyles.css";
