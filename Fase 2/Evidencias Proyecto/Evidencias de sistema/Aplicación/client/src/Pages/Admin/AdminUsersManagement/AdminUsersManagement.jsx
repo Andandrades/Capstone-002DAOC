@@ -5,44 +5,49 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SportsIcon from '@mui/icons-material/Sports';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import GroupsIcon from '@mui/icons-material/Groups'; // Icono del administrador
+import GroupsIcon from '@mui/icons-material/Groups'; 
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
-import axios from 'axios';
+import { ObtenerClientes, ObtenerEntrenadores, ObtenerNutricionistas, ObtenerAdministradores, EliminarUsuario, CrearUsuario, ActualizarUsuario } from '../../../Components/API/Users';
 
 const AdminUsersManagement = () => {
   const [clients, setClients] = useState([]);
   const [nutritionists, setNutritionists] = useState([]);
   const [trainers, setTrainers] = useState([]);
-  const [administrators, setAdministrators] = useState([]); // Nuevo estado para administradores
+  const [administrators, setAdministrators] = useState([]); 
 
   const [showClients, setShowClients] = useState(false);
   const [showNutritionists, setShowNutritionists] = useState(false);
   const [showTrainers, setShowTrainers] = useState(false);
-  const [showAdministrators, setShowAdministrators] = useState(false); // Mostrar/ocultar administradores
-
-  const [showDropdowns, setShowDropdowns] = useState({
-    clients: null,
-    nutritionists: null,
-    trainers: null,
-    administrators: null, // Dropdown de administradores
-  });
+  const [showAdministrators, setShowAdministrators] = useState(false); 
 
   const [showPopup, setShowPopup] = useState(false);
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false); 
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
   const [userType, setUserType] = useState('');
   const [newUserName, setNewUserName] = useState('');
+  const [newUserEmail, setNewUserEmail] = useState('');
+  const [newUserPassword, setNewUserPassword] = useState('');
+  const [newUserWeight, setNewUserWeight] = useState('');
+  const [newUserHeight, setNewUserHeight] = useState('');
   const [editUserName, setEditUserName] = useState('');
+  const [editUserEmail, setEditUserEmail] = useState('');
+  const [editUserPassword, setEditUserPassword] = useState('');
+  const [editUserWeight, setEditUserWeight] = useState('');
+  const [editUserHeight, setEditUserHeight] = useState('');
 
+  // Función para obtener usuarios agrupados por rol
   useEffect(() => {
     const fetchUsersByRole = async () => {
       try {
-        const response = await axios.get('/api/usersByRole');
-        setClients(response.data.clients.map(user => user.name));
-        setNutritionists(response.data.nutritionists.map(user => user.name));
-        setTrainers(response.data.trainers.map(user => user.name));
-        setAdministrators(response.data.administrators.map(user => user.name)); // Administradores
+        const clientsData = await ObtenerClientes();
+        const trainersData = await ObtenerEntrenadores();
+        const nutritionistsData = await ObtenerNutricionistas();
+        const administratorsData = await ObtenerAdministradores();
+        setClients(clientsData.map(user => user));
+        setNutritionists(nutritionistsData.map(user => user));
+        setTrainers(trainersData.map(user => user));
+        setAdministrators(administratorsData.map(user => user));
       } catch (error) {
         console.error('Error al obtener los usuarios por rol:', error);
       }
@@ -57,17 +62,22 @@ const AdminUsersManagement = () => {
     setShowPopup(true);
   };
 
-  const confirmDelete = () => {
-    if (userType === 'client') {
-      setClients(clients.filter(client => client !== selectedUser));
-    } else if (userType === 'nutritionist') {
-      setNutritionists(nutritionists.filter(nutritionist => nutritionist !== selectedUser));
-    } else if (userType === 'trainer') {
-      setTrainers(trainers.filter(trainer => trainer !== selectedUser));
-    } else if (userType === 'administrator') {
-      setAdministrators(administrators.filter(admin => admin !== selectedUser));
+  const confirmDelete = async () => {
+    try {
+      await EliminarUsuario(selectedUser.id);
+      if (userType === 'nutritionist') {
+        setNutritionists(nutritionists.filter(nutritionist => nutritionist.id !== selectedUser.id));
+      } else if (userType === 'trainer') {
+        setTrainers(trainers.filter(trainer => trainer.id !== selectedUser.id));
+      } else if (userType === 'administrator') {
+        setAdministrators(administrators.filter(admin => admin.id !== selectedUser.id));
+      } else if (userType === 'client') {
+        setClients(clients.filter(client => client.id !== selectedUser.id));
+      }
+      setShowPopup(false);
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
     }
-    setShowPopup(false);
   };
 
   const toggleDropdown = (user, type) => {
@@ -85,38 +95,71 @@ const AdminUsersManagement = () => {
     setShowAddPopup(true);
   };
 
-  const confirmAddUser = () => {
-    if (userType === 'client') {
-      setClients([...clients, newUserName]);
-    } else if (userType === 'nutritionist') {
-      setNutritionists([...nutritionists, newUserName]);
-    } else if (userType === 'trainer') {
-      setTrainers([...trainers, newUserName]);
-    } else if (userType === 'administrator') {
-      setAdministrators([...administrators, newUserName]);
+  const confirmAddUser = async () => {
+    const newUser = {
+      name: newUserName,
+      email: newUserEmail,
+      password: newUserPassword,
+      fk_rol_id: userType === 'client' ? 1 : userType === 'nutritionist' ? 3 : userType === 'trainer' ? 2 : 4,
+      weight: newUserWeight,
+      height: newUserHeight
+    };
+    try {
+      const createdUser = await CrearUsuario(newUser);
+      if (userType === 'client') {
+        setClients([...clients, createdUser]);
+      } else if (userType === 'nutritionist') {
+        setNutritionists([...nutritionists, createdUser]);
+      } else if (userType === 'trainer') {
+        setTrainers([...trainers, createdUser]);
+      } else if (userType === 'administrator') {
+        setAdministrators([...administrators, createdUser]);
+      }
+      setNewUserName('');
+      setNewUserEmail('');
+      setNewUserPassword('');
+      setNewUserWeight('');
+      setNewUserHeight('');
+      setShowAddPopup(false);
+    } catch (error) {
+      console.error('Error al crear el usuario:', error);
     }
-    setNewUserName('');
-    setShowAddPopup(false);
   };
 
   const handleEditClick = (user, type) => {
     setSelectedUser(user);
-    setEditUserName(user);
+    setEditUserName(user.name || '');
+    setEditUserEmail(user.email || '');
+    setEditUserPassword(user.password || '');
+    setEditUserWeight(user.weight || '');
+    setEditUserHeight(user.height || '');
     setUserType(type); 
     setShowEditPopup(true); 
   };
 
-  const confirmEditUser = () => {
-    if (userType === 'client') {
-      setClients(clients.map(client => (client === selectedUser ? editUserName : client)));
-    } else if (userType === 'nutritionist') {
-      setNutritionists(nutritionists.map(nutritionist => (nutritionist === selectedUser ? editUserName : nutritionist)));
-    } else if (userType === 'trainer') {
-      setTrainers(trainers.map(trainer => (trainer === selectedUser ? editUserName : trainer)));
-    } else if (userType === 'administrator') {
-      setAdministrators(administrators.map(admin => (admin === selectedUser ? editUserName : admin)));
+  const confirmEditUser = async () => {
+    const updatedUser = {
+      name: editUserName,
+      email: editUserEmail,
+      password: editUserPassword,
+      weight: editUserWeight,
+      height: editUserHeight
+    };
+    try {
+      const updated = await ActualizarUsuario(selectedUser.id, updatedUser);
+      if (userType === 'client') {
+        setClients(clients.map(client => (client.id === selectedUser.id ? updated : client)));
+      } else if (userType === 'nutritionist') {
+        setNutritionists(nutritionists.map(nutritionist => (nutritionist.id === selectedUser.id ? updated : nutritionist)));
+      } else if (userType === 'trainer') {
+        setTrainers(trainers.map(trainer => (trainer.id === selectedUser.id ? updated : trainer)));
+      } else if (userType === 'administrator') {
+        setAdministrators(administrators.map(admin => (admin.id === selectedUser.id ? updated : admin)));
+      }
+      setShowEditPopup(false);
+    } catch (error) {
+      console.error('Error al actualizar el usuario:', error);
     }
-    setShowEditPopup(false); 
   };
 
   return (
@@ -136,14 +179,13 @@ const AdminUsersManagement = () => {
             <ul className="roles-list">
               {clients.map((client, index) => (
                 <li key={index} className="roles-listItem">
-                  <span>{client}</span>
+                  <span>{client.name}</span>
                   <div className="dropdown">
                     <button className="dropdown-button" onClick={() => toggleDropdown(client, 'client')}>
                       <KeyboardDoubleArrowDownIcon />
                     </button>
                     {selectedUser === client && (
                       <div className="dropdown-content">
-                        <button className="delete-button" onClick={() => handleDeleteClick(client, 'client')}>Borrar</button>
                         <button className="edit-button" onClick={() => handleEditClick(client, 'client')}>Editar</button>
                       </div>
                     )}
@@ -165,7 +207,7 @@ const AdminUsersManagement = () => {
             <ul className="roles-list">
               {nutritionists.map((nutritionist, index) => (
                 <li key={index} className="roles-listItem">
-                  <span>{nutritionist}</span>
+                  <span>{nutritionist.name}</span>
                   <div className="dropdown">
                     <button className="dropdown-button" onClick={() => toggleDropdown(nutritionist, 'nutritionist')}>
                       <KeyboardDoubleArrowDownIcon />
@@ -194,11 +236,11 @@ const AdminUsersManagement = () => {
             <ul className="roles-list">
               {trainers.map((trainer, index) => (
                 <li key={index} className="roles-listItem">
-                  <span>{trainer}</span>
+                  <span>{trainer.name}</span>
                   <div className="dropdown">
                     <button className="dropdown-button" onClick={() => toggleDropdown(trainer, 'trainer')}>
                       <KeyboardDoubleArrowDownIcon />
-                    </button> 
+                    </button>
                     {selectedUser === trainer && (
                       <div className="dropdown-content">
                         <button className="delete-button" onClick={() => handleDeleteClick(trainer, 'trainer')}>Borrar</button>
@@ -223,7 +265,7 @@ const AdminUsersManagement = () => {
             <ul className="roles-list">
               {administrators.map((admin, index) => (
                 <li key={index} className="roles-listItem">
-                  <span>{admin}</span>
+                  <span>{admin.name}</span>
                   <div className="dropdown">
                     <button className="dropdown-button" onClick={() => toggleDropdown(admin, 'administrator')}>
                       <KeyboardDoubleArrowDownIcon />
@@ -240,63 +282,105 @@ const AdminUsersManagement = () => {
             </ul>
           )}
         </div>
-
-        {/* Popups */}
-        {showPopup && (
-          <div className="popup-overlay">
-            <div className="popup">
-              <h3>¿Estás seguro de que deseas borrar a {selectedUser}?</h3>
-              <div className="popup-buttons">
-                <button className="confirm-button" onClick={confirmDelete}>Confirmar</button>
-                <button className="cancel-button" onClick={() => setShowPopup(false)}>Cancelar</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showAddPopup && (
-          <div className="popup-overlay">
-            <div className="popup">
-              <h3>Agregar nuevo {userType}</h3>
-              <input
-                type="text"
-                placeholder="Nombre del usuario"
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-              />
-              <div className="popup-buttons">
-                <button className="confirm-button" onClick={confirmAddUser}>Agregar</button>
-                <button className="cancel-button" onClick={() => setShowAddPopup(false)}>Cancelar</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showEditPopup && (
-          <div className="popup-overlay">
-            <div className="popup">
-              <h3>Editar nombre de {selectedUser}</h3>
-              <input
-                type="text"
-                placeholder="Nuevo nombre"
-                value={editUserName}
-                onChange={(e) => setEditUserName(e.target.value)}
-              />
-              <div className="popup-buttons">
-                <button className="confirm-button" onClick={confirmEditUser}>Guardar</button>
-                <button className="cancel-button" onClick={() => setShowEditPopup(false)}>Cancelar</button>
-              </div>
-            </div>
-          </div>
-        )}
-
       </div>
+
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <p>¿Estás seguro de que deseas borrar a {selectedUser.name}?</p>
+            <div className="popup-buttons">
+              <button className="popup-button confirm-button" onClick={confirmDelete}>Sí, borrar</button>
+              <button className="popup-button cancel-button" onClick={() => setShowPopup(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAddPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h2>Agregar nuevo {userType}</h2>
+            <input
+              type="text"
+              value={newUserName}
+              onChange={(e) => setNewUserName(e.target.value)}
+              placeholder="Nombre del nuevo usuario"
+            />
+            <input
+              type="email"
+              value={newUserEmail}
+              onChange={(e) => setNewUserEmail(e.target.value)}
+              placeholder="Email del nuevo usuario"
+            />
+            <input
+              type="password"
+              value={newUserPassword}
+              onChange={(e) => setNewUserPassword(e.target.value)}
+              placeholder="Contraseña del nuevo usuario"
+            />
+            <input
+              type="number"
+              value={newUserWeight}
+              onChange={(e) => setNewUserWeight(e.target.value)}
+              placeholder="Peso del nuevo usuario"
+            />
+            <input
+              type="number"
+              value={newUserHeight}
+              onChange={(e) => setNewUserHeight(e.target.value)}
+              placeholder="Altura del nuevo usuario"
+            />
+            <div className="popup-buttons">
+              <button className="popup-button confirm-button" onClick={confirmAddUser}>Agregar</button>
+              <button className="popup-button cancel-button" onClick={() => setShowAddPopup(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showEditPopup && ( // Popup de edición
+        <div className="popup-overlay">
+          <div className="popup">
+            <h2>Editar {userType}</h2>
+            <input
+              type="text"
+              value={editUserName}
+              onChange={(e) => setEditUserName(e.target.value)}
+              placeholder="Nuevo nombre"
+            />
+            <input
+              type="email"
+              value={editUserEmail}
+              onChange={(e) => setEditUserEmail(e.target.value)}
+              placeholder="Nuevo email"
+            />
+            <input
+              type="password"
+              value={editUserPassword}
+              onChange={(e) => setEditUserPassword(e.target.value)}
+              placeholder="Nueva contraseña"
+            />
+            <input
+              type="number"
+              value={editUserWeight}
+              onChange={(e) => setEditUserWeight(e.target.value)}
+              placeholder="Nuevo peso"
+            />
+            <input
+              type="number"
+              value={editUserHeight}
+              onChange={(e) => setEditUserHeight(e.target.value)}
+              placeholder="Nueva altura"
+            />
+            <div className="popup-buttons">
+              <button className="popup-button confirm-button" onClick={confirmEditUser}>Confirmar</button>
+              <button className="popup-button cancel-button" onClick={() => setShowEditPopup(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
 export default AdminUsersManagement;
-
-
-
-
