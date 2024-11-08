@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const { getGymHours,createGymHour , updateGymHour, deleteGymHour, getSingleHour , getHourByDay , updateActualCap , copyClassesToDays} = require("../controllers/gym_schedule.controllers");
+const { getGymHours,getHoursByDate, createGymHour , updateGymHour, deleteGymHour, getSingleHour , getHourByDay , updateActualCap} = require("../controllers/gym_schedule.controllers");
 
 const router = Router();
 
@@ -16,6 +16,7 @@ const corsOptions = {
 };
   
 router.get("/gymHours",getGymHours);
+router.get("/gymHoursDate/:date",getHoursByDate);
 router.post("/gymHours",createGymHour);
 router.options("/gymHours/:id",cors(corsOptions));
 router.put("/gymHours/:id",updateGymHour);
@@ -26,7 +27,7 @@ router.get("/gymHoursDay/:day",getHourByDay);
 router.get("/gymHoursDay/:day",cors(corsOptions));
 
 //Endpoint para crear copia de horas de un dia
-router.post("/gymHoursCopy",copyClassesToDays);
+
 
 
 module.exports = router;

@@ -5,18 +5,19 @@ import "react-day-picker/style.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const CreateGymHourModal = ({ setCreateModal ,storedUser , setRefresh , refresh}) => {
-  
-
+const CreateGymHourModal = ({
+  setCreateModal,
+  storedUser,
+  refreshGymHours
+}) => {
   const [formData, setFormData] = useState({
     start_hour: "00:00",
     end_hour: "00:00",
     max_cap: 0,
     actual_cap: 0,
     schedule_date: "",
-    admin_id: parseInt(storedUser)
+    admin_id: parseInt(storedUser),
   });
-
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -32,15 +33,21 @@ const CreateGymHourModal = ({ setCreateModal ,storedUser , setRefresh , refresh}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(!formData.schedule_date){
+      toast.warning("Favor seleccione una fecha para la clase")
+      return
+    }
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/gymHours`,
         formData
       );
       console.log("Respuesta:", response.data);
-      setCreateModal(false);
       toast.success("Hora añadida correctamente");
-      setRefresh(!refresh)
+      setCreateModal(false);
+      refreshGymHours();
+
     } catch (error) {
       console.log("Error al crear la clase", error);
       toast.error("Error al agendar la hora");
@@ -48,15 +55,14 @@ const CreateGymHourModal = ({ setCreateModal ,storedUser , setRefresh , refresh}
   };
 
   useEffect(() => {
-    
     if (storedUser) {
-        setFormData({
-            ...formData,
-        });
+      setFormData({
+        ...formData,
+      });
     } else {
-        console.error("No se encontró userID en localStorage");
+      console.error("No se encontró userID en localStorage");
     }
-}, [setFormData]);
+  }, [setFormData]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-auto">

@@ -1,18 +1,41 @@
 const pool = require("../db");
 
-const cors = require('cors');
-const express = require('express');
+const cors = require("cors");
+const express = require("express");
 const app = express();
 app.use(cors());
 
 //Traer todas las horas
 const getGymHours = async (req, res) => {
-
   try {
     const schedules = await pool.query("SELECT * FROM gym_schedule");
     res.json(schedules.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+//Traer horas por fecha
+const getHoursByDate = async (req, res) => {
+  const { date } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      "SELECT * FROM gym_schedule WHERE schedule_date = $1",
+      [date]
+    );
+
+    if (resultado.rows.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No se encuentran clases para esta fecha" });
+    }
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error:" , error);
+    res.status(500).json({message : "Error al intentar obtener horas"})
+    
   }
 };
 
@@ -57,7 +80,6 @@ const updateGymHour = async (req, res) => {
 
 //Eliminar Hora
 const deleteGymHour = async (req, res) => {
-  
   const { id } = req.params;
   try {
     const deletedSchedule = await pool.query(
@@ -69,7 +91,6 @@ const deleteGymHour = async (req, res) => {
       return res.status(404).json({ error: "Horario no encontrado" });
     }
     return res.json({ schedule: deletedSchedule.rows[0] });
-
   } catch (error) {
     return res
       .status(400)
@@ -99,7 +120,6 @@ const getSingleHour = async (req, res) => {
 
 //Traer horas de dia especifico de la semana
 const getHourByDay = async (req, res) => {
-  
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
   const { day } = req.params;
@@ -107,22 +127,22 @@ const getHourByDay = async (req, res) => {
   //Transformar valor de dia a numerico
   const getDayOfWeek = (day) => {
     switch (day.toUpperCase()) {
-      case "L": 
+      case "L":
         return 1;
-      case "M": 
+      case "M":
         return 2;
-      case "X": 
+      case "X":
         return 3;
-      case "J": 
+      case "J":
         return 4;
-      case "V": 
+      case "V":
         return 5;
-      case "S": 
+      case "S":
         return 6;
-      case "D": 
+      case "D":
         return 0;
       default:
-        return null; 
+        return null;
     }
   };
 
@@ -153,8 +173,6 @@ const getHourByDay = async (req, res) => {
   }
 };
 
-
-
 //Actualizar capacidad actual
 const updateActualCap = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
@@ -163,102 +181,35 @@ const updateActualCap = async (req, res) => {
   const { actual_cap } = req.body; // Campo a actualizar
 
   if (actual_cap === undefined) {
-    return res.status(400).json({ message: 'No se proporcionó actual_cap' });
+    return res.status(400).json({ message: "No se proporcionó actual_cap" });
   }
 
   try {
     // Ejecutar la consulta para actualizar solo el actual_cap
     await pool.query(
-      'UPDATE gym_schedule SET actual_cap = $1 WHERE gym_schedule_id = $2',
+      "UPDATE gym_schedule SET actual_cap = $1 WHERE gym_schedule_id = $2",
       [actual_cap, id]
     );
-    
-    return res.status(200).json({ message: 'Capacidad actualizada exitosamente' });
+
+    return res
+      .status(200)
+      .json({ message: "Capacidad actualizada exitosamente" });
   } catch (error) {
-    console.error('Error actualizando gym_schedule:', error);
-    return res.status(500).json({ message: 'Error al actualizar la capacidad' });
+    console.error("Error actualizando gym_schedule:", error);
+    return res
+      .status(500)
+      .json({ message: "Error al actualizar la capacidad" });
   }
 };
 
-
-//Copiar esquema de clases
-const copyClassesToDays = async (req, res) => {
-  const { originalDay, targetDays } = req.body;
-
-  try {
-    // 1. Obtener las clases del día original usando tu función existente
-    const query = `
-      SELECT * 
-      FROM gym_schedule
-      WHERE EXTRACT(DOW FROM schedule_date) = $1
-      AND schedule_date >= DATE_TRUNC('week', CURRENT_DATE)
-      AND schedule_date < DATE_TRUNC('week', CURRENT_DATE) + INTERVAL '7 days';
-    `;
-
-    const originalClasses = await pool.query(query, [getDayOfWeek(originalDay)]);
-    
-    // 2. Insertar las clases en los días seleccionados
-    const insertQuery = `
-      INSERT INTO gym_schedule (start_hour, end_hour, max_cap, actual_cap, admin_id, schedule_date)
-      VALUES ($1, $2, $3, $4, $5, $6);
-    `;
-
-    for (const day of targetDays) {
-      const newDate = getNewDateForDay(day);  // Obtener la nueva fecha para cada día
-
-      for (const clase of originalClasses.rows) {
-        await pool.query(insertQuery, [
-          clase.start_hour,
-          clase.end_hour,
-          clase.max_cap,
-          clase.actual_cap,
-          clase.admin_id,
-          newDate
-        ]);
-      }
-    }
-
-    res.status(200).send({ message: 'Clases copiadas correctamente' });
-  } catch (err) {
-    console.error('Error copiando clases:', err);
-    res.status(500).send('Error en el servidor');
-  }
-};
-
-// Función auxiliar para convertir días en números
-const getDayOfWeek = (day) => {
-  switch (day.toUpperCase()) {
-    case "L": return 1;
-    case "M": return 2;
-    case "X": return 3;
-    case "J": return 4;
-    case "V": return 5;
-    case "S": return 6;
-    case "D": return 0;
-    default: return null;
-  }
-};
-
-// Función para obtener la nueva fecha en la semana actual según el día seleccionado
-const getNewDateForDay = (day) => {
-  const today = new Date();
-  const currentDay = today.getDay();
-  const targetDay = getDayOfWeek(day);
-  
-  const diff = targetDay - currentDay;
-  const newDate = new Date(today);
-  newDate.setDate(today.getDate() + diff);
-  
-  return newDate.toISOString().split('T')[0];  // Retorna la fecha en formato YYYY-MM-DD
-};
 
 module.exports = {
   getGymHours,
+  getHoursByDate,
   createGymHour,
   updateGymHour,
   deleteGymHour,
   getSingleHour,
   getHourByDay,
   updateActualCap,
-  copyClassesToDays
 };
