@@ -21,7 +21,6 @@ const ScheduleGym = ({userId}) => {
 
 useEffect(() => {
   fetchGymHours("L")
-  
 },[])
 
 useEffect(() => {

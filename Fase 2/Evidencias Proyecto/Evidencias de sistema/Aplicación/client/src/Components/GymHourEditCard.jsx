@@ -6,6 +6,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { DayPicker } from "react-day-picker";
 import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
+import { UsersListCard } from "./UsersListCard";
 
 export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
   const {
@@ -21,10 +22,16 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
   const [scheduledUsers, setScheduledUsers] = useState([]);
   const [editModal, setEditModal] = useState(false);
 
+  const [usersModal, setUserModal] = useState(false)
+  const [deleteModal , setDeleteModal] = useState(false)
+
   const [startHour, setStartHour] = useState(ogStarHour);
   const [endHour, setEndHour] = useState(ogEndHour);
   const [maxCap, setMaxCap] = useState(ogMaxCap);
   const [scheduleDate, setScheduleDate] = useState(ogScheduleDate);
+
+
+
 
   //Funcion para cambiar el estado del Modal
 
@@ -118,6 +125,23 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
     }
   };
 
+  const deleteClass = async () => {
+    try {
+      const resultado = await fetch(`${import.meta.env.VITE_API_URL}/gymHours/${gym_schedule_id}`,{
+        method : "DELETE"
+      })
+
+      if(resultado.ok){
+        setDeleteModal(false)
+        refreshGymHours()
+        toast.success("Hora Eliminada Correctamente!")
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al Eliminar la Clase")
+    }
+  }
+
   useEffect(() => {
     if (isModalOpen) {
       // Desactivamos el scroll en el momento que se abre el modal
@@ -160,17 +184,17 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
           >
             Editar
           </button>
-          <button className="bg-red-500 text-white font-medium rounded-full w-1/2">
+          <button onClick={() => setDeleteModal(true)} className="bg-red-500 text-white font-medium rounded-full w-1/2">
             Eliminar
           </button>
         </div>
       </div>
       <div className="absolute bg-gray-700 rounded-full top-[-30px] right-[-12px] flex justify-center mt-5">
-        <InfoIcon className="text-yellow-400" />
+        <InfoIcon onClick={() => setUserModal(true)} className="text-yellow-400" />
       </div>
 
       {editModal ? (
-        <div className="fixed py-32 inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+        <div className="fixed py-32 z-20 inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
           <div className="bg-white flex flex-col p-6 rounded-lg">
             <div className="flex justify-between items-center flex-row">
               <h1>Editar Hora</h1>
@@ -256,10 +280,10 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
                 <div className="mt-1 relative max-w-xs mx-auto overflow-hidden rounded-md border border-gray-300 shadow-sm">
                   <DayPicker
                     mode="single"
-                    className="absolute top-0 left-0 z-20"
+                    className="absolute top-0 left-0"
                     selected={scheduleDate}
+                    required
                     onSelect={(date) => setScheduleDate(date)} // Mantener el valor como objeto Date
-
                     styles={{
                       day: { maxWidth: "2rem" },
                       months: { display: "flex", justifyContent: "center" },
@@ -276,6 +300,20 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
               </button>
             </form>
           </div>
+        </div>
+      ) : null}
+      {usersModal ? (
+        <UsersListCard setUserModal={setUserModal} schedule={schedule}/>
+      ) : null}
+      {deleteModal ? (
+        <div className="fixed py-32 z-20 inset-0 px-6 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+            <div className="bg-white text-center rounded-md p-6">
+                <span className="font-medium text-xl">Está seguro que quiere eliminar esta clase?</span>
+                <div className="w-full flex justify-evenly py-6">
+                  <button onClick={() => deleteClass()} className="bg-red-500 text-white px-3 rounded-sm">Eliminar</button>
+                  <button onClick={() => setDeleteModal(false)} className="bg-blue-400 text-white px-3 rounded-sm">Cancelar</button>
+                </div>
+            </div>
         </div>
       ) : null}
     </div>

@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import axios from "axios";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
-
-import CopyClassesModal from "../../../Components/CopyClassesModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 import { GymHourCard } from "../../../Components/GymHourCard";
@@ -64,7 +62,7 @@ const AdminClasses = () => {
 
   return (
     <>
-      <div className="w-full flex justify-start relative pb-32 flex-col bg-slate-200">
+      <div className="w-full min-h-[100vh] flex justify-start relative pb-32 flex-col bg-slate-200">
         <div className="w-full text-2xl font-semibold flex justify-center py-10">
           <h1>Administrar Clases</h1>
         </div>
@@ -92,11 +90,13 @@ const AdminClasses = () => {
               <GymHourEditCard refreshGymHours={() => fetchGymHours(date)}  key={schedue.gym_schedule_id} schedule={schedue} />
             ))
           ) : (
-            <h1>No se encuentran clases</h1>
+            <div className="w-full flex justify-center text-center pt-10">
+              <h1> No se encuentran clases registradas para este dia</h1>
+            </div>
           )}
 
         </div>
-        {/*<CopyClassesModal originalDay={day} />*/}
+        
         {dayModal ? (
           <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
             <div className="bg-white p-3 rounded-lg">
@@ -118,7 +118,7 @@ const AdminClasses = () => {
         ) : null}
 
         {createModal ? (
-          <CreateGymHourModal  storedUser={storedUser} setCreateModal={setCreateModal} />
+          <CreateGymHourModal  storedUser={storedUser} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)}/>
         ) : null}
       </div>
 
