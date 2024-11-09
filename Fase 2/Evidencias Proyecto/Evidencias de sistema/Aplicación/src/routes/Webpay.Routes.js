@@ -3,6 +3,6 @@ const { iniciarTransaccion, confirmarPago } = require("../controllers/Webpay.con
 const router = express.Router();
 
 router.post("/iniciar-transaccion", iniciarTransaccion);
-router.post("/confirmar-pago", confirmarPago);
+router.get("/confirmar-pago", confirmarPago);
 
 module.exports = router;
