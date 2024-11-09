@@ -95,7 +95,17 @@ const AdminUsersManagement = () => {
     setShowAddPopup(true);
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const confirmAddUser = async () => {
+    if (!validateEmail(newUserEmail)) {
+      alert('Verifique que el correo que escribio es valido.');
+      return;
+    }
+
     const newUser = {
       name: newUserName,
       email: newUserEmail,
@@ -138,12 +148,18 @@ const AdminUsersManagement = () => {
   };
 
   const confirmEditUser = async () => {
+    if (!validateEmail(editUserEmail)) {
+      alert('Ingresa un correo electrónico válido.');
+      return;
+    }
+
     const updatedUser = {
       name: editUserName,
       email: editUserEmail,
       password: editUserPassword,
       weight: editUserWeight,
-      height: editUserHeight
+      height: editUserHeight,
+      fk_rol_id: selectedUser.fk_rol_id 
     };
     try {
       const updated = await ActualizarUsuario(selectedUser.id, updatedUser);

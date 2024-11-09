@@ -6,6 +6,7 @@ import "./RegisterStyle.css";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,6 +21,7 @@ const RegisterPage = () => {
     }
 
     const payload = {
+      name: name,
       email: email,
       password: password,
       fk_rol_id: 3,
@@ -48,7 +50,19 @@ const RegisterPage = () => {
           <img src={registrate} alt="Registro" className="mx-auto w-24 h-auto" />
         </div>
         <h2 className="text-2xl font-bold text-center mb-6">Registrarse</h2>
-        
+
+        <div className="input-group mb-4">
+          <label htmlFor="name" className="block text-gray-700 mb-2">Nombre</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
         <div className="input-group mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">Correo Electrónico</label>
           <input
