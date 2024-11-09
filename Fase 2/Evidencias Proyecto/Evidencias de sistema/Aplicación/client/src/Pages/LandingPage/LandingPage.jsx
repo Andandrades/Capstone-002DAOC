@@ -16,7 +16,7 @@ import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
 
 const LandingPage = (props) => {
-  const {isAuth,setIsAuth } = props;
+  const { isAuth, setIsAuth } = props;
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -25,8 +25,10 @@ const LandingPage = (props) => {
 
   const [plans, setPlans] = useState([]);
   const [dataNutri, setDataNutri] = useState([]);
+  const [error, setError] = useState("");
 
-
+  console.log(error);
+  
   //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);

@@ -3,13 +3,14 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export const iniciarTransaccion = async (monto) => {
+export const iniciarTransaccion = async (props) => {
+    const { amount, name } = props;
+
     try {
         const response = await axios.post("http://localhost:3000/iniciar-transaccion", {
-            amount: 10000,
+            amount: amount,
             sessionId: "mi_sesion",
-            buyOrder: "orden_compra_12345",
-            returnUrl: "http://localhost:5173/"
+            buyOrder: name,
         });
 
         window.location.href = response.data.url + "?token_ws=" + response.data.token;

@@ -3,12 +3,10 @@ import Menu from "../assets/Certificate.svg";
 import BuyModal from "../Pages/LandingPage/Components/BuyModal";
 
 export const Plans = (props) => {
-  const { name, amount, description, n_class, isAuth,setIsAuth } = props;
+  const { name, amount, description, n_class, isAuth, setIsAuth } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const formatPriceWithDots = (amount) => {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
+  const StringedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   const PlanInfo = () => {
     setIsModalOpen(true);
@@ -30,7 +28,7 @@ export const Plans = (props) => {
           <div className="flex justify-center flex-col items-center">
             <h1 className="text-3xl font-bold ">{name}</h1>
             <h2 className="font-bold text-[40px] mt-2 text-[#FFAE3A]">
-              ${formatPriceWithDots(amount)} CLP
+              ${StringedAmount} CLP
             </h2>
           </div>
           <div className="flex flex-col justify-center items-center font-semibold">
