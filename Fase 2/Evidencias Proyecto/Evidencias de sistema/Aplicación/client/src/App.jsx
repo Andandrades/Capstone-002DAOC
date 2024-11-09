@@ -4,6 +4,7 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "./Components/Spinner";
+import { NutriMenu } from "./Pages/Nutri/NutriMenu";
 // Importación de páginas con lazy loading
 const AdminClasses = lazy(() => import("./Pages/Admin/AdminClasses/AdminClasses"));
 const AdminLandingPage = lazy(() => import("./Pages/Admin/AdminLandingPage/AdminLandingPage"));
@@ -53,7 +54,7 @@ function App() {
 
   const ProtectedRoute = ({ children }) => {
     if (loading) {
-      return <Spinner/>;
+      return <Spinner />;
     }
     return isAuth ? children : <Navigate to="/login" />;
   };
@@ -66,7 +67,7 @@ function App() {
     <>
       <ToastContainer />
       <Router>
-        <Suspense fallback={<Spinner/>}>
+        <Suspense fallback={<Spinner />}>
           <Routes>
             {/*Principal*/}
             <Route path="*" element={<Navigate to="/" />} />
@@ -85,12 +86,12 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/recover" element={<RecoverPage />} />
 
-        {/* rutas de administrador gestionar permisos por rol no implementado*/}
-        <Route path="/Admin" element={<AdminNutri />} />,
-        <Route path="/Admin/Planes" element={<AdminPlans />} />,
-        <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />,
-        <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
-        <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
+            {/* rutas de administrador gestionar permisos por rol no implementado*/}
+            <Route path="/Admin" element={<AdminNutri />} />,
+            <Route path="/Admin/Planes" element={<AdminPlans />} />,
+            <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />,
+            <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
+            <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
 
             {/* Perfil usuario */}
             <Route path="/schedule" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
@@ -100,6 +101,8 @@ function App() {
             <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
+
+            <Route path="/nutri" element={<NutriMenu/>}/>
 
             {/* Sin implementar */}
             <Route path="/plans" element={<PlansPage />} />
