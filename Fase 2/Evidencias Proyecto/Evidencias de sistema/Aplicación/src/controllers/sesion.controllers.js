@@ -83,13 +83,10 @@ const registerUser = async (req, res) => {
 const checkAuth = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  
   const token = req.cookies.token;
-
   if (!token) {
-    return res.status(401).json({ isAuth: false });
+    return res.status(200).json({ isAuth: false });
   }
-
   try {
     const decoded = jwt.verify(token, jwtSecret);
     return res.status(200).json({ isAuth: true, userId: decoded.id });

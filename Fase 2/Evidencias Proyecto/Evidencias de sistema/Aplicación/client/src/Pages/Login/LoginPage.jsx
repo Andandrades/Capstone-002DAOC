@@ -77,7 +77,6 @@ const LoginPage = ({ setIsAuth }) => {
             />
           </div>
 
-          {/* Campo de Contraseña */}
           <div className="input-group">
             <input
               type="password"

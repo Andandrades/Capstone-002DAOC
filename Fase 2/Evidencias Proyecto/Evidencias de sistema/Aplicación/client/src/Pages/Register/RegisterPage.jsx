@@ -55,7 +55,7 @@ const RegisterPage = () => {
           <label htmlFor="name" className="block text-gray-700 mb-2">Nombre de usuario</label>
           <input
             type="text"
-            id="name"
+            id="Username"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

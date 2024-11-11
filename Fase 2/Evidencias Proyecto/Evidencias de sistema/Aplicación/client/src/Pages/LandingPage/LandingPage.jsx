@@ -81,7 +81,7 @@ const LandingPage = () => {
           sectionRef7,
         }}
       />
-      <div ref={sectionRef1} className="SoldadoContainer ">
+      <div ref={sectionRef1} className="SoldadoContainer">
         <h1 className="title text-center z-0">Soldado Gym</h1>
       </div>
       <div className="separator" />
