@@ -9,16 +9,14 @@ const url = "";
 const transaction = new WebpayPlus.Transaction();
 
 const iniciarTransaccion = async (req, res) => {
-  const { amount, sessionId, buyOrder, } = req.body;
+  const { amount, sessionId, buyOrder,user_id } = req.body;
   const returnUrl = "http://localhost:3000/confirmar-pago";
   try {
     const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
 
-    // Guardar la transacción en la base de datos si es necesario
-
     await pool.query(
-      "INSERT INTO transactions (buy_order, session_id, amount, token) VALUES ($1, $2, $3, $4)",
-      [buyOrder, sessionId, amount, response.token]
+      "INSERT INTO transactions (buy_order, session_id, amount, token,user_id) VALUES ($1, $2, $3, $4, $5)",
+      [buyOrder, sessionId, amount, response.token, user_id ]
     );
 
     res.json({
@@ -48,7 +46,27 @@ const confirmarPago = async (req, res) => {
   }
 };
 
+const obtenerEstadoTransaccion = async (req, res) => {
+  const { token_ws: token } = req.query;
+  
+  try {
+      const response = await pool.query(
+          "SELECT * FROM transactions WHERE token = $1",
+          [token]
+      );
+      
+      if (response.rows.length === 0) {
+          return res.status(404).json({ error: "Transacción no encontrada." });
+      }
+      
+      res.json(response.rows[0]);
+  } catch (error) {
+      res.status(500).json({ error: "Error al obtener la transacción." });
+  }
+};
+
 module.exports = {
   iniciarTransaccion,
   confirmarPago,
+  obtenerEstadoTransaccion
 };

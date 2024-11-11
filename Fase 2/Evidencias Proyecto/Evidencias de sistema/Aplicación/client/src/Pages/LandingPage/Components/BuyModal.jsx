@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
+import { useUser } from '../../../Components/API/UserContext';
+
 
 const BuyModal = (props) => {
   const { isOpen, onClose, name, amount, description, n_class, isAuth, setIsAuth, isPlan } = props;
+  const { userId } = useUser();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,6 +56,23 @@ const BuyModal = (props) => {
     }
   };
 
+  const iniciarTransaccionHandler = async () => {
+    try {
+      const response = await iniciarTransaccion({
+        amount,
+        name,
+        description,
+        returnUrl: `${window.location.origin}/confirmar-pago`,
+        userId
+      });
+      if (response && response.url) {
+        window.location.href = `${response.url}?token_ws=${response.token}`;
+      }
+    } catch (error) {
+      console.log("Error al iniciar transacción:", error)
+    }
+  };
+
   return (
     <>
       {isAuth ? (
@@ -80,21 +100,7 @@ const BuyModal = (props) => {
 
               <button
                 className="mt-5 bg-yellow-500 text-black font-bold py-2 px-4 rounded-full"
-                onClick={async () => {
-                  try {
-                    const response = await iniciarTransaccion({
-                      amount,
-                      name,
-                      description,
-                      returnUrl: `${window.location.origin}/confirmar-pago`
-                    });
-                    if (response && response.url) {
-                      window.location.href = `${response.url}?token_ws=${response.token}`;
-                    }
-                  } catch (error) {
-                    console.error("Error al iniciar transacción:", error);
-                  }
-                }}
+                onClick={iniciarTransaccionHandler}
               >
                 Proceder al Pago
               </button>
@@ -171,17 +177,6 @@ const BuyModal = (props) => {
       )}
     </>
   );
-};
-
-BuyModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  name: PropTypes.string,
-  amount: PropTypes.number,
-  description: PropTypes.string,
-  n_class: PropTypes.number,
-  isAuth: PropTypes.bool.isRequired,
-  setIsAuth: PropTypes.func.isRequired,
 };
 
 export default BuyModal;

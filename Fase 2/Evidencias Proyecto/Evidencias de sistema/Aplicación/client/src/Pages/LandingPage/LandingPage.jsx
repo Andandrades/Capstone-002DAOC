@@ -14,9 +14,10 @@ import { NavBar } from "../../components/NavBar";
 import { NutriCard } from "../../Components/NutriCard";
 import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
+import { useUser } from "../../Components/API/UserContext";
 
-const LandingPage = (props) => {
-  const { isAuth, setIsAuth } = props;
+const LandingPage = () => {
+  const { isAuth, setIsAuth } = useUser;
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -27,8 +28,6 @@ const LandingPage = (props) => {
   const [dataNutri, setDataNutri] = useState([]);
   const [error, setError] = useState("");
 
-  console.log(error);
-  
   //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
