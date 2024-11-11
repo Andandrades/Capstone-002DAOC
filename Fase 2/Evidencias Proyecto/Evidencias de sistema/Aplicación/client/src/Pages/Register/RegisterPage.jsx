@@ -16,7 +16,7 @@ const RegisterPage = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      setMessage("Las contraseñas no coinciden.");
+      alert("Las contraseñas no coinciden.");
       return;
     }
 
@@ -24,7 +24,7 @@ const RegisterPage = () => {
       name: name,
       email: email,
       password: password,
-      fk_rol_id: 3,
+      fk_rol_id: 1, // Registrar como cliente
     };
 
     Register(payload)

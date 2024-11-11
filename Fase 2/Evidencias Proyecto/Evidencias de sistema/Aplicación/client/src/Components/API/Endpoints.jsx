@@ -89,4 +89,3 @@ export const Register = async (payload) => {
         console.error("Error al añadir el plan:", error);
     }
 };
-
