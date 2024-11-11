@@ -26,21 +26,6 @@ const getUser = async (req, res) => {
   }
 };
 
-// Crear Usuarios
-const createUser = async (req, res) => {
-  const { name, email, password, fk_rol_id, weight, height } = req.body;
-  const register_date = new Date();
-  try {
-    const result = await pool.query(
-      "INSERT INTO users (name, email, password, register_date, fk_rol_id, weight, height) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [name, email, password, register_date, fk_rol_id, weight, height]
-    );
-    res.json(result.rows[0]);
-  } catch (error) {
-    console.log({ error: error.detail });
-    res.status(400).json({ error: error.detail });
-  }
-};
 
 // Actualizar usuarios
 const updateUser = async (req, res) => {
