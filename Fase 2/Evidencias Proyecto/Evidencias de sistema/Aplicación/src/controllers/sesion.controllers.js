@@ -51,7 +51,7 @@ const loginUser = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-  const { email, password, fk_rol_id } = req.body;
+  const { name, email, password, fk_rol_id } = req.body;
 
   try {
     const userExists = await pool.query(
@@ -66,8 +66,8 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await pool.query(
-      "INSERT INTO users(email,password,register_date,fk_rol_id) VALUES ($1,$2,NOW(),$3) RETURNING id,email",
-      [email, hashedPassword, fk_rol_id]
+      "INSERT INTO users(name,email,password,register_date,fk_rol_id) VALUES ($1,$2,$3,NOW(),$4) RETURNING id,email",
+      [name, email, hashedPassword, fk_rol_id]
     );
     return res
       .status(201)
