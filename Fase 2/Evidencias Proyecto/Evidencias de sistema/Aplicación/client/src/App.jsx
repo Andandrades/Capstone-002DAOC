@@ -26,7 +26,7 @@ const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 
 function App() {
-  const { isAuth, userId, setIsAuth } = useUser();  
+  const { isAuth, userId, setIsAuth } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,7 +64,11 @@ function App() {
                 </RedirectIfAuthenticated>
               }
             />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register" element={
+              <RedirectIfAuthenticated>
+                <RegisterPage  setIsAuth={setIsAuth}/>
+              </RedirectIfAuthenticated>
+            } />
             <Route path="/recover" element={<RecoverPage />} />
 
             {/* Rutas de administrador */}
