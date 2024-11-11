@@ -26,7 +26,6 @@ const LandingPage = () => {
 
   const [plans, setPlans] = useState([]);
   const [dataNutri, setDataNutri] = useState([]);
-  const [error, setError] = useState("");
 
   //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
@@ -49,9 +48,8 @@ const LandingPage = () => {
       const data = await obtenerPlanes();
       setPlans(data);
     } catch (err) {
-      setError(err.message);
-    } finally {
-    }
+      console.log(err.message);
+    };
   };
 
   const fetchNutri = async () => {
@@ -60,8 +58,7 @@ const LandingPage = () => {
       setDataNutri(data);
     } catch (err) {
       setError(err.message);
-    } finally {
-    }
+    };
   };
 
   useEffect(() => {

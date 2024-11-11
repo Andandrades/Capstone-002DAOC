@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 const UserContext = createContext();
 
@@ -28,8 +28,10 @@ export const UserProvider = ({ children }) => {
       });
   }, []);
 
+  const UserData = useMemo(() => ({ isAuth, userId, setIsAuth }), [isAuth, userId, setIsAuth]);
+
   return (
-    <UserContext.Provider value={{ isAuth, userId, setIsAuth }}>
+    <UserContext.Provider value={UserData}>
       {children}
     </UserContext.Provider>
   );

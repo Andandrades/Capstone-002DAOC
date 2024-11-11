@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
 import { useUser } from '../../../Components/API/UserContext';
 
-
 const BuyModal = (props) => {
-  const { isOpen, onClose, name, amount, description, n_class, isAuth, setIsAuth, isPlan } = props;
-  const { userId } = useUser();
+  const { isOpen, onClose, name, amount, description, n_class,isPlan } = props;
+  const { userId ,isAuth, setIsAuth} = useUser();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
