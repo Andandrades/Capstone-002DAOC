@@ -78,7 +78,6 @@ const getUsersByRole = async (req, res) => {
 module.exports = {
   getAllUsers,
   getUser,
-  createUser,
   updateUser,
   deleteUser,
   getUsersByRole
