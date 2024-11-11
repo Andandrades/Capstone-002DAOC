@@ -1,0 +1,147 @@
+[33m9c5e7e1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtomas[m[33m, [m[1;31morigin/tomas[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #90 from MatiasCamposB/main
+[33me500720[m Merge branch 'Andandrades:main' into main
+[33m9b9d63c[m Merge pull request #89 from Andandrades/tomas
+[33m3ca5636[m Avance
+[33me8376c0[m Sprint 4 100%
+[33mff0aaa4[m sprint 4 (80%)
+[33m91cb3dd[m Merge branch 'AndAndrades'
+[33mb15cd96[m[33m ([m[1;31morigin/AndAndrades[m[33m)[m Merge branch 'AndAndrades' of https://github.com/Andandrades/Capstone-002DAOC into AndAndrades
+[33ma7ba680[m creacion endpoints usuarios
+[33mda6b686[m Merge pull request #88 from MatiasCamposB/main
+[33mc9530be[m Merge branch 'main' into main
+[33mdef54a5[m Merge pull request #87 from Andandrades/AndAndrades
+[33m72ab55b[m Actualizacion tabla transaciones
+[33m3a36ad6[m Merge pull request #86 from Andandrades/AndAndrades
+[33m5afa206[m implementacion con webpay iniciada
+[33m58ee11c[m Funcionalidad compra de planes y consultas
+[33m6182482[m opcion de inicio de sesion al momento de comprar plan
+[33m38db843[m Merge pull request #85 from Andandrades/AndAndrades
+[33mc9e0492[m eliminacion componenete inecesario
+[33m8f9422b[m correciones
+[33md5b9eb8[m Merge pull request #84 from Andandrades/AndAndrades
+[33mb8b5176[m creacion de componente modal y correcion de registrar usuario
+[33m02884bc[m Merge pull request #83 from Andandrades/AndAndrades
+[33m68d21e6[m se añade componente de spinner
+[33m21433dd[m Merge pull request #82 from Andandrades/AndAndrades
+[33m8b8fdef[m Merge branch 'main' of github.com:Andandrades/Capstone-002DAOC
+[33maff81fa[m Merge branch 'main' of github.com:Andandrades/Capstone-002DAOC
+[33m94918a1[m Merge pull request #81 from Andandrades/tomas
+[33mcd4c3fa[m Se agrego el administrador
+[33m813035e[m Actualizacion de rama
+[33m9081782[m Merge pull request #78 from Andandrades/AndAndrades
+[33m21575e6[m Avance Sprint 4 70%
+[33m34f810b[m se iniciacila el modulo para la confirmacion del plan
+[33mcf87e1e[m Merge branch 'AndAndrades'
+[33m06919c8[m Implementacion de lazy
+[33m78ea461[m Merge branch 'Andandrades:main' into main
+[33m7907b80[m Merge pull request #77 from Andandrades/AndAndrades
+[33m57e6517[m Merge branch 'main' of github.com:Andandrades/Capstone-002DAOC into AndAndradescadd
+[33m9041a47[m CreateGymModal
+[33m3e29e66[m Merge branch 'main' of https://github.com/MatiasCamposB/Capstone-002DAOC
+[33mbc9dc61[m AdminClasses
+[33m488bf0a[m Merge branch 'Andandrades:main' into main
+[33m691c5b9[m Merge pull request #76 from Andandrades/AndAndrades
+[33m46b4469[m Merge branch 'main' of github.com:Andandrades/Capstone-002DAOC into AndAndrades
+[33m11a28d8[m Mejora en el manejo de sesiones
+[33mf3471bd[m Mejora en el manejo de sesiones
+[33m46e273c[m Merge pull request #75 from Andandrades/tomas
+[33mc3cbcb4[m Se elimino el boton borrar  para los clientes
+[33m32f6b13[m base de datos actualizada
+[33maca74f4[m Update Soldado.sql
+[33m425d33c[m Merge pull request #73 from Andandrades/tomas
+[33m91c7686[m Avances
+[33m607f003[m Merge branch 'main' of https://github.com/MatiasCamposB/Capstone-002DAOC
+[33ma1d441e[m cambio nombre 2.4 guia estudiante
+[33m4db4aa7[m Merge pull request #72 from MatiasCamposB/main
+[33m7c6b6d3[m Merge branch 'main' into main
+[33m6f767f4[m Copiar horas de un dia Schema
+[33mee6de5d[m Correcion del nombre del documento
+[33m4468e4b[m Delete Fase 2/Evidencias Individuales/Osorio_Tomas_2.1_APT122_DiarioReflexionFase2cx
+[33m3ea615e[m Rename OSORIO_TOMAS_2.1_APT122_DiarioReflexionFase2cx to Osorio_Tomas_2.1_APT122_DiarioReflexionFase2cx
+[33me6e8ae9[m Rename OSORIO_TOMAS_2.1_APT122_DiarioReflexionFase2.docx to OSORIO_TOMAS_2.1_APT122_DiarioReflexionFase2cx
+[33m7f66cd4[m creacion de cuenta clientes
+[33m1258064[m cambio sen el register
+[33me5a8e6f[m Merge branch 'AndAndrades'
+[33md9c98ac[m arreglos de css
+[33m46dbf19[m Merge pull request #70 from Andandrades/AndAndrades
+[33m7e054bf[m solucion definitiba CORS
+[33md4e355b[m Merge branch 'AndAndrades' of github.com:Andandrades/Capstone-002DAOC into AndAndrades
+[33m0c9fc24[m modificaciones a planes y consultas
+[33m56df0bb[m Merge branch 'AndAndrades' of github.com:Andandrades/Capstone-002DAOC into AndAndrades
+[33me246d38[m commit -m "actualizacion base de datos"
+[33m24dd0fe[m Merge pull request #69 from Andandrades/AndAndrades
+[33m659f08e[m se corrige componenete navbaradmin
+[33md923f26[m Merge branch 'AndAndrades' of https://github.com/Andandrades/Capstone-002DAOC into AndAndrades
+[33mc503dbe[m correcion componente barra
+[33m29e0d39[m Merge branch 'main' of https://github.com/Andandrades/Capstone-002DAOC into AndAndrades
+[33m4e09927[m Merge pull request #68 from Andandrades/tomas
+[33mc79f790[m Merge branch 'main' of github.com:Andandrades/Capstone-002DAOC into AndAndrades
+[33m8d26155[m Merge branch 'main' into tomas
+[33m652e78a[m Merge remote-tracking branch 'origin/tomas' into tomas
+[33m474cbf8[m Actualizaron
+[33m6fefe65[m Agendar Hora Nutri Listo
+[33m4e90743[m Merge branch 'AndAndrades' of github.com:Andandrades/Capstone-002DAOC into AndAndrades
+[33mdbb282c[m cambios
+[33m9bbaa76[m el commir del papu
+[33m4186840[m Merge pull request #67 from Andandrades/AndAndrades
+[33madf3f40[m se añade vista para gestionar las consulta nutricionales
+[33m61f2d74[m Merge pull request #66 from Andandrades/AndAndrades
+[33md079eca[m correcion de nombre
+[33m8323178[m Merge branch 'AndAndrades'
+[33me9bea23[m administracion de consultas nutricionales
+[33mb8a24b0[m Merge pull request #65 from Andandrades/AndAndrades
+[33mc77fdf9[m hotfix nutricard
+[33mb26b890[m Merge pull request #64 from MatiasCamposB/main
+[33mbc6a4c6[m Nutri Schedule Listar horas
+[33mb0db554[m Cors Fix Login
+[33mef59de8[m Merge pull request #63 from MatiasCamposB/main
+[33mbf6b87c[m Merge branch 'main' into main
+[33m64b7e38[m Merge pull request #62 from Andandrades/tomas
+[33mfd86135[m Merge branch 'main' into tomas
+[33m5a9468f[m Primera version de AdminUsers
+[33m073eeba[m Merge branch 'AndAndrades'
+[33me90cf51[m se añade modulo para modificar planes
+[33md2ff450[m Pull main
+[33mf6f5148[m Merge
+[33m47ad87a[m merge
+[33mec76a24[m pull
+[33m148640b[m nueva base de datos
+[33mb08692c[m Merge branch 'AndAndrades'
+[33mebe288c[m añadir paises
+[33mb30bb86[m Nutri cambios
+[33m0abd5c7[m Merge pull request #60 from MatiasCamposB/main
+[33m2a1dbe9[m eliminar planes completo
+[33mf02f57c[m documentos avances
+[33m15fe365[m Actualizacion de rama
+[33m2258bb2[m Merge branch 'main' into AndAndrades
+[33m11526c8[m Merge pull request #58 from MatiasCamposB/main
+[33m75de01a[m proyecto ordenado entrega 2
+[33mfa7482f[m Merge pull request #57 from MatiasCamposB/main
+[33m51d763b[m documentos y video
+[33m499df5f[m Merge branch 'AndAndrades'
+[33m9141f90[m se añade documento 2.4
+[33m1db73d2[m Merge branch 'AndAndrades'
+[33m4045103[m se añaden documento 2.4
+[33m9026a01[m Merge branch 'main' into tomas
+[33md61b864[m Vista de los roles admin
+[33mb8955c3[m Merge branch 'AndAndrades'
+[33me9ce2dd[m se renombra la carpeta
+[33m2e19804[m cambio de nombre db
+[33m115f0cd[m evidencias base de datos
+[33m2157445[m creacion evidencias app
+[33m932f2b1[m Se crea evidencia del sistema
+[33m728008e[m Merge branch 'AndAndrades'
+[33m743a229[m avance añadir planes
+[33m487ded9[m componente añadir planes
+[33m451af22[m Merge pull request #56 from Andandrades/tomas
+[33mb93a312[m Subo mi documento de diario de reflexicon
+[33m75a7725[m Merge branch 'tomas' of https://github.com/Andandrades/Capstone-002DAOC into tomas
+[33m7a70475[m Merge branch 'main' into tomas
+[33mf254cff[m ingresar fecha y hora de registro usuario automaticamente
+[33m27b1abd[m Actualizacion bd
+[33meae2a76[m Merge branch 'AndAndrades' of https://github.com/Andandrades/Capstone-002DAOC into AndAndrades
+[33md2b0322[m ajuste css admin plans
+[33m9f95fca[m rebase main
+[33mbbde859[m pull
+[33mc5128e2[m ajuste css admin plans
+[33mc74f90
