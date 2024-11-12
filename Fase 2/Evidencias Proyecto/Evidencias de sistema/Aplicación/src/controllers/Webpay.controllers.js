@@ -9,14 +9,14 @@ const url = "";
 const transaction = new WebpayPlus.Transaction();
 
 const iniciarTransaccion = async (req, res) => {
-  const { amount, sessionId, buyOrder,user_id } = req.body;
+  const { amount, sessionId, buyOrder, user_id } = req.body;
   const returnUrl = "http://localhost:3000/confirmar-pago";
   try {
     const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
 
     await pool.query(
       "INSERT INTO transactions (buy_order, session_id, amount, token,user_id) VALUES ($1, $2, $3, $4, $5)",
-      [buyOrder, sessionId, amount, response.token, user_id ]
+      [buyOrder, sessionId, amount, response.token, user_id]
     );
 
     res.json({
@@ -29,15 +29,28 @@ const iniciarTransaccion = async (req, res) => {
 };
 
 const confirmarPago = async (req, res) => {
-  const { token_ws: token } = req.query;
+  const { token_ws: token, TBK_TOKEN } = req.query;
 
+  if (TBK_TOKEN) {
+    const transaction_date = new Date();
+
+    try {
+      await pool.query(
+        "UPDATE transactions SET status = $1, transaction_date =$2 WHERE token = $3",
+        ['Cancelada', transaction_date, TBK_TOKEN]
+      );
+      return res.redirect(`http://localhost:5173/TransactionResponse/?token=${TBK_TOKEN}`);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
   try {
     const response = await transaction.commit(token);
     const transaction_date = new Date();
-
+    const status = response.status == "AUTHORIZED" ? "Autorizada":"Fallida";
     await pool.query(
       "UPDATE transactions SET status = $1, authorization_code = $2, payment_type_code = $3, transaction_date =$4 WHERE token = $5",
-      [response.status, response.authorization_code, response.payment_type_code, transaction_date, token]
+      [status, response.authorization_code, response.payment_type_code, transaction_date, token]
     );
     res.redirect(`http://localhost:5173/TransactionResponse/?token=${token}`);
 
@@ -48,20 +61,20 @@ const confirmarPago = async (req, res) => {
 
 const obtenerEstadoTransaccion = async (req, res) => {
   const { token_ws: token } = req.query;
-  
+
   try {
-      const response = await pool.query(
-          "SELECT * FROM transactions WHERE token = $1",
-          [token]
-      );
-      
-      if (response.rows.length === 0) {
-          return res.status(404).json({ error: "Transacción no encontrada." });
-      }
-      
-      res.json(response.rows[0]);
+    const response = await pool.query(
+      "SELECT * FROM transactions WHERE token = $1",
+      [token]
+    );
+
+    if (response.rows.length === 0) {
+      return res.status(404).json({ error: "Transacción no encontrada." });
+    }
+
+    res.json(response.rows[0]);
   } catch (error) {
-      res.status(500).json({ error: "Error al obtener la transacción." });
+    res.status(500).json({ error: "Error al obtener la transacción." });
   }
 };
 

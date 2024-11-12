@@ -50,7 +50,7 @@ export const UserProvider = ({ children }) => {
     isAuth, 
     userData,
     setIsAuth, 
-    setUserData
+    setUserData,
   }), [isAuth, userData]);
 
   return (

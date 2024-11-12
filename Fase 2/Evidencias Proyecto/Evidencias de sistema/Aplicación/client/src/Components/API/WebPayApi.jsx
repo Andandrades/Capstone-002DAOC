@@ -2,10 +2,11 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+ 
 
 export const iniciarTransaccion = async (props) => {
     const { amount, name, userId } = props;
+    console.log(userId)
     try {
         const response = await axios.post("http://localhost:3000/iniciar-transaccion", {
             amount: amount,

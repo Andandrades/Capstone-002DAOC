@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
 import { useUser } from '../../../Components/API/UserContext';
+import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
 
 const BuyModal = (props) => {
-  const { isOpen, onClose, name, amount, description, n_class,isPlan } = props;
-  const { userId ,isAuth, setIsAuth} = useUser();
+  const { isOpen, onClose, name, amount, description, n_class, isPlan } = props;
+  const { userData, isAuth, setIsAuth } = useUser();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const { id :userId } = userData;
   if (!isOpen) return null;
-
+ 
   const handleBackdropClick = (e) => {
     if (e.target.classList.contains('modal-backdrop')) {
       onClose();

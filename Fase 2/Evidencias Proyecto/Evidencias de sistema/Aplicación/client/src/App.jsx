@@ -26,7 +26,7 @@ const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 
 function App() {
-  const { isAuth, userId, setIsAuth } = useUser();
+  const { isAuth, userData, setIsAuth } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function App() {
             {/* Rutas de administrador */}
             <Route path="/Admin" element={<AdminNutri />} />
             <Route path="/Admin/Planes" element={<AdminPlans />} />
-            <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />
+            <Route path="/Admin/Clases" userId={userData.userId} element={<AdminClasses />} />
             <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />
             <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
 
