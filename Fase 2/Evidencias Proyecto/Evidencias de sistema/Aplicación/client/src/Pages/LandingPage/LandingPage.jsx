@@ -14,9 +14,10 @@ import { NavBar } from "../../components/NavBar";
 import { NutriCard } from "../../Components/NutriCard";
 import { Plans } from "../../components/PlansCard";
 import "./LandingPage.css";
+import { useUser } from "../../Components/API/UserContext";
 
-const LandingPage = (props) => {
-  const {isAuth,setIsAuth } = props;
+const LandingPage = () => {
+  const { isAuth, setIsAuth } = useUser;
   const navigate = useNavigate();
 
   const goto = (url) => {
@@ -25,7 +26,6 @@ const LandingPage = (props) => {
 
   const [plans, setPlans] = useState([]);
   const [dataNutri, setDataNutri] = useState([]);
-
 
   //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
@@ -48,9 +48,8 @@ const LandingPage = (props) => {
       const data = await obtenerPlanes();
       setPlans(data);
     } catch (err) {
-      setError(err.message);
-    } finally {
-    }
+      console.log(err.message);
+    };
   };
 
   const fetchNutri = async () => {
@@ -59,8 +58,7 @@ const LandingPage = (props) => {
       setDataNutri(data);
     } catch (err) {
       setError(err.message);
-    } finally {
-    }
+    };
   };
 
   useEffect(() => {
@@ -83,7 +81,7 @@ const LandingPage = (props) => {
           sectionRef7,
         }}
       />
-      <div ref={sectionRef1} className="SoldadoContainer ">
+      <div ref={sectionRef1} className="SoldadoContainer">
         <h1 className="title text-center z-0">Soldado Gym</h1>
       </div>
       <div className="separator" />

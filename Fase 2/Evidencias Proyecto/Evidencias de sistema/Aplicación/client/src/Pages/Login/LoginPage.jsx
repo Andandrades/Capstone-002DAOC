@@ -3,7 +3,7 @@ import "./LoginStyle.css";
 import Registrate from "../../assets/img/Registrate.webp";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = ({ setIsAuth }) => {
+const LoginPage = ({ setIsAuth, setUserData }) => {  // Asegúrate de pasar el setUserData aquí
 
   const [email, setEmail] = useState(""); // Estado para el nombre de usuario
   const [password, setPassword] = useState(""); // Estado para la contraseña
@@ -14,7 +14,6 @@ const LoginPage = ({ setIsAuth }) => {
   const goto = (url) => {
     navigate(`/${url}`);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,28 +27,8 @@ const LoginPage = ({ setIsAuth }) => {
         body: JSON.stringify({ email, password }),
         credentials: "include",
       });
+      window.location.reload();
 
-      if (response.status === 200) {
-        const authCheckResponse = await fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
-          method: "GET",
-          credentials: "include",
-        });
-        console.log("Auth Check Response:", authCheckResponse);
-
-        if (!authCheckResponse.ok) {
-          throw new Error('Error en la verificación de autenticación');
-        }
-
-        const authData = await authCheckResponse.json();
-        console.log("Auth Data:", authData);
-        setIsAuth(authData.isAuth);
-        localStorage.setItem("isAuth", JSON.stringify(true));
-        navigate("/inicio");
-        console.log("Bienvenido");
-      } else {
-        setError("Credenciales inválidas");
-        console.log(response.body);
-      }
     } catch (err) {
       setError("Error en el servidor");
       console.log(err);
@@ -60,7 +39,7 @@ const LoginPage = ({ setIsAuth }) => {
     <div className="login-container">
       <div className="login-form">
         <div className="logo">
-          <img src={Registrate} alt="Logo" />{" "}
+          <img src={Registrate} alt="Logo" />
         </div>
         <h2>Soldados Gym</h2>
 
@@ -77,7 +56,6 @@ const LoginPage = ({ setIsAuth }) => {
             />
           </div>
 
-          {/* Campo de Contraseña */}
           <div className="input-group">
             <input
               type="password"
@@ -104,9 +82,7 @@ const LoginPage = ({ setIsAuth }) => {
           {/* Recuperación de contraseña */}
           <p className="forgot-password">
             ¿Olvidaste tu contraseña?{" "}
-            <span
-              className="recover-link"
-            >
+            <span className="recover-link">
               Recupérala aquí
             </span>
           </p>

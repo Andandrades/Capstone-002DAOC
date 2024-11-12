@@ -1,11 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
-import axios from "axios";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-
-import { GymHourCard } from "../../../Components/GymHourCard";
 import { GymHourEditCard } from "../../../Components/GymHourEditCard";
 //DayPicker
 import { DayPicker } from "react-day-picker";

@@ -24,7 +24,7 @@ const RegisterPage = () => {
       name: name,
       email: email,
       password: password,
-      fk_rol_id: 3,
+      fk_rol_id: 1,
     };
 
     Register(payload)
@@ -52,10 +52,10 @@ const RegisterPage = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Registrarse</h2>
 
         <div className="input-group mb-4">
-          <label htmlFor="name" className="block text-gray-700 mb-2">Nombre</label>
+          <label htmlFor="name" className="block text-gray-700 mb-2">Nombre de usuario</label>
           <input
             type="text"
-            id="name"
+            id="Username"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

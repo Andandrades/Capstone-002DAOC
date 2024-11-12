@@ -280,7 +280,7 @@ const AdminUsersManagement = () => {
           {showAdministrators && (
             <ul className="roles-list">
               {administrators.map((admin, index) => (
-                <li key={index} className="roles-listItem">
+                <li key={admin.id} className="roles-listItem">
                   <span>{admin.name}</span>
                   <div className="dropdown">
                     <button className="dropdown-button" onClick={() => toggleDropdown(admin, 'administrator')}>
