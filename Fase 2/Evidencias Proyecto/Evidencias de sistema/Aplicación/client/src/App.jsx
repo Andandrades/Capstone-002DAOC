@@ -17,7 +17,6 @@ const ClassesPage = lazy(() => import('./Pages/Classes/ClassesPage'));
 const LandingPage = lazy(() => import('./Pages/LandingPage/LandingPage'));
 const LoginPage = lazy(() => import('./Pages/Login/LoginPage'));
 const Menu = lazy(() => import('./Pages/Menu/Menu'));
-const PlansPage = lazy(() => import('./Pages/Plans/PlansPage'));
 const ProfilePage = lazy(() => import('./Pages/Profile/ProfilePage'));
 const RecoverPage = lazy(() => import('./Pages/Recover/RecoverPage'));
 const RegisterPage = lazy(() => import('./Pages/Register/RegisterPage'));
