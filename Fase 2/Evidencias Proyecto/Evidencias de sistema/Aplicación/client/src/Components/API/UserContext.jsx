@@ -5,13 +5,20 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' });
+  const [loading, setLoading] = useState(true); // Estado para controlar si la verificación está en proceso
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuth");
+    const storedUserData = localStorage.getItem("userData");
+
     if (storedAuth) {
       setIsAuth(JSON.parse(storedAuth));
     }
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
 
+    // Realizar la llamada para verificar autenticación
     fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
       method: "GET",
       credentials: "include",
@@ -21,40 +28,40 @@ export const UserProvider = ({ children }) => {
         setIsAuth(data.isAuth);
         localStorage.setItem("isAuth", JSON.stringify(data.isAuth));
 
-        // Aquí no necesitas setUserId ya que ya lo estás incluyendo dentro de userData
         if (data.isAuth) {
-          setUserData({
-            id: data.userId,  // Aquí asignamos el id correctamente
+          const user = {
+            id: data.userId,
             name: data.name,
             email: data.email,
             role: data.role,
-          });
-
-          // Guardamos los datos del usuario en localStorage
-          localStorage.setItem("userData", JSON.stringify({
-            id: data.userId, 
-            name: data.name,
-            email: data.email,
-            role: data.role,
-          }));
+          };
+          setUserData(user);
+          localStorage.setItem("userData", JSON.stringify(user));
         } else {
           setUserData({ id: '', name: '', email: '', role: '' });
+          localStorage.removeItem("userData");
         }
       })
       .catch((err) => {
         console.error("Error fetching /checkauth:", err);
+        setIsAuth(false);
+        setUserData({ id: '', name: '', email: '', role: '' });
+      })
+      .finally(() => {
+        setLoading(false); // Cambiamos `loading` a false cuando termina la verificación
       });
   }, []);
 
-  const UserData = useMemo(() => ({
-    isAuth, 
+  const userContextValue = useMemo(() => ({
+    isAuth,
     userData,
-    setIsAuth, 
+    setIsAuth,
     setUserData,
-  }), [isAuth, userData]);
+    loading,
+  }), [isAuth, userData, loading]);
 
   return (
-    <UserContext.Provider value={UserData}>
+    <UserContext.Provider value={userContextValue}>
       {children}
     </UserContext.Provider>
   );

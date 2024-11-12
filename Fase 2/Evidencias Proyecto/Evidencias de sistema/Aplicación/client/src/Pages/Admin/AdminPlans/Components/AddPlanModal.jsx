@@ -4,11 +4,9 @@ import { addPlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
 const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
-  if (!isOpen) return null;
 
+  const [selectedColor, setSelectedColor] = useState('#007bff');
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  const [selectedColor, setSelectedColor] = useState('#007bff'); // Color por defecto
 
   const colors = [
     '#007bff', // Azul
@@ -35,8 +33,8 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
         console.error('Error al agregar el plan:', error);
       });
     onClose();
-
   };
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -48,7 +46,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
             </div>
           </div>
           <div className="modal-body">
-            
+
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-group mb-4">
                 <label htmlFor="planName" className="block text-sm font-medium text-gray-700">
@@ -91,7 +89,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
 
               <div className="form-group mb-4">
                 <label htmlFor="planPrice" className="block text-sm font-medium text-gray-700">
-                  Precio oferta (no obligatorio) 
+                  Precio oferta (no obligatorio)
                 </label>
                 <input
                   type="number"
@@ -161,7 +159,6 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
     </div>
   );
 };
-
 AddPlanModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
