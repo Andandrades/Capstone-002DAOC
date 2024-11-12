@@ -26,19 +26,23 @@ const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
-  const permisosAdmin = [1, 2, 3, 4]
-  const permisosvistaCliente = [1, 2, 3, 4]
+  
+  // Roles permitidos
+  const permisosAdmin = [1, 2, 3, 4];
+  const permisosVistaCliente = [1, 2, 3, 4];
 
+  // Mostrar Spinner mientras se carga la información
+  if (loading) {
+    return <Spinner />;
+  }
+
+  // Ruta protegida por roles
   const RoleProtectedRoute = ({ children, requiredRoles }) => {
-    if (loading) {
-      return <Spinner />;
-    }
     if (!isAuth || !requiredRoles.includes(userData.role)) {
-      return <Navigate to="/inicio" />;
+      return <Navigate to="/login" />;
     }
     return children;
   };
-
 
   // Componente para redireccionar si el usuario ya está autenticado
   const RedirectIfAuthenticated = ({ children }) => {
@@ -69,12 +73,12 @@ function App() {
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
 
             {/* Rutas protegidas para el perfil del usuario */}
-            <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosvistaCliente}><SchedulePage /></RoleProtectedRoute>} />
-            <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosvistaCliente}><SchedulePage /></RoleProtectedRoute>} />
-            <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosvistaCliente}><ScheduleGym /></RoleProtectedRoute>} />
-            <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosvistaCliente}><ScheduleNutri /></RoleProtectedRoute>} />
-            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosvistaCliente}><ClassesPage /></RoleProtectedRoute>} />
-            <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosvistaCliente}><ProfilePage /></RoleProtectedRoute>} />
+            <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
+            <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><SchedulePage /></RoleProtectedRoute>} />
+            <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym /></RoleProtectedRoute>} />
+            <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri /></RoleProtectedRoute>} />
+            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage /></RoleProtectedRoute>} />
+            <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
           </Routes>
         </Suspense>
