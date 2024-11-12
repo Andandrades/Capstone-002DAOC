@@ -1,10 +1,13 @@
+
+import { useEffect, useState, lazy, Suspense } from "react";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Spinner from "./Components/Spinner";
+import { NutriMenu } from "./Pages/Nutri/NutriMenu";
 import { lazy, Suspense } from 'react';
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { useUser } from './Components/API/UserContext';  // Asegúrate de importar el hook correctamente
-import './App.css';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Spinner from './Components/Spinner';
 
 // Importación de páginas con lazy loading
 const TransactionResponse = lazy(() => import('./Pages/TransactionResponse/TransactionResponsePage'));
@@ -40,6 +43,7 @@ function App() {
   const RoleProtectedRoute = ({ children, requiredRoles }) => {
     if (!isAuth || !requiredRoles.includes(userData.role)) {
       return <Navigate to="/login" />;
+
     }
     return children;
   };
@@ -61,9 +65,27 @@ function App() {
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
+
+
+            {/* rutas de administrador gestionar permisos por rol no implementado*/}
+            <Route path="/Admin" element={<AdminNutri />} />,
+            <Route path="/Admin/Planes" element={<AdminPlans />} />,
+            <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />,
+            <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
+            <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
+
+            {/* Perfil usuario */}
+            <Route path="/schedule" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
+            <Route path="/schedule/gym" element={<ProtectedRoute><ScheduleGym /></ProtectedRoute>} />
+            <Route path="/schedule/nutri" element={<ProtectedRoute><ScheduleNutri /></ProtectedRoute>} />
+            <Route path="/menu" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
+            <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
             <Route path="/login" element={<RedirectIfAuthenticated><LoginPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/register" element={<RedirectIfAuthenticated><RegisterPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
+
 
             {/* Rutas de administrador protegidas */}
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
@@ -71,6 +93,12 @@ function App() {
             <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses /></RoleProtectedRoute>} />
             <Route path="/Admin/PaginaInicio" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminLandingPage /></RoleProtectedRoute>} />
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
+
+
+            <Route path="/nutri" element={<NutriMenu userId={userId}/>}/>
+
+            {/* Sin implementar */}
+            <Route path="/plans" element={<PlansPage />} />
 
             {/* Rutas protegidas para el perfil del usuario */}
             <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
@@ -80,6 +108,7 @@ function App() {
             <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage /></RoleProtectedRoute>} />
             <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
+
           </Routes>
         </Suspense>
       </Router>
