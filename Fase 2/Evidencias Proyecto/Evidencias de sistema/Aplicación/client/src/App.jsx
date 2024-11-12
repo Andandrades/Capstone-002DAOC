@@ -87,8 +87,7 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
 
-            {/* Sin implementar */}
-            <Route path="/plans" element={<PlansPage />} />
+
           </Routes>
         </Suspense>
       </Router>
