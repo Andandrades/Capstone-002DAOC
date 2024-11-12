@@ -17,7 +17,6 @@ const ClassesPage = lazy(() => import('./Pages/Classes/ClassesPage'));
 const LandingPage = lazy(() => import('./Pages/LandingPage/LandingPage'));
 const LoginPage = lazy(() => import('./Pages/Login/LoginPage'));
 const Menu = lazy(() => import('./Pages/Menu/Menu'));
-const PlansPage = lazy(() => import('./Pages/Plans/PlansPage'));
 const ProfilePage = lazy(() => import('./Pages/Profile/ProfilePage'));
 const RecoverPage = lazy(() => import('./Pages/Recover/RecoverPage'));
 const RegisterPage = lazy(() => import('./Pages/Register/RegisterPage'));
@@ -87,8 +86,7 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
 
-            {/* Sin implementar */}
-            <Route path="/plans" element={<PlansPage />} />
+
           </Routes>
         </Suspense>
       </Router>
