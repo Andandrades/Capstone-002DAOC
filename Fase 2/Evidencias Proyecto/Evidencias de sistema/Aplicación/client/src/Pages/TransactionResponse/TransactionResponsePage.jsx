@@ -8,14 +8,13 @@ const TransactionResponse = () => {
     const location = useLocation();
     const [transactionData, setTransactionData] = useState(null);
     const [error, setError] = useState(null);
-    
+
     // Obtener token_ws de la URL
     const tokenWs = new URLSearchParams(location.search).get("token");
 
     useEffect(() => {
         const fetchTransactionData = async () => {
             try {
-                // Llamada a tu backend para obtener la respuesta de la transacción
                 const response = await axios.get(`http://localhost:3000/transaction-status?token_ws=${tokenWs}`);
                 setTransactionData(response.data);
             } catch (error) {
@@ -29,7 +28,7 @@ const TransactionResponse = () => {
         }
     }, [tokenWs]);
 
-    const isSuccess = transactionData?.status === "AUTHORIZED";
+    const isSuccess = transactionData?.status === "Autorizada";
     const statusClass = isSuccess ? "text-green-600" : "text-red-600";
     const bgClass = isSuccess ? "bg-green-50" : "bg-red-50";
 
@@ -39,17 +38,24 @@ const TransactionResponse = () => {
                 <h1 className="text-4xl font-bold text-center text-black mb-6">Estado de la Transacción</h1>
                 {error ? (
                     <p className="text-red-500 text-center mt-4">{error}</p>
-                ) : transactionData ? (
+                ) : ""}
+                {transactionData ? (
                     <div className={`mt-6 p-6 rounded-lg shadow-md ${bgClass}`}>
                         <h2 className={`text-3xl font-semibold text-center ${statusClass} mb-4`}>
-                            {isSuccess ? "Pago Exitoso" : "Pago Fallido"}
+                            {isSuccess ? "Pago Exitoso" : (transactionData?.status || "Estado no disponible")}
                         </h2>
                         <div className="space-y-4 text-lg">
                             <p><span className="font-bold">Monto:</span> ${transactionData.amount}</p>
                             <p><span className="font-bold">Orden de Compra:</span> {transactionData.buy_order}</p>
                             <p><span className="font-bold">Fecha de Transacción:</span> {transactionData.transaction_date}</p>
-                            <p><span className="font-bold">Tipo de Pago:</span> {transactionData.payment_type_code}</p>
-                            <p><span className="font-bold">Código de Autorización:</span> {transactionData.authorization_code}</p>
+
+                            {transactionData?.status == "Cancelada" ? <> <p>Su compra fue cancelada mejorar la respuesta</p> </> :
+                                <>
+                                    <p><span className="font-bold">Tipo de Pago:</span> {transactionData.payment_type_code}</p>
+                                    <p><span className="font-bold">Código de Autorización:</span> {transactionData.authorization_code}</p>
+                                </>
+                            }
+
                         </div>
                     </div>
                 ) : (
