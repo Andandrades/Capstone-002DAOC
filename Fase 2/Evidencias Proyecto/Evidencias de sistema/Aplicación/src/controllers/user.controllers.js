@@ -1,4 +1,5 @@
 const pool = require("../db");
+const nodemailer = require("nodemailer");
 
 // Listar Usuarios
 const getAllUsers = async (req, res) => {
@@ -25,7 +26,6 @@ const getUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
 
 // Actualizar usuarios
 const updateUser = async (req, res) => {
@@ -64,7 +64,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-//usuarios por rol específico
+// Usuarios por rol específico
 const getUsersByRole = async (req, res) => {
   const { roleId } = req.params;
   try {
@@ -75,10 +75,54 @@ const getUsersByRole = async (req, res) => {
   }
 };
 
+// Verificar si el correo electrónico está registrado
+const checkEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE email=$1", [email]);
+    if (result.rowCount > 0) {
+      res.json({ exists: true });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Enviar correo de recuperación
+const sendRecoveryEmail = async (req, res) => {
+  const { email } = req.body;
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'tomas.osorio.276@gmail.com',
+      pass: 'tomasosorio12345'
+    }
+  });
+
+  const mailOptions = {
+    from: 'tomas.osorio.276@gmail.com',
+    to: email,
+    subject: 'Recuperación de contraseña',
+    text: 'Presiona aquí para cambiar tu contraseña: [enlace]'
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.json({ message: 'Correo de recuperación enviado' });
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
   updateUser,
   deleteUser,
-  getUsersByRole
+  getUsersByRole,
+  checkEmail,
+  sendRecoveryEmail
 };
