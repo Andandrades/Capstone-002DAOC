@@ -102,7 +102,7 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
 
-            <Route path="/nutri" element={<NutriMenu/>}/>
+            <Route path="/nutri" element={<NutriMenu userId={userId}/>}/>
 
             {/* Sin implementar */}
             <Route path="/plans" element={<PlansPage />} />

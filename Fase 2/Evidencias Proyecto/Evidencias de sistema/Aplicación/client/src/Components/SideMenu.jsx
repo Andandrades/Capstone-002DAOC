@@ -11,8 +11,8 @@ export const SideMenu = () => {
     return (
         <div className={["h-min-[100%] flex flex-col min-w-20 overflow-x-hidden bg-slate-200 transition-all ease-in-out duration-[250]", `${isOpen ? "w-72" : "w-20"}`].join(" ")}>
             <div className='w-full flex justify-end'>
-                <label className='scale-50' for="check">
-                    <input  onClick={() => setIsOpen(!isOpen)} type="checkbox" id="check" />
+                <label className='scale-50' htmlFor="check">
+                    <input onClick={() => setIsOpen(!isOpen)} type="checkbox" id="check" />
                     <span></span>
                     <span></span>
                     <span></span>
