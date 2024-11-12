@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "./Components/Spinner";
 import { NutriMenu } from "./Pages/Nutri/NutriMenu";
-import { lazy, Suspense } from 'react';
 import { useUser } from './Components/API/UserContext';  // Asegúrate de importar el hook correctamente
 
 // Importación de páginas con lazy loading
@@ -27,7 +26,9 @@ const ScheduleGym = lazy(() => import('./Pages/Schedule/ScheduleGym'));
 const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 
+
 function App() {
+
   const { isAuth, setIsAuth, userData, loading } = useUser();
   
   // Roles permitidos
@@ -70,17 +71,17 @@ function App() {
             {/* rutas de administrador gestionar permisos por rol no implementado*/}
             <Route path="/Admin" element={<AdminNutri />} />,
             <Route path="/Admin/Planes" element={<AdminPlans />} />,
-            <Route path="/Admin/Clases" userId={userId} element={<AdminClasses />} />,
+            <Route path="/Admin/Clases" userId={userData.id} element={<AdminClasses />} />,
             <Route path="/Admin/PaginaInicio" element={<AdminLandingPage />} />,
             <Route path="/Admin/Usuarios" element={<AdminUsersManagement />} />
 
             {/* Perfil usuario */}
-            <Route path="/schedule" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
-            <Route path="/schedule/gym" element={<ProtectedRoute><ScheduleGym /></ProtectedRoute>} />
-            <Route path="/schedule/nutri" element={<ProtectedRoute><ScheduleNutri /></ProtectedRoute>} />
-            <Route path="/menu" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
-            <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/schedule" element={<RoleProtectedRoute><SchedulePage /></RoleProtectedRoute>} />
+            <Route path="/schedule/gym" element={<RoleProtectedRoute><ScheduleGym /></RoleProtectedRoute>} />
+            <Route path="/schedule/nutri" element={<RoleProtectedRoute><ScheduleNutri /></RoleProtectedRoute>} />
+            <Route path="/menu" element={<RoleProtectedRoute><SchedulePage /></RoleProtectedRoute>} />
+            <Route path="/classes" element={<RoleProtectedRoute><ClassesPage /></RoleProtectedRoute>} />
+            <Route path="/profile" element={<RoleProtectedRoute><ProfilePage /></RoleProtectedRoute>} />
 
             <Route path="/login" element={<RedirectIfAuthenticated><LoginPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/register" element={<RedirectIfAuthenticated><RegisterPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
@@ -95,10 +96,10 @@ function App() {
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
 
 
-            <Route path="/nutri" element={<NutriMenu userId={userId}/>}/>
+            <Route path="/nutri" element={<NutriMenu userId={userData.id}/>}/>
 
-            {/* Sin implementar */}
-            <Route path="/plans" element={<PlansPage />} />
+            {/* Sin implementar 
+            <Route path="/plans" element={<PlansPage />} />*/}
 
             {/* Rutas protegidas para el perfil del usuario */}
             <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
