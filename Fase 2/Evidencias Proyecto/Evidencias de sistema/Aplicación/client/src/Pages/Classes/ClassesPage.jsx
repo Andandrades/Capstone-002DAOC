@@ -3,7 +3,6 @@ import { UserNavBar } from '../../Components/UserNavBar'
 import "../../Components/css/BackgroundRadius.css"
 import { ExerciseHistory } from "../../Components/ExerciseHistory"
 import { ClassesCard } from '../../Components/ClassesCard'
-import "./ClassesStyle.css"
 
 const ClassesPage = () => {
   return (
