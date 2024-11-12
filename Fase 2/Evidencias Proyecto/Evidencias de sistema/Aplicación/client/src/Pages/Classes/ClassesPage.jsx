@@ -8,8 +8,8 @@ import "./ClassesStyle.css"
 const ClassesPage = () => {
   return (
     <>
-
-      <section className="backgroundPrimary w-full flex justify-start py-10 flex-col px-4 backgroundPrimary h-[100vh] ">
+      <section className="bg-[radial-gradient(circle, rgb(255, 255, 255) 8%, rgb(177, 174, 174) 100%)] 
+      backgroundPrimary w-full flex justify-start py-10 flex-col px-4 backgroundPrimary h-[100vh] ">
         <div className="w-full flex justify-center items-center">
           <h1 className="text-2xl font-bold  mb-10">Historial de clases</h1>
         </div>

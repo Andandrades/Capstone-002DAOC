@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' });
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuth");
@@ -20,15 +20,38 @@ export const UserProvider = ({ children }) => {
       .then((data) => {
         setIsAuth(data.isAuth);
         localStorage.setItem("isAuth", JSON.stringify(data.isAuth));
-        localStorage.setItem("userID", JSON.stringify(data.userId));
-        setUserId(data.userId);
+
+        // Aquí no necesitas setUserId ya que ya lo estás incluyendo dentro de userData
+        if (data.isAuth) {
+          setUserData({
+            id: data.userId,  // Aquí asignamos el id correctamente
+            name: data.name,
+            email: data.email,
+            role: data.role,
+          });
+
+          // Guardamos los datos del usuario en localStorage
+          localStorage.setItem("userData", JSON.stringify({
+            id: data.userId, 
+            name: data.name,
+            email: data.email,
+            role: data.role,
+          }));
+        } else {
+          setUserData({ id: '', name: '', email: '', role: '' });
+        }
       })
       .catch((err) => {
         console.error("Error fetching /checkauth:", err);
       });
   }, []);
 
-  const UserData = useMemo(() => ({ isAuth, userId, setIsAuth }), [isAuth, userId, setIsAuth]);
+  const UserData = useMemo(() => ({
+    isAuth, 
+    userData,
+    setIsAuth, 
+    setUserData
+  }), [isAuth, userData]);
 
   return (
     <UserContext.Provider value={UserData}>
