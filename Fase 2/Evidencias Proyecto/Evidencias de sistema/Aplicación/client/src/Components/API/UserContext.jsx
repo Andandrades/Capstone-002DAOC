@@ -5,7 +5,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' });
-  const [loading, setLoading] = useState(true); // Estado para controlar si la verificación está en proceso
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuth");
@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
       setUserData(JSON.parse(storedUserData));
     }
 
-    // Realizar la llamada para verificar autenticación
+    // Realizamos la consulta de autenticación
     fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
       method: "GET",
       credentials: "include",
@@ -48,16 +48,17 @@ export const UserProvider = ({ children }) => {
         setUserData({ id: '', name: '', email: '', role: '' });
       })
       .finally(() => {
-        setLoading(false); // Cambiamos `loading` a false cuando termina la verificación
+        setLoading(false);
       });
   }, []);
 
   const userContextValue = useMemo(() => ({
     isAuth,
-    userData,
     setIsAuth,
+    userData,
     setUserData,
     loading,
+    setLoading
   }), [isAuth, userData, loading]);
 
   return (

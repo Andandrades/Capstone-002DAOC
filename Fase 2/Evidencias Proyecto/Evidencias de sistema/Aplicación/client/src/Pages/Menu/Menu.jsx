@@ -7,6 +7,9 @@ import { useUser } from "../../Components/API/UserContext"
 const Menu = () => {
 
     const { userData } = useUser();
+
+   
+    console.log(userData)
     return (
         <>
             <section className="w-full flex justify-start py-10 flex-col px-4 backgroundPrimary h-[100vh] ">
