@@ -216,7 +216,7 @@ const LandingPage = () => {
           {plans && plans.length > 0 ? (
             plans.map((plan) => (
               <Plans
-                key={plan.plan_id}
+                id={plan.plan_id}
                 name={plan.name}
                 n_class={plan.n_class}
                 amount={plan.price}
@@ -240,9 +240,9 @@ const LandingPage = () => {
         </div>
         <div className="flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
           {dataNutri && dataNutri.length > 0 ? (
-            dataNutri.map((nutri, index) => (
+            dataNutri.map((nutri) => (
               <NutriCard
-                key={nutri.id || index}
+                id={nutri.id}
                 name={nutri.name}
                 amount={nutri.price}
                 description={nutri.description}

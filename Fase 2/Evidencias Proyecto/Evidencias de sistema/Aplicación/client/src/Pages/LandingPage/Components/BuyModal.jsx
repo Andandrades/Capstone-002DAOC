@@ -4,7 +4,7 @@ import { useUser } from '../../../Components/API/UserContext';
 import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
 
 const BuyModal = (props) => {
-  const { isOpen, onClose, name, amount, description, n_class, isPlan } = props;
+  const { isOpen, onClose, id,name, amount, description, n_class, isPlan } = props;
   const { userData, isAuth, setIsAuth,fetchAuthData } = useUser();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -54,6 +54,7 @@ const BuyModal = (props) => {
     try {
       const response = await iniciarTransaccion({
         amount,
+        id,
         name,
         description,
         returnUrl: `${window.location.origin}/confirmar-pago`,

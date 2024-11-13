@@ -4,12 +4,9 @@ import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { GymHourEditCard } from "../../../Components/GymHourEditCard";
-//DayPicker
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
-
 
 const AdminClasses = () => {
 

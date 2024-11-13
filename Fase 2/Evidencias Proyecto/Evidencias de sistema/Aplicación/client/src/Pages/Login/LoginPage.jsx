@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import "./LoginStyle.css";
 import Registrate from "../../assets/img/Registrate.webp";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../Components/API/UserContext";
 
-const LoginPage = ({ setIsAuth, setUserData }) => {  // Asegúrate de pasar el setUserData aquí
-
-  const [email, setEmail] = useState(""); // Estado para el nombre de usuario
-  const [password, setPassword] = useState(""); // Estado para la contraseña
+const LoginPage = () => {
+  const { fetchAuthData } = useUser();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -17,9 +18,8 @@ const LoginPage = ({ setIsAuth, setUserData }) => {  // Asegúrate de pasar el s
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,12 +27,12 @@ const LoginPage = ({ setIsAuth, setUserData }) => {  // Asegúrate de pasar el s
         body: JSON.stringify({ email, password }),
         credentials: "include",
       });
-      window.location.reload();
-
     } catch (err) {
       setError("Error en el servidor");
       console.log(err);
     }
+    fetchAuthData();
+
   };
 
   return (
