@@ -67,7 +67,6 @@ function App() {
     return isAuth ? <Navigate to="/inicio" /> : children;
   };
 
-  console.log(userData);
 
   return (
     <>
@@ -184,8 +183,8 @@ function App() {
             <Route
               path="/Admin/Clases"
               element={
-                <RoleProtectedRoute requiredRoles={permisosAdmin}>
-                  <AdminClasses />
+                <RoleProtectedRoute requiredRoles={permisosAdmin} >
+                  <AdminClasses userId={userData.id} />
                 </RoleProtectedRoute>
               }
             />

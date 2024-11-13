@@ -91,7 +91,7 @@ const scheduleHour = async (req, res) => {
   const { client_id } = req.body;
 
   try {
-    console.log("Client ID recibido:", client_id); 
+    console.log("Client ID recibido:", client_id);
     const hourInfo = await pool.query(
       "SELECT available,client_id FROM nutri_schedule WHERE nutri_schedule_id = $1",
       [id]
@@ -112,7 +112,6 @@ const scheduleHour = async (req, res) => {
       [client_id, id]
     );
 
-
     res.json(resultado.rows[0]);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -120,11 +119,10 @@ const scheduleHour = async (req, res) => {
 };
 
 const cancelHour = async (req, res) => {
-  const { id } = req.params; 
+  const { id } = req.params;
   const { client_id } = req.body;
 
   try {
-    
     const hora = await pool.query(
       "SELECT available, client_id FROM nutri_schedule WHERE nutri_schedule_id = $1",
       [id]
@@ -134,7 +132,7 @@ const cancelHour = async (req, res) => {
       return res.status(404).json({ error: "La hora no existe." });
     }
 
-    const { available, client_id: currentClientId } = hora.rows[0];
+    const { client_id: currentClientId } = hora.rows[0];
 
     // Verificar que el cliente que cancela es el mismo que reservó la hora
     if (currentClientId !== client_id) {
@@ -155,6 +153,57 @@ const cancelHour = async (req, res) => {
   }
 };
 
+const createMultiHour = async (req, res) => {
+  const schedules = req.body;
+
+  if (!Array.isArray(schedules) || schedules.length === 0) {
+    return res.status(400).send({ error: "Solicitud no es un Array" });
+  }
+
+  try {
+    
+    await pool.query("BEGIN");
+
+    
+    for (const schedule of schedules) {
+      const query = `
+        INSERT INTO nutri_schedule (start_hour, available, client_id, nutri_id, date)
+        VALUES ($1, $2, $3, $4, $5)
+      `;
+      const values = [
+        schedule.start_hour,
+        schedule.available,
+        schedule.client_id || null, 
+        schedule.nutri_id,
+        schedule.date,
+      ];
+
+      await pool.query(query, values);
+    }
+
+    
+    await pool.query("COMMIT");
+    res.status(200).json({ message: "Horas creadas exitosamente!" });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error al crear las horas" });
+  }
+};
+
+const dragUpdate = async (req,res) => {
+  const {nutri_schedule_id , date , start_hour} =req.body;
+
+  try {
+    await pool.query('UPDATE nutri_schedule SET date=$1 , start_hour = $2 WHERE nutri_schedule_id = $3',[date, start_hour, nutri_schedule_id])
+     
+    res.status(200).json({message : 'Hora actualizada existosamente'})
+  } catch (error) {
+    console.error('Error al actualizar hora:', error);
+    res.status(500).json({ message: 'Error al actualizar hora' });
+  }
+}
+
 module.exports = {
   createNutriHour,
   getAllNutriHour,
@@ -163,5 +212,7 @@ module.exports = {
   deleteNutriHour,
   getHoursByDate,
   scheduleHour,
-  cancelHour
+  cancelHour,
+  createMultiHour,
+  dragUpdate
 };

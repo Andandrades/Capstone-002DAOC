@@ -8,7 +8,9 @@ const {
     deleteNutriHour,
     getHoursByDate,
     scheduleHour,
-    cancelHour
+    cancelHour,
+    createMultiHour,
+    dragUpdate
 } = require("../controllers/nutri_schedule.controllers");
 
 
@@ -20,9 +22,13 @@ router.get("/nutriSchedule/:id",getNutriHour);
 
 router.get("/nutriScheduleDate/:date",getHoursByDate);
 
+router.post("/nutriSchedule/bulk" ,createMultiHour)
+
 router.post("/nutriSchedule",createNutriHour);
 
 router.put("/nutriSchedule/:id",updateNutriHour);
+
+router.put("/nutriScheduleDrag/update",dragUpdate);
 
 router.delete("/nutriSchedule/:id",deleteNutriHour);
 
