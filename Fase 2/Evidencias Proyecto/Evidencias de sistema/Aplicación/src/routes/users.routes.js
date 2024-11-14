@@ -4,7 +4,8 @@ const {
   getUser,
   updateUser,
   deleteUser,
-  getUsersByRole
+  getUsersByRole,
+  createUser,
 } = require("../controllers/user.controllers");
 
 const router = Router();
@@ -13,6 +14,7 @@ router.get("/users", getAllUsers);
 router.get("/users/:id", getUser);
 router.put("/users/:id", updateUser);
 router.delete("/users/:id", deleteUser);
+router.post("/register", createUser);
 
 router.get("/users/role/Clientes", (req, res) => getUsersByRole({ ...req, params: { roleId: 1 } }, res));
 router.get("/users/role/Entrenadores", (req, res) => getUsersByRole({ ...req, params: { roleId: 2 } }, res));
