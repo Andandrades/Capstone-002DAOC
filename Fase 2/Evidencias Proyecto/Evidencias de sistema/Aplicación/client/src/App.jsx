@@ -23,11 +23,13 @@ const RegisterPage = lazy(() => import('./Pages/Register/RegisterPage'));
 const ScheduleGym = lazy(() => import('./Pages/Schedule/ScheduleGym'));
 const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
+const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
+
 
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
 
-  const permisosAdmin = [ 2, 3, 4];
+  const permisosAdmin = [ 1, 2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
 
   if (loading) {
