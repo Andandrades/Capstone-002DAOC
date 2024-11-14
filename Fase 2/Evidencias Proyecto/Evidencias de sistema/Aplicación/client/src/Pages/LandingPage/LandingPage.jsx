@@ -218,9 +218,11 @@ const LandingPage = () => {
               <Plans
                 id={plan.plan_id}
                 name={plan.name}
-                n_class={plan.n_class}
-                amount={plan.price}
                 description={plan.description}
+                price={plan.price}
+                offer_price={plan.offer_price}
+                type={plan.type}
+                n_class={plan.n_class}
                 color={plan.color}
                 isAuth={isAuth}
                 setIsAuth={setIsAuth}
