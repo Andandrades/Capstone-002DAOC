@@ -8,19 +8,17 @@ import { GymHourEditCard } from "../../../Components/GymHourEditCard";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useUser } from "../../../Components/API/UserContext"; 
 
 
-
-const AdminClasses = () => {
-
+const AdminClasses = ({userId}) => {
+  const {userData} = useUser();
   const [schedueInfo, setScheduleInfo] = useState([]);
 
   const [dayModal, setDayModal] = useState();
   const [date, setDate] = useState(new Date());
   const [createModal, setCreateModal] = useState(false);
-
-  const storedUser = localStorage.getItem("userID"); // Cambia a "userID"
-
+  
 
   // Función para obtener las horas del gimnasio para el día seleccionado
   const fetchGymHours = async (date) => {
@@ -115,7 +113,7 @@ const AdminClasses = () => {
         ) : null}
 
         {createModal ? (
-          <CreateGymHourModal  storedUser={storedUser} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)}/>
+          <CreateGymHourModal  storedUser={userData.id} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)}/>
         ) : null}
       </div>
 

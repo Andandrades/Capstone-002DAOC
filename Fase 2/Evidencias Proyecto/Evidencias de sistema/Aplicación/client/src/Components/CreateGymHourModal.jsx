@@ -55,7 +55,7 @@ const CreateGymHourModal = ({
   };
 
   useEffect(() => {
-    if (storedUser) {
+    if (storedUser.id) {
       setFormData({
         ...formData,
       });

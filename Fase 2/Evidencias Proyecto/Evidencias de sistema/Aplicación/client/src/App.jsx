@@ -64,11 +64,15 @@ function App() {
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
 
             {/* Rutas de administrador protegidas */}
+
+            <Route path="/nutri" element={<NutriMenu userId={userData.id} />} />
+
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />
-            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses /></RoleProtectedRoute>} />
+            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses  userId={userData.id}/></RoleProtectedRoute>} />
             <Route path="/Admin/PaginaInicio" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminLandingPage /></RoleProtectedRoute>} />
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
+
 
             {/* Rutas protegidas para el perfil del usuario */}
             <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
