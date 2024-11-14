@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {CreateMultiHoursModal} from '../../Components/CreateMultiHoursModal'
 
-export const NutriMenu = ({ userId }) => {
+ const NutriMenu = ({ userId }) => {
   const [apoints, setApoints] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
@@ -130,3 +130,5 @@ export const NutriMenu = ({ userId }) => {
     </div>
   );
 };
+
+export default NutriMenu;
