@@ -57,10 +57,11 @@ const confirmarPago = async (req, res) => {
       const response = await pool.query( "SELECT * FROM transactions WHERE token = $1", [token]);
       const transactionData = response.rows;
 
-      const additional_user = 1;
-      const user_id = transactionData.user_id;
+      const additional_user = transactionData[0].user_id;
+      const user_id = transactionData[0].user_id;
       const plan_id = 50;
       const remaining_classes = 10;
+      console.log(user_id)
 
       try {
         await pool.query(
