@@ -7,18 +7,7 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const storedAuth = localStorage.getItem("isAuth");
-    const storedUserData = localStorage.getItem("userData");
-
-    if (storedAuth) {
-      setIsAuth(JSON.parse(storedAuth));
-    }
-    if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
-    }
-
-    // Realizamos la consulta de autenticación
+  const fetchAuthData = () => {
     fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
       method: "GET",
       credentials: "include",
@@ -50,7 +39,15 @@ export const UserProvider = ({ children }) => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchAuthData();
   }, []);
+
+
+
 
   const userContextValue = useMemo(() => ({
     isAuth,
@@ -58,7 +55,8 @@ export const UserProvider = ({ children }) => {
     userData,
     setUserData,
     loading,
-    setLoading
+    setLoading,
+    fetchAuthData
   }), [isAuth, userData, loading]);
 
   return (

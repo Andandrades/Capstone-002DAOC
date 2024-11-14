@@ -5,7 +5,7 @@ import { iniciarTransaccion } from '../../../Components/API/WebPayApi';
 
 const BuyModal = (props) => {
   const { isOpen, onClose, name, amount, description, n_class, isPlan } = props;
-  const { userData, isAuth, setIsAuth } = useUser();
+  const { userData, isAuth, setIsAuth,fetchAuthData } = useUser();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,10 +32,7 @@ const BuyModal = (props) => {
       });
 
       if (response.status === 200) {
-        const authCheckResponse = await fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
-          method: "GET",
-          credentials: "include",
-        });
+        fetchAuthData();
 
         if (!authCheckResponse.ok) {
           throw new Error('Error en la verificación de autenticación');
@@ -44,13 +41,12 @@ const BuyModal = (props) => {
         const authData = await authCheckResponse.json();
         setIsAuth(authData.isAuth);
         localStorage.setItem("isAuth", JSON.stringify(true));
+        
       } else {
         setError("Credenciales inválidas");
-        console.log(response.body);
       }
     } catch (err) {
       setError("Error en el servidor");
-      console.log(err);
     }
   };
 
