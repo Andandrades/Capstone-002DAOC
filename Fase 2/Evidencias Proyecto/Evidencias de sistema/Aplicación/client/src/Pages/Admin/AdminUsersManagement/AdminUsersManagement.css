@@ -21,91 +21,6 @@
   border-radius: 8px;
 }
 
-.roles-menu {
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 600px;
-}
-
-.roles-menuTitle {
-  cursor: pointer;
-  font-size: 1.5em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  width: 100%;
-}
-
-.roles-list {
-  list-style: none;
-  padding-left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.roles-listItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #eaeaea;
-  border-radius: 6px;
-  margin: 5px 0;
-  width: 100%;
-  max-width: 400px;
-  position: relative; /* Para el menú desplegable */
-}
-
-.dropdown {
-  position: relative;
-}
-
-.dropdown-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.dropdown-content {
-  position: absolute;
-  right: 0;
-  min-width: 100px;
-  background-color: #f1f1f1;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  border-radius: 5px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.delete-button {
-  color: white;
-  background-color: #ff0000;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.edit-button {
-  color: white;
-  background-color: #4caf50;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
-
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -121,10 +36,12 @@
 
 .popup {
   background: white;
-  padding: 30px; /* Aumentar el padding */
-  border-radius: 10px;
-  width: 500px; /* Aumentar el ancho del popup */
+  padding: 30px;
+  border-radius: 20px; 
+  width: 400px; 
   max-width: 90%;
+  height: auto; 
+  max-height: 90%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -134,7 +51,7 @@
 
 .popup input {
   width: 100%;
-  padding: 15px; /* Aumentar el padding */
+  padding: 15px;
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -147,18 +64,28 @@
 
 .popup-button {
   padding: 10px 20px;
-  border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
+  border: 2px solid black;
 }
 
 .confirm-button {
   background-color: #4caf50;
   color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  border: 2px solid black; 
 }
 
 .cancel-button {
-  background-color: #f44336;
+  background-color: #f44336; 
   color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  border: 2px solid black;
 }
