@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import registrate from "../../assets/img/Registrate.webp";
 import { Register } from "../../Components/API/Endpoints";
 import "./RegisterStyle.css";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const RegisterPage = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      setMessage("Las contraseñas no coinciden.");
+      toast.warn("Las contraseñas no coinciden.");
       return;
     }
 
@@ -29,21 +30,19 @@ const RegisterPage = () => {
 
     Register(payload)
       .then(response => {
-        console.log("response", response);
-        setMessage(`Usuario registrado correctamente: ${response.message}`);
+        toast.success(`${response.message}`);
         setTimeout(() => {
           navigate('/login');
         }, 2000);
       })
       .catch(error => {
-        console.log("error", error);
-        setMessage(`Error al registrar: ${error.message}`);
+        toast.warning(`Error al registrar: `, error);
+        console.log("error",error)
       });
   };
 
   return (
     <div className="register-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      {message && <p className="text-center text-red-500 mb-4">{message}</p>}
 
       <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="logo mb-4">

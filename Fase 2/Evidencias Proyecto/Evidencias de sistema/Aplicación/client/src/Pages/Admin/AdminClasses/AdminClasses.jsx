@@ -4,21 +4,20 @@ import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { GymHourEditCard } from "../../../Components/GymHourEditCard";
-//DayPicker
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useUser } from "../../../Components/API/UserContext"; 
+import { useUser } from "../../../Components/API/UserContext";
 
 
-const AdminClasses = ({userId}) => {
-  const {userData} = useUser();
-  const [schedueInfo, setScheduleInfo] = useState([]);
+const AdminClasses = () => {
+  const { userData } = useUser();
+  const [scheduleInfo, setScheduleInfo] = useState([]);
 
   const [dayModal, setDayModal] = useState();
   const [date, setDate] = useState(new Date());
   const [createModal, setCreateModal] = useState(false);
-  
+
 
   // Función para obtener las horas del gimnasio para el día seleccionado
   const fetchGymHours = async (date) => {
@@ -80,9 +79,9 @@ const AdminClasses = ({userId}) => {
           </div>
         </div>
         <div className="px-6">
-          {schedueInfo.length > 0 ? (
-            schedueInfo.map((schedue) => (
-              <GymHourEditCard refreshGymHours={() => fetchGymHours(date)}  key={schedue.gym_schedule_id} schedule={schedue} />
+          {scheduleInfo.length > 0 ? (
+            scheduleInfo.map((schedue) => (
+              <GymHourEditCard refreshGymHours={() => fetchGymHours(date)} key={schedue.gym_schedule_id} schedule={schedue} />
             ))
           ) : (
             <div className="w-full flex justify-center text-center pt-10">
@@ -91,7 +90,7 @@ const AdminClasses = ({userId}) => {
           )}
 
         </div>
-        
+
         {dayModal ? (
           <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
             <div className="bg-white p-3 rounded-lg">
@@ -113,7 +112,7 @@ const AdminClasses = ({userId}) => {
         ) : null}
 
         {createModal ? (
-          <CreateGymHourModal  storedUser={userData.id} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)}/>
+          <CreateGymHourModal storedUser={userData.id} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)} />
         ) : null}
       </div>
 
