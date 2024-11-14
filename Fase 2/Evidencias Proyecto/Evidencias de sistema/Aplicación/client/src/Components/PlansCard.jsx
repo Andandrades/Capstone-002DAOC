@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Menu from "../assets/Certificate.svg";
 import BuyModal from "../Pages/LandingPage/Components/BuyModal";
+import Certificate from "../assets/Certificate";
 
 export const Plans = (props) => {
-  const { id, name, amount, description, n_class, isAuth, setIsAuth } = props;
+  const { id, name, amount, description,color, n_class, isAuth, setIsAuth } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const StringedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -18,11 +18,10 @@ export const Plans = (props) => {
 
   return (
     <div className="flex min-h-96 gap-10 lg:min-h-96 justify-between items-center relative text-white py-7 lg:py-6 px-6 rounded-md bg-[#1C1C1C] flex-col">
-      <img
-        className="absolute top-[-15px] right-[-15px] m-0 p-0"
-        src={Menu}
-        alt=""
-      />
+     
+     <div className="absolute top-[-15px] right-[-15px] m-0 p-0">
+      <Certificate fill={color}/>
+      </div>
       <div>
         <div className="flex justify-center flex-col items-center">
           <h1 className="text-3xl font-bold ">{name}</h1>

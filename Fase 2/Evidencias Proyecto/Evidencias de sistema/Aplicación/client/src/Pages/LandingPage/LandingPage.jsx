@@ -221,6 +221,7 @@ const LandingPage = () => {
                 n_class={plan.n_class}
                 amount={plan.price}
                 description={plan.description}
+                color={plan.color}
                 isAuth={isAuth}
                 setIsAuth={setIsAuth}
               />
