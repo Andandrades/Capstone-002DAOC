@@ -12,7 +12,7 @@ import { FisicoComponent } from "../../Components/FisicoComponent";
 import { FooterComponent } from "../../Components/FooterComponent";
 import { NavBar } from "../../components/NavBar";
 import { NutriCard } from "../../Components/NutriCard";
-import { Plans } from "../../components/PlansCard";
+import { Plans } from "../../Components/PlansCard";
 import "./LandingPage.css";
 import { useUser } from "../../Components/API/UserContext";
 
