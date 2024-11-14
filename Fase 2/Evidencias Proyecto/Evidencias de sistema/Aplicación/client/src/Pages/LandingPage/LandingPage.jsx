@@ -12,7 +12,7 @@ import { FisicoComponent } from "../../Components/FisicoComponent";
 import { FooterComponent } from "../../Components/FooterComponent";
 import { NavBar } from "../../components/NavBar";
 import { NutriCard } from "../../Components/NutriCard";
-import { Plans } from "../../components/PlansCard";
+import { Plans } from "../../Components/PlansCard";
 import "./LandingPage.css";
 import { useUser } from "../../Components/API/UserContext";
 
@@ -216,11 +216,14 @@ const LandingPage = () => {
           {plans && plans.length > 0 ? (
             plans.map((plan) => (
               <Plans
-                key={plan.plan_id}
+                id={plan.plan_id}
                 name={plan.name}
-                n_class={plan.n_class}
-                amount={plan.price}
                 description={plan.description}
+                price={plan.price}
+                offer_price={plan.offer_price}
+                type={plan.type}
+                n_class={plan.n_class}
+                color={plan.color}
                 isAuth={isAuth}
                 setIsAuth={setIsAuth}
               />
@@ -240,9 +243,9 @@ const LandingPage = () => {
         </div>
         <div className="flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
           {dataNutri && dataNutri.length > 0 ? (
-            dataNutri.map((nutri, index) => (
+            dataNutri.map((nutri) => (
               <NutriCard
-                key={nutri.id || index}
+                id={nutri.id}
                 name={nutri.name}
                 amount={nutri.price}
                 description={nutri.description}

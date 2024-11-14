@@ -4,22 +4,19 @@ import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { GymHourEditCard } from "../../../Components/GymHourEditCard";
-//DayPicker
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import { useUser } from "../../../Components/API/UserContext";
 
 
 const AdminClasses = () => {
-
-  const [schedueInfo, setScheduleInfo] = useState([]);
+  const { userData } = useUser();
+  const [scheduleInfo, setScheduleInfo] = useState([]);
 
   const [dayModal, setDayModal] = useState();
   const [date, setDate] = useState(new Date());
   const [createModal, setCreateModal] = useState(false);
-
-  const storedUser = localStorage.getItem("userID"); // Cambia a "userID"
 
 
   // Función para obtener las horas del gimnasio para el día seleccionado
@@ -82,9 +79,9 @@ const AdminClasses = () => {
           </div>
         </div>
         <div className="px-6">
-          {schedueInfo.length > 0 ? (
-            schedueInfo.map((schedue) => (
-              <GymHourEditCard refreshGymHours={() => fetchGymHours(date)}  key={schedue.gym_schedule_id} schedule={schedue} />
+          {scheduleInfo.length > 0 ? (
+            scheduleInfo.map((schedue) => (
+              <GymHourEditCard refreshGymHours={() => fetchGymHours(date)} key={schedue.gym_schedule_id} schedule={schedue} />
             ))
           ) : (
             <div className="w-full flex justify-center text-center pt-10">
@@ -93,7 +90,7 @@ const AdminClasses = () => {
           )}
 
         </div>
-        
+
         {dayModal ? (
           <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
             <div className="bg-white p-3 rounded-lg">
@@ -115,7 +112,7 @@ const AdminClasses = () => {
         ) : null}
 
         {createModal ? (
-          <CreateGymHourModal  storedUser={storedUser} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)}/>
+          <CreateGymHourModal storedUser={userData.id} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)} />
         ) : null}
       </div>
 
