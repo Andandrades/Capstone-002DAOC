@@ -86,7 +86,7 @@ export const Register = async (payload) => {
         const response = await axios.post(`${URL}/register`, payload);
         return response.data 
     } catch (error) {
-        console.error("Error al añadir el plan:", error);
+        return error.data
     }
 };
 
