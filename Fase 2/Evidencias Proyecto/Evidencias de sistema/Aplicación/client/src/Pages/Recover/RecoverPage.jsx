@@ -14,8 +14,8 @@ const RecoverPage = () => {
     //añadir la logica de verdad
   };
 
-  const goto = () => {
-    navigate(`/`);
+  const goto = (ruta) => {
+    navigate(`/login`);
   };
 
   return (
@@ -43,8 +43,9 @@ const RecoverPage = () => {
           </button>
           <span
             className="text-purple-600 cursor-pointer underline mt-4 text-gray-600"
+            onClick={() => goto()}
           >
-            Volver al inicio
+            Volver atras
           </span>
         </form>
       </div>
