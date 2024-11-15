@@ -56,7 +56,7 @@ const LandingPage = () => {
       ref.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-  
+
   useEffect(() => {
     if (location.state?.scrollToPlans && sectionRef4.current) {
       scrollToSection(sectionRef4);
@@ -217,6 +217,7 @@ const LandingPage = () => {
           {plans && plans.length > 0 ? (
             plans.map((plan) => (
               <Plans
+                key={plan.plan_id}
                 id={plan.plan_id}
                 name={plan.name}
                 description={plan.description}
@@ -246,6 +247,7 @@ const LandingPage = () => {
           {dataNutri && dataNutri.length > 0 ? (
             dataNutri.map((nutri) => (
               <NutriCard
+                key={nutri.id}
                 id={nutri.id}
                 name={nutri.name}
                 amount={nutri.price}
