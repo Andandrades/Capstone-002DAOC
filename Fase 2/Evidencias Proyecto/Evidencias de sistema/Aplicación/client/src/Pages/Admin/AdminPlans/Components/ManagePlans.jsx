@@ -3,11 +3,9 @@ import menu from "../../../../assets/Certificate.svg";
 import { deletePlan } from '../../../../Components/API/Endpoints';
 import ModifyPlanModal from '../../AdminPlans/Components/ModifyPlanModal';
 
-export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans }) => {
+export const ManagePlans = ({ id, name, amount,offer_price, n_class,description, fetchPlans }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
@@ -29,7 +27,6 @@ export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans 
                     className="absolute top-[-15px] right-[0px] m-0 p-0"
                     src={menu}
                     alt=""
-                    fill="blue"
                 />
                 <div>
                     <div className="flex flex-col justify-center items-center font-semibold pt-6">
@@ -63,6 +60,7 @@ export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans 
                 id={id}
                 name={name}
                 description= {description}
+                offer_price= {offer_price}
                 amount= {amount}
                 n_class= {n_class}
                 fetchPlans= {fetchPlans}

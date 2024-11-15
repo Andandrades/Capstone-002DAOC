@@ -43,7 +43,7 @@ export const SuscriptionsCard = ({ suscriptionData }) => {
                 </div>
             ) : (
                 <div className="flex justify-center items-center bg-white px-4 py-6 rounded-lg text-[20px] border border-gray-300">
-                    <p>No hay planes disponibles</p>
+                    <p>No hay suscripciones activas.</p>
                 </div>
             )}
         </div>
