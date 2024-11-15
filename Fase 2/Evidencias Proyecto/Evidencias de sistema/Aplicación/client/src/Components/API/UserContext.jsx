@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' });
+  const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' , weight  :'' , height  :''  });
   const [loading, setLoading] = useState(true);
 
   const fetchAuthData = () => {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DayPicker } from 'react-day-picker'
 import "../Pages/Nutri/HamburgerIcon.css"
 import "react-day-picker/style.css"
 
-export const SideMenu = () => {
+export const SideMenu = ({}) => {
 
 
     const [isOpen, setIsOpen] = useState(false)

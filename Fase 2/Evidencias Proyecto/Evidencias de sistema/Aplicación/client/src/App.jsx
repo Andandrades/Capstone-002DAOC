@@ -24,6 +24,7 @@ const ScheduleGym = lazy(() => import('./Pages/Schedule/ScheduleGym'));
 const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
+const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
   if (loading) {
     return <Spinner />;
   }
+  console.log(userData);
+  
 
   // Ruta protegida por roles
   const RoleProtectedRoute = ({ children, requiredRoles }) => {
@@ -68,6 +71,7 @@ function App() {
             {/* Rutas de administrador protegidas */}
 
             <Route path="/nutri" element={<NutriMenu userId={userData.id} />} />
+            <Route path="/nutri/profile" element={<NutriProfile userInfo={userData} />} />
 
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />
