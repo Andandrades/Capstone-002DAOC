@@ -44,6 +44,7 @@ const AdminPlans = () => {
                   id={plan.plan_id}
                   name={plan.name}
                   n_class={plan.n_class}
+                  offer_price={plan.offer_price}
                   amount={plan.price}
                   description={plan.description}
                   fetchPlans={setFetchPlans}

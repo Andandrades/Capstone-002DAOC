@@ -1,23 +1,14 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { updatePlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 
 const ModifyPlanModal = (props) => {
-  const { isOpen, onClose, id, name, amount, n_class, fetchPlans,description } = props;
-  if (!isOpen) return null;
+  const { isOpen, onClose, id, name, amount,offer_price, n_class, fetchPlans,description } = props;
 
+  const [selectedColor, setSelectedColor] = useState('#007bff'); 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const [selectedColor, setSelectedColor] = useState('#007bff'); // Color por defecto
-
-  const colors = [
-    '#007bff',
-    '#28a745',
-    '#ffc107',
-    '#6f42c1',
-  ];
-
+  const colors = ['#007bff','#28a745','#ffc107','#6f42c1',];
   const handleColorChange = (color) => {
     setSelectedColor(color);
   };
@@ -38,7 +29,7 @@ const ModifyPlanModal = (props) => {
       });
     onClose();
   };
-  console.log(n_class)
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -98,6 +89,7 @@ const ModifyPlanModal = (props) => {
                   type="number"
                   className="form-control w-full p-2 border border-gray-300 rounded-md"
                   id="planPrice"
+                  defaultValue={offer_price}
                   {...register("offer_price", { required: false })}
                 />
               </div>

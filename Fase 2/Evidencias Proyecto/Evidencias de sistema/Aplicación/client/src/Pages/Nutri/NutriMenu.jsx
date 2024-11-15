@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState } from "react";
 
 import { SideMenu } from "../../Components/SideMenu";
 import NutriImage from "../../assets/icons/Nutritionist.png";

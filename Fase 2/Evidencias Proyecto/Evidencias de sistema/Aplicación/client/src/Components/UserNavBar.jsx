@@ -63,6 +63,7 @@ export const UserNavBar = () => {
                 <h3>Perfil</h3>
               </button>
             </div>
+            
           </div>
         </div>
       </Disclosure>

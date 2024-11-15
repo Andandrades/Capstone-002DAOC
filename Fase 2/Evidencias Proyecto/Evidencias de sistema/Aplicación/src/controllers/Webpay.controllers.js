@@ -9,14 +9,14 @@ const url = "";
 const transaction = new WebpayPlus.Transaction();
 
 const iniciarTransaccion = async (req, res) => {
-  const { amount, sessionId, buyOrder, user_id,idplan } = req.body;
+  const { amount, sessionId, buyOrder, user_id, idplan } = req.body;
   const returnUrl = "http://localhost:3000/confirmar-pago";
   try {
     const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
 
     await pool.query(
       "INSERT INTO transactions (buy_order, session_id, amount, token,user_id,plan_id) VALUES ($1, $2, $3, $4, $5, $6)",
-      [buyOrder, sessionId, amount, response.token, user_id,idplan]
+      [buyOrder, sessionId, amount, response.token, user_id, idplan]
     );
 
     res.json({
@@ -54,13 +54,12 @@ const confirmarPago = async (req, res) => {
     );
 
     if (response.status === "AUTHORIZED") {
-      const response = await pool.query( "SELECT * FROM transactions WHERE token = $1", [token]);
+      const response = await pool.query("SELECT t.*, p.* FROM transactions t JOIN plans p ON t.plan_id = p.plan_id WHERE t.token = $1;", [token]);
       const transactionData = response.rows;
-
-      const additional_user = 1;
-      const user_id = transactionData.user_id;
-      const plan_id = 50;
-      const remaining_classes = 10;
+      const additional_user = null;
+      const user_id = transactionData[0].user_id;
+      const plan_id = transactionData[0].plan_id;
+      const remaining_classes = transactionData[0].n_class;
 
       try {
         await pool.query(
