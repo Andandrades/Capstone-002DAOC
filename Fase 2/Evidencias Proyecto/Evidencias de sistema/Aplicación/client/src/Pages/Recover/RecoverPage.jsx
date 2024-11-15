@@ -2,16 +2,30 @@ import React, { useState } from 'react';
 import login from "../../assets/img/login.webp";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const RecoverPage = () => {
 
   const navigate = useNavigate();
 
-  const ALERTA = async (e) => {
-    toast.success('Se ha enviado un correo de recuperación');
+  const sendEmail = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/sendemail', {
+        to: 'andyxz00hd@hotmail.com',
+        subject: 'Correo desde React',
+        text: 'Hola, este es un correo enviado desde mi aplicación React y Express.',
+      });
+      toast.success('Se ha enviado un correo de recuperación');
+
+      console.log('Correo enviado:', response.data);
+    } catch (error) {
+      console.error('Error enviando correo:', error);
+    }
   };
+
   const handleSubmit = async (e) => {
-    //añadir la logica de verdad
+    e.preventDefault();
+    sendEmail();
   };
 
   const goto = (ruta) => {
@@ -35,8 +49,8 @@ const RecoverPage = () => {
               className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
-          <button 
-            onClick={() => ALERTA()}
+          <button type="submit"
+
             className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
           >
             Recuperar contraseña
