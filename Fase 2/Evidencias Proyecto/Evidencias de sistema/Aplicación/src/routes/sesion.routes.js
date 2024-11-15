@@ -4,8 +4,6 @@ const { registerUser, loginUser,checkAuth,logOut} = require("../controllers/sesi
 
 const router = Router();
 
-const cors = require("cors");
-
 router.post("/login", loginUser)
 router.post("/register", registerUser);
 router.get("/checkauth", checkAuth);
