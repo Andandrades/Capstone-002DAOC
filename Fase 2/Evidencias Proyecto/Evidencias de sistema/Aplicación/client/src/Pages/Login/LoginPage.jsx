@@ -12,7 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const goto = (url) => {
-    navigate(`/recover`);
+    navigate(`/${url}`);
   };
 
   const handleSubmit = async (e) => {
@@ -91,7 +91,7 @@ const LoginPage = () => {
           <p className="mt-4 text-gray-600">
             ¿Olvidaste tu contraseña?{" "}
             <span
-              onClick={() => goto()}
+              onClick={() => goto("recover")}
               className="text-purple-600 cursor-pointer underline"
             >
               Recupérala aquí
