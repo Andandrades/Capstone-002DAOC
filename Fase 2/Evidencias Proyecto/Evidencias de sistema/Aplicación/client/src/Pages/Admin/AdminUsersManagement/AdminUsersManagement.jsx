@@ -6,7 +6,7 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SportsIcon from '@mui/icons-material/Sports';
 import GroupsIcon from '@mui/icons-material/Groups'; 
 import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Importar el nuevo icono
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'; 
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import { ObtenerClientes, ObtenerEntrenadores, ObtenerNutricionistas, ObtenerAdministradores, EliminarUsuario, CrearUsuario, ActualizarUsuario } from '../../../Components/API/Users';
 import UserRoleCard from '../../../Components/UserRoleCard';
@@ -37,9 +37,9 @@ const AdminUsersManagement = () => {
   const [editUserEmail, setEditUserEmail] = useState('');
   const [editUserWeight, setEditUserWeight] = useState('');
   const [editUserHeight, setEditUserHeight] = useState('');
-  const [loading, setLoading] = useState(false); // Estado para mostrar el Spinner
+  const [loading, setLoading] = useState(false); 
 
-  // Función para obtener usuarios agrupados por rol
+ 
     const fetchUsersByRole = async () => {
       try {
         const clientsData = await ObtenerClientes();
@@ -83,8 +83,8 @@ const AdminUsersManagement = () => {
       console.error('Error al eliminar el usuario:', error);
       toast.error('El usuario no se ha podido eliminar');
     } finally {
-      setLoading(false); // Ocultar el Spinner
-      fetchUsersByRole(); // Recargar la query
+      setLoading(false); 
+      fetchUsersByRole(); 
     }
   };
 
@@ -127,7 +127,7 @@ const AdminUsersManagement = () => {
     };
     try {
       const response = await CrearUsuario(newUser);
-      const createdUser = response.user; // Asegúrate de extraer el usuario de la respuesta
+      const createdUser = response.user; 
       if (userType === 'clientes') {
         setClients([...clients, createdUser]);
       } else if (userType === 'nutricionistas') {
@@ -185,8 +185,8 @@ const AdminUsersManagement = () => {
       console.error('Error al actualizar el usuario:', error);
       toast.error('El usuario no se ha podido editar correctamente');
     } finally {
-      setLoading(false); // Ocultar el Spinner
-      fetchUsersByRole(); // Recargar la query
+      setLoading(false); 
+      fetchUsersByRole(); 
     }
   };
 
@@ -263,11 +263,11 @@ const AdminUsersManagement = () => {
             <p>¿Estás seguro de que deseas borrar a {selectedUser.name}?</p>
             <div className="flex justify-between mt-4">
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmDelete}>
-                <CheckCircleIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para confirmar */}
+                <CheckCircleIcon style={{ color: 'white' }} /> 
                 Sí, borrar
               </button>
               <button className="cancel-button" onClick={() => setShowPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para cancelar */}
+                <CancelIcon style={{ color: 'white' }} /> 
                 Cancelar
               </button>
             </div>
@@ -309,11 +309,11 @@ const AdminUsersManagement = () => {
             />
             <div className="flex justify-between mt-4">
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmAddUser}>
-                <CheckCircleIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para confirmar */}
+                <CheckCircleIcon style={{ color: 'white' }} /> 
                 Agregar
               </button>
               <button className="cancel-button" onClick={() => setShowAddPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para cancelar */}
+                <CancelIcon style={{ color: 'white' }} /> 
                 Cancelar
               </button>
             </div>
@@ -355,11 +355,11 @@ const AdminUsersManagement = () => {
             />
             <div className="flex justify-between mt-4">
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmEditUser}>
-                <CheckCircleIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para confirmar */}
+                <CheckCircleIcon style={{ color: 'white' }} /> 
                 Confirmar
               </button>
               <button className="cancel-button" onClick={() => setShowEditPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para cancelar */}
+                <CancelIcon style={{ color: 'white' }} /> 
                 Cancelar
               </button>
             </div>

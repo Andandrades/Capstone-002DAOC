@@ -1,26 +1,26 @@
-/* Estilo general para el body */
 body {
-  background-color: #eaeaea; /* Fondo claro para toda la página */
+  background-color: #eaeaea; 
   margin: 0;
-  font-family: Arial, sans-serif; /* Estilo de fuente */
+  font-family: Arial, sans-serif; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-/* Estilos generales para el contenedor */
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 400px; /* Ancho fijo para mantener la forma cuadrada */
-  height: 400px; /* Altura fija para mantener la forma cuadrada */
-  margin: 0 auto;
+  width: 400px; /* Ancho  */
+  height: 600px; /* Alto */
   padding: 20px;
   border-radius: 8px;
-  background-color: #ffffff; /* Fondo blanco para el contenedor */
+  background-color: #ffffff; 
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para el título */
 h2 {
   color: #333;
   font-size: 1.8em;
@@ -28,7 +28,6 @@ h2 {
   font-weight: 600;
 }
 
-/* Estilo para los mensajes */
 .message, .error {
   color: #2c6c2f;
   background-color: #e0f7e0;
@@ -44,17 +43,16 @@ h2 {
   background-color: #f2dede;
 }
 
-/* Estilos para los campos de entrada */
 .input-group {
   margin-bottom: 15px;
   width: 100%;
 }
-/* Estilos de campos de entrada (inputs) */
-input.email{
-  width: 1000%;
+
+input.email {
+  width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 10px;  /* Bordes redondeados */
+  border-radius: 10px;  
 }
 
 .input-group label {
@@ -80,7 +78,6 @@ input.email{
   outline: none;
 }
 
-/* Botones */
 button {
   width: 100%;
   padding: 12px;
@@ -114,7 +111,6 @@ button {
   text-decoration: underline;
 }
 
-/* Grupo de botones */
 .button-group {
   display: flex;
   justify-content: center;
@@ -122,10 +118,6 @@ button {
   margin-top: 20px;
 }
 
-/* Estilo de los campos de error */
 input:invalid {
   border-color: #d9534f;
 }
-
-
-  
