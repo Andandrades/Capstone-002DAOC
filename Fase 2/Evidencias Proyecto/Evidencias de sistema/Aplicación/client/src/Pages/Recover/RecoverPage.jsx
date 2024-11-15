@@ -1,65 +1,54 @@
 import React, { useState } from 'react';
-import './RecoverStyle.css'; // Manteniendo el mismo archivo CSS
 import login from "../../assets/img/login.webp";
+import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 const RecoverPage = () => {
 
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [isRecovering, setIsRecovering] = useState(''); 
-  const handleRecover = (e) => {
-    e.preventDefault();
+  const navigate = useNavigate();
 
-    // Validación simple del correo
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Por favor ingresa un correo válido');
-      return;
-    }
-
-    // Limpiar el mensaje de error y mostrar el mensaje de éxito
-    setError('');
-    setMessage('Se ha enviado un correo de recuperación');
+  const ALERTA = async (e) => {
+    toast.success('Se ha enviado un correo de recuperación');
   };
+  const handleSubmit = async (e) => {
+    //añadir la logica de verdad
+  };
+
+  const goto = () => {
+    navigate(`/`);
+  };
+
   return (
-    <div className="login-container">
-    <img src={login} alt="login" /> {/* Cambia aquí a la nueva imagen */}
-    <h2>Recuperar Contraseña</h2>
-
-    {/* Mostrar mensaje de éxito */}
-    {message && <p className="message">{message}</p>}
-    
-    {/* Mostrar error si existe */}
-    {error && <p className="error">{error}</p>}
-
-    {/* Formulario para ingresar el correo */}
-    <form onSubmit={handleRecover}>
-      <div className="input-group">
-        <label htmlFor="email">Correo Electrónico</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+        <div className="flex justify-center items-center mb-6">
+          <img src={login} alt="Logo" className="w-48 h-auto" />
+        </div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Soldados Gym</h2>
+        <h2>Recuperar Contraseña</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <input
+              type="email"
+              placeholder="Email"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg"
+            />
+          </div>
+          <button 
+            onClick={() => ALERTA()}
+            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
+          >
+            Recuperar contraseña
+          </button>
+          <span
+            className="text-purple-600 cursor-pointer underline mt-4 text-gray-600"
+          >
+            Volver al inicio
+          </span>
+        </form>
       </div>
-
-      {/* Botón para enviar el formulario */}
-      <button type="submit" className="btn-primary">Enviar</button>
-
-      {/* Botón para volver a la página anterior */}
-      <div className="button-group">
-        <button
-          type="button"
-          className="btn-link"
-          onClick={() => setIsRecovering(false)}
-        >
-          Volver
-        </button>
-      </div>
-    </form>
-  </div>
+    </div>
   )
 }
 
