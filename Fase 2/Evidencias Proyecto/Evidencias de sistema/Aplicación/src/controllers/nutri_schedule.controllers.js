@@ -91,7 +91,6 @@ const scheduleHour = async (req, res) => {
   const { client_id } = req.body;
 
   try {
-    console.log("Client ID recibido:", client_id);
     const hourInfo = await pool.query(
       "SELECT available,client_id FROM nutri_schedule WHERE nutri_schedule_id = $1",
       [id]

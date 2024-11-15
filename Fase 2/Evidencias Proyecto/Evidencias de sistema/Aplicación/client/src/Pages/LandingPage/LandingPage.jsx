@@ -2,7 +2,7 @@ import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import ClassIcon from "@mui/icons-material/Class";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Phone from "../../assets/img/iphone.webp";
 import Nutri from "../../assets/img/Nutri.webp";
 import Trainer from "../../assets/img/Sports.webp";
@@ -19,15 +19,9 @@ import { useUser } from "../../Components/API/UserContext";
 const LandingPage = () => {
   const { isAuth, setIsAuth } = useUser;
   const navigate = useNavigate();
-
-  const goto = (url) => {
-    navigate(`/${url}`);
-  };
-
+  const location = useLocation();
   const [plans, setPlans] = useState([]);
   const [dataNutri, setDataNutri] = useState([]);
-
-  //variables para aplicar SmoothScroll al momento de seleccionar una opcion en el navbar
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
   const sectionRef3 = useRef(null);
@@ -35,12 +29,8 @@ const LandingPage = () => {
   const sectionRef5 = useRef(null);
   const sectionRef6 = useRef(null);
   const sectionRef7 = useRef(null);
-
-
-  const scrollToSection = (ref) => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
-    }
+  const goto = (url) => {
+    navigate(`/${url}`);
   };
 
   const fetchPlanes = async () => {
@@ -61,10 +51,21 @@ const LandingPage = () => {
     };
   };
 
+  const scrollToSection = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   useEffect(() => {
+    if (location.state?.scrollToPlans && sectionRef4.current) {
+      scrollToSection(sectionRef4);
+      navigate("/", { state: { scrollToPlans: false } });
+    }
+
     fetchPlanes();
     fetchNutri();
-  }, []);
+  }, [location]);
 
 
   return (
@@ -216,6 +217,7 @@ const LandingPage = () => {
           {plans && plans.length > 0 ? (
             plans.map((plan) => (
               <Plans
+                key={plan.plan_id}
                 id={plan.plan_id}
                 name={plan.name}
                 description={plan.description}
@@ -245,6 +247,7 @@ const LandingPage = () => {
           {dataNutri && dataNutri.length > 0 ? (
             dataNutri.map((nutri) => (
               <NutriCard
+                key={nutri.id}
                 id={nutri.id}
                 name={nutri.name}
                 amount={nutri.price}

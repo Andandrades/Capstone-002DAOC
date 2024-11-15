@@ -28,12 +28,12 @@ const rolesExercise = require("./routes/exercise.Routes");
 const ExercisesRecords = require("./routes/exerciseHistory.Routes");
 const nutriScheduleRoutes = require("./routes/nutri_schedule.routes");
 const schedule_classes = require("./routes/scheduleClases.routes");
-const transactionRoutes = require("./routes/transaction.routes");
 const sesionRoutes = require("./routes/sesion.routes");
 const plansRoutes = require("./routes/plans.Routes");
 const Nutri = require("./routes/nutri.Routes");
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
 const webpay = require("./routes/Webpay.Routes");
+const subscription = require("./routes/subscription.routes")
 // Inicializar Rutas
 app.use(rolesRoutes);
 app.use(usersRoutes);
@@ -42,11 +42,12 @@ app.use(ExercisesRecords);
 app.use(Nutri);
 app.use(nutriScheduleRoutes);
 app.use(schedule_classes);
-app.use(transactionRoutes);
 app.use(sesionRoutes);
 app.use(plansRoutes);
 app.use(gymHoursRoutes);
 app.use(webpay);
+app.use(subscription);
+
 
 // Puerto del servidor
 app.listen(3000, () => {
