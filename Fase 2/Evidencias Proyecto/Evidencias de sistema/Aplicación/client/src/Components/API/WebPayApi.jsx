@@ -2,15 +2,15 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
- 
+const URL = `${import.meta.env.VITE_API_URL}`;
+
 
 export const iniciarTransaccion = async (props) => {
     const { amount, name, userId,id } = props;
-    console.log(userId)
     try {
-        const response = await axios.post("http://localhost:3000/iniciar-transaccion", {
+        const response = await axios.post(`${URL}/iniciar-transaccion`, {
             idplan:id,
-            amount: amount,
+            amount: amount, 
             sessionId: "mi_sesion",
             buyOrder: name,
             user_id:userId
@@ -29,7 +29,7 @@ export const ConfirmacionPago = () => {
     useEffect(() => {
         const confirmarPago = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/confirmar-pago", {
+                const response = await axios.get(`${URL}/confirmar-pago`, {
                     token_ws: tokenWs
                 });
                 console.log("Pago confirmado:", response.data);
