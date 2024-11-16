@@ -1,6 +1,5 @@
 import axios from "axios";
-const URL = "http://localhost:3000";
-//Manejo de sesiónes
+const URL = `${import.meta.env.VITE_API_URL}`;
 
 export const Login = async (payload) => {
     try {
