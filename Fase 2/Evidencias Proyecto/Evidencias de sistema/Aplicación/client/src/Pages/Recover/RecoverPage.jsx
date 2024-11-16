@@ -1,35 +1,28 @@
-import React, { useState } from 'react';
-import login from "../../assets/img/login.webp";
-import { toast } from "react-toastify";
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import login from "../../assets/img/login.webp";
+import { sendEmail } from '../../Components/API/EmailSender';
+import { toast } from "react-toastify";
 
 const RecoverPage = () => {
-
   const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const sendEmail = async () => {
+  const onSubmit = async (data) => {
+    const payload = {
+      data,
+      subject: "Recuperar contraseña Soldado",
+      text: "lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor ",
+    };
+    
     try {
-      const response = await axios.post('http://localhost:3000/sendemail', {
-        to: 'andyxz00hd@hotmail.com',
-        subject: 'Correo desde React',
-        text: 'Hola, este es un correo enviado desde mi aplicación React y Express.',
-      });
-      toast.success('Se ha enviado un correo de recuperación');
-
-      console.log('Correo enviado:', response.data);
+      await sendEmail(payload); 
+      toast.success("Se ha enviado un correo para recuperar la contraseña.");
     } catch (error) {
-      console.error('Error enviando correo:', error);
+      console.error("Error al enviar el correo:", error);
+      toast.error("Sucedió algo inesperado.");
     }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    sendEmail();
-  };
-
-  const goto = (ruta) => {
-    navigate(`/login`);
   };
 
   return (
@@ -40,31 +33,38 @@ const RecoverPage = () => {
         </div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">Soldados Gym</h2>
         <h2>Recuperar Contraseña</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <input
               type="email"
               placeholder="Email"
-              required
+              {...register("email", { 
+                required: "El correo es obligatorio.", 
+                pattern: { 
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Por favor, ingresa un correo válido." 
+                } 
+              })}
               className="w-full p-3 border border-gray-300 rounded-lg"
             />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
-          <button type="submit"
-
+          <button
+            type="submit"
             className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
           >
             Recuperar contraseña
           </button>
           <span
             className="text-purple-600 cursor-pointer underline mt-4 text-gray-600"
-            onClick={() => goto()}
+            onClick={() => navigate(`/login`)}
           >
-            Volver atras
+            Volver atrás
           </span>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default RecoverPage;
