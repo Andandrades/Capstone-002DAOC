@@ -34,6 +34,8 @@ const Nutri = require("./routes/nutri.Routes");
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
 const webpay = require("./routes/Webpay.Routes");
 const subscription = require("./routes/subscription.routes")
+const mailer = require("./routes/Mailer.Routes")
+
 // Inicializar Rutas
 app.use(rolesRoutes);
 app.use(usersRoutes);
@@ -47,6 +49,7 @@ app.use(plansRoutes);
 app.use(gymHoursRoutes);
 app.use(webpay);
 app.use(subscription);
+app.use(mailer);
 
 
 // Puerto del servidor

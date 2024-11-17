@@ -1,7 +1,6 @@
 import axios from "axios";
-const URL = "http://localhost:3000";
+const URL = `${import.meta.env.VITE_API_URL}`;
 
-// clientes
 export const ObtenerClientes = async () => {
   try {
     const response = await axios.get(`${URL}/users/role/Clientes`);
@@ -12,7 +11,6 @@ export const ObtenerClientes = async () => {
   }
 };
 
-// entrenadores
 export const ObtenerEntrenadores = async () => {
   try {
     const response = await axios.get(`${URL}/users/role/Entrenadores`);
@@ -23,7 +21,6 @@ export const ObtenerEntrenadores = async () => {
   }
 };
 
-// nutricionistas
 export const ObtenerNutricionistas = async () => {
   try {
     const response = await axios.get(`${URL}/users/role/Nutricionistas`);
@@ -34,7 +31,6 @@ export const ObtenerNutricionistas = async () => {
   }
 };
 
-// administradores
 export const ObtenerAdministradores = async () => {
   try {
     const response = await axios.get(`${URL}/users/role/Administradores`);
@@ -45,7 +41,6 @@ export const ObtenerAdministradores = async () => {
   }
 };
 
-// Eliminar usuario
 export const EliminarUsuario = async (id) => {
   try {
     const response = await axios.delete(`${URL}/users/${id}`);
@@ -56,7 +51,6 @@ export const EliminarUsuario = async (id) => {
   }
 };
 
-// Crear usuario
 export const CrearUsuario = async (userData) => {
   try {
     const response = await axios.post(`${URL}/register`, userData);
@@ -67,7 +61,6 @@ export const CrearUsuario = async (userData) => {
   }
 };
 
-// Editar usuario
 export const ActualizarUsuario = async (id, userData) => {
   try {
     const response = await axios.put(`${URL}/users/${id}`, userData);
