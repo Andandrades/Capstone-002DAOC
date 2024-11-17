@@ -95,7 +95,7 @@ const checkAuth = async (req, res) => {
     const decoded = jwt.verify(token, jwtSecret);
 
     const userResult = await pool.query(
-      "SELECT id, name, email, fk_rol_id FROM users WHERE id = $1",
+      "SELECT id, name, email, fk_rol_id , weight , height FROM users WHERE id = $1",
       [decoded.id]
     );
 
@@ -110,6 +110,8 @@ const checkAuth = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.fk_rol_id,
+      weight : user.weight,
+      height : user.height
     });
 
   } catch (error) {
