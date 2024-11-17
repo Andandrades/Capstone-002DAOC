@@ -70,8 +70,8 @@ function App() {
 
             {/* Rutas de administrador protegidas */}
 
-            <Route path="/nutri" element={<NutriMenu userId={userData.id} />} />
-            <Route path="/nutri/profile" element={<NutriProfile userInfo={userData} />} />
+            <Route path="/consultasnutricionales" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><NutriMenu userId={userData.id} /></RoleProtectedRoute>} />
+            <Route path="/consultasnutricionales/profile" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><NutriProfile userInfo={userData} /></RoleProtectedRoute>} />
 
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />

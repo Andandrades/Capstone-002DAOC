@@ -1,6 +1,9 @@
 const pool = require("../db");
 const bcrypt = require("bcrypt");
 
+const sharp = require("sharp");
+
+
 // Listar Usuarios
 const getAllUsers = async (req, res) => {
   try {
@@ -34,7 +37,10 @@ const updateUser = async (req, res) => {
 
   try {
     // Obtener el usuario actual para mantener el valor de fk_rol_id
-    const userResult = await pool.query("SELECT fk_rol_id FROM users WHERE id = $1", [id]);
+    const userResult = await pool.query(
+      "SELECT fk_rol_id FROM users WHERE id = $1",
+      [id]
+    );
     if (userResult.rowCount === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -73,7 +79,10 @@ const getUsersByRole = async (req, res) => {
   const { roleId } = req.params;
 
   try {
-    const result = await pool.query("SELECT * FROM users WHERE fk_rol_id = $1", [roleId]);
+    const result = await pool.query(
+      "SELECT * FROM users WHERE fk_rol_id = $1",
+      [roleId]
+    );
 
     if (result.rowCount === 0) {
       return res.json({ message: "No se encontraron usuarios con ese rol" });
@@ -95,21 +104,79 @@ const createUser = async (req, res) => {
       [name, email, hashedPassword, fk_rol_id, weight || null, height || null]
     );
     const newUser = newUserResult.rows[0];
-    res.status(201).json({ 
-      message: 'Usuario registrado con éxito',
+    res.status(201).json({
+      message: "Usuario registrado con éxito",
       user: {
         id: newUser.id,
         email: newUser.email,
         name: newUser.name,
         role: newUser.fk_rol_id,
         weight: newUser.weight,
-        height: newUser.height
-      }
+        height: newUser.height,
+      },
     });
   } catch (error) {
-    res.status(500).json({ error: 'Error al crear el usuario' });
+    res.status(500).json({ error: "Error al crear el usuario" });
   }
 };
+
+const uploadPicture = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const userId = req.params.id;
+    let processedImage;
+
+    // Verificar si el archivo es un GIF
+    if (req.file.mimetype === 'image/gif') {
+      // Si es un GIF, solo guardarlo tal cual
+      processedImage = req.file.buffer;
+    } else {
+      // Si es una imagen estática, procesarla con sharp
+      processedImage = await sharp(req.file.buffer)
+        .resize(200, 200) // Redimensionar la imagen
+        .toFormat('jpeg') // Convertir a JPEG
+        .toBuffer(); // Obtener el buffer procesado
+    }
+
+    // Guardar el archivo (ya sea GIF o imagen procesada)
+    await pool.query('UPDATE users SET profile_picture = $1 WHERE id = $2', [processedImage, userId]);
+
+    res.status(200).json({ message: 'Profile picture updated successfully' });
+
+  } catch (error) {
+    console.error('Error updating profile picture:', error);
+    res.status(500).json({ message: 'Error updating profile picture' });
+  }
+};
+
+const getProfilePicture = async (req,res) =>{
+  try {
+    const userId = req.params.id;
+
+    const result = await pool.query('SELECT profile_picture FROM users WHERE id = $1', [userId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const profilePicture = result.rows[0].profile_picture;
+
+    if (!profilePicture) {
+      return res.status(404).json({ message: 'No profile picture found' });
+    }
+
+
+    res.set('Content-Type', 'image/jpeg');
+    res.send(profilePicture); 
+  } catch (error) {
+    console.error('Error fetching profile picture:', error);
+    res.status(500).json({ message: 'Error fetching profile picture' });
+  }
+}
+
 
 module.exports = {
   getAllUsers,
@@ -118,4 +185,6 @@ module.exports = {
   deleteUser,
   getUsersByRole,
   createUser,
+  uploadPicture,
+  getProfilePicture
 };
