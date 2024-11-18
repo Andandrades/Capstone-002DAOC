@@ -23,6 +23,8 @@ export const UserProvider = ({ children }) => {
             name: data.name,
             email: data.email,
             role: data.role,
+            remaining_classes: data.remaining_classes,
+            plan_id: data.plan_id,
             weight : data.weight,
             height : data.height,
           };

@@ -29,6 +29,7 @@ const LandingPage = () => {
   const sectionRef5 = useRef(null);
   const sectionRef6 = useRef(null);
   const sectionRef7 = useRef(null);
+  
   const goto = (url) => {
     navigate(`/${url}`);
   };
@@ -251,9 +252,9 @@ const LandingPage = () => {
                 id={nutri.id}
                 name={nutri.name}
                 amount={nutri.price}
+                offer_price={nutri.offer_price}
                 description={nutri.description}
-                isAuth={isAuth}
-                setIsAuth={setIsAuth}
+             
               />
             ))
           ) : (
