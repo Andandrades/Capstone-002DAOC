@@ -133,10 +133,7 @@ const scheduleHour = async (req, res) => {
     const existingRegistration = await pool.query(
       "SELECT * FROM schedule_classes WHERE gym_schedule_id = $1 AND client_id = $2",
       [gym_schedule_id, client_id]
-    );
-
-    
-   
+    );   
     if (existingRegistration.rows.length > 0) {
       return res.status(400).json({ error: "Ya tienes un registro para esta hora." });
     }
