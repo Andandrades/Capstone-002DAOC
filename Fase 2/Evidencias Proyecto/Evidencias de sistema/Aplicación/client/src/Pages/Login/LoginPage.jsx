@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./LoginStyle.css";
 import Registrate from "../../assets/img/Registrate.webp";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../Components/API/UserContext";
@@ -19,7 +18,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,62 +26,74 @@ const LoginPage = () => {
         body: JSON.stringify({ email, password }),
         credentials: "include",
       });
-    } catch (err) {
-      setError("Error en el servidor");
-      console.log(err);
-    }
-    fetchAuthData();
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || "Error en el servidor");
+        return;
+      }
+
+      fetchAuthData();
+    } catch (err) {
+      setError("Error de conexión con el servidor");
+      console.error(err);
+    }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <div className="logo">
-          <img src={Registrate} alt="Logo" />
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+        <div className="flex justify-center items-center mb-6">
+          <img src={Registrate} alt="Logo" className="w-48 h-auto" />
         </div>
-        <h2>Soldados Gym</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Soldados Gym</h2>
 
-        {error && <p className="error">{error}</p>}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
+          <div className="mb-4">
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
 
-          <div className="input-group">
+          <div className="mb-4">
             <input
               type="password"
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="password-input"
               required
+              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
 
-          {/* Botón de inicio de sesión */}
-          <button type="submit" className="btn-primary">
+          <button
+            type="submit"
+            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
+          >
             Iniciar sesión
           </button>
-          {/* Botón para registrarse */}
+
           <button
             type="button"
-            className="btn-secondary"
-            onClick={() => goto('Register')}
+            onClick={() => goto("Register")}
+            className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100"
           >
             Registrarse
           </button>
-          {/* Recuperación de contraseña */}
-          <p className="forgot-password">
+
+          <p className="mt-4 text-gray-600">
             ¿Olvidaste tu contraseña?{" "}
-            <span className="recover-link">
+            <span
+              onClick={() => goto("recover")}
+              className="text-purple-600 cursor-pointer underline"
+            >
               Recupérala aquí
             </span>
           </p>
