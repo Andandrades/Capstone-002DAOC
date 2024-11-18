@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { useUser } from './Components/API/UserContext';  
+import { useUser } from './Components/API/UserContext';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,12 +30,13 @@ const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
 
-  const permisosAdmin = [ 1, 2, 3, 4];
+  const permisosAdmin = [1, 2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
 
   if (loading) {
     return <Spinner />;
   }
+
   // Ruta protegida por roles
   const RoleProtectedRoute = ({ children, requiredRoles }) => {
     if (!isAuth || !requiredRoles.includes(userData.role)) {
@@ -46,8 +47,21 @@ function App() {
 
   // Componente para redireccionar si el usuario ya está autenticado
   const RedirectIfAuthenticated = ({ children }) => {
-    return isAuth ? <Navigate to="/inicio" /> : children;
+    if (isAuth) {
+      switch (userData.role) {
+        case 4:
+          return <Navigate to="/admin" />;
+        case 3:
+          return <Navigate to="/schedule" />;
+        case 2:
+          return <Navigate to="/consultasnutricionales" />;
+        default:
+          return <Navigate to="/inicio" />;
+      }
+    }
+    return children;
   };
+
 
   return (
     <>
@@ -72,7 +86,7 @@ function App() {
 
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />
-            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses  userId={userData.id}/></RoleProtectedRoute>} />
+            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/Admin/PaginaInicio" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminLandingPage /></RoleProtectedRoute>} />
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
 
@@ -80,8 +94,8 @@ function App() {
             {/* Rutas protegidas para el perfil del usuario */}
             <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
             <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><SchedulePage /></RoleProtectedRoute>} />
-            <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym userId={userData.id}/></RoleProtectedRoute>} />
-            <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri userId={userData.id}/></RoleProtectedRoute>} />
+            <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym userId={userData.id} /></RoleProtectedRoute>} />
+            <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage /></RoleProtectedRoute>} />
             <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
