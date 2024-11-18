@@ -114,8 +114,6 @@ const deletebyid = async (req, res) => {
 const scheduleHour = async (req, res) => {
   const { gym_schedule_id, client_id, suscription_id } = req.body;
 
-  console.log(suscription_id)
-
   if (suscription_id === null) {
     return res.status(400).json({ error: "No cuentas con un plan activo" });
   }
