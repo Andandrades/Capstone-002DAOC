@@ -14,26 +14,30 @@ const ScheduleNutri = ({ userId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scheduled, setIsScheduled] = useState(false);
 
+
   //Obtener Horas por Fecha (Por Default es la fecha del dia de la consulta)
   const getHours = async () => {
-    if (!date) return;
+    if (!date) return
+  
+    const formattedDate = date.toLocaleDateString('en-CA');
 
     try {
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/nutriScheduleDate/${
-          date.toISOString().split("T")[0]
+          formattedDate
         }`,
         {
           method: "GET",
         }
       );
-
+    
       const data = await resultado.json();
-      // Ordenar las citas por hora (asumiendo que `start_hour` está en formato "HH:mm")
+
       const sortedAppointments = data.sort((a, b) => {
         return a.start_hour.localeCompare(b.start_hour); // Comparar cadenas de hora
       });
       setAppointments(sortedAppointments);
+      
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +45,9 @@ const ScheduleNutri = ({ userId }) => {
 
   useEffect(() => {
     getHours();
+    console.log(date);
   }, []);
+
 
   useEffect(() => {
     getHours();
@@ -59,7 +65,7 @@ const ScheduleNutri = ({ userId }) => {
   };
 
   return (
-    <section className="w-full h-screen flex justify-start relative flex-col bgImageNutri">
+    <section className="w-full flex justify-start relative flex-col bgImageNutri">
       <div className="z-20 text-white">
         <div className="w-full flex justify-center mt-12 text-center">
           <h1 className="text-3xl font-bold">Nutricionista</h1>
@@ -100,7 +106,6 @@ const ScheduleNutri = ({ userId }) => {
                     onClick={() => openModal()}
                   ></HighlightOffIcon>
                 </div>
-
                 <DayPicker
                   showOutsideDays
                   className="text-black scale-90"
