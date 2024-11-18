@@ -95,12 +95,10 @@ const checkAuth = async (req, res) => {
     const decoded = jwt.verify(token, jwtSecret);
     console.log("decoded",decoded)
     const userResult = await pool.query(
-      "SELECT id, name, email, fk_rol_id,weight,height,s.plan_id, s.remaining_classes FROM users u left join suscription s on u.id = s.user_id WHERE id = $1 order by start_date desc limit 1",
+      "SELECT id, name, email, fk_rol_id,weight,height,s.plan_id,s.suscription_id , s.remaining_classes FROM users u left join suscription s on u.id = s.user_id WHERE id = $1 order by start_date desc limit 1",
       [decoded.id]
     );
-
     const user = userResult.rows[0];
-
     if (!user) {
       return res.status(404).json({ isAuth: false, message: "Usuario no encontrado" });
     }
@@ -113,7 +111,8 @@ const checkAuth = async (req, res) => {
       remaining_classes: user.remaining_classes,
       plan_id: user.plan_id,
       weight : user.weight,
-      height : user.height
+      height : user.height,
+      suscription_id: user.suscription_id
     });
 
   } catch (error) {

@@ -29,7 +29,7 @@ export const SuscriptionsCard = ({ suscriptionData }) => {
                         </li>
 
                     </ul>
-                    {suscriptionData.remaining_classes === 0 ? (
+                    {suscriptionData.remaining_classes < 1 ? (
                         <button className="w-full bg-button-primary mt-5 py-2 rounded-lg"
                             onClick={Navigate}
                         >
