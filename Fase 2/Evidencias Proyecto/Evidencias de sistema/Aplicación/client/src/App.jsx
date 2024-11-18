@@ -36,9 +36,6 @@ function App() {
   if (loading) {
     return <Spinner />;
   }
-  console.log(userData);
-  
-
   // Ruta protegida por roles
   const RoleProtectedRoute = ({ children, requiredRoles }) => {
     if (!isAuth || !requiredRoles.includes(userData.role)) {

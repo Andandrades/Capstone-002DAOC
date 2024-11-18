@@ -5,7 +5,7 @@ const pool = require('../db'); // Importa la conexión a la base de datos
 const getSubscriptionsByUserId = async (req, res) => {
     try {
         const { userId } = req.body;
-        const query = ` SELECT s.*, p."name", p.n_class FROM public.suscription s join "plans" p on s.plan_id = p.plan_id  where user_id = $1 ORDER BY s.start_date DESC`;
+        const query = ` SELECT s.*, p."name", p.n_class FROM public.suscription s join "plans" p on s.plan_id = p.plan_id  where user_id = $1 ORDER BY s.start_date DESC LIMIT 1`;
 
         const { rows } = await pool.query(query, [userId]);
 

@@ -112,7 +112,7 @@ const deletebyid = async (req, res) => {
 
 //Agendar hora (Endpoint de usuarios)
 const scheduleHour = async (req, res) => {
-  const { gym_schedule_id, client_id } = req.body;
+  const { gym_schedule_id, client_id,suscription_id } = req.body;
 
   try {
     const existingRegistration = await pool.query(
@@ -121,6 +121,7 @@ const scheduleHour = async (req, res) => {
     );
 
     if (existingRegistration.rows.length > 0) {
+      
       return res
         .status(400)
         .json({ error: "Ya tienes un registro para esta hora." });
@@ -153,6 +154,7 @@ const scheduleHour = async (req, res) => {
       [gym_schedule_id]
     );
 
+    await pool.query("UPDATE suscription SET remaining_classes= remainingClases - 1 WHERE suscription_id=9;")
     res.status(201).json({ class_id: resultado.rows[0].class_id });
   } catch (error) {
     res.status(500).json({ eror: error.message });

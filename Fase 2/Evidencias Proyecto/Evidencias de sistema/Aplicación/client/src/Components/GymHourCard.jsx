@@ -3,6 +3,7 @@ import User from "../assets/User.svg";
 import Clock from "../assets/Clock.svg";
 import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { useUser } from "./API/UserContext";
 
 export const GymHourCard = ({ schedule }) => {
   const {
@@ -13,7 +14,7 @@ export const GymHourCard = ({ schedule }) => {
     actual_cap,
     schedule_date,
   } = schedule;
-
+  const { userData } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false); //Estado Modal
   const [scheduledUsers, setScheduledUsers] = useState([]);
   const [reservation, setReservation] = useState(null);
@@ -25,37 +26,19 @@ export const GymHourCard = ({ schedule }) => {
     setIsModalOpen(!isModalOpen);
   };
 
-  useEffect(() => {
-    getUserId();
-  }, []);
+
 
   useEffect(() => {
+    setUserId(userData.id);
     if (userId) {
       searchReservation();
     }
   }, [userId]);
 
-  const getUserId = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/checkauth`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      setUserId(data.userId); // Esto disparará el segundo useEffect cuando userId se actualice
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const searchReservation = async () => {
     try {
       const respuesta = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
+        `${import.meta.env.VITE_API_URL
         }/scheduleHour/${userId}/${gym_schedule_id}`
       );
       if (respuesta.ok) {
@@ -117,9 +100,8 @@ export const GymHourCard = ({ schedule }) => {
     const remainingMinutes = minutes % 60; // Calcular los minutos restantes
 
     // Retornar la duración en formato 'X horas Y minutos'
-    return `${hours > 0 ? hours + "h " : ""}${
-      remainingMinutes > 0 ? remainingMinutes + "min" : ""
-    }`;
+    return `${hours > 0 ? hours + "h " : ""}${remainingMinutes > 0 ? remainingMinutes + "min" : ""
+      }`;
   };
 
   //Funcion para eliminar hora
@@ -143,12 +125,12 @@ export const GymHourCard = ({ schedule }) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Especifica que el contenido es JSON
+          "Content-Type": "application/json", 
         },
         body: JSON.stringify({
-          // Convierte el objeto en una cadena JSON
           gym_schedule_id: gym_schedule_id,
           client_id: userId,
+          remainingClases: userData.remaining_classes
         }),
       }
     );
