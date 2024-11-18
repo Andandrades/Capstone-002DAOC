@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { SideMenu } from "../../Components/SideMenu";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { toast } from "react-toastify";
+import { ProfileImage } from "../../Components/ProfileImage";
+import CreateIcon from '@mui/icons-material/Create';
+import './NutriMenu.css'
 
 const NutriProfile = ({ userInfo }) => {
   const [userData, setUserData] = useState({
@@ -14,31 +16,28 @@ const NutriProfile = ({ userInfo }) => {
     height: userInfo.height,
   });
 
-  const [imageUrl, setImageUrl] = useState(null);
-
   const [totalConsultas, setTotalConsultas] = useState(0);
   const [consultasTomadas, setConsultasTomadas] = useState(0);
 
   const [isModalTotalOpen, setIsModalTotalOpen] = useState(false);
   const [isModalTomadasOpen, setIsModalTomadasOpen] = useState(false);
 
-  const [archivo, setArchivo] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   const [apoints, setApoints] = useState([]);
 
-  const handleChangeFile = (e) => {
-    setArchivo(e.target.files[0]);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleChangeFile = async (e) => {
     e.preventDefault();
-    if (!archivo) {
-      alert("Por Favor, seleccione un archivo");
+
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) {
+      alert("Por favor, seleccione un archivo");
+      return;
     }
 
     const formData = new FormData();
-
-    formData.append("profile_picture", archivo);
+    formData.append("profile_picture", selectedFile);
 
     try {
       const respuesta = await axios.put(
@@ -50,11 +49,11 @@ const NutriProfile = ({ userInfo }) => {
           },
         }
       );
-
-      toast.success("Imagen subida existosamente");
+      toast.success("Imagen subida exitosamente");
+      setRefresh(!refresh);
     } catch (error) {
       console.error(error);
-      toast.error("Hubo Un problema al subir la imagen");
+      toast.error("Hubo un problema al subir la imagen");
     }
   };
 
@@ -86,57 +85,33 @@ const NutriProfile = ({ userInfo }) => {
     fetchConsultas();
   }, []);
 
-  useEffect(() => {
-    const fetchProfilePicture = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/getProfilePicture/${userData.id}`,
-          { responseType: "blob" } // Asegúrate de que la respuesta es un blob (imagen)
-        );
-        // Crear un URL a partir del Blob
-        const imageBlob = response.data;
-        const imageObjectUrl = URL.createObjectURL(imageBlob);
-        setImageUrl(imageObjectUrl);
-      } catch (error) {
-        console.error("Error fetching image:", error);
-      }
-    };
-
-    fetchProfilePicture();
-  }, [userData.id]);
-
   return (
     <div className="flex min-h-screen">
       <SideMenu />
       <div className="min-h-full flex w-full justify-start flex-col px-6 pt-32 pb-10 ">
-        <div className="w-full pt-20 flex px-6 bg-gray-100 relative flex-col h-full justify-start items-center">
-          <div className="absolute top-[-10%] left-[50%] transform -translate-x-1/2">
-            {imageUrl ? (
-              <img
-                className=" rounded-full"
-                src={imageUrl}
-                alt="Profile"
-                style={{ width: "150px", height: "150px" }}
+        <div className="w-full pt-20 pb-10 flex px-6 gap-6 bg-slate-100 rounded-lg relative flex-col h-full justify-start items-center">
+          <div className="absolute top-[-10%] left-[50%] transform -translate-x-1/2 fotoPerfil">
+            <ProfileImage key={refresh} />
+            <div className="absolute bottom-0 right-0">
+              <label
+                htmlFor="file-input"
+                className="cursor-pointer bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+              >
+                <CreateIcon/>
+              </label>
+              <input
+                type="file"
+                id="file-input"
+                accept="image/*"
+                className="hidden"
+                onChange={handleChangeFile}
               />
-            ) : (
-              <AccountCircleIcon
-                className="text-gray-400"
-                sx={{ width: "140px", height: "140px" }}
-              />
-            )}
+            </div>
           </div>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleChangeFile}
-            ></input>
-            <button type="submit">Subir foto</button>
-          </form>
           {userInfo ? (
             <div className="text-center">
-              <h1 className="text-4xl">{userInfo.name}</h1>
-              <p className="text-gray-600 text-base">{userInfo.email}</p>
+              <h1 className="text-4xl font-medium">{userInfo.name}</h1>
+              <p className="text-gray-600 text-lg">{userInfo.email}</p>
             </div>
           ) : (
             <div className="animate-pulse 2 text-center">
@@ -144,7 +119,7 @@ const NutriProfile = ({ userInfo }) => {
               <div className="h-4 bg-gray-400 rounded-full w-32"></div>
             </div>
           )}
-          <div className="w-full mt-5 rounded-md bg-gray-200 h-full p-6">
+          <div className="w-full mt-5 rounded-md bg-gray-200 flex-1 p-6">
             <div className="flex h-full space-x-4">
               <div
                 onClick={() => setIsModalTotalOpen(true)}
@@ -160,6 +135,9 @@ const NutriProfile = ({ userInfo }) => {
                 <p className="text-3xl font-semibold">{consultasTomadas}</p>
               </div>
             </div>
+          </div>
+          <div className="w-full flex-1 flex bg-white">
+            <h1>Hello</h1>
           </div>
         </div>
       </div>

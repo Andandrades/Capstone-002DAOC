@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import "../Pages/Nutri/HamburgerIcon.css";
+import "../Pages/Nutri/NutriMenu.css";
 import "react-day-picker/style.css";
 import {useNavigate} from 'react-router-dom';
 
@@ -11,7 +11,7 @@ export const SideMenu = () => {
   return (
     <div
       className={[
-        "h-min-[100%] flex flex-col min-w-20 overflow-x-hidden bg-slate-200 transition-all ease-in-out duration-[250]",
+        "h-min-[100%] z-50 flex flex-col min-w-20 overflow-x-hidden bg-blue-500 transition-all ease-in-out duration-[250]",
         `${isOpen ? "w-72" : "w-20"}`,
       ].join(" ")}
     >
