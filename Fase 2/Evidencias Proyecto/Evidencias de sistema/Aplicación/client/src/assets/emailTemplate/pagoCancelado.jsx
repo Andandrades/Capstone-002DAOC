@@ -1,12 +1,12 @@
 import React from 'react';
-import ensalada from '../../assets/img/ensalada.webp';
+import cancelar from '../img/cancelar.webp';
 
 const PaymentCancelledTemplate = () => (
   <div className="relative p-4 bg-white rounded-lg shadow-md">
     <div className="absolute inset-0">
       <img
-        src={ensalada}
-        alt="Ensalada"
+        src={cancelar}
+        alt="Cancelar"
         className="w-full h-full object-cover opacity-20"
         style={{ filter: 'blur(8px)' }}
       />

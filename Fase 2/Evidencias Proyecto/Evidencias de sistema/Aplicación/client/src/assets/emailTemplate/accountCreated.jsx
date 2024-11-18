@@ -1,23 +1,22 @@
 import React from 'react';
-import ensalada from '../../assets/img/ensalada.webp';
+import confirmar from '../img/Confirmar.webp';
 
-const ChangePasswordTemplate = () => (
+const AccountCreatedTemplate = () => (
   <div className="relative p-4 bg-white rounded-lg shadow-md">
     <div className="absolute inset-0">
       <img
-        src={ensalada}
-        alt="Ensalada"
+        src={confirmar}
+        alt="Confirmar"
         className="w-full h-full object-cover opacity-20"
         style={{ filter: 'blur(8px)' }}
       />
     </div>
     <div className="relative z-10">
-      <h1 className="text-2xl font-bold mb-2">Solicitud de Cambio de Contraseña</h1>
-      <h2 className="text-xl font-semibold mb-4">Nos ha llegado su solicitud de cambio de contraseña</h2>
-      <p className="text-base mb-2">Por favor, presione el siguiente enlace para cambiar su contraseña:</p>
-      <a href="https://www.youtube.com" className="text-blue-500 underline">Cambiar Contraseña</a>
+      <h1 className="text-2xl font-bold mb-2">Cuenta Creada</h1>
+      <h2 className="text-xl font-semibold mb-4">Su cuenta ha sido creada con éxito</h2>
+      <p className="text-base">Gracias por registrarse. Esperamos que disfrute de nuestros servicios.</p>
     </div>
   </div>
 );
 
-export default ChangePasswordTemplate;
+export default AccountCreatedTemplate;
