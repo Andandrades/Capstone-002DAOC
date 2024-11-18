@@ -5,6 +5,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 export const NutriPanel = ({
   userId,
@@ -17,12 +20,14 @@ export const NutriPanel = ({
   const [selectedHour, setSelectedHour] = useState(null);
   const [userData, setUserData] = useState({});
   const [isHourModalOpen, setIsHourModalOpen] = useState(false);
+  const [confirmDeleteHour, setConfirmDeleteHour] = useState(false);
 
   const handleHourClick = async (info) => {
     setSelectedHour({
       title: info.event.title,
       start: info.event.start,
       end: info.event.end,
+      id: info.event.id,
       extendedProps: info.event.extendedProps,
     });
 
@@ -87,6 +92,25 @@ export const NutriPanel = ({
       });
   };
 
+  const handleCloseModal = async () => {
+    setIsHourModalOpen(false);
+    setConfirmDeleteHour(false);
+  };
+
+  const handleDeleteHour = async () => {
+    try {
+      const resultado = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/nutriSchedule/${selectedHour.id}`
+      );
+
+      toast.success("Hora eliminada exitosamente!");
+      handleCloseModal();
+      fetchApoints();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Panel de Nutricionista</h1>
@@ -126,6 +150,12 @@ export const NutriPanel = ({
         dateClick={handleDateClick}
         allDaySlot={false}
         slotLabelFormat={{
+          hour: "2-digit",
+          minute: "2-digit",
+          omitZeroMinute: false,
+          hour12: false,
+        }}
+        eventTimeFormat={{
           hour: "2-digit",
           minute: "2-digit",
           omitZeroMinute: false,
@@ -207,13 +237,27 @@ export const NutriPanel = ({
       )}
       {isHourModalOpen && (
         <div className="fixed z-20 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-4 rounded shadow-md w-1/3">
-            <h2 className="text-xl font-semibold mb-2">Detalles de la Hora</h2>
+          <div className="bg-white min-w-96 max-w-96 px-6 rounded-xl shadow-md ">
+            <div className="flex justify-end pt-2">
+              <HighlightOffIcon
+                className="bg-blue-500 rounded-full cursor-pointer text-white"
+                onClick={() => handleCloseModal()}
+              />
+            </div>
+            <h2 className="text-xl font-medium mb-2">Detalles de la hora</h2>
             {selectedHour && (
-              <div>
-                <p>
-                  <strong>Estado:</strong> {selectedHour.title}
-                </p>
+              <div className="mb-2">
+                <div className="flex justify-start items-center text-center gap-1 ">
+                  <p>
+                    <strong>Estado:</strong> {selectedHour.title}
+                  </p>
+                  {selectedHour.title === "Disponible" ? (
+                    <CheckCircleIcon className="text-green-400" />
+                  ) : (
+                    <CancelIcon className="text-red-400" />
+                  )}
+                </div>
+
                 <p>
                   <strong>Inicio:</strong> {selectedHour.start.toLocaleString()}
                 </p>
@@ -225,21 +269,42 @@ export const NutriPanel = ({
               </div>
             )}
             {userData && userData.name ? (
-              <div className="pt-5">
+              <div className="p-5 rounded-md  bg-slate-50">
                 <h1 className="font-semibold ">{`Nombre usuario reserva:`}</h1>
                 <h1>{`${userData.name}`}</h1>
               </div>
             ) : null}
+            {confirmDeleteHour ? (
+              <div className="max-h-12 min-h-12">
+                <h1 className="break-words text-red-700 text-center font-bold">
+                  Esta seguro que quiere eliminar esta hora?
+                </h1>
+              </div>
+            ) : null}
             <div className="w-full flex justify-evenly">
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                onClick={() => setIsHourModalOpen(false)}
-              >
-                Cerrar
-              </button>
-              <button className="bg-red-500 px-4 text-white py-2 rounded mt-4">
-                Eliminar Hora
-              </button>
+              {!confirmDeleteHour ? (
+                <button
+                  onClick={() => setConfirmDeleteHour(true)}
+                  className="bg-red-500 px-4 text-white py-2 rounded mt-4 mb-5"
+                >
+                  Eliminar Hora
+                </button>
+              ) : (
+                <div className="w-full flex justify-evenly">
+                  <button
+                    onClick={() => handleDeleteHour()}
+                    className="bg-red-500 px-4 text-white py-2 rounded mt-4 mb-5"
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    onClick={() => setConfirmDeleteHour(false)}
+                    className="bg-blue-500 px-4 text-white py-2 rounded mt-4 mb-5"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' });
+  const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' , weight  :'' , height  :''   });
   const [loading, setLoading] = useState(true);
 
   const fetchAuthData = () => {
@@ -24,7 +24,9 @@ export const UserProvider = ({ children }) => {
             email: data.email,
             role: data.role,
             remaining_classes: data.remaining_classes,
-            plan_id: data.plan_id
+            plan_id: data.plan_id,
+            weight : data.weight,
+            height : data.height,
           };
           setUserData(user);
           localStorage.setItem("userData", JSON.stringify(user));
