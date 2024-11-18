@@ -77,7 +77,7 @@ const BuyModal = (props) => {
     );
   }
 
-  if (userData.remaining_classes === 0) {
+  if (userData.remaining_classes< 1) {
     return (
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"

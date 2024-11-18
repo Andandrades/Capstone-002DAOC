@@ -24,14 +24,16 @@ export const UserProvider = ({ children }) => {
       if (isAuthenticated) {
         // Si está autenticado, solo asignar datos válidos
         const user = {
-          id: data.userId || null,
-          name: data.name || null,
-          email: data.email || null,
-          role: data.role || null,
-          remaining_classes: data.remaining_classes || null,
-          plan_id: data.plan_id || null,
-          weight: data.weight || null,
-          height: data.height || null,
+          id: data.userId ,
+          name: data.name ,
+          email: data.email ,
+          role: data.role ,
+          remaining_classes: data.remaining_classes ,
+          plan_id: data.plan_id ,
+          weight: data.weight ,
+          height: data.height ,
+          suscription_id: data.suscription_id
+
         };
 
         if (user.id !== null || user.name !== null || user.email !== null) {

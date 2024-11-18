@@ -4,6 +4,7 @@ import Clock from "../assets/Clock.svg";
 import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useUser } from "./API/UserContext";
+import { toast } from "react-toastify";
 
 export const GymHourCard = ({ schedule }) => {
   const {
@@ -108,47 +109,63 @@ export const GymHourCard = ({ schedule }) => {
   const eliminateClass = async () => {
     const resultado = await fetch(
       `${import.meta.env.VITE_API_URL}/scheduleHour/${classId}`,
-      { method: "DELETE" }
-    );
-    if (resultado.ok) {
-      setReservation(false);
-      fetchScheduledUsers();
-      setClassId(null); // Limpia el classId ya que la reserva ha sido eliminada
-      console.log("Hora eliminada");
-    }
-  };
-
-  //Fuincion para agendar hora
-  const scheduleHour = async () => {
-    const resultado = await fetch(
-      `${import.meta.env.VITE_API_URL}/scheduleHour`,
       {
-        method: "POST",
+        method: "DELETE",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          gym_schedule_id: gym_schedule_id,
-          client_id: userId,
-          remainingClases: userData.remaining_classes
+          suscription_id: userData.suscription_id,
         }),
       }
     );
-
+  
     if (resultado.ok) {
-      const data = await resultado.json();
-      setReservation(true); // Cambiar a estado reservado
-      setClassId(data.class_id); // Guardamos el nuevo classId cuando se agende la hora
-      fetchScheduledUsers(); // Actualizar usuarios agendados
+      toast.success("¡La clase ha sido cancelada correctamente y tu cupo ha sido devuleto!");
+      setReservation(false);
+      fetchScheduledUsers();
+      setClassId(null);
+    }
+  };
+  
+
+  //Fuincion para agendar hora
+  const scheduleHour = async () => {
+    try {
+      const resultado = await fetch(
+        `${import.meta.env.VITE_API_URL}/scheduleHour`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            gym_schedule_id: gym_schedule_id,
+            client_id: userId,
+            suscription_id: userData.suscription_id,
+          }),
+        }
+      );
+  
+      if (resultado.ok) {
+        const data = await resultado.json();
+        setReservation(true);
+        setClassId(data.class_id);
+        fetchScheduledUsers();
+        toast.success("¡Se reservó la clase correctamente!");
+      } else {
+        const errorData = await resultado.json();
+        toast.info(errorData.error || "Error desconocido");
+      }
+    } catch (error) {
+      toast.error("Error en la solicitud: " + error.message);
     }
   };
 
   useEffect(() => {
     if (isModalOpen) {
-      // Desactivamos el scroll en el momento que se abre el modal
       document.body.style.overflow = "hidden";
     } else {
-      // Volver el scroll a la normalidad al cerrar el modal
       document.body.style.overflow = "auto";
     }
   }, [isModalOpen, gym_schedule_id]);
