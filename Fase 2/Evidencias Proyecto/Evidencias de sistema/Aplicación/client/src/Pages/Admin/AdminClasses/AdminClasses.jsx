@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import CreateGymHourModal from "../../../Components/CreateGymHourModal";
@@ -9,28 +8,21 @@ import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useUser } from "../../../Components/API/UserContext";
 
-
 const AdminClasses = () => {
   const { userData } = useUser();
   const [scheduleInfo, setScheduleInfo] = useState([]);
-
   const [dayModal, setDayModal] = useState();
   const [date, setDate] = useState(new Date());
   const [createModal, setCreateModal] = useState(false);
 
-
-  // Función para obtener las horas del gimnasio para el día seleccionado
   const fetchGymHours = async (date) => {
-
     const formattedDate = date.toISOString().split("T")[0];
-
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/gymHoursDate/${formattedDate}`
       );
-
       const data = await response.json();
-      setScheduleInfo(data); // Guardar los datos en el estado
+      setScheduleInfo(data);
     } catch (error) {
       console.error(error);
     }
@@ -40,8 +32,7 @@ const AdminClasses = () => {
     fetchGymHours(date);
   }, [date]);
 
-
-  const openModalDays = async () => {
+  const openModalDays = () => {
     setDayModal(!dayModal);
   };
 
@@ -53,7 +44,6 @@ const AdminClasses = () => {
     }
   };
 
-
   return (
     <>
       <div className="w-full min-h-[100vh] flex justify-start relative pb-32 flex-col bg-slate-200">
@@ -61,7 +51,6 @@ const AdminClasses = () => {
           <h1>Administrar Clases</h1>
         </div>
         <div className="w-full flex justify-center">
-
           <div className="px-6 w-full">
             <button
               onClick={() => openModalDays()}
@@ -81,16 +70,18 @@ const AdminClasses = () => {
         <div className="px-6">
           {scheduleInfo.length > 0 ? (
             scheduleInfo.map((schedue) => (
-              <GymHourEditCard refreshGymHours={() => fetchGymHours(date)} key={schedue.gym_schedule_id} schedule={schedue} />
+              <GymHourEditCard
+                refreshGymHours={() => fetchGymHours(date)}
+                key={schedue.gym_schedule_id}
+                schedule={schedue}
+              />
             ))
           ) : (
             <div className="w-full flex justify-center text-center pt-10">
-              <h1> No se encuentran clases registradas para este dia</h1>
+              <h1>No se encuentran clases registradas para este día</h1>
             </div>
           )}
-
         </div>
-
         {dayModal ? (
           <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
             <div className="bg-white p-3 rounded-lg">
@@ -110,12 +101,14 @@ const AdminClasses = () => {
             </div>
           </div>
         ) : null}
-
         {createModal ? (
-          <CreateGymHourModal storedUser={userData.id} setCreateModal={setCreateModal} refreshGymHours={() => fetchGymHours(date)} />
+          <CreateGymHourModal
+            storedUser={userData.id}
+            setCreateModal={setCreateModal}
+            refreshGymHours={() => fetchGymHours(date)}
+          />
         ) : null}
       </div>
-
       <NavBarAdmin />
     </>
   );

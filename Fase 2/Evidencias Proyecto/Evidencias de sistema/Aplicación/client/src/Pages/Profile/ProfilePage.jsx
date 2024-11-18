@@ -1,11 +1,13 @@
-import React from "react";
+import CreateIcon from '@mui/icons-material/Create';
+import axios from "axios";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import userIcon from "../../assets/img/userIcon.webp";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Logout } from "../../Components/API/sesion";
 import { useUser } from "../../Components/API/UserContext";
+import { ProfileImage } from "../../Components/ProfileImage";
 import { UserNavBar } from "../../Components/UserNavBar";
-import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const { userData } = useUser();
@@ -15,7 +17,43 @@ const ProfilePage = () => {
     formState: { errors },
     setError,
   } = useForm();
+
+
+  const handleChangeFile = async (e) => {
+    e.preventDefault();
+
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) {
+      alert("Por favor, seleccione un archivo");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("profile_picture", selectedFile);
+
+    try {
+
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/uploadProfilePicture/${userData.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      toast.success("Imagen subida exitosamente");
+      setRefresh(!refresh);
+    } catch (error) {
+      console.error(error);
+      toast.error("Hubo un problema al subir la imagen");
+    }
+  };
+
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
 
   const LogoutSesion = () => {
     Logout();
@@ -45,19 +83,29 @@ const ProfilePage = () => {
           <h1 className="text-4xl font-bold text-black text-center mb-6">
             Mi Perfil
           </h1>
-          <div className="flex flex-col items-center mb-6 relative">
-            <img
-              src={userIcon}
-              alt="Foto de perfil"
-              className="w-24 h-24 rounded-full object-cover ring-4 ring-black"
-            />
-            <button
-              type="button"
-              className="absolute top-0 right-0 bg-white p-2 rounded-full shadow-md"
-            >
-              <EditIcon style={{ fontSize: 20, color: "#4c6ef5" }} />
-            </button>
+          <div className="flex flex-col items-center justify-center relative">
+            <div className="flex flex-col items-center justify-center fotoPerfil relative">
+              <div className="rounded-full bg-gray-300 shadow-[24px_24px_72px_#bebebe,-24px_-24px_72px_#ffffff] flex items-center justify-center p-4">
+                <ProfileImage key={refresh} />
+              </div>
+              <div className="absolute bottom-0 right-0">
+                <label
+                  htmlFor="file-input"
+                  className="cursor-pointer bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                >
+                  <CreateIcon />
+                </label>
+                <input
+                  type="file"
+                  id="file-input"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleChangeFile}
+                />
+              </div>
+            </div>
           </div>
+
           <p className="text-gray-900 mt-2 text-lg font-medium text-center">
             {userData.name}
           </p>

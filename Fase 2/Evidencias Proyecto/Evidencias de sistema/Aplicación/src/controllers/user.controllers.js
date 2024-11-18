@@ -129,16 +129,15 @@ const uploadPicture = async (req, res) => {
     const userId = req.params.id;
     let processedImage;
 
-    // Verificar si el archivo es un GIF
     if (req.file.mimetype === 'image/gif') {
-      // Si es un GIF, solo guardarlo tal cual
+      
       processedImage = req.file.buffer;
     } else {
       // Si es una imagen estática, procesarla con sharp
       processedImage = await sharp(req.file.buffer)
         .resize(200, 200) // Redimensionar la imagen
-        .toFormat('jpeg') // Convertir a JPEG
-        .toBuffer(); // Obtener el buffer procesado
+        .toFormat('jpeg') 
+        .toBuffer(); 
     }
 
     // Guardar el archivo (ya sea GIF o imagen procesada)

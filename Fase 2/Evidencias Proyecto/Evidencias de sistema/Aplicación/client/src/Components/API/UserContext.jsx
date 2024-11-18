@@ -7,41 +7,56 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState({ id: '', name: '', email: '', role: '' , weight  :'' , height  :''   });
   const [loading, setLoading] = useState(true);
 
-  const fetchAuthData = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setIsAuth(data.isAuth);
-        localStorage.setItem("isAuth", JSON.stringify(data.isAuth));
+ const fetchAuthData = () => {
+  setLoading(true); // Establecer que está cargando al inicio
 
-        if (data.isAuth) {
-          const user = {
-            id: data.userId,
-            name: data.name,
-            email: data.email,
-            role: data.role,
-            weight : data.weight,
-            height : data.height,
-          };
+  fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
+    method: "GET",
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // Verificar si la respuesta contiene isAuth
+      const isAuthenticated = data.isAuth || false;
+      setIsAuth(isAuthenticated);
+      localStorage.setItem("isAuth", JSON.stringify(isAuthenticated));
+
+      if (isAuthenticated) {
+        // Si está autenticado, solo asignar datos válidos
+        const user = {
+          id: data.userId ,
+          name: data.name ,
+          email: data.email ,
+          role: data.role ,
+          remaining_classes: data.remaining_classes ,
+          plan_id: data.plan_id ,
+          weight: data.weight ,
+          height: data.height ,
+          suscription_id: data.suscription_id
+
+        };
+
+        if (user.id !== null || user.name !== null || user.email !== null) {
           setUserData(user);
           localStorage.setItem("userData", JSON.stringify(user));
         } else {
-          setUserData({ id: '', name: '', email: '', role: '' });
+          setUserData({ id: null, name: null, email: null, role: null });
           localStorage.removeItem("userData");
         }
-      })
-      .catch((err) => {
-        console.error("Error fetching /checkauth:", err);
-        setIsAuth(false);
-        setUserData({ id: '', name: '', email: '', role: '' });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+      } else {
+        setUserData({ id: null, name: null, email: null, role: null });
+        localStorage.removeItem("userData");
+      }
+    })
+    .catch((err) => {
+      console.error("Error fetching /checkauth:", err);
+      setIsAuth(false);
+      setUserData({ id: null, name: null, email: null, role: null });
+    })
+    .finally(() => {
+      setLoading(false); 
+    });
+};
 
   useEffect(() => {
     setLoading(true);

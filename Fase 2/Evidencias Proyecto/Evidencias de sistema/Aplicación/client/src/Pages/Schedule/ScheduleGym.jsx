@@ -1,34 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserNavBar } from "../../Components/UserNavBar";
-import {GymHourCard} from "../../Components/GymHourCard";
+import { GymHourCard } from "../../Components/GymHourCard";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import "./ScheduleStyles.css";
 import "./SelectDayButton.css";
-import { useEffect } from "react";
 
-const ScheduleGym = ({userId}) => {
+const ScheduleGym = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scheduleInfo , setScheduleInfo] = useState("")
-  //Dias de la semana
-  const days = ["L", "M", "X", "J", "V", "S", "D"];
-
-
+  const [scheduleInfo, setScheduleInfo] = useState("");
+  const [currentDay, setCurrentDay] = useState("");
+  const days = ["D", "L", "M", "X", "J", "V", "S"];
+  const todayIndex = new Date().getDay();
+  const today = days[todayIndex];
 
   const toggleList = () => {
     setIsOpen(!isOpen);
   };
 
-useEffect(() => {
-  fetchGymHours("L")
-},[])
+  useEffect(() => {
+    setCurrentDay(today);
+    fetchGymHours(today);
+  }, []);
 
-useEffect(() => {
-  console.log(scheduleInfo)
-},[scheduleInfo])
-
-
-  // Función para obtener las horas del gimnasio para el día seleccionado
   const fetchGymHours = async (day) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`);
@@ -64,9 +58,11 @@ useEffect(() => {
                       key={index}
                       onClick={() => {
                         fetchGymHours(day); // Llamar a la función al hacer clic
+                        setCurrentDay(day); // Actualizar el día actual
                         setIsOpen(false); // Cerrar la lista al seleccionar
                       }}
-                      className="py-2 px-4 bg-blue-100 hover:bg-blue-200 cursor-pointer"
+                      className={`py-2 px-4 cursor-pointer ${currentDay === day ? "bg-blue-300" : "bg-blue-100 hover:bg-blue-200"
+                        }`}
                     >
                       {day}
                     </div>
@@ -77,18 +73,20 @@ useEffect(() => {
           </div>
         </div>
         <div className="w-full mb-32 px-6 z-10 h-full">
-            <div className=" w-full h-full flex flex-col ">
+          <div className="w-full h-full flex flex-col">
             {scheduleInfo.length > 0 ? (
               scheduleInfo.map((hour) => (
                 <GymHourCard key={hour.gym_schedule_id} schedule={hour} />
               ))
             ) : (
               <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
-                <HelpOutlineIcon sx={{fill : "#f1c21b" , width : "40px" , height : "40px"}}/>
-                <p className="font-semibold text-gray-500">No se encuentran horas registradas para este dia</p>
+                <HelpOutlineIcon sx={{ fill: "#f1c21b", width: "40px", height: "40px" }} />
+                <p className="font-semibold text-gray-500">
+                  No se encuentran horas registradas para este día
+                </p>
               </div>
             )}
-            </div>
+          </div>
         </div>
       </section>
       <UserNavBar />
