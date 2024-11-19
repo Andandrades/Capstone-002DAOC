@@ -3,9 +3,9 @@ import { useUser } from '../Components/API/UserContext';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
 
-export const ProfileImage = () => {
+export const ProfileImage = ({width , height}) => {
 
-    const {userData} = useUser();
+  const {userData} = useUser();
 
 
   const [imageUrl, setImageUrl] = useState(null);
@@ -35,12 +35,12 @@ export const ProfileImage = () => {
           className=" rounded-full"
           src={imageUrl}
           alt="Profile"
-          style={{ width: "150px", height: "150px" }}
+          style={{ width: width, height: height }}
         />
       ) : (
         <AccountCircleIcon
           className="text-gray-400"
-          sx={{ width: "140px", height: "140px" }}
+          sx={{ width: width, height: height }}
         />
       )}
     </>

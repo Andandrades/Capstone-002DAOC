@@ -5,8 +5,10 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import TodayIcon from '@mui/icons-material/Today';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
-import HiveIcon from '@mui/icons-material/Hive';
+//import HiveIcon from '@mui/icons-material/Hive';
+import RunCircleIcon from '@mui/icons-material/RunCircle';
 import './css/ProfileNavBar.css';
+
 
 export const NavBarAdmin = () => {
   const navigate = useNavigate();
@@ -16,64 +18,62 @@ export const NavBarAdmin = () => {
   };
 
   return (
-    <div className="navbar z-10 fixed bottom-0">
-      <Disclosure as="nav">
-        <div>
-          <div className="relative flex h-16 items-center">
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin/Clases')}
-                className="relative rounded-full text-gray-400 hover:text-white"
-              >
-                <TodayIcon />
-                <h3>Clases</h3>
-              </button>
-            </div>
+    <div className="navbar z-10 fixed  shadow-inner">
+     <Disclosure as="nav">
+        <div className="relative flex h-16 items-center justify-around">
+          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+            <button
+              type="button"
+              onClick={() => goto('Admin/Clases')}
+              className="flex flex-col items-center gap-1"
+            >
+              <TodayIcon />
+              <h3 className="text-xs">Clases</h3>
+            </button>
+          </div>
 
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin/Usuarios')} 
-                className="relative rounded-full text-gray-400 hover:text-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <PersonIcon />
-                <h3>Usuarios</h3>
-              </button>
-            </div>
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin/Planes')} 
-                className="relative rounded-full text-gray-400 hover:text-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <FitnessCenterIcon />
-                <h3>Planes</h3>
-              </button>
-            </div>
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin')} 
-                className="relative rounded-full text-gray-400 hover:text-white" >
-                <FavoriteIcon />
-                <h3>Consultas</h3>
-              </button>
-            </div>
+          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+            <button
+              type="button"
+              onClick={() => goto('Admin/Usuarios')}
+              className="flex flex-col items-center gap-1"
+            >
+              <PersonIcon />
+              <h3 className="text-xs">Usuarios</h3>
+            </button>
+          </div>
 
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin/PaginaInicio')} 
-                className="relative rounded-full text-gray-400 hover:text-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <HiveIcon />
-                <h3>Pagina</h3>
-              </button>
-            </div>
+          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+            <button
+              type="button"
+              onClick={() => goto('Admin/Planes')}
+              className="flex flex-col items-center gap-1"
+            >
+              <FitnessCenterIcon />
+              <h3 className="text-xs">Planes</h3>
+            </button>
+          </div>
+
+          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+            <button
+              type="button"
+              onClick={() => goto('Admin')}
+              className="flex flex-col items-center gap-1"
+            >
+              <FavoriteIcon />
+              <h3 className="text-xs">Consultas</h3>
+            </button>
+          </div>
+
+          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+            <button
+              type="button"
+              onClick={() => goto('Admin/Ejercicios')}
+              className="flex flex-col items-center gap-1"
+            >
+              <RunCircleIcon />
+              <h3 className="text-xs">Ejercicios</h3>
+            </button>
           </div>
         </div>
       </Disclosure>

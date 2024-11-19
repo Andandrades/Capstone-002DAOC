@@ -79,14 +79,15 @@ export const addNutri = async (payload) => {
     }
 };
 
-//Manejo de sesiónes
 
-export const Register = async (payload) => {
+//agenta nutricionista 
+
+export const GetAvalibleNutriSchedule = async () => {
     try {
-        const response = await axios.post(`${URL}/register`, payload);
-        return response.data 
+        const response = await axios.get(`${URL}/GetAvalibleNutriSchedule`);
+        return response.data;
     } catch (error) {
-        return error.data
+        console.error("Error al obtener las consultas nutricionales:", error);
+        throw error;
     }
 };
-

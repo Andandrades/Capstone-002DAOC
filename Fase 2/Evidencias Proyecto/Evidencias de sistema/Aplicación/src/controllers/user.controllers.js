@@ -30,6 +30,22 @@ const getUser = async (req, res) => {
   }
 };
 
+//Traer datos no sensibles del usuario
+const getUserData = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query("SELECT id,name ,email,height,weight,register_date FROM users WHERE id=$1", [id]);
+
+    if (result.rowCount === 0) {
+      return res.json({ message: "Usuario no encontrado" });
+    }
+    return res.json(result.rows);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Actualizar usuarios
 const updateUser = async (req, res) => {
   const { name, weight, height, email } = req.body;
@@ -185,5 +201,6 @@ module.exports = {
   getUsersByRole,
   createUser,
   uploadPicture,
-  getProfilePicture
+  getProfilePicture,
+  getUserData
 };

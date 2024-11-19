@@ -91,7 +91,7 @@ const NutriProfile = ({ userInfo }) => {
       <div className="min-h-full flex w-full justify-start flex-col px-6 pt-32 pb-10 ">
         <div className="w-full pt-20 pb-10 flex px-6 gap-6 bg-slate-100 rounded-lg relative flex-col h-full justify-start items-center">
           <div className="absolute top-[-10%] left-[50%] transform -translate-x-1/2 fotoPerfil">
-            <ProfileImage key={refresh} />
+            <ProfileImage key={refresh} width={'150px'} height={'150px'} />
             <div className="absolute bottom-0 right-0">
               <label
                 htmlFor="file-input"

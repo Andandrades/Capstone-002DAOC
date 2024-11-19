@@ -8,7 +8,8 @@ const {
   getUsersByRole,
   createUser,
   uploadPicture,
-  getProfilePicture
+  getProfilePicture,
+  getUserData
 } = require("../controllers/user.controllers");
 
 const router = Router();
@@ -19,6 +20,8 @@ const upload = multer({ storage: storage });
 
 router.get("/users", getAllUsers);
 router.get("/users/:id", getUser);
+
+router.get("/userData/:id", getUserData);
 router.put("/users/:id", updateUser);
 router.delete("/users/:id", deleteUser);
 router.post("/register", createUser);
