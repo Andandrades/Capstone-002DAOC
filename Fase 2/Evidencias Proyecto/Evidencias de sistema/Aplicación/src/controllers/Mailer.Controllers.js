@@ -6,11 +6,11 @@ const app = express();
 app.use(bodyParser.json());
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.mailtrap.io',
-    port: 587,
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
     auth: {
-      user: process.env.MAILTRAP_USER,
-      pass: process.env.MAILTRAP_PASSWORD,
+      user: '1c468d5f9aff6c',
+      pass: '0afa43917fd786',
     },
   });
 
