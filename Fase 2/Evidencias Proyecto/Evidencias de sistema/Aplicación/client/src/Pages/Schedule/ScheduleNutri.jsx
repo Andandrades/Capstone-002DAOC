@@ -66,7 +66,7 @@ const ScheduleNutri = ({ userId }) => {
 
   return (
     <section className="w-full flex justify-start relative flex-col bgImageNutri">
-      <div className="z-20 text-white">
+      <div className="z-10 mb-40  text-white">
         <div className="w-full flex justify-center mt-12 text-center">
           <h1 className="text-3xl font-bold">Nutricionista</h1>
         </div>
