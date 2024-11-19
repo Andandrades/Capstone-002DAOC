@@ -1,20 +1,16 @@
-import {useState, useEffect} from "react";
-import { useUser } from '../Components/API/UserContext';  
+import { useState, useEffect } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
 
-export const ProfileImage = ({width , height}) => {
-
-  const {userData} = useUser();
-
-
+//Componente para cargar la imagen de perfil de usuarios los cuales no son el usuario logeado
+const UsersProfilePicture = ({ userId, width, height }) => {
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     const fetchProfilePicture = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/getProfilePicture/${userData.id}`,
+          `${import.meta.env.VITE_API_URL}/getProfilePicture/${userId}`,
           { responseType: "blob" } // Asegúrate de que la respuesta es un blob (imagen)
         );
         // Crear un URL a partir del Blob
@@ -26,13 +22,16 @@ export const ProfileImage = ({width , height}) => {
       }
     };
 
-    fetchProfilePicture();
-  }, [userData]);
+    if (userId) {
+      fetchProfilePicture();
+    }
+  }, [userId]);
+
   return (
     <>
       {imageUrl ? (
         <img
-          className=" rounded-full"
+          className="rounded-full"
           src={imageUrl}
           alt="Profile"
           style={{ width: width, height: height }}
@@ -46,3 +45,5 @@ export const ProfileImage = ({width , height}) => {
     </>
   );
 };
+
+export default UsersProfilePicture;

@@ -16,7 +16,8 @@ const AdminClasses = () => {
   const [createModal, setCreateModal] = useState(false);
 
   const fetchGymHours = async (date) => {
-    const formattedDate = date.toISOString().split("T")[0];
+    const formattedDate = date.toLocaleDateString('en-CA');
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/gymHoursDate/${formattedDate}`

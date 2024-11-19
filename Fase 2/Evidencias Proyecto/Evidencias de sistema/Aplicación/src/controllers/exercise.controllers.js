@@ -22,6 +22,29 @@ const getExercise = async (req, res) => {
   }
 };
 
+const getExerciseFromHistory = async (req,res) =>{
+  const {id} = req.params;
+
+  try {
+
+    const result = await pool.query(`
+      SELECT * 
+      FROM exercises
+      WHERE history_id = $1
+    `, [id]);
+
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'No se encontraron ejercicios en esta rutina' });
+    }
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error al obtener los ejercicios:', error);
+    res.status(500).json({ error: 'Error al obtener los ejercicios' });
+  }
+}
+
 
 
 const createExercise = async (req, res) => {
@@ -78,4 +101,5 @@ module.exports = {
   createExercise,
   updateExercise,
   deleteExercise,
+  getExerciseFromHistory
 };
