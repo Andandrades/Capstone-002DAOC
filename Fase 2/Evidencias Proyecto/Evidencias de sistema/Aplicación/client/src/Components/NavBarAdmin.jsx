@@ -64,18 +64,6 @@ export const NavBarAdmin = () => {
                 <h3>Consultas</h3>
               </button>
             </div>
-
-            <div className="ButtonNavBar">
-              <button
-                type="button"
-                onClick={() => goto('Admin/PaginaInicio')} 
-                className="relative rounded-full text-gray-400 hover:text-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <HiveIcon />
-                <h3>Pagina</h3>
-              </button>
-            </div>
             <div className="ButtonNavBar">
               <button
                 type="button"
