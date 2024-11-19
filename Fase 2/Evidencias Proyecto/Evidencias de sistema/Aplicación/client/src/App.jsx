@@ -30,7 +30,7 @@ const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
 
-  const permisosAdmin = [1, 2, 3, 4];
+  const permisosAdmin = [2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
 
   if (loading) {
