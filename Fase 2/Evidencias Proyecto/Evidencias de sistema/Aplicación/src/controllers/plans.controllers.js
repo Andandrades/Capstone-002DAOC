@@ -3,7 +3,7 @@ const pool = require('../db'); // conexión a PostgreSQL
 // Obtener los planes
 const getPlans = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM plans');
+    const result = await pool.query('SELECT * FROM plans order by plan_id ASC');
     res.json(result.rows);
   } catch (error) {
     console.error('Error al obtener los planes:', error);

@@ -22,6 +22,23 @@ export const iniciarTransaccion = async (props) => {
     }
 };
 
+export const IniciarConsulta = async (props) => {
+    const { amount, name, userId, nutriScheduleId } = props;
+    try {
+        const response = await axios.post(`${URL}/iniciar-consulta`, {
+            amount: amount, 
+            sessionId: "mi_sesion",
+            buyOrder: name,
+            user_id:userId,
+            nutriScheduleId: nutriScheduleId
+        });
+
+        window.location.href = response.data.url + "?token_ws=" + response.data.token;
+    } catch (error) {
+        console.error("Error al iniciar la transacción:", error);
+    }
+};
+
 export const ConfirmacionPago = () => {
     const location = useLocation();
     const tokenWs = new URLSearchParams(location.search).get("token_ws");
@@ -37,7 +54,6 @@ export const ConfirmacionPago = () => {
                 console.error("Error al confirmar el pago:", error);
             }
         };
-
         confirmarPago();
     }, [tokenWs]);
 

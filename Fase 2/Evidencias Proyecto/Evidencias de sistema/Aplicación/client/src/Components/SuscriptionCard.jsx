@@ -42,8 +42,13 @@ export const SuscriptionsCard = ({ suscriptionData }) => {
                     )}
                 </div>
             ) : (
-                <div className="flex justify-center items-center bg-white px-4 py-6 rounded-lg text-[20px] border border-gray-300">
+                <div className="flex justify-center items-center bg-white px-4 py-6 rounded-lg text-[20px] border border-gray-300 flex-col">
                     <p>No hay suscripciones activas.</p>
+                    <button className="w-full bg-button-primary mt-5 py-2 rounded-lg"
+                        onClick={Navigate}
+                    >
+                        <p className="text-white">Renovar plan</p>
+                    </button>
                 </div>
             )}
         </div>

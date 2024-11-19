@@ -1,39 +1,30 @@
 const { Router } = require("express");
 
-const {
-    createNutriHour,
-    getAllNutriHour,
-    getNutriHour,
-    updateNutriHour,
-    deleteNutriHour,
-    getHoursByDate,
-    scheduleHour,
-    cancelHour,
-    createMultiHour,
-    dragUpdate
-} = require("../controllers/nutri_schedule.controllers");
+const { createNutriHour, getAllNutriHour, getNutriHour, updateNutriHour, deleteNutriHour, getHoursByDate, scheduleHour, cancelHour, createMultiHour, dragUpdate, getAvalibleSchedule } = require("../controllers/nutri_schedule.controllers");
 
 
 const router = Router();
 
-router.get("/nutriSchedule",getAllNutriHour);
+router.get("/nutriSchedule", getAllNutriHour);
 
-router.get("/nutriSchedule/:id",getNutriHour);
+router.get("/GetAvalibleNutriSchedule", getAvalibleSchedule);
 
-router.get("/nutriScheduleDate/:date",getHoursByDate);
+router.get("/nutriSchedule/:id", getNutriHour);
 
-router.post("/nutriSchedule/bulk" ,createMultiHour)
+router.get("/nutriScheduleDate/:date", getHoursByDate);
 
-router.post("/nutriSchedule",createNutriHour);
+router.post("/nutriSchedule/bulk", createMultiHour)
 
-router.put("/nutriSchedule/:id",updateNutriHour);
+router.post("/nutriSchedule", createNutriHour);
 
-router.put("/nutriScheduleDrag/update",dragUpdate);
+router.put("/nutriSchedule/:id", updateNutriHour);
 
-router.delete("/nutriSchedule/:id",deleteNutriHour);
+router.put("/nutriScheduleDrag/update", dragUpdate);
+
+router.delete("/nutriSchedule/:id", deleteNutriHour);
 
 //Endpoints Cliente
-router.patch("/nutriScheduleClient/:id",scheduleHour);
-router.patch("/nutriScheduleClientcancel/:id",cancelHour);
+router.patch("/nutriScheduleClient/:id", scheduleHour);
+router.patch("/nutriScheduleClientcancel/:id", cancelHour);
 
 module.exports = router;
