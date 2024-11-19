@@ -127,15 +127,19 @@ const scheduleHour = async (req, res) => {
     const remainingClases = remainingClasesResult.rows[0].remaining_classes;
 
     if (remainingClases < 1) {
-      return res.status(400).json({ error: "No hay clases restantes para tomar." });
+      return res
+        .status(400)
+        .json({ error: "No hay clases restantes para tomar." });
     }
 
     const existingRegistration = await pool.query(
       "SELECT * FROM schedule_classes WHERE gym_schedule_id = $1 AND client_id = $2",
       [gym_schedule_id, client_id]
-    );   
+    );
     if (existingRegistration.rows.length > 0) {
-      return res.status(400).json({ error: "Ya tienes un registro para esta hora." });
+      return res
+        .status(400)
+        .json({ error: "Ya tienes un registro para esta hora." });
     }
 
     const gymCap = await pool.query(
@@ -170,88 +174,100 @@ const scheduleHour = async (req, res) => {
       [suscription_id]
     );
 
+    await pool.query(
+      "INSERT INTO exercise_history (created_date, user_id, class_id) VALUES ($1, $2, $3)",
+      [currentDate, client_id, resultado.rows[0].class_id]
+    );
+
     res.status(201).json({ class_id: resultado.rows[0].class_id });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+//Eliminar hora (Endpoint de usuario)
+const deleteHour = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { class_id } = req.params;
+  const { suscription_id } = req.body;
 
-  //Eliminar hora (Endpoint de usuario)
-  const deleteHour = async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    const { class_id } = req.params;
-    const { suscription_id } = req.body;
+  try {
+    const scheduledClass = await pool.query(
+      "SELECT gym_schedule_id , actual_cap FROM schedule_classes WHERE class_id = $1",
+      [class_id]
+    );
 
-    try {
-      const scheduledClass = await pool.query(
-        "SELECT gym_schedule_id , actual_cap FROM schedule_classes WHERE class_id = $1",
-        [class_id]
-      );
-
-      if (scheduledClass.rows.length === 0) {
-        return res.status(404).json({ error: "Asistencia no encontrada" });
-      }
-
-      const { gym_schedule_id, actual_cap } = scheduledClass.rows[0];
-
-      if (actual_cap <= 0) {
-        return res
-          .status(400)
-          .json({ error: "Error: No se puede restar más cupos" });
-      }
-
-      await pool.query("DELETE FROM schedule_classes WHERE class_id = $1", [
-        class_id,
-      ]);
-
-      await pool.query(
-        "UPDATE gym_schedule SET actual_cap = actual_cap - 1 WHERE gym_schedule_id = $1",
-        [gym_schedule_id]
-      );
-
-      await pool.query(
-        "UPDATE suscription SET remaining_classes = remaining_classes + 1 WHERE suscription_id = $1",
-        [suscription_id]
-      );
-
-      res.status(200).json({ message: "Hora eliminada exitosamente" });
-    } catch (error) {
-      res.status(500).json({ error: "Error al eliminar asistencia" });
+    if (scheduledClass.rows.length === 0) {
+      return res.status(404).json({ error: "Asistencia no encontrada" });
     }
-  };
 
-  const getUserClasses = async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    const { id, class_id } = req.params;
+    const { gym_schedule_id, actual_cap } = scheduledClass.rows[0];
 
-    try {
-      const resultado = await pool.query(
-        "SELECT class_id FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id = $2",
-        [id, class_id]
-      );
-
-      if (resultado.rows.length === 0) {
-        return
-      }
-
-      res.json(resultado.rows);
-    } catch (error) {
-      return res.json({ error: error.message });
+    if (actual_cap <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Error: No se puede restar más cupos" });
     }
-  };
+    await pool.query("DELETE FROM exercise_history WHERE class_id = $1", [
+      class_id,
+    ]);
 
-  //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
-  module.exports = {
-    getAll,
-    getbyid,
-    create,
-    update,
-    deletebyid,
-    getHourByGymId,
-    scheduleHour,
-    deleteHour,
-    getUserClasses,
-  };
+    await pool.query("DELETE FROM schedule_classes WHERE class_id = $1", [
+      class_id,
+    ]);
+
+    await pool.query(
+      "UPDATE gym_schedule SET actual_cap = actual_cap - 1 WHERE gym_schedule_id = $1",
+      [gym_schedule_id]
+    );
+
+    await pool.query(
+      "UPDATE suscription SET remaining_classes = remaining_classes + 1 WHERE suscription_id = $1",
+      [suscription_id]
+    );
+
+   
+    
+
+    res.status(200).json({ message: "Hora eliminada exitosamente" });
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).json({ error: "Error al eliminar asistencia" });
+  }
+};
+
+const getUserClasses = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { id, class_id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      "SELECT class_id FROM schedule_classes WHERE client_id = $1 AND gym_schedule_id = $2",
+      [id, class_id]
+    );
+
+    if (resultado.rows.length === 0) {
+      return;
+    }
+
+    res.json(resultado.rows);
+  } catch (error) {
+    return res.json({ error: error.message });
+  }
+};
+
+//Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
+module.exports = {
+  getAll,
+  getbyid,
+  create,
+  update,
+  deletebyid,
+  getHourByGymId,
+  scheduleHour,
+  deleteHour,
+  getUserClasses,
+};

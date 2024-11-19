@@ -6,73 +6,89 @@ const getAll = async (req, res) => {
     const result = await pool.query("SELECT * from exercise_history");
     res.json(result.rows);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(400);
-    res.json("error al consultar!.");  }
+    res.json("error al consultar!.");
+  }
 };
 
 const getbyid = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(`SELECT * from exercise_history where history_id = ${id}`);
+    const result = await pool.query(
+      `SELECT * from exercise_history where history_id = ${id}`
+    );
     res.json(result.rows);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(400);
-    res.json("error al consultar!.");  }
+    res.json("error al consultar!.");
+  }
 };
 
-
 const create = async (req, res) => {
-  const { history_id, created_date, user_id, class_id, exercise_id } = req.body;
+  const { history_id, exercise_name, machine, weight, sets , repetitions , total_reps , notes , image , target , exercise_api_id} = req.body;
   try {
-    const result = await pool.query(`INSERT INTO public.exercise_history (history_id, created_date, user_id, class_id, exercise_id) 
-      VALUES(${history_id}, ${created_date}, ${user_id}, ${class_id}, ${exercise_id});`);
+    const result =
+      await pool.query( `INSERT INTO exercises (history_id, exercise_name, machine, weight, sets, repetitions, total_reps, image, target, notes, exercise_api_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+        [history_id, exercise_name, machine, weight, sets, repetitions, total_reps, image, target, notes, exercise_api_id]);
     res.status(200);
     res.json(" añadido correctamente!.");
-
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(400);
     res.json("error al añadir!.");
   }
 };
 
 const update = async (req, res) => {
-  const { id} =  req.params;
-  const {created_date, user_id, class_id, exercise_id } = req.body;
+  const { id } = req.params;
+  const { created_date, user_id, class_id, exercise_id } = req.body;
   try {
-    const result = await pool.query(`UPDATE public.exercise_history SET created_date=${created_date}, user_id=${user_id}, class_id=${class_id}, exercise_id=${exercise_id} 
+    const result =
+      await pool.query(`UPDATE public.exercise_history SET created_date=${created_date}, user_id=${user_id}, class_id=${class_id}, exercise_id=${exercise_id} 
       WHERE history_id=${id};`);
 
     res.status(200);
     res.json("Actualizado correctamente!.");
-
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(400);
     res.json("error al actualizar!.");
   }
-
-   
 };
-
 
 const deletebyid = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(`DELETE FROM public.exercise_history WHERE history_id=${id};`);
+    const result = await pool.query(
+      `DELETE FROM public.exercise_history WHERE history_id=${id};`
+    );
     res.json(result.rows);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(400);
     res.json("error al eliminar!.");
   }
 };
 
+const getbyClassId = async (req, res) => {
+  const { id } = req.params;
 
+  try {
+    const result = await pool.query(
+      `SELECT * from exercise_history where class_id = ${id}`
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.log(error.message);
+    res.status(400);
+    res.json("error al consultar!.");
+  }
+};
 
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
@@ -81,4 +97,5 @@ module.exports = {
   create,
   update,
   deletebyid,
+  getbyClassId,
 };
