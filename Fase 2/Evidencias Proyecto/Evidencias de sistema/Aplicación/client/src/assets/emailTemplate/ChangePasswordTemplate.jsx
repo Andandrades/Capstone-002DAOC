@@ -22,8 +22,8 @@ const ChangePasswordTemplate = ({ nombre, resetLink }) => {
             textAlign: "center",
           }}
         >
-          <img src="https://via.placeholder.com/80" alt="Logo" style={{ width: "80px", height: "auto", margin:"auto" }} />
-          <h1 style={{ margin: "10px 0", fontSize: "24px" }}>Soldado Gym</h1>
+          <img src="https://cdn.discordapp.com/attachments/1088082112269271123/1308403290144505919/soldadoLogo.png?ex=673dd105&is=673c7f85&hm=3993fadd7ebd66cbc197e5aff4243c49a218281d8235b778584d6967b03ad1ca&" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
+          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
         </div>
 
         {/* Contenido principal */}
@@ -82,3 +82,4 @@ const ChangePasswordTemplate = ({ nombre, resetLink }) => {
 };
 
 export default ChangePasswordTemplate;
+

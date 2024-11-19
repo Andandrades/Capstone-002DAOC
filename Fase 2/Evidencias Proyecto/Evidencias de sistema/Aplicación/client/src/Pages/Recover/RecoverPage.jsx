@@ -4,20 +4,33 @@ import { useNavigate } from 'react-router-dom';
 import login from "../../assets/img/login.webp";
 import { sendEmail } from '../../Components/API/EmailSender';
 import { toast } from "react-toastify";
+import ChangePasswordTemplate from '../../assets/emailTemplate/ChangePasswordTemplate';
+import { renderToStaticMarkup } from "react-dom/server";
 
 const RecoverPage = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ChangePasswordTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
+
   const onSubmit = async (data) => {
+
+    const emailHTML = generateEmailHTML({
+      nombre: "Juan",
+      resetLink: "https://miaplicacion.com/reset-password?token=abc123",
+    });
+
     const payload = {
       data,
       subject: "Recuperar contraseña Soldado",
-      text: "lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor ",
+      html: emailHTML
     };
-    
+
     try {
-      await sendEmail(payload); 
+      await sendEmail(payload);
       toast.success("Se ha enviado un correo para recuperar la contraseña.");
     } catch (error) {
       console.error("Error al enviar el correo:", error);
@@ -38,12 +51,12 @@ const RecoverPage = () => {
             <input
               type="email"
               placeholder="Email"
-              {...register("email", { 
-                required: "El correo es obligatorio.", 
-                pattern: { 
+              {...register("email", {
+                required: "El correo es obligatorio.",
+                pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Por favor, ingresa un correo válido." 
-                } 
+                  message: "Por favor, ingresa un correo válido."
+                }
               })}
               className="w-full p-3 border border-gray-300 rounded-lg"
             />

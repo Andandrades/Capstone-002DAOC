@@ -9,10 +9,10 @@ export const AdminLandingPage = () => {
       </div>
 
       <ChangePasswordTemplate
-        nombre="Juan"
+        nombre="Draken"
         resetLink="https://miaplicacion.com/reset-password?token=abc123"
       />
-            <NavBarAdmin />
+      <NavBarAdmin />
     </>
   )
 }
