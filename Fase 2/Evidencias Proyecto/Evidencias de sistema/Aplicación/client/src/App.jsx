@@ -31,7 +31,7 @@ const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutine
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
 
-  const permisosAdmin = [1, 2, 3, 4];
+  const permisosAdmin = [2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
 
   if (loading) {
