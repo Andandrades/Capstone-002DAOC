@@ -17,13 +17,13 @@ const transporter = nodemailer.createTransport({
 // Ruta para enviar correos
 const sendEmail = async (req, res) => {
 
-  const { to, subject, text } = req.body;
+  const { to, subject, html } = req.body;
 
   const mailOptions = {
     from: '"Tu App" <tu_correo@gmail.com>', 
     to, 
     subject, 
-    text, 
+    html, 
   };
 
   try {

@@ -82,3 +82,4 @@ const ChangePasswordTemplate = ({ nombre, resetLink }) => {
 };
 
 export default ChangePasswordTemplate;
+
