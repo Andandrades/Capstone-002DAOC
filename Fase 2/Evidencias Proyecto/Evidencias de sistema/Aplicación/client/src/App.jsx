@@ -13,6 +13,7 @@ const AdminLandingPage = lazy(() => import('./Pages/Admin/AdminLandingPage/Admin
 const AdminNutri = lazy(() => import('./Pages/Admin/AdminNutriCheck/AdminNutri.Page'));
 const AdminPlans = lazy(() => import('./Pages/Admin/AdminPlans/AdminPlans.Page'));
 const AdminUsersManagement = lazy(() => import('./Pages/Admin/AdminUsersManagement/AdminUsersManagement'));
+const AdminExercisesMain = lazy(() => import('./Pages/Admin/AdminExercises/AdminExercisesMain'));
 const ClassesPage = lazy(() => import('./Pages/Classes/ClassesPage'));
 const LandingPage = lazy(() => import('./Pages/LandingPage/LandingPage'));
 const LoginPage = lazy(() => import('./Pages/Login/LoginPage'));
@@ -25,7 +26,7 @@ const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
 const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
-
+const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutines'));
 
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
@@ -86,9 +87,14 @@ function App() {
 
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />
-            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses userId={userData.id} /></RoleProtectedRoute>} />
+
+            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses  userId={userData.id}/></RoleProtectedRoute>} />
+            <Route path="/Admin/Clases/Rutina/:id" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminRoutines /></RoleProtectedRoute>} />
+
+
             <Route path="/Admin/PaginaInicio" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminLandingPage /></RoleProtectedRoute>} />
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
+            <Route path="/Admin/Ejercicios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminExercisesMain /></RoleProtectedRoute>} />
 
 
             {/* Rutas protegidas para el perfil del usuario */}
