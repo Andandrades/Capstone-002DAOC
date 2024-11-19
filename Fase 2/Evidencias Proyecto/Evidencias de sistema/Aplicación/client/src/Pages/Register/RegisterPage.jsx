@@ -3,7 +3,12 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/img/Logo.png";
 import { Register } from "../../Components/API/sesion";
 import "./RegisterStyle.css";
+import { sendEmail } from "../../Components/API/EmailSender";
 import { toast } from "react-toastify";
+import ConfirmRegisterTemplate from "../../assets/emailTemplate/confirmRegisterTemplate";
+import { renderToStaticMarkup } from "react-dom/server";
+import "./RegisterStyle.css";
+
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -15,6 +20,13 @@ const RegisterPage = () => {
     navigate(`/${url}`);
   };
 
+  // Función para generar el HTML del correo
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ConfirmRegisterTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
+
+  // Función para manejar el registro
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -31,22 +43,45 @@ const RegisterPage = () => {
     };
 
     Register(payload)
-      .then(response => {
+      .then(async (response) => {
         console.log("response", response);
         toast.success(`Usuario registrado correctamente: ${response.message}`);
+
+        // Generar el contenido del correo
+        const emailHTML = generateEmailHTML({
+          nombre: "hola",
+          email: "@gmail.cl" ,
+        });
+
+        // Configuración del correo
+        const emailPayload = {
+          data: { email },
+          subject: "¡Bienvenido a Soldado Gym!",
+          html: emailHTML,
+        };
+
+        try {
+          // Enviar el correo de confirmación
+          await sendEmail(emailPayload);
+          toast.success("Correo de confirmación enviado.");
+        } catch (error) {
+          console.error("Error al enviar el correo de confirmación:", error);
+          toast.error("No se pudo enviar el correo de confirmación.");
+        }
+
+        // Redirigir al login después de 2 segundos
         setTimeout(() => {
           navigate('/login');
         }, 2000);
       })
       .catch(error => {
         console.log("error", error);
-       toast.info(`Error al registrate: ${error.message}`);
+        toast.error(`Error al registrarte: ${error.message}`);
       });
   };
 
   return (
     <div className="register-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-
       <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="logo mb-4">
         <img src={Logo} alt="Logo" className="mx-auto h-24" onClick={() => goto("")} />
@@ -57,7 +92,7 @@ const RegisterPage = () => {
           <label htmlFor="name" className="block text-gray-700 mb-2">Nombre de usuario</label>
           <input
             type="text"
-            id="Username"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -102,9 +137,12 @@ const RegisterPage = () => {
           />
         </div>
 
-        <button type="submit" className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4">Registrarse</button>
-        <button type="button" className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100" onClick={() => navigate('/login')}>Volver</button>
-
+        <button type="submit" className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200 btn-primary">
+          Registrarse
+        </button>
+        <button type="button" className="w-full mt-4 text-indigo-500 py-2 hover:underline" onClick={() => navigate('/login')}>
+          Volver
+        </button>
       </form>
     </div>
   );

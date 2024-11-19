@@ -5,6 +5,9 @@ import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useUser } from "./API/UserContext";
 import { toast } from "react-toastify";
+import ClassConfirmedTemplate from "../assets/emailTemplate/classconfirmedTemplate";
+import { renderToStaticMarkup } from "react-dom/server";
+import { sendEmail } from './API/EmailSender';
 
 export const GymHourCard = ({ schedule }) => {
   const {
@@ -27,29 +30,24 @@ export const GymHourCard = ({ schedule }) => {
     setIsModalOpen(!isModalOpen);
   };
 
-
-
   useEffect(() => {
-    setUserId(userData.id);
-    if (userId) {
+    if (userData && userData.id) {
+      setUserId(userData.id);
       searchReservation();
     }
-  }, [userId]);
+  }, [userData]);
 
   const searchReservation = async () => {
     try {
       const respuesta = await fetch(
-        `${import.meta.env.VITE_API_URL
-        }/scheduleHour/${userId}/${gym_schedule_id}`
+        `${import.meta.env.VITE_API_URL}/scheduleHour/${userId}/${gym_schedule_id}`
       );
       if (respuesta.ok) {
         const data = await respuesta.json();
         setReservation(true);
         setClassId(data[0].class_id);
-        //console.log(respuesta);
       } else {
         setReservation(false);
-        //console.log(respuesta);
       }
     } catch (error) {
       console.log(error);
@@ -119,7 +117,7 @@ export const GymHourCard = ({ schedule }) => {
         }),
       }
     );
-  
+
     if (resultado.ok) {
       toast.success("¡La clase ha sido cancelada correctamente y tu cupo ha sido devuleto!");
       setReservation(false);
@@ -127,9 +125,8 @@ export const GymHourCard = ({ schedule }) => {
       setClassId(null);
     }
   };
-  
 
-  //Fuincion para agendar hora
+  //Función para agendar hora
   const scheduleHour = async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -148,13 +145,33 @@ export const GymHourCard = ({ schedule }) => {
           }),
         }
       );
-  
+
       if (resultado.ok) {
         const data = await resultado.json();
         setReservation(true);
         setClassId(data.class_id);
         fetchScheduledUsers();
         toast.success("¡Se reservó la clase correctamente!");
+
+        // Enviar correo de confirmación
+        if (userData && userData.email) {
+          const emailHTML = generateEmailHTML({
+            nombre: userData.name,
+            fecha: schedule_date,
+            hora: start_hour,
+          });
+
+          const emailPayload = {
+            to: userData.email,
+            subject: "Confirmación de Clase Soldado",
+            html: emailHTML
+          };
+
+          await sendEmail(emailPayload);
+          toast.success("Se ha enviado un correo de confirmación de clase.");
+        } else {
+          toast.error("No se pudo enviar el correo de confirmación. El correo del usuario no está disponible.");
+        }
       } else {
         const errorData = await resultado.json();
         toast.info(errorData.error || "Error desconocido");
@@ -162,6 +179,11 @@ export const GymHourCard = ({ schedule }) => {
     } catch (error) {
       toast.error("Error en la solicitud: " + error.message);
     }
+  };
+
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ClassConfirmedTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
   };
 
   useEffect(() => {
