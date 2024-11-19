@@ -30,12 +30,14 @@ const Menu = () => {
     return (
         <>
             <section className="w-full flex justify-start py-10 flex-col px-4 backgroundPrimary h-[100vh] ">
-                <div className="w-full flex justify-center items-center">
-                    <h1 className="text-2xl font-bold  mb-10">Bienvenido {userData.name}</h1>
+                <div className="w-full flex justify-center items-center flex-col ">
+                    <h1 className="text-2xl font-bold ">Bienvenido </h1>
+                    <h2 className="text-2xl font-bold  mb-10">{userData.name}</h2>
+
                 </div>
                 <h1 className="text-2xl font-semibold text-gray-700 mb-5">Tu Plan</h1>
-                <SuscriptionsCard 
-                suscriptionData={suscriptionData} />
+                <SuscriptionsCard
+                    suscriptionData={suscriptionData} />
                 <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">Siguiente Clase</h1>
                 <NextClass />
 

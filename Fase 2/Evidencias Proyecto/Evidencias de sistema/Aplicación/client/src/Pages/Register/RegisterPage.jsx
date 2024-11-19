@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import registrate from "../../assets/img/Registrate.webp";
-import { Register } from "../../Components/API/Endpoints";
+import { Register } from "../../Components/API/sesion";
 import "./RegisterStyle.css";
 import { toast } from "react-toastify";
 const RegisterPage = () => {
@@ -10,7 +10,6 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -43,7 +42,6 @@ const RegisterPage = () => {
 
   return (
     <div className="register-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      {message && <p className="text-center text-red-500 mb-4">{message}</p>}
 
       <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="logo mb-4">
