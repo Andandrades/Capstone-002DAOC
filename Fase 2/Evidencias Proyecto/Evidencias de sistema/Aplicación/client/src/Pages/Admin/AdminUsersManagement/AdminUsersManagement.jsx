@@ -6,7 +6,7 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SportsIcon from '@mui/icons-material/Sports';
 import GroupsIcon from '@mui/icons-material/Groups'; 
 import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Importar el nuevo icono
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import { ObtenerClientes, ObtenerEntrenadores, ObtenerNutricionistas, ObtenerAdministradores, EliminarUsuario, CrearUsuario, ActualizarUsuario } from '../../../Components/API/Users';
 import UserRoleCard from '../../../Components/UserRoleCard';
@@ -37,23 +37,23 @@ const AdminUsersManagement = () => {
   const [editUserEmail, setEditUserEmail] = useState('');
   const [editUserWeight, setEditUserWeight] = useState('');
   const [editUserHeight, setEditUserHeight] = useState('');
-  const [loading, setLoading] = useState(false); // Estado para mostrar el Spinner
+  const [loading, setLoading] = useState(false);
 
-  // Función para obtener usuarios agrupados por rol
-    const fetchUsersByRole = async () => {
-      try {
-        const clientsData = await ObtenerClientes();
-        const trainersData = await ObtenerEntrenadores();
-        const nutritionistsData = await ObtenerNutricionistas();
-        const administratorsData = await ObtenerAdministradores();
-        setClients(clientsData.map(user => user));
-        setNutritionists(nutritionistsData.map(user => user));
-        setTrainers(trainersData.map(user => user));
-        setAdministrators(administratorsData.map(user => user));
-      } catch (error) {
-        console.error('Error al obtener los usuarios por rol:', error);
-      }
-    };
+  const fetchUsersByRole = async () => {
+    try {
+      const clientsData = await ObtenerClientes();
+      const trainersData = await ObtenerEntrenadores();
+      const nutritionistsData = await ObtenerNutricionistas();
+      const administratorsData = await ObtenerAdministradores();
+      setClients(clientsData.map(user => user));
+      setNutritionists(nutritionistsData.map(user => user));
+      setTrainers(trainersData.map(user => user));
+      setAdministrators(administratorsData.map(user => user));
+    } catch (error) {
+      console.error('Error al obtener los usuarios por rol:', error);
+      toast.error('Error al obtener los usuarios, por favor intente de nuevo.');
+    }
+  };
 
   useEffect(() => {
     fetchUsersByRole();
@@ -67,24 +67,28 @@ const AdminUsersManagement = () => {
 
   const confirmDelete = async () => {
     try {
-      await EliminarUsuario(selectedUser.id);
-      if (userType === 'nutritionist') {
-        setNutritionists(nutritionists.filter(nutritionist => nutritionist.id !== selectedUser.id));
-      } else if (userType === 'trainer') {
-        setTrainers(trainers.filter(trainer => trainer.id !== selectedUser.id));
-      } else if (userType === 'administrator') {
-        setAdministrators(administrators.filter(admin => admin.id !== selectedUser.id));
-      } else if (userType === 'client') {
-        setClients(clients.filter(client => client.id !== selectedUser.id));
+      const response = await EliminarUsuario(selectedUser.id);
+      if (response.message === 'Usuario eliminado con éxito') {
+        if (userType === 'nutritionist') {
+          setNutritionists(nutritionists.filter(nutritionist => nutritionist.id !== selectedUser.id));
+        } else if (userType === 'trainer') {
+          setTrainers(trainers.filter(trainer => trainer.id !== selectedUser.id));
+        } else if (userType === 'administrator') {
+          setAdministrators(administrators.filter(admin => admin.id !== selectedUser.id));
+        } else if (userType === 'client') {
+          setClients(clients.filter(client => client.id !== selectedUser.id));
+        }
+        toast.success(response.message);
+      } else {
+        toast.error('Error al eliminar al usuario');
       }
       setShowPopup(false);
-      toast.success('Usuario eliminado con éxito');
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
-      toast.error('El usuario no se ha podido eliminar');
+      toast.error('Error al eliminar al usuario');
     } finally {
-      setLoading(false); // Ocultar el Spinner
-      fetchUsersByRole(); // Recargar la query
+      setLoading(false);
+      fetchUsersByRole();
     }
   };
 
@@ -110,12 +114,17 @@ const AdminUsersManagement = () => {
 
   const confirmAddUser = async () => {
     if (!validateEmail(newUserEmail)) {
-      toast.info('El correo electrónico no es válido');
+      toast.info('El correo electrónico que ingresó no es válido, por favor verifíquelo o ingrese uno nuevo.');
+      return;
+    }
+
+    if (newUserPassword.length < 8) {
+      toast.error('La contraseña debe tener al menos 8 caracteres.');
       return;
     }
 
     if (newUserPassword !== confirmPassword) {
-      toast.error('Las contraseñas no coinciden');
+      toast.error('Las contraseñas no coinciden. Por favor, vuelva a poner las contraseñas');
       return;
     }
 
@@ -127,7 +136,7 @@ const AdminUsersManagement = () => {
     };
     try {
       const response = await CrearUsuario(newUser);
-      const createdUser = response.user; // Asegúrate de extraer el usuario de la respuesta
+      const createdUser = response.user;
       if (userType === 'clientes') {
         setClients([...clients, createdUser]);
       } else if (userType === 'nutricionistas') {
@@ -142,10 +151,10 @@ const AdminUsersManagement = () => {
       setNewUserPassword('');
       setConfirmPassword('');
       setShowAddPopup(false);
-      toast.success('Usuario creado con éxito');
+      toast.success('El usuario se ha creado con éxito');
     } catch (error) {
       console.error('Error al crear el usuario:', error);
-      toast.error('El usuario no se ha podido crear');
+      toast.error('El usuario no se ha podido crear correctamente');
     }
   };
 
@@ -167,26 +176,44 @@ const AdminUsersManagement = () => {
       height: editUserHeight,
       fk_rol_id: selectedUser.fk_rol_id 
     };
+
+    // Verificar si hay cambios
+    const hasChanges = (
+      editUserName !== selectedUser.name ||
+      editUserEmail !== selectedUser.email ||
+      editUserWeight !== selectedUser.weight ||
+      editUserHeight !== selectedUser.height
+    );
+
+    if (!hasChanges) {
+      toast.warn('Por favor, realice cambios antes de guardar.');
+      return;
+    }
+
     try {
       const response = await ActualizarUsuario(selectedUser.id, Payload);
-      const updated = response.user; 
-      if (userType === 'clientes') {
-        setClients(clients.map(client => (client.id === selectedUser.id ? updated : client)));
-      } else if (userType === 'nutricionistas') {
-        setNutritionists(nutritionists.map(nutritionist => (nutritionist.id === selectedUser.id ? updated : nutritionist)));
-      } else if (userType === 'entrenadores') {
-        setTrainers(trainers.map(trainer => (trainer.id === selectedUser.id ? updated : trainer)));
-      } else if (userType === 'administradores') {
-        setAdministrators(administrators.map(admin => (admin.id === selectedUser.id ? updated : admin)));
+      if (response.message === 'Usuario actualizado con éxito') {
+        const updated = response.user; 
+        if (userType === 'clientes') {
+          setClients(clients.map(client => (client.id === selectedUser.id ? updated : client)));
+        } else if (userType === 'nutricionistas') {
+          setNutritionists(nutritionists.map(nutritionist => (nutritionist.id === selectedUser.id ? updated : nutritionist)));
+        } else if (userType === 'entrenadores') {
+          setTrainers(trainers.map(trainer => (trainer.id === selectedUser.id ? updated : trainer)));
+        } else if (userType === 'administradores') {
+          setAdministrators(administrators.map(admin => (admin.id === selectedUser.id ? updated : admin)));
+        }
+        toast.success('El usuario se ha editado con éxito');
+      } else {
+        toast.success('El usuario se ha editado con éxito');
       }
       setShowEditPopup(false);
-      toast.success('Usuario editado con éxito');
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
-      toast.error('El usuario no se ha podido editar correctamente');
+      toast.error('Error al editar al usuario, por favor intente de nuevo.');
     } finally {
-      setLoading(false); // Ocultar el Spinner
-      fetchUsersByRole(); // Recargar la query
+      setLoading(false);
+      fetchUsersByRole();
     }
   };
 
@@ -263,11 +290,11 @@ const AdminUsersManagement = () => {
             <p>¿Estás seguro de que deseas borrar a {selectedUser.name}?</p>
             <div className="flex justify-between mt-4">
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmDelete}>
-                <CheckCircleIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para confirmar */}
+                <CheckCircleIcon style={{ color: 'white' }} />
                 Sí, borrar
               </button>
               <button className="cancel-button" onClick={() => setShowPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para cancelar */}
+                <CancelIcon style={{ color: 'white' }} />
                 Cancelar
               </button>
             </div>
@@ -309,11 +336,11 @@ const AdminUsersManagement = () => {
             />
             <div className="flex justify-between mt-4">
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmAddUser}>
-                <CheckCircleIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para confirmar */}
+                <CheckCircleIcon style={{ color: 'white' }} />
                 Agregar
               </button>
               <button className="cancel-button" onClick={() => setShowAddPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para cancelar */}
+                <CancelIcon style={{ color: 'white' }} />
                 Cancelar
               </button>
             </div>
@@ -355,11 +382,11 @@ const AdminUsersManagement = () => {
             />
             <div className="flex justify-between mt-4">
               <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmEditUser}>
-                <CheckCircleIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para confirmar */}
+                <CheckCircleIcon style={{ color: 'white' }} />
                 Confirmar
               </button>
               <button className="cancel-button" onClick={() => setShowEditPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} /> {/* Utilizar el nuevo icono para cancelar */}
+                <CancelIcon style={{ color: 'white' }} />
                 Cancelar
               </button>
             </div>
