@@ -40,7 +40,6 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
                     className="absolute top-[-15px] right-[0px] m-0 p-0"
                     src={menu}
                     alt=""
-                    fill="blue"
                 />
                 <div>
                     <div className="flex flex-col justify-center items-center font-semibold pt-6">

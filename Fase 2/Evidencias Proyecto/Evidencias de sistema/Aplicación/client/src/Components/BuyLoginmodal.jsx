@@ -21,18 +21,19 @@ export const BuyLoginmodal = (props) => {
                 body: JSON.stringify({ email, password }),
                 credentials: "include",
             });
-
+    
             if (response.status === 200) {
                 fetchAuthData();
-
-                if (!authCheckResponse.ok) {
+    
+                // Cambiar `authCheckResponse` por `response`
+                if (!response.ok) {
                     throw new Error('Error en la verificación de autenticación');
                 }
-
-                const authData = await authCheckResponse.json();
+    
+                const authData = await response.json();
                 setIsAuth(authData.isAuth);
                 localStorage.setItem("isAuth", JSON.stringify(true));
-
+    
             } else {
                 setError("Credenciales inválidas");
             }
@@ -40,6 +41,7 @@ export const BuyLoginmodal = (props) => {
             setError("Error en el servidor");
         }
     };
+    
     const handleBackdropClick = (e) => {
         if (e.target.classList.contains('modal-backdrop')) {
           onClose();

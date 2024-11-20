@@ -58,9 +58,6 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
     notes: "",
     exercise_api_id: "",
   });
-
-  const [loading, setLoading] = useState(false);
-
   // Fetch partes del cuerpo
   useEffect(() => {
     const fetchBodyParts = async () => {
@@ -86,7 +83,6 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
   const fetchExercisesByBodyPart = async () => {
     if (!selectedBodyPart) return;
 
-    setLoading(true);
     try {
       const response = await axios.get(
         `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${selectedBodyPart}`,
@@ -102,9 +98,7 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
       setExercises(response.data);
     } catch (error) {
       console.error("Error fetching exercises:", error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   useEffect(() => {
