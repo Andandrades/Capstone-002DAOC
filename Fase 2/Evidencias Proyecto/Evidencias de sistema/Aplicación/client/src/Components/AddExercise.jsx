@@ -59,7 +59,6 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
     exercise_api_id: "",
   });
 
-  const [loading, setLoading] = useState(false);
 
   // Fetch partes del cuerpo
   useEffect(() => {
@@ -86,7 +85,6 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
   const fetchExercisesByBodyPart = async () => {
     if (!selectedBodyPart) return;
 
-    setLoading(true);
     try {
       const response = await axios.get(
         `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${selectedBodyPart}`,
