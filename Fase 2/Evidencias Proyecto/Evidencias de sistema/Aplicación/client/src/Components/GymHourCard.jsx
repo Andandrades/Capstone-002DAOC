@@ -25,6 +25,10 @@ export const GymHourCard = ({ schedule }) => {
   const [userId, setUserId] = useState("");
   const [classId, setClassId] = useState({});
 
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ClassConfirmedTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
   //Funcion para cambiar el estado del Modal
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -152,7 +156,6 @@ export const GymHourCard = ({ schedule }) => {
         toast.success("¡Se reservó la clase correctamente!");
 
         // Enviar correo de confirmación
-        if (userData && userData.email) {
           const emailHTML = generateEmailHTML({
             nombre: userData.name,
             fecha: schedule_date,
@@ -165,11 +168,9 @@ export const GymHourCard = ({ schedule }) => {
             html: emailHTML
           };
 
-          await sendEmail(emailPayload);
+          sendEmail(emailPayload);
           toast.success("Se ha enviado un correo de confirmación de clase.");
-        } else {
-          toast.error("No se pudo enviar el correo de confirmación. El correo del usuario no está disponible.");
-        }
+
       } else {
         const errorData = await resultado.json();
         toast.info(errorData.error || "Error desconocido");
@@ -177,11 +178,6 @@ export const GymHourCard = ({ schedule }) => {
     } catch (error) {
       toast.error("Error en la solicitud: " + error.message);
     }
-  };
-
-  const generateEmailHTML = (props) => {
-    const emailComponent = <ClassConfirmedTemplate {...props} />;
-    return renderToStaticMarkup(emailComponent);
   };
 
   useEffect(() => {
