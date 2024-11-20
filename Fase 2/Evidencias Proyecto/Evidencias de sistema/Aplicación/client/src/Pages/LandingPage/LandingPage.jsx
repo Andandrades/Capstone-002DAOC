@@ -10,7 +10,7 @@ import Tourist from "../../assets/img/tourist.svg";
 import { obtenerNutri, obtenerPlanes } from "../../Components/API/Endpoints";
 import { FisicoComponent } from "../../Components/FisicoComponent";
 import { FooterComponent } from "../../Components/FooterComponent";
-import { NavBar } from "../../components/NavBar";
+import { NavBar } from "../../Components/NavBar";
 import { NutriCard } from "../../Components/NutriCard";
 import { Plans } from "../../Components/PlansCard";
 import "./LandingPage.css";
@@ -48,7 +48,7 @@ const LandingPage = () => {
       const data = await obtenerNutri();
       setDataNutri(data);
     } catch (err) {
-      setError(err.message);
+      console.log(err.message);
     };
   };
 

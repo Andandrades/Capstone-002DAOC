@@ -18,6 +18,7 @@ export default [
       "react/jsx-uses-react": "off", // Si estás usando React 17 o superior
       "react/react-in-jsx-scope": "off", // No es necesario importar React en archivos JSX con React 17 o superior
       "import/no-unresolved": "error", // Asegúrate de que las rutas de importación sean correctas
+      "no-unused-vars": "off"  // Desactiva la regla globalmente
     },
     settings: {
       react: {

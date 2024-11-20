@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 export const NutriHourCard = ({
   appointments,
@@ -39,8 +38,7 @@ export const NutriHourCard = ({
     if (userId) {
       try {
         const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
+          `${import.meta.env.VITE_API_URL
           }/nutriScheduleClient/${nutri_schedule_id}`,
           {
             method: "PATCH",
@@ -69,8 +67,7 @@ export const NutriHourCard = ({
   const cancelHour = async () => {
     try {
       const res = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
+        `${import.meta.env.VITE_API_URL
         }/nutriScheduleClientcancel/${nutri_schedule_id}`,
         {
           method: "PATCH",
@@ -85,12 +82,14 @@ export const NutriHourCard = ({
 
       if (res.ok) {
         toast.success("Hora Eliminada correctamente");
-        setIsOpenConfirm(false); // Cierra el modal si es exitoso
+        setIsOpenConfirm(false); 
         setIsScheduled(!scheduled);
       } else {
         toast.error("Error al agendar la hora");
       }
-    } catch (error) {}
+    } catch (error) { 
+      toast.error("Error al cancelar la hora");
+    }
   };
 
   return (

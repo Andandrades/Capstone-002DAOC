@@ -82,7 +82,9 @@ const AdminRoutines = () => {
         onSubmit(exerciseData); // Callback para manejar la respuesta del backend
         onClose(); // Cerrar el modal
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
