@@ -55,10 +55,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
 
-  const LogoutSesion = () => {
-    Logout();
-    window.location.reload();
-  };
+
 
   const goToHome = () => {
     navigate("/inicio");
@@ -232,14 +229,6 @@ const ProfilePage = () => {
             </button>
           </div>
         </form>
-
-        {/* Botón de Cerrar sesión */}
-        <button
-          className="mt-6 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white justify-center hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-          onClick={LogoutSesion}
-        >
-          Cerrar sesión
-        </button>
       </section>
       <UserNavBar />
     </div>

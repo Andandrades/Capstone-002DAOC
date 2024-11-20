@@ -174,13 +174,13 @@ const getProfilePicture = async (req,res) =>{
     const result = await pool.query('SELECT profile_picture FROM users WHERE id = $1', [userId]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(200).json({ message: 'Usuario no encontrado' });
     }
 
     const profilePicture = result.rows[0].profile_picture;
 
     if (!profilePicture) {
-      return res.status(404).json({ message: 'No profile picture found' });
+      return res.status(404).json({ message: 'Usuario sin imagen de perfil' });
     }
 
 
