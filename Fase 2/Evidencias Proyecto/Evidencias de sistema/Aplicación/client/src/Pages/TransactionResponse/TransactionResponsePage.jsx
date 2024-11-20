@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-
 import { UserNavBar } from '../../Components/UserNavBar';
 
 const TransactionResponse = () => {
     const location = useLocation();
     const [transactionData, setTransactionData] = useState(null);
     const [error, setError] = useState(null);
-
-    // Obtener token_ws de la URL
     const tokenWs = new URLSearchParams(location.search).get("token");
 
     useEffect(() => {
@@ -22,7 +19,6 @@ const TransactionResponse = () => {
                 setError("No se pudo obtener el estado de la transacción. Intente nuevamente.");
             }
         };
-
         if (tokenWs) {
             fetchTransactionData();
         }
@@ -33,33 +29,53 @@ const TransactionResponse = () => {
     const bgClass = isSuccess ? "bg-green-50" : "bg-red-50";
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
-                <h1 className="text-4xl font-bold text-center text-black mb-6">Estado de la Transacción</h1>
-                {error ? (
-                    <p className="text-red-500 text-center mt-4">{error}</p>
-                ) : ""}
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-xl">
+                <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">Estado de la Transacción</h1>
+                
+                {error && (
+                    <p className="text-red-600 text-center mb-4">{error}</p>
+                )}
+
                 {transactionData ? (
-                    <div className={`mt-6 p-6 rounded-lg shadow-md ${bgClass}`}>
+                    <div className={`p-6 rounded-lg shadow-lg ${bgClass}`}>
                         <h2 className={`text-3xl font-semibold text-center ${statusClass} mb-4`}>
                             {isSuccess ? "Pago Exitoso" : (transactionData?.status || "Estado no disponible")}
                         </h2>
-                        <div className="space-y-4 text-lg">
-                            <p><span className="font-bold">Monto:</span> ${transactionData.amount}</p>
-                            <p><span className="font-bold">Orden de Compra:</span> {transactionData.buy_order}</p>
-                            <p><span className="font-bold">Fecha de Transacción:</span> {transactionData.transaction_date}</p>
+                        <div className="space-y-6 text-lg">
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Monto:</p>
+                                <p>${transactionData.amount}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Orden de Compra:</p>
+                                <p>{transactionData.buy_order}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p className="font-semibold">Fecha de Transacción:</p>
+                                <p>{transactionData.transaction_date}</p>
+                            </div>
 
-                            {transactionData?.status == "Cancelada" ? <> <p>Su compra fue cancelada mejorar la respuesta</p> </> :
+                            {transactionData?.status === "Cancelada" ? (
+                                <div className="text-center mt-4 bg-red-100 p-4 rounded-md">
+                                    <p className="text-red-700 text-lg font-semibold">Su compra ha sido cancelada. Por favor, intente nuevamente o comuníquese con soporte.</p>
+                                </div>
+                            ) : (
                                 <>
-                                    <p><span className="font-bold">Tipo de Pago:</span> {transactionData.payment_type_code}</p>
-                                    <p><span className="font-bold">Código de Autorización:</span> {transactionData.authorization_code}</p>
+                                    <div className="flex justify-between">
+                                        <p className="font-semibold">Tipo de Pago:</p>
+                                        <p>{transactionData.payment_type_code}</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="font-semibold">Código de Autorización:</p>
+                                        <p>{transactionData.authorization_code}</p>
+                                    </div>
                                 </>
-                            }
-
+                            )}
                         </div>
                     </div>
                 ) : (
-                    <p className="text-center mt-4 text-xl text-gray-600">Cargando información de la transacción...</p>
+                    <p className="text-center mt-6 text-xl text-gray-600">Cargando información de la transacción...</p>
                 )}
             </div>
             <UserNavBar />
