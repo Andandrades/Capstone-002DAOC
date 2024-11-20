@@ -5,6 +5,9 @@ import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useUser } from "./API/UserContext";
 import { toast } from "react-toastify";
+import ClassConfirmedTemplate from "../assets/emailTemplate/classconfirmedTemplate";
+import { renderToStaticMarkup } from "react-dom/server";
+import { sendEmail } from "./API/EmailSender";
 
 export const GymHourCard = ({ schedule }) => {
   const {
@@ -22,12 +25,14 @@ export const GymHourCard = ({ schedule }) => {
   const [userId, setUserId] = useState("");
   const [classId, setClassId] = useState({});
 
-  //Funcion para cambiar el estado del Modal
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ClassConfirmedTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-
-
 
   useEffect(() => {
     setUserId(userData.id);
@@ -119,7 +124,7 @@ export const GymHourCard = ({ schedule }) => {
         }),
       }
     );
-  
+
     if (resultado.ok) {
       toast.success("¡La clase ha sido cancelada correctamente y tu cupo ha sido devuleto!");
       setReservation(false);
@@ -127,7 +132,7 @@ export const GymHourCard = ({ schedule }) => {
       setClassId(null);
     }
   };
-  
+
 
   //Fuincion para agendar hora
   const scheduleHour = async () => {
@@ -146,13 +151,30 @@ export const GymHourCard = ({ schedule }) => {
           }),
         }
       );
-  
+
       if (resultado.ok) {
         const data = await resultado.json();
         setReservation(true);
         setClassId(data.class_id);
         fetchScheduledUsers();
         toast.success("¡Se reservó la clase correctamente!");
+
+        const emailHTML = generateEmailHTML({
+          nombre:"Juan", 
+          fecha:"12/12/12", 
+          hora:"12:12"
+        });
+        const payload = {
+          data,
+          subject: "Recuperar contraseña Soldado",
+          html: emailHTML
+        };
+        try {
+          await sendEmail(payload);
+        } catch (error) {
+          console.error("Error al enviar el correo:", error);
+          toast.error("Sucedió algo inesperado.");
+        }
       } else {
         const errorData = await resultado.json();
         toast.info(errorData.error || "Error desconocido");
