@@ -53,7 +53,7 @@ function App() {
         case 4:
           return <Navigate to="/admin" />;
         case 3:
-          return <Navigate to="/schedule" />;
+          return <Navigate to="/admin" />;
         case 2:
           return <Navigate to="/consultasnutricionales" />;
         default:

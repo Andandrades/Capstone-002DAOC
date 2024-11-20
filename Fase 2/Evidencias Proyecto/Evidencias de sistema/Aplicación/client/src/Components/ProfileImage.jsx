@@ -6,8 +6,6 @@ import axios from "axios";
 export const ProfileImage = ({width , height}) => {
 
   const {userData} = useUser();
-
-
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {

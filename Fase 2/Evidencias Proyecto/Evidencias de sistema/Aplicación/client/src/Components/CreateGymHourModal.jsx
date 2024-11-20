@@ -54,16 +54,6 @@ const CreateGymHourModal = ({
     }
   };
 
-  useEffect(() => {
-    if (storedUser.id) {
-      setFormData({
-        ...formData,
-      });
-    } else {
-      console.error("No se encontró userID en localStorage");
-    }
-  }, [setFormData]);
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-y-auto">
       <div className="bg-white pt-3 pb-32 w-[90%] max-h-screen p-3 rounded-lg overflow-y-auto">
