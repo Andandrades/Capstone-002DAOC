@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { addPlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   const [selectedColor, setSelectedColor] = useState('#007bff');
@@ -20,11 +21,11 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
     };
     addPlan(payload)
       .then(response => {
-        console.log('Plan agregado:', response);
+        toast.success('Plan agregado correctamente.');
         fetchPlans(true);
       })
       .catch(error => {
-        console.error('Error al agregar el plan:', error);
+        toast.error('Sucedio algo inesperado al agregar el plan.');
       });
     onClose();
   };

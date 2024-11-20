@@ -16,11 +16,17 @@ export const obtenerPlanes = async () => {
 export const deletePlan = async (id) => {
     try {
         const response = await axios.delete(`${URL}/plans/${id}`);
-        return response.data 
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            throw new Error('No se pudo eliminar el plan');
+        }
     } catch (error) {
         console.error("Error al eliminar el plan:", error);
+        throw error; 
     }
 };
+
 
 export const addPlan = async (payload) => {
     try {

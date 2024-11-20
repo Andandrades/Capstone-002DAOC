@@ -12,11 +12,22 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
-    const DeleteNutri= (id) => {
-        deleteNutri(id).then(response => {
-            fetchPlans(true)
-        })
-    }
+    const DeleteNutri = async (id) => {
+        try {
+            const response = await deleteNutri(id);
+            if (response) {
+                fetchPlans(true);
+                toast.success('La consulta ha sido eliminada exitosamente.');
+            } else {
+                toast.error('Ha ocurrido un error, Intentalo nuevamente.');
+            }
+        } catch (error) {
+            console.error("Error al eliminar el plan:", error);
+            toast.error('La consulta no se puede eliminar, Usuarios han tenien esta consulta en el historial de transaciones...');
+        }
+    };
+
+
     const ModifyPlan = (id) => {
         setIsModalOpen(true);
 

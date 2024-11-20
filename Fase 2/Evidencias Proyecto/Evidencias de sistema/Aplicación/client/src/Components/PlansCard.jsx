@@ -20,7 +20,7 @@ export const Plans = (props) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-96 relative text-white py-7 px-6 rounded-md bg-[#1C1C1C] w-[300px] h-[600px]">
+    <div className="flex flex-col items-center justify-between min-h-96 relative text-white py-7 px-6 rounded-md bg-[#1C1C1C] w-[300px] h-[500px]">
       <div className="absolute top-[-15px] right-[-15px] m-0 p-0">
         <Certificate fill={color} />
       </div>
@@ -31,12 +31,12 @@ export const Plans = (props) => {
             <h2 className="font-bold text-[20px] line-through text-[#FF6666] mt-2">
               ${StringedAmount} CLP
             </h2>
-            <h2 className="font-bold text-[40px] mt-2 text-[#FFAE3A]">
+            <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]">
               ${StringedOfferPrice} CLP
             </h2>
           </>
         ) : (
-          <h2 className="font-bold text-[40px] mt-2 text-[#FFAE3A]">
+          <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]">
             ${StringedAmount} CLP
           </h2>
         )}

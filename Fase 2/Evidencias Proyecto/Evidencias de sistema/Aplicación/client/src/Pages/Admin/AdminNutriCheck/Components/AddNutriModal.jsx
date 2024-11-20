@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { addNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   if (!isOpen) return null;
@@ -16,11 +17,11 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
     try {
       const payload = { ...data };
       const response = await addNutri(payload);
-      console.log('Consulta nutricional agregada:', response);
+      toast.success('Consulta nutricional agregada.');
       fetchPlans(true);
       onClose();
     } catch (error) {
-      console.error('Error al agregar la consulta nutricional:', error);
+      toast.error('Error al agregar la consulta nutricional:');
     }
   };
 
