@@ -1,8 +1,6 @@
 const pool = require("../db");
 const bcrypt = require("bcrypt");
-
 const sharp = require("sharp");
-
 
 // Listar Usuarios
 const getAllUsers = async (req, res) => {
