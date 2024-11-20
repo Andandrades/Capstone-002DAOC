@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "../../assets/img/Logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../Components/API/UserContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const { fetchAuthData } = useUser();
@@ -29,13 +30,13 @@ const LoginPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.message || "Error en el servidor");
+        toast.error("Usuario o contraseña invalidos.");
         return;
       }
 
       fetchAuthData();
     } catch (err) {
-      setError("Error de conexión con el servidor");
+      toast.error("Usuario o contraseña invalidos.");
       console.error(err);
     }
   };
