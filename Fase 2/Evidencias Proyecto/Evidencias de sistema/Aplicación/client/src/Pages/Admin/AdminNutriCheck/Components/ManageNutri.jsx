@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import menu from "../../../../assets/Certificate.svg";
 import { deleteNutri } from '../../../../Components/API/Endpoints';
 import ModifyNutriModal from './ModifyNutriModal';
+import { toast } from 'react-toastify';
 
 export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
 
