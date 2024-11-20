@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('../../../assets/img/Users.webp');
+  background-color:#e2e8f0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

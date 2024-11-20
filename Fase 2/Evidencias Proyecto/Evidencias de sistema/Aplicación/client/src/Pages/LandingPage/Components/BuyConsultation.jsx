@@ -54,7 +54,7 @@ const BuyConsultationModal = ({ onClose, id, name, amount, description }) => {
   };
 
   const renderStep1 = () => (
-    <div className="modal-content text-center">
+    <div className="modal-content text-center ">
       <h2 className="text-xl font-bold mb-4 text-black">Seleccionar Fecha</h2>
       <p className="text-black mb-4">{description}</p>
       <div className="mb-4">
@@ -118,7 +118,7 @@ const BuyConsultationModal = ({ onClose, id, name, amount, description }) => {
         <BuyLoginmodal onClose={onClose} />
       ) : (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop px-8"
           onClick={handleBackdropClick}
         >
           <div

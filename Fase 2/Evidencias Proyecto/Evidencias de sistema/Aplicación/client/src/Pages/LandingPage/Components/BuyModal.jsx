@@ -52,7 +52,7 @@ const BuyModal = (props) => {
   if (userData.remaining_classes > 0) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop px-8"
         onClick={handleBackdropClick}
       >
         <div
@@ -66,7 +66,7 @@ const BuyModal = (props) => {
             &times;
           </button>
 
-          <div className="modal-content text-center">
+          <div className="modal-content text-center ">
             <h2 className="text-xl font-bold mb-4 text-black">
               {isPlan ? "Detalles del plan" : "Detalles de la consulta"}
             </h2>
@@ -80,7 +80,7 @@ const BuyModal = (props) => {
   if (userData.remaining_classes< 1) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop px-8"
         onClick={handleBackdropClick}
       >
         <div
@@ -117,7 +117,7 @@ const BuyModal = (props) => {
   if (userData.remaining_classes > 0) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop px-8"
         onClick={handleBackdropClick}
       >
         <div
@@ -144,7 +144,7 @@ const BuyModal = (props) => {
 
 
 
-  return null; // En caso de que no se cumpla ninguna condición.
+  return null; 
 };
 
 export default BuyModal;

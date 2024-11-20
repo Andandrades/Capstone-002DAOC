@@ -26,11 +26,11 @@ const AdminPlans = () => {
 
   return (
 
-    <div className="bg-[#333] min-h-screen flex flex-col justify-between mb-10">
+    <div className="bg-slate-200 min-h-screen flex flex-col justify-between mb-10">
 
       <div >
-        <div className="bg-[#333] flex flex-col justify-start items-center pt-6">
-          <h1 className="text-3xl font-bold text-white text-center">Gestionar planes</h1>
+        <div className="bg-slate-200 flex flex-col justify-start items-center pt-6">
+          <h1 className="text-3xl font-bold text-black text-center">Gestionar planes</h1>
           <button className="text-base rounded-full py-2 w-3/4 text-black font-bold my-5 bg-[#EFDD37]"
             onClick={() => setIsModalOpen(true)}>
             Añadir Plan

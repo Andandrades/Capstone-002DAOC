@@ -86,7 +86,7 @@ const ProfilePage = () => {
           <div className="flex flex-col items-center justify-center relative">
             <div className="flex flex-col items-center justify-center fotoPerfil relative">
               <div className="rounded-full bg-gray-300 shadow-[24px_24px_72px_#bebebe,-24px_-24px_72px_#ffffff] flex items-center justify-center p-4">
-                <ProfileImage key={refresh} />
+                <ProfileImage key={refresh} height={"100px"} width={"100px"} />
               </div>
               <div className="absolute bottom-0 right-0">
                 <label
