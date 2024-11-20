@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import login from "../../assets/img/login.webp";
+import Logo from "../../assets/img/Logo.png";
 import { sendEmail } from '../../Components/API/EmailSender';
 import { toast } from "react-toastify";
 import ChangePasswordTemplate from '../../assets/emailTemplate/ChangePasswordTemplate';
@@ -41,11 +41,11 @@ const RecoverPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-        <div className="flex justify-center items-center mb-6">
-          <img src={login} alt="Logo" className="w-48 h-auto" />
+        <div className="flex justify-center items-center mb-6 flex-col">
+          <img src={Logo} alt="Logo" className="w-50 h-auto" />
+          <h2>Ingrese su E-mail </h2>
+
         </div>
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Soldados Gym</h2>
-        <h2>Recuperar Contraseña</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <input

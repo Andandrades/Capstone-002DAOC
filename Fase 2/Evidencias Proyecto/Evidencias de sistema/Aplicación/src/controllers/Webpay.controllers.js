@@ -14,10 +14,10 @@ const iniciarTransaccion = async (req, res) => {
   const returnUrl = "http://localhost:3000/confirmar-pago";
   try {
     const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
-
+    const transaction_date = new Date();
     await pool.query(
-      "INSERT INTO transactions (buy_order, session_id, amount, token,user_id,plan_id) VALUES ($1, $2, $3, $4, $5, $6)",
-      [buyOrder, sessionId, amount, response.token, user_id, idplan]
+      "INSERT INTO transactions (buy_order, session_id, amount, token,user_id,plan_id,transaction_date) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [buyOrder, sessionId, amount, response.token, user_id, idplan,transaction_date]
     );
 
     res.json({
@@ -86,10 +86,7 @@ const confirmarPago = async (req, res) => {
 
 const iniciarConsulta = async (req, res) => {
   const { amount, sessionId, buyOrder, user_id, nutriScheduleId } = req.body;
-  console.log(nutriScheduleId)
-
   const returnUrl = `http://localhost:3000/confirmar-pago-consulta?user_id=${user_id}&nutriScheduleId=${nutriScheduleId}`;
-
   try {
     const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
     const transaction_date = new Date();

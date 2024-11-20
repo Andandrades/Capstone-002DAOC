@@ -14,6 +14,7 @@ export const Register = async (payload) => {
     try {
         const response = await axios.post(`${URL}/register`, payload);
         return response.data 
+        
     } catch (error) {
         console.error("Error al añadir registrar el usuario:", error);
     }
@@ -22,6 +23,7 @@ export const Register = async (payload) => {
 export const Logout = async () => {
     try {
         const response = await axios.post(`${URL}/logout`, {}, { withCredentials: true });
+        window.location.reload();
         return response.data;
     } catch (error) {
         console.error("Error al cerrar la sesión:", error);

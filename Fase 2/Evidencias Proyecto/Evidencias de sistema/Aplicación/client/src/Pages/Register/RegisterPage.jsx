@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import registrate from "../../assets/img/Registrate.webp";
+import Logo from "../../assets/img/Logo.png";
 import { Register } from "../../Components/API/sesion";
 import "./RegisterStyle.css";
 import { toast } from "react-toastify";
@@ -10,6 +10,10 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const goto = (url) => {
+    navigate(`/${url}`);
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -45,7 +49,7 @@ const RegisterPage = () => {
 
       <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="logo mb-4">
-          <img src={registrate} alt="Registro" className="mx-auto w-24 h-auto" />
+        <img src={Logo} alt="Logo" className="mx-auto h-24" onClick={() => goto("")} />
         </div>
         <h2 className="text-2xl font-bold text-center mb-6">Registrarse</h2>
 
@@ -81,6 +85,7 @@ const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength="8"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>

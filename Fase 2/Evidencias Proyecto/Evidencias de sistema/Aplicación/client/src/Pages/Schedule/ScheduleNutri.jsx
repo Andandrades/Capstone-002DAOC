@@ -21,6 +21,7 @@ const ScheduleNutri = ({ userId }) => {
   
     const formattedDate = date.toLocaleDateString('en-CA');
 
+    
     try {
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/nutriScheduleDate/${

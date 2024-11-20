@@ -27,7 +27,7 @@ const getHoursByDate = async (req, res) => {
 
     if (resultado.rows.length === 0) {
       return res
-        .status(400)
+        .status(202)
         .json({ message: "No se encuentran clases para esta fecha" });
     }
 

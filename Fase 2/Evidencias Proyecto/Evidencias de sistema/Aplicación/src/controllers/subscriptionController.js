@@ -10,7 +10,7 @@ const getSubscriptionsByUserId = async (req, res) => {
         const { rows } = await pool.query(query, [userId]);
 
         if (rows.length === 0) {
-            return res.status(404).json({ message: 'No subscriptions found for this user.' });
+            return res.status(202).json({ message: 'El usuario no tiene suscripciones activas.' });
         }
 
         res.json(rows);
