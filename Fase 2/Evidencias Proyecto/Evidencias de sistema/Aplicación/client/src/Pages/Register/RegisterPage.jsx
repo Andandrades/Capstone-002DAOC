@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/soldadoLogo.webp";
+import Logo from "../../assets/img/Logo.png";
 import { Register } from "../../Components/API/sesion";
 import "./RegisterStyle.css";
 import { toast } from "react-toastify";

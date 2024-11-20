@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import Logo from "../../assets/img/soldadoLogo.webp";
+import Logo from "../../assets/img/Logo.png";
 import { sendEmail } from '../../Components/API/EmailSender';
 import { toast } from "react-toastify";
 import ChangePasswordTemplate from '../../assets/emailTemplate/ChangePasswordTemplate';

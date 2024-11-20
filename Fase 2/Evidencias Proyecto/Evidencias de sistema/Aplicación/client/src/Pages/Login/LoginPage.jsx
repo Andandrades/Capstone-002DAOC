@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/img/soldadoLogo.webp";
+import Logo from "../../assets/img/Logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../Components/API/UserContext";
 
@@ -44,7 +44,7 @@ const LoginPage = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
         <div className="flex justify-center items-center ">
-          <img src={Logo} alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
+          <img src={Logo  } alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
         </div>
         <h2 className="text-2xl font-semibold text-gray-800 ">Soldados Gym</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
