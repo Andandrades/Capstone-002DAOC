@@ -24,16 +24,12 @@ const getExercise = async (req, res) => {
 
 const getExerciseFromHistory = async (req,res) =>{
   const {id} = req.params;
-
   try {
-
     const result = await pool.query(`
       SELECT * 
       FROM exercises
       WHERE history_id = $1
     `, [id]);
-
-
     if (result.rows.length === 0) {
       return res.status(202).json({ error: 'No se encontraron ejercicios en esta rutina' });
     }
@@ -92,9 +88,6 @@ const deleteExercise = async (req, res) => {
   }
 };
 
-
-
-//Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAllExercise,
   getExercise,
