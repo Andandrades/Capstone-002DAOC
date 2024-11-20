@@ -131,7 +131,9 @@ export const GymHourCard = ({ schedule }) => {
 
   //Fuincion para agendar hora
   const scheduleHour = async () => {
-    try {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    try {      
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/scheduleHour`,
         {

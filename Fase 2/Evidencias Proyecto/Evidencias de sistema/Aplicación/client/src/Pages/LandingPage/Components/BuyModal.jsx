@@ -56,7 +56,7 @@ const BuyModal = (props) => {
         onClick={handleBackdropClick}
       >
         <div
-          className="modal-dialog bg-gray-200 w-full max-w-lg mx-auto p-5 rounded-md shadow-lg relative"
+          className="modal-dialog bg-white w-full max-w-lg mx-auto p-6 rounded-md shadow-lg relative"
           onClick={(e) => e.stopPropagation()}
         >
           <button
@@ -65,17 +65,33 @@ const BuyModal = (props) => {
           >
             &times;
           </button>
-
-          <div className="modal-content text-center ">
-            <h2 className="text-xl font-bold mb-4 text-black">
-              {isPlan ? "Detalles del plan" : "Detalles de la consulta"}
+  
+          <div className="modal-content text-center">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">
+              {isPlan ? "¡Ya tienes un plan activo!" : "¡Ya tienes consultas pendientes!"}
             </h2>
-            <p className="text-lg font-semibold text-black">Tienes clases pendientes</p>
+            <p className="text-lg text-gray-700 mb-4">
+              Antes de realizar la compra, te informamos que aún tienes clases pendientes por utilizar.
+              Aprovecha las clases que tienes disponibles antes de adquirir un nuevo plan.
+            </p>
+            <p className="text-lg font-semibold text-gray-800">
+              Clases pendientes: <span className="text-blue-600">{userData.remaining_classes}</span>
+            </p>
+            
+            <div className="mt-6">
+              <button
+                onClick={onClose}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-md"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       </div>
     );
   }
+  
 
   if (userData.remaining_classes< 1) {
     return (

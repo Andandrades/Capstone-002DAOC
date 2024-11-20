@@ -102,8 +102,9 @@ const RegisterPage = () => {
           />
         </div>
 
-        <button type="submit" className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200 btn-primary">Registrarse</button>
-        <button type="button" className="w-full mt-4 text-indigo-500 py-2 hover:underline" onClick={() => navigate('/login')}>Volver</button>
+        <button type="submit" className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4">Registrarse</button>
+        <button type="button" className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100" onClick={() => navigate('/login')}>Volver</button>
+
       </form>
     </div>
   );
