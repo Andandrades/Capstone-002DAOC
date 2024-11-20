@@ -1,6 +1,5 @@
-import React from "react";
 
-const Certificate = ({ width = 50, height = 50, fill = "none" }) => (
+const Certificate = ({ width = 50, height = 50 }) => (
   <svg width={width} height={height} viewBox="0 0 50 50">
     <rect width="50" height="50" fill="url(#pattern0_500_379)" />
     <defs>
