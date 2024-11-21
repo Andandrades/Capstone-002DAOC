@@ -8,7 +8,6 @@ const LoginPage = () => {
   const { fetchAuthData } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -48,7 +47,6 @@ const LoginPage = () => {
           <img src={Logo  } alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
         </div>
         <h2 className="text-2xl font-semibold text-gray-800 ">Soldados Gym</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <input
