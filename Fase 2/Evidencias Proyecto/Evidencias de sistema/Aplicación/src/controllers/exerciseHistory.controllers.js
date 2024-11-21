@@ -1,8 +1,8 @@
 //Los controladores son las funciones que va a llamar express, dichas funciones se llamaran en las routes y se ejecutaran en estas
 const pool = require("../db");
 
-const sharp = require('sharp');
-
+const sharp = require("sharp");
+const axios = require("axios");
 
 const getAll = async (req, res) => {
   try {
@@ -31,32 +31,41 @@ const getbyid = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { history_id, exercise_name, machine, weight, sets, repetitions, total_reps, notes, target, exercise_api_id } = req.body;
+  const {
+    history_id,
+    exercise_name,
+    machine,
+    weight,
+    sets,
+    repetitions,
+    total_reps,
+    notes,
+    image,
+    target,
+    exercise_api_id,
+  } = req.body;
 
-  // Procesar la imagen desde el archivo cargado (req.file) si usas multer
-  const imageBuffer = req.file?.buffer;
+
+  const exerciseApiIdToSave = exercise_api_id === "" ? null : exercise_api_id;
+
 
   try {
-    let optimizedImage;
+    let imageBuffer = null;
 
-    if (imageBuffer) {
-      const metadata = await sharp(imageBuffer).metadata();
-
-      if (metadata.format === 'gif') {
-        // Para GIF, no se recomprime, solo se asegura que esté optimizado
-        optimizedImage = await sharp(imageBuffer).toBuffer();
-      } else {
-        // Para otros formatos, optimiza la imagen y la convierte a un formato común (opcional)
-        optimizedImage = await sharp(imageBuffer)
-          .resize({ width: 800 }) // Ajusta el tamaño máximo si es necesario
-          .jpeg({ quality: 80 }) // Convierte a JPEG con calidad reducida
-          .toBuffer();
-      }
+    // Si la imagen no es nula, descargamos y la convertimos en buffer
+    if (image) {
+      const response = await axios.get(image, { responseType: "arraybuffer" });
+      imageBuffer = Buffer.from(response.data, "binary");
     }
 
-    const result = await pool.query(
-      `INSERT INTO exercises (history_id, exercise_name, machine, weight, sets, repetitions, total_reps, image, target, notes, exercise_api_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+    // Insertar datos en la base de datos
+    await pool.query(
+      `
+      INSERT INTO exercises 
+        (history_id, exercise_name, machine, weight, sets, repetitions, total_reps, image, target, notes, exercise_api_id)
+      VALUES 
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      `,
       [
         history_id,
         exercise_name,
@@ -65,17 +74,17 @@ const create = async (req, res) => {
         sets,
         repetitions,
         total_reps,
-        optimizedImage || null, // Guarda la imagen optimizada o NULL si no se proporcionó
+        imageBuffer,
         target,
         notes,
-        exercise_api_id,
+        exerciseApiIdToSave,
       ]
     );
 
-    res.status(200).json("¡Añadido correctamente!");
+    res.status(200).json("Ejercicio añadido correctamente.");
   } catch (error) {
-    console.error("Error al añadir el ejercicio:", error.message);
-    res.status(400).json("¡Error al añadir!");
+    console.error("Error al guardar el ejercicio:", error.message);
+    res.status(500).json({ error: "Error al guardar el ejercicio." });
   }
 };
 
@@ -126,6 +135,45 @@ const getbyClassId = async (req, res) => {
   }
 };
 
+const getUserHistory = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      `SELECT eh.*, 
+              gs.start_hour, -- Se agrega start_hour desde gym_schedule
+              COALESCE(json_agg(
+                json_build_object(
+                  'exercise_id', e.exercise_id,
+                  'exercise_name', e.exercise_name,
+                  'machine', e.machine,
+                  'weight', e.weight,
+                  'sets', e.sets,
+                  'repetitions', e.repetitions,
+                  'total_reps', e.total_reps,
+                  'target', e.target,
+                  'notes', e.notes
+                )
+              ) FILTER (WHERE e.exercise_id IS NOT NULL), '[]') AS exercises
+      FROM exercise_history eh
+      LEFT JOIN exercises e ON eh.history_id = e.history_id
+      LEFT JOIN schedule_classes sc ON eh.class_id = sc.class_id -- JOIN entre exercise_history y schedule_classes
+      LEFT JOIN gym_schedule gs ON sc.gym_schedule_id = gs.gym_schedule_id -- JOIN entre schedule_classes y gym_schedule
+      WHERE eh.user_id = $1
+      GROUP BY eh.history_id, gs.start_hour -- GROUP BY necesario para start_hour
+      ORDER BY eh.created_date DESC`,
+      [id]
+    );
+    if (resultado.rowCount === 0) {
+      res.status(400).json("Este usuario no posee clases registradas");
+    }
+
+    res.status(200).json(resultado.rows);
+  } catch (error) {
+    console.error({ error: error });
+  }
+};
+
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAll,
@@ -134,4 +182,5 @@ module.exports = {
   update,
   deletebyid,
   getbyClassId,
+  getUserHistory,
 };

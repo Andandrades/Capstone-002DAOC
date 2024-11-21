@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { equipmentList } from "./equipmentList";
 
 // Traducciones para las partes del cuerpo
 const targetTranslations = {
@@ -57,8 +58,11 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
     total_reps: "",
     notes: "",
     exercise_api_id: "",
+    exercise_name: "",
   });
 
+  const [otherMachine, setOtherMachine] = useState("");
+  const [manualTarget, setManualTarget] = useState("");
 
   // Fetch partes del cuerpo
   useEffect(() => {
@@ -101,7 +105,6 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
     } catch (error) {
       console.error("Error fetching exercises:", error);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -115,6 +118,9 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
       ...formData,
       [name]: value,
     });
+    if (name === "machine" && value !== "other") {
+      setOtherMachine("");
+    }
   };
 
   //Guardar informacion de ejercicio seleccionado
@@ -123,6 +129,8 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
     setFormData({
       ...formData,
       exercise_api_id: exercise.id,
+      gifUrl: exercise.gifUrl || null, // Si no hay gifUrl, lo establecemos como null
+      target: targetMuscleTranslations[exercise.target] || exercise.target,
     });
   };
 
@@ -130,29 +138,21 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!selectedExercise) {
-      alert("Por favor selecciona un ejercicio.");
-      return;
-    }
-
     const exerciseData = {
       history_id: historyId,
-      exercise_name: selectedExercise.name,
-      machine: formData.machine,
+      exercise_name: formData.exercise_name,
+      machine: formData.machine === "other" ? otherMachine : formData.machine,
       weight: parseInt(formData.weight),
       sets: parseInt(formData.sets),
       repetitions: parseInt(formData.repetitions),
       total_reps: parseInt(formData.total_reps),
-      image: selectedExercise.gifUrl,
-      target:
-        targetMuscleTranslations[selectedExercise.target] ||
-        selectedExercise.target,
+      image: formData.gifUrl,
+      target:manualTarget || formData.target,
       notes: formData.notes,
       exercise_api_id: formData.exercise_api_id,
     };
 
     onSubmit(exerciseData);
-    onClose();
   };
 
   return (
@@ -171,7 +171,7 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
                   setOffset(0);
                 }}
               >
-                <option value="">Selecciona una parte</option>
+                <option value="">Selecciona parte del cuerpo</option>
                 {bodyParts.map((part) => (
                   <option key={part} value={part}>
                     {targetTranslations[part] || part}{" "}
@@ -227,15 +227,68 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
             </div>
 
             <div className="mb-4">
-              <label className="block font-medium mb-2">Máquina</label>
+              <label className="block font-medium mb-2">
+                Nombre del ejercicio
+              </label>
               <input
                 type="text"
                 className="border rounded-lg w-full p-2"
+                name="exercise_name"
+                required
+                value={formData.exercise_name || ""}
+                onChange={handleFormChange}
+                placeholder="Ingresa el nombre del ejercicio"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-2">Máquina</label>
+              <select
                 name="machine"
+                className="w-full max-w-[400px] max-h-[200px] overflow-y-auto text-sm"
                 value={formData.machine}
                 onChange={handleFormChange}
-                placeholder="Ingresa el nombre de la máquina"
-              />
+                
+              >
+                {equipmentList.map((equip) => (
+                  <option key={equip.value} value={equip.value}>
+                    {equip.label}
+                  </option>
+                ))}
+              </select>
+
+              {formData.machine === "other" && (
+                <div className="mt-2">
+                  <label className="block font-medium mb-2">Especificar máquina</label>
+                  <input
+                    type="text"
+                    className="border rounded-lg w-full p-2"
+                    value={otherMachine}
+                    onChange={(e) => setOtherMachine(e.target.value)}
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label className="block font-medium mb-2">Target</label>
+              {selectedExercise?.target ? (
+                <input
+                  type="text"
+                  className="border rounded-lg w-full p-2"
+                  name="target"
+                  value={formData.target}
+                  readOnly
+                />
+              ) : (
+                <input
+                  type="text"
+                  className="border rounded-lg w-full p-2"
+                  name="target"
+                  value={manualTarget}
+                  onChange={(e) => setManualTarget(e.target.value)}
+                  placeholder="Especifica target"
+                />
+              )}
             </div>
 
             <div className="mb-4">
@@ -244,6 +297,8 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
                 type="number"
                 className="border rounded-lg w-full p-2"
                 name="weight"
+                min="0"
+                required
                 value={formData.weight}
                 onChange={handleFormChange}
                 placeholder="Ingresa el peso"
@@ -254,6 +309,8 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
               <label className="block font-medium mb-2">Sets</label>
               <input
                 type="number"
+                min="0"
+                required
                 className="border rounded-lg w-full p-2"
                 name="sets"
                 value={formData.sets}
@@ -266,6 +323,8 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
               <label className="block font-medium mb-2">Repeticiones</label>
               <input
                 type="number"
+                min="0"
+                required
                 className="border rounded-lg w-full p-2"
                 name="repetitions"
                 value={formData.repetitions}
@@ -277,6 +336,8 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
             <div className="mb-4">
               <label className="block font-medium mb-2">Total Reps</label>
               <input
+                min="0"
+                required
                 type="number"
                 className="border rounded-lg w-full p-2"
                 name="total_reps"
@@ -297,19 +358,19 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
               />
             </div>
 
-            <div className="flex justify-end mt-6">
+            <div className="flex justify-center gap-2 mt-6">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Agregar
+              </button>
               <button
                 type="button"
                 onClick={onClose}
                 className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-md mr-2"
               >
                 Cancelar
-              </button>
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-              >
-                Agregar
               </button>
             </div>
           </form>

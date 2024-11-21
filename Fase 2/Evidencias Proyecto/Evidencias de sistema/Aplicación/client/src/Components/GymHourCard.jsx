@@ -5,7 +5,7 @@ import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useUser } from "./API/UserContext";
 import { toast } from "react-toastify";
-
+import UsersProfilePicture from "./UsersProfilePicture";
 export const GymHourCard = ({ schedule }) => {
   const {
     gym_schedule_id,
@@ -27,8 +27,6 @@ export const GymHourCard = ({ schedule }) => {
     setIsModalOpen(!isModalOpen);
   };
 
-
-
   useEffect(() => {
     setUserId(userData.id);
     if (userId) {
@@ -39,7 +37,8 @@ export const GymHourCard = ({ schedule }) => {
   const searchReservation = async () => {
     try {
       const respuesta = await fetch(
-        `${import.meta.env.VITE_API_URL
+        `${
+          import.meta.env.VITE_API_URL
         }/scheduleHour/${userId}/${gym_schedule_id}`
       );
       if (respuesta.ok) {
@@ -101,8 +100,9 @@ export const GymHourCard = ({ schedule }) => {
     const remainingMinutes = minutes % 60; // Calcular los minutos restantes
 
     // Retornar la duración en formato 'X horas Y minutos'
-    return `${hours > 0 ? hours + "h " : ""}${remainingMinutes > 0 ? remainingMinutes + "min" : ""
-      }`;
+    return `${hours > 0 ? hours + "h " : ""}${
+      remainingMinutes > 0 ? remainingMinutes + "min" : ""
+    }`;
   };
 
   //Funcion para eliminar hora
@@ -119,15 +119,16 @@ export const GymHourCard = ({ schedule }) => {
         }),
       }
     );
-  
+
     if (resultado.ok) {
-      toast.success("¡La clase ha sido cancelada correctamente y tu cupo ha sido devuleto!");
+      toast.success(
+        "¡La clase ha sido cancelada correctamente y tu cupo ha sido devuleto!"
+      );
       setReservation(false);
       fetchScheduledUsers();
       setClassId(null);
     }
   };
-  
 
   //Fuincion para agendar hora
   const scheduleHour = async () => {
@@ -146,7 +147,7 @@ export const GymHourCard = ({ schedule }) => {
           }),
         }
       );
-  
+
       if (resultado.ok) {
         const data = await resultado.json();
         setReservation(true);
@@ -224,7 +225,10 @@ export const GymHourCard = ({ schedule }) => {
               {scheduledUsers.length > 0 ? (
                 scheduledUsers.map((reservation, index) => (
                   <div key={index} className="p-2 bg-white">
-                    {reservation.client_name}
+                    <div className="flex gap-2 justify-start items-center">
+                        <UsersProfilePicture userId={reservation.client_id} height={'30px'} width={'30px'}/>
+                        <p className="truncate ...">{reservation.client_name}</p>
+                      </div>
                   </div>
                 ))
               ) : (

@@ -189,6 +189,7 @@ const scheduleHour = async (req, res) => {
 const deleteHour = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
+  
   const { class_id } = req.params;
   const { suscription_id } = req.body;
 
@@ -209,9 +210,17 @@ const deleteHour = async (req, res) => {
         .status(400)
         .json({ error: "Error: No se puede restar más cupos" });
     }
+
+
+    await pool.query(
+      "DELETE FROM exercises WHERE history_id IN (SELECT history_id FROM exercise_history WHERE class_id = $1)",
+      [class_id]
+    );
+
     await pool.query("DELETE FROM exercise_history WHERE class_id = $1", [
       class_id,
     ]);
+    
 
     await pool.query("DELETE FROM schedule_classes WHERE class_id = $1", [
       class_id,
