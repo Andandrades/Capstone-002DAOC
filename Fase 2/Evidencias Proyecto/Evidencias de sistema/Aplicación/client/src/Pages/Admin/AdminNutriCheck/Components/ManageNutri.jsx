@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import menu from "../../../../assets/Certificate.svg";
 import { deleteNutri } from '../../../../Components/API/Endpoints';
 import ModifyNutriModal from './ModifyNutriModal';
+import { toast } from 'react-toastify';
 
 export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
 
@@ -12,11 +13,22 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
-    const DeleteNutri= (id) => {
-        deleteNutri(id).then(response => {
-            fetchPlans(true)
-        })
-    }
+    const DeleteNutri = async (id) => {
+        try {
+            const response = await deleteNutri(id);
+            if (response) {
+                fetchPlans(true);
+                toast.success('La consulta ha sido eliminada exitosamente.');
+            } else {
+                toast.error('Ha ocurrido un error, Intentalo nuevamente.');
+            }
+        } catch (error) {
+            console.error("Error al eliminar el plan:", error);
+            toast.error('La consulta no se puede eliminar, Usuarios han tenien esta consulta en el historial de transaciones...');
+        }
+    };
+
+
     const ModifyPlan = (id) => {
         setIsModalOpen(true);
 
@@ -28,7 +40,6 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
                     className="absolute top-[-15px] right-[0px] m-0 p-0"
                     src={menu}
                     alt=""
-                    fill="blue"
                 />
                 <div>
                     <div className="flex flex-col justify-center items-center font-semibold pt-6">

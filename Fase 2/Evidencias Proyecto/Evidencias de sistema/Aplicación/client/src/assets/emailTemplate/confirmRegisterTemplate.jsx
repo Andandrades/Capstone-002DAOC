@@ -1,22 +1,66 @@
 import React from 'react';
-import confirmar from '../img/Confirmar.webp';
 
-const AccountCreatedTemplate = () => (
-  <div className="relative p-4 bg-white rounded-lg shadow-md">
-    <div className="absolute inset-0">
-      <img
-        src={confirmar}
-        alt="Confirmar"
-        className="w-full h-full object-cover opacity-20"
-        style={{ filter: 'blur(8px)' }}
-      />
-    </div>
-    <div className="relative z-10">
-      <h1 className="text-2xl font-bold mb-2">Cuenta Creada</h1>
-      <h2 className="text-xl font-semibold mb-4">Su cuenta ha sido creada con éxito</h2>
-      <p className="text-base">Gracias por registrarse. Esperamos que disfrute de nuestros servicios.</p>
-    </div>
-  </div>
-);
+const ConfirmRegisterTemplate = ({ nombre, email}) => {
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f9f9f9", padding: "30px 0" }}>
+      <div
+        style={{
+          maxWidth: "600px",
+          margin: "0 auto",
+          background: "#fff",
+          borderRadius: "10px",
+          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Encabezado */}
+        <div
+          style={{
+            background: "#333",
+            color: "#fff",
+            padding: "20px",
+            textAlign: "center",
+          }}
+        >
+          <img src="https://i.imgur.com/GTIQ1BN.png" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
+          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+        </div>
 
-export default AccountCreatedTemplate;
+        {/* Contenido principal */}
+        <div style={{ padding: "30px", textAlign: "center" }}>
+          <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
+            Hola {nombre}, ¡tu cuenta se creó sin problemas!
+          </h2>
+          <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
+            Nos agrada informarte que tu cuenta que creaste con {email} se creo sin problemas. nos da gusto que te unas a la familia de soldados gym.
+          </p>
+          <p style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
+          </p>
+        </div>
+
+        {/* Pie de página */}
+        <div
+          style={{
+            background: "#333",
+            color: "#fff",
+            textAlign: "center",
+            padding: "15px",
+            fontSize: "14px",
+          }}
+        >
+          <p>
+            © 2024 MiAplicación |{" "}
+            <a
+              href="https://miaplicacion.com/privacidad"
+              style={{ color: "#ffd700", textDecoration: "none" }}
+            >
+              Política de privacidad
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ConfirmRegisterTemplate;

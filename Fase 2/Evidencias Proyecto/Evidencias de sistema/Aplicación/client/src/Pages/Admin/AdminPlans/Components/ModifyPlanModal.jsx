@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { updatePlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const ModifyPlanModal = (props) => {
   const { isOpen, onClose, id, name, amount, offer_price, n_class, fetchPlans, description } = props;
@@ -21,11 +22,11 @@ const ModifyPlanModal = (props) => {
     };
     updatePlan(id, payload)
       .then(response => {
-        console.log('Plan agregado:', response);
+        toast.success('Plan editado correctamente.');
         fetchPlans(true)
       })
       .catch(error => {
-        console.error('Error al agregar el plan:', error);
+        toast.error('Sucedio algo inesperado al editar el plan.');
       });
     onClose();
   };

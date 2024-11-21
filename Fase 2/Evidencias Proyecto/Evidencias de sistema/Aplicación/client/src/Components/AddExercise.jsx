@@ -60,9 +60,10 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
     exercise_api_id: "",
     exercise_name: "",
   });
-
+  
   const [otherMachine, setOtherMachine] = useState("");
   const [manualTarget, setManualTarget] = useState("");
+
 
   // Fetch partes del cuerpo
   useEffect(() => {
@@ -106,6 +107,7 @@ const AddExercise = ({ isOpen, onClose, onSubmit, historyId }) => {
       console.error("Error fetching exercises:", error);
     } finally {
     }
+
   };
 
   useEffect(() => {

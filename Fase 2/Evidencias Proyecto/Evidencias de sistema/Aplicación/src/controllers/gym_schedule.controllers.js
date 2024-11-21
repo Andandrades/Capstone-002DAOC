@@ -3,7 +3,6 @@ const pool = require("../db");
 const cors = require("cors");
 const express = require("express");
 const app = express();
-app.use(cors());
 
 //Traer todas las horas
 const getGymHours = async (req, res) => {

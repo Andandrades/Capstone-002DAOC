@@ -24,19 +24,14 @@ const getExercise = async (req, res) => {
   }
 };
 
-const getExerciseFromHistory = async (req, res) => {
-  const { id } = req.params;
-
+const getExerciseFromHistory = async (req,res) =>{
+  const {id} = req.params;
   try {
-    const result = await pool.query(
-      `
+    const result = await pool.query(`
       SELECT * 
       FROM exercises
       WHERE history_id = $1
-    `,
-      [id]
-    );
-
+    `, [id]);
     if (result.rows.length === 0) {
       return res
         .status(202)
@@ -161,7 +156,7 @@ const getTop = async (req, res) => {
       exercise_name: row.exercise_name,
       target: row.target,
       popularity: row.popularity,
-      image: `data:image/gif;base64,${row.image_base64}`, // Asegurar que se use el formato GIF
+      image: `data:image/gif;base64,${row.image_base64}`, 
     }));
 
     res.status(200).json(exercises);
@@ -171,7 +166,6 @@ const getTop = async (req, res) => {
   }
 };
 
-//Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAllExercise,
   getExercise,

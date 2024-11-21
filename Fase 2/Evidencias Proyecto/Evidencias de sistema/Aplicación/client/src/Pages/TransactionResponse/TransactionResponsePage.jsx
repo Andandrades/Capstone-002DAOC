@@ -13,7 +13,7 @@ const TransactionResponse = () => {
     useEffect(() => {
         const fetchTransactionData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/transaction-status?token_ws=${tokenWs}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/transaction-status?token_ws=${tokenWs}`);
                 setTransactionData(response.data);
             } catch (error) {
                 console.error("Error al obtener el estado de la transacción:", error);

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Logo from "../../assets/img/Logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../Components/API/UserContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const { fetchAuthData } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,14 +28,14 @@ const LoginPage = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || "Error en el servidor");
+        await response.json();
+        toast.error("Usuario o contraseña invalidos.");
         return;
       }
 
       fetchAuthData();
     } catch (err) {
-      setError("Error de conexión con el servidor");
+      toast.error("Usuario o contraseña invalidos.");
       console.error(err);
     }
   };
@@ -43,11 +43,9 @@ const LoginPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-        <div className="flex justify-center items-center ">
-          <img src={Logo  } alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
+        <div className="flex justify-center items-center pb-5 ">
+          <img src={Logo} alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
         </div>
-        <h2 className="text-2xl font-semibold text-gray-800 ">Soldados Gym</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <input

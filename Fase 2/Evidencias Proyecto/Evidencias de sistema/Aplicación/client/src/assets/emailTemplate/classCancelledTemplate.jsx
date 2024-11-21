@@ -1,22 +1,81 @@
-import React from 'react';
-import cancelar from '../img/cancelar.webp';
+import React from "react";
 
-const ClassCancelledTemplate = ({ className, classTime }) => (
-  <div className="relative p-4 bg-white rounded-lg shadow-md">
-    <div className="absolute inset-0">
-      <img
-        src={cancelar}
-        alt="Cancelar"
-        className="w-full h-full object-cover opacity-20"
-        style={{ filter: 'blur(8px)' }}
-      />
+const ClassCancelledTemplate = ({ nombre, fecha }) => {
+  const scheduleUrl = `${import.meta.env.VITE_APP_BASE_URL}/schedule/gym`;
+
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f9f9f9", padding: "30px 0" }}>
+      <div
+        style={{
+          maxWidth: "600px",
+          margin: "0 auto",
+          background: "#fff",
+          borderRadius: "10px",
+          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Encabezado */}
+        <div
+          style={{
+            background: "#333",
+            color: "#fff",
+            padding: "20px",
+            textAlign: "center",
+          }}
+        >
+          <img src="https://i.imgur.com/GTIQ1BN.png" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
+          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+        </div>
+
+        {/* Contenido principal */}
+        <div style={{ padding: "30px", textAlign: "center" }}>
+          <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
+            Clase Cancelada!
+          </h2>
+          <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
+            Hola {nombre}, lamentamos informarle que la clase que tenía programada para el día {fecha} se ha cancelado. Le pedimos disculpas por los inconvenientes. Si desea volver a agendar una clase, por favor haga clic en el botón de abajo.
+          </p>
+          <a
+            href={scheduleUrl}
+            style={{
+              display: "inline-block",
+              padding: "15px 25px",
+              fontSize: "16px",
+              color: "#fff",
+              backgroundColor: "#007bff",
+              textDecoration: "none",
+              borderRadius: "5px",
+              boxShadow: "0 2px 10px rgba(0, 123, 255, 0.3)",
+            }}
+          >
+            Reagendar
+          </a>
+        </div>
+
+        {/* Pie de página */}
+        <div
+          style={{
+            background: "#333",
+            color: "#fff",
+            textAlign: "center",
+            padding: "15px",
+            fontSize: "14px",
+          }}
+        >
+          <p>
+            © 2024 MiAplicación |{" "}
+            <a
+              href="https://miaplicacion.com/privacidad"
+              style={{ color: "#ffd700", textDecoration: "none" }}
+            >
+              Política de privacidad
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
-    <div className="relative z-10">
-      <h1 className="text-2xl font-bold mb-2">Clase Cancelada</h1>
-      <h2 className="text-xl font-semibold mb-4">Su clase {className} ha sido cancelada</h2>
-      <p className="text-base">Lamentamos darle esta informacon pero su clase {classTime} ha sido cancelada.</p>
-    </div>
-  </div>
-);
+  );
+};
 
 export default ClassCancelledTemplate;

@@ -11,10 +11,17 @@ import { useUser } from './API/UserContext';
 
 export const UserNavBar = () => {
   const navigate = useNavigate();
-  const { userData } = useUser();
+  const { userData ,fetchAuthData} = useUser();
   const RoleCliente = 1;
-  const LogoutSesion = () => {
-    Logout();
+  
+  const LogoutSesion = async () => {
+    try {
+      await Logout();
+      await fetchAuthData();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error en el proceso de cierre de sesión:");
+    }
   };
 
   const goto = (url) => {

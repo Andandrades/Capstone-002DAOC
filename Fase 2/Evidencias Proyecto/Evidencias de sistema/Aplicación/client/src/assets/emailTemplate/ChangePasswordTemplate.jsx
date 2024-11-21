@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const ChangePasswordTemplate = ({ nombre, resetLink }) => {
+const ChangePasswordTemplate = ({ resetLink }) => {
   return (
     <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f9f9f9", padding: "30px 0" }}>
       <div
@@ -22,18 +22,22 @@ const ChangePasswordTemplate = ({ nombre, resetLink }) => {
             textAlign: "center",
           }}
         >
-          <img src="https://cdn.discordapp.com/attachments/1088082112269271123/1308403290144505919/soldadoLogo.png?ex=673dd105&is=673c7f85&hm=3993fadd7ebd66cbc197e5aff4243c49a218281d8235b778584d6967b03ad1ca&" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
-          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+          <img
+            src="https://i.imgur.com/GTIQ1BN.png"
+            alt="Logo"
+            style={{ width: "200px", height: "auto", margin: "auto" }}
+          />
+          <h1 style={{ position: "relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
         </div>
 
         {/* Contenido principal */}
         <div style={{ padding: "30px", textAlign: "center" }}>
           <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
-            ¡Hola, {nombre}!
+            Hola!
           </h2>
           <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
-            Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud,
-            ignora este correo.
+            Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta
+            solicitud, ignora este correo.
           </p>
           <a
             href={resetLink}
@@ -82,4 +86,3 @@ const ChangePasswordTemplate = ({ nombre, resetLink }) => {
 };
 
 export default ChangePasswordTemplate;
-

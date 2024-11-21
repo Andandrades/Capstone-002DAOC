@@ -23,7 +23,7 @@ export const Register = async (payload) => {
 export const Logout = async () => {
     try {
         const response = await axios.post(`${URL}/logout`, {}, { withCredentials: true });
-        window.location.reload();
+        localStorage.clear();
         return response.data;
     } catch (error) {
         console.error("Error al cerrar la sesión:", error);

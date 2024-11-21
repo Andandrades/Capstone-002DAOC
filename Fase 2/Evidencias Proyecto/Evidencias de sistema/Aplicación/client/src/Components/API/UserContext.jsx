@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 const UserContext = createContext();
 
@@ -8,8 +8,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
  const fetchAuthData = () => {
-  setLoading(true); // Establecer que está cargando al inicio
-
+  setLoading(true);
   fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
     method: "GET",
     credentials: "include",
@@ -62,9 +61,6 @@ export const UserProvider = ({ children }) => {
     setLoading(true);
     fetchAuthData();
   }, []);
-
-
-
 
   const userContextValue = useMemo(() => ({
     isAuth,

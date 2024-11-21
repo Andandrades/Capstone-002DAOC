@@ -1,6 +1,7 @@
 import React from 'react';
 import { updateNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const ModifyNutriModal = ({ isOpen, onClose, id, name, price, description, fetchPlans }) => {
   if (!isOpen) return null;
@@ -15,11 +16,11 @@ const ModifyNutriModal = ({ isOpen, onClose, id, name, price, description, fetch
     try {
       const payload = { ...data };
       const response = await updateNutri(id, payload);
-      console.log('Consulta modificada:', response);
-      fetchPlans(true); // Actualizamos los planes
-      onClose(); // Cerramos el modal
+      toast.success('Consulta modificada correctamente.');
+      fetchPlans(true);
+      onClose(); 
     } catch (error) {
-      console.error('Error al modificar la consulta:', error);
+      toast.error('Error al modificar la consulta.');
     }
   };
 

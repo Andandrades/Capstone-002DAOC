@@ -81,7 +81,9 @@ const AdminRoutines = () => {
         setIsOpen(false);
       }
     } catch (error) {
+
       console.log(error);
+
     }
   };
 

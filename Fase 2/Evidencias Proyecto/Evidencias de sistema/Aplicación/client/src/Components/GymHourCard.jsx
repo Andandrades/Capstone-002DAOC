@@ -5,7 +5,13 @@ import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useUser } from "./API/UserContext";
 import { toast } from "react-toastify";
+
 import UsersProfilePicture from "./UsersProfilePicture";
+
+import ClassConfirmedTemplate from "../assets/emailTemplate/classconfirmedTemplate";
+import { renderToStaticMarkup } from "react-dom/server";
+import { sendEmail } from "./API/EmailSender";
+
 export const GymHourCard = ({ schedule }) => {
   const {
     gym_schedule_id,
@@ -22,7 +28,11 @@ export const GymHourCard = ({ schedule }) => {
   const [userId, setUserId] = useState("");
   const [classId, setClassId] = useState({});
 
-  //Funcion para cambiar el estado del Modal
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ClassConfirmedTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -130,9 +140,12 @@ export const GymHourCard = ({ schedule }) => {
     }
   };
 
+
   //Fuincion para agendar hora
   const scheduleHour = async () => {
-    try {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    try {      
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/scheduleHour`,
         {
@@ -154,6 +167,23 @@ export const GymHourCard = ({ schedule }) => {
         setClassId(data.class_id);
         fetchScheduledUsers();
         toast.success("¡Se reservó la clase correctamente!");
+
+        const emailHTML = generateEmailHTML({
+          nombre:"Juan", 
+          fecha:"12/12/12", 
+          hora:"12:12"
+        });
+        const payload = {
+          data,
+          subject: "Recuperar contraseña Soldado",
+          html: emailHTML
+        };
+        try {
+          await sendEmail(payload);
+        } catch (error) {
+          console.error("Error al enviar el correo:", error);
+          toast.error("Sucedió algo inesperado.");
+        }
       } else {
         const errorData = await resultado.json();
         toast.info(errorData.error || "Error desconocido");

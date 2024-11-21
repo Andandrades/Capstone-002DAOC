@@ -6,8 +6,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const tokenExpiry = "1h";
 
 const loginUser = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { email, password } = req.body;
   try {
     const userResult = await pool.query(
@@ -37,8 +35,8 @@ const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
-      sameSite: "Strict",
+      secure: true, 
+      sameSite: "None",
       maxAge: 3600000,
     });
 
@@ -86,7 +84,6 @@ const registerUser = async (req, res) => {
 
 const checkAuth = async (req, res) => {
   const token = req.cookies.token;
-
   if (!token) {
     return res.status(200).json({ isAuth: false });
   }
@@ -125,9 +122,9 @@ const checkAuth = async (req, res) => {
 const logOut = async (req, res) => {
   res.cookie("token", "", {
     httpOnly: true, 
-    secure: process.env.NODE_ENV === "production", 
+    secure: true, 
     expires: new Date(0),
-    sameSite: "Strict",
+    sameSite: "None",
   });
 
   res.status(200).json({ message: "Sesión cerrada" });
