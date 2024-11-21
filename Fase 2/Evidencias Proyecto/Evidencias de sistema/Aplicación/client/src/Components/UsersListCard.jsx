@@ -24,7 +24,6 @@ export const UsersListCard = ({ setUserModal, schedule }) => {
       const data = await response.json();
       setScheduledUsers(data);
       setLoading(false);
-      console.log(data);
       
     } catch (error) {
       console.error("Error fetching scheduled users:", error);

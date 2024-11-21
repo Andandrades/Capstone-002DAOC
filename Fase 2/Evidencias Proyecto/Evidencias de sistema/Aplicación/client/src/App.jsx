@@ -27,6 +27,7 @@ const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
 const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutines'));
+const ConfirmarRecover = lazy(() => import('./Pages/Recover/ConfirmarRecover'));
 
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
@@ -76,6 +77,7 @@ function App() {
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
+            <Route path="/recover/cambio" element={<RedirectIfAuthenticated><ConfirmarRecover /></RedirectIfAuthenticated>} />
             <Route path="/login" element={<RedirectIfAuthenticated><LoginPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/register" element={<RedirectIfAuthenticated><RegisterPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
@@ -102,7 +104,7 @@ function App() {
             <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><SchedulePage /></RoleProtectedRoute>} />
             <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri userId={userData.id} /></RoleProtectedRoute>} />
-            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage /></RoleProtectedRoute>} />
+            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage userData={userData} /></RoleProtectedRoute>} />
             <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
           </Routes>

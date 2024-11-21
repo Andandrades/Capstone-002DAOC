@@ -3,7 +3,7 @@ import { useUser } from '../Components/API/UserContext';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
 
-export const ProfileImage = ({width , height}) => {
+const ProfileImage = ({width , height}) => {
 
   const {userData} = useUser();
   const [imageUrl, setImageUrl] = useState(null);
@@ -44,3 +44,5 @@ export const ProfileImage = ({width , height}) => {
     </>
   );
 };
+
+export default ProfileImage;

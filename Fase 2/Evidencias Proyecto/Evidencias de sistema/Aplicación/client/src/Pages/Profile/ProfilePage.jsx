@@ -3,9 +3,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { ProfileImage } from "../../Components/ProfileImage";
+import { useUser } from "../../Components/API/UserContext";
+import ProfileImage from "../../Components/ProfileImage";
 import { UserNavBar } from "../../Components/UserNavBar";
-import { useUser } from '../../Components/API/UserContext';
 
 const ProfilePage = () => {
   const { userData } = useUser();
