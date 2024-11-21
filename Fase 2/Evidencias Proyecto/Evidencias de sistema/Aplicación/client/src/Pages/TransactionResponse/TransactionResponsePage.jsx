@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { UserNavBar } from '../../Components/UserNavBar';
-import Spinner from '../../Components/Spinner';
 
 const TransactionResponse = () => {
     const location = useLocation();
