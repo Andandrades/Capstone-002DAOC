@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Logout } from "../../Components/API/sesion";
 import { useUser } from "../../Components/API/UserContext";
-import { ProfileImage } from "../../Components/ProfileImage";
+import ProfileImage from "../../Components/ProfileImage";
 import { UserNavBar } from "../../Components/UserNavBar";
 
 const ProfilePage = () => {

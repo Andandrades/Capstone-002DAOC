@@ -3,7 +3,7 @@ import { SideMenu } from "../../Components/SideMenu";
 import axios from "axios";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { toast } from "react-toastify";
-import { ProfileImage } from "../../Components/ProfileImage";
+import ProfileImage from "../../Components/ProfileImage";
 import CreateIcon from '@mui/icons-material/Create';
 import './NutriMenu.css'
 
