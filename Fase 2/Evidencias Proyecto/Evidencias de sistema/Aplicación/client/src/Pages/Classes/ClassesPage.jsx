@@ -45,13 +45,13 @@ const ClassesPage = ({ userData }) => {
         <div className="w-full flex justify-center items-center">
           <h1 className="text-2xl font-bold  mb-10">Historial de clases</h1>
         </div>
-        <ClassesCard routine={classes[0]} setIsOpen={setIsOpen} />
+        <ClassesCard routine={classes[0]} setIsOpen={setIsOpen} classes={classes} />
         <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">
           Historial de clases
         </h1>
         {classes.length > 1
-          ? classes.map((prevClass) => (
-              <ExerciseHistory infoClass={prevClass} key={prevClass.class_id} />
+          ? classes.slice(1).map((prevClass) => (
+              <ExerciseHistory infoClass={prevClass} key={prevClass.class_id} userData={userData} />
             ))
           : null}
 

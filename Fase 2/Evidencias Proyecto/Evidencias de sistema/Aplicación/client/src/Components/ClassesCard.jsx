@@ -2,7 +2,7 @@ import React from "react";
 import weightlift from "../assets/icons/weightlift.ico";
 import Plus from "../assets/Plus.svg";
 
-export const ClassesCard = ({ routine , setIsOpen }) => {
+export const ClassesCard = ({ routine , setIsOpen}) => {
   //Obtener Dia de consulta en español
   const formatDate = (dateString) => {
     const date = new Date(dateString);
