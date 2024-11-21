@@ -2,14 +2,14 @@ import React from "react";
 import weightlift from "../assets/icons/weightlift.ico";
 import Plus from "../assets/Plus.svg";
 
-export const ClassesCard = ({ routine }) => {
+export const ClassesCard = ({ routine , setIsOpen }) => {
   //Obtener Dia de consulta en español
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
       weekday: "long", // Día de la semana (Lunes, Martes...)
-      month: "long",   // Mes (Enero, Febrero...)
-      day: "numeric",  // Día
+      month: "long", // Mes (Enero, Febrero...)
+      day: "numeric", // Día
     };
     return date.toLocaleString("es-CL", options);
   };
@@ -31,10 +31,12 @@ export const ClassesCard = ({ routine }) => {
           <>
             <h1 className="mb-3">Ultima clase</h1>
             <div className="h-[3px] rounded-full w-full bg-button-primary mb-3"></div>
-            <p className="font-semibold capitalize text-indigo-500">
+            <p className="font-semibold capitalize text-button-primary">
               {formatDate(routine.created_date)}
             </p>
-            <p className="font-semibold capitalize text-indigo-500">{formatHour(routine.start_hour)}</p>
+            <p className="font-semibold capitalize text-button-primary">
+              {formatHour(routine.start_hour)}
+            </p>
             <ul className="px-2">
               <li className="flex justify-start gap-2 items-center">
                 {" "}
@@ -42,15 +44,20 @@ export const ClassesCard = ({ routine }) => {
                 <p>Ejercicios realizados: </p>
                 <p className="text-orange-500">{routine.exercises.length}</p>
               </li>
-              <li className="flex justify-start gap-2 items-center">
+              <li className="flex justify-start gap-2 items-center pt-3">
                 {" "}
-                <img src={Plus} alt="" /> <p>Enfoque muscular: </p>
-                {routine.target ? (
+                <img src={Plus} alt="" />
+                <p>
+                  Enfoque muscular:{" "}
+                  {routine.target ? (
                     <p className="text-orange-500">{routine.target}</p>
-                ) : <p className="text-orange-500">0</p> }
+                  ) : (
+                    <p className="text-orange-500">Sin Definir</p>
+                  )}{" "}
+                </p>
               </li>
             </ul>
-            <button className="w-full bg-button-primary mt-5 py-2 rounded-lg">
+            <button onClick={() => setIsOpen(true)} className="w-full bg-button-primary mt-5 py-2 rounded-lg">
               <p className="text-white">Más Información</p>
             </button>
           </>
