@@ -22,8 +22,12 @@ const ChangePasswordTemplate = ({ resetLink }) => {
             textAlign: "center",
           }}
         >
-          <img src="https://i.imgur.com/GTIQ1BN.png" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
-          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+          <img
+            src="https://i.imgur.com/GTIQ1BN.png"
+            alt="Logo"
+            style={{ width: "200px", height: "auto", margin: "auto" }}
+          />
+          <h1 style={{ position: "relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
         </div>
 
         {/* Contenido principal */}
@@ -32,11 +36,11 @@ const ChangePasswordTemplate = ({ resetLink }) => {
             Hola!
           </h2>
           <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
-            Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud,
-            ignora este correo.
+            Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta
+            solicitud, ignora este correo.
           </p>
           <a
-            href="/confrimarRecover"
+            href={resetLink}
             style={{
               display: "inline-block",
               padding: "15px 25px",

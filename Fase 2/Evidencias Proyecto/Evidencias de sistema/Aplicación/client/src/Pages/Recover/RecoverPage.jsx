@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Logo from "../../assets/img/Logo.png";
 import { sendEmail } from '../../Components/API/EmailSender';
 import { toast } from "react-toastify";
@@ -14,6 +14,10 @@ const RecoverPage = () => {
   const generateEmailHTML = (props) => {
     const emailComponent = <ChangePasswordTemplate {...props} />;
     return renderToStaticMarkup(emailComponent);
+  };
+
+  const goto = (url) => {
+    navigate(`/${url}`);
   };
 
   const onSubmit = async (data) => {
@@ -41,20 +45,20 @@ const RecoverPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-        <div className="flex justify-center items-center mb-6 flex-col">
-          <img src={Logo} alt="Logo" className="w-50 h-auto" />
-          <h2>Ingrese su E-mail </h2>
+        <div className="flex justify-center items-center pb-5 ">
+          <img src={Logo} alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
         </div>
+        <h4 className='w-full text-black m-4'>Recuperar contraseña </h4>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <input
               type="email"
               placeholder="Email"
               {...register("email", {
-                required: "El correo es obligatorio.", // Mensaje cuando el campo está vacío
+                required: "El correo es obligatorio.",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Por favor, ingresa un correo válido." // Mensaje cuando el correo no es válido
+                  message: "Por favor, ingresa un correo válido."
                 }
               })}
               className="w-full p-3 border border-gray-300 rounded-lg"

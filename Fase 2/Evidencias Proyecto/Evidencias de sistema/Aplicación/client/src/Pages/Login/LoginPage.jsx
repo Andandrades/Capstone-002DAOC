@@ -28,7 +28,7 @@ const LoginPage = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        await response.json();
         toast.error("Usuario o contraseña invalidos.");
         return;
       }
@@ -43,10 +43,9 @@ const LoginPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-        <div className="flex justify-center items-center ">
-          <img src={Logo  } alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
+        <div className="flex justify-center items-center pb-5 ">
+          <img src={Logo} alt="Logo" className="w-50 h-auto" onClick={() => goto("")} />
         </div>
-        <h2 className="text-2xl font-semibold text-gray-800 ">Soldados Gym</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <input

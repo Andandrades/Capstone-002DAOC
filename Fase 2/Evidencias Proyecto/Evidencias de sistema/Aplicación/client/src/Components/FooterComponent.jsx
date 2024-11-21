@@ -4,7 +4,7 @@ import WhatsAppIcon from "../assets/img/WhatsApp.webp";
 
 
 export const FooterComponent = () => {
-  return ( <footer className="bg-[#252525] text-white py-6">
+  return (<footer className="bg-[#252525] text-white py-6">
     <div className="max-w-screen-lg w-full mx-auto px-6 text-center">
       <div className="mb-10">
         <h2 className="text-2xl font-bold text-white">Soldado Gym</h2>
@@ -19,7 +19,7 @@ export const FooterComponent = () => {
           <span>Instagram</span>
         </a>
         <a
-          href="https://wa.me/+56963009649"
+          href="https://wa.me/+56992484112?text=Hola, Estoy visitando la página de SoldadoGym y estoy interesado en obtener más información sobre los servicios y planes disponibles. Me gustaría conocer más detalles para evaluar cómo puedo comenzar."
           className="text-gray-300 hover:text-white flex flex-col items-center"
         >
           <img src={WhatsAppIcon} alt="WhatsApp" className="w-10 h-10" />
