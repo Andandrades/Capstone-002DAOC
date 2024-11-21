@@ -24,7 +24,7 @@ const RecoverPage = () => {
 
     const emailHTML = generateEmailHTML({
       nombre: "Juan",
-      resetLink: "https://miaplicacion.com/reset-password?token=abc123",
+      resetLink: "https://soldadogym.vercel.app/recover/cambio",
     });
 
     const payload = {
