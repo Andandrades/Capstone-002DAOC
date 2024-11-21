@@ -20,13 +20,11 @@ const RegisterPage = () => {
     navigate(`/${url}`);
   };
 
-  // Función para generar el HTML del correo
   const generateEmailHTML = (props) => {
     const emailComponent = <ConfirmRegisterTemplate {...props} />;
     return renderToStaticMarkup(emailComponent);
   };
 
-  // Función para manejar el registro
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -47,13 +45,11 @@ const RegisterPage = () => {
         console.log("response", response);
         toast.success(`Usuario registrado correctamente: ${response.message}`);
 
-        // Generar el contenido del correo
         const emailHTML = generateEmailHTML({
-          nombre: "hola",
-          email: "@gmail.cl" ,
+          nombre: name,
+          email: email,
         });
 
-        // Configuración del correo
         const emailPayload = {
           data: { email },
           subject: "¡Bienvenido a Soldado Gym!",
@@ -61,7 +57,6 @@ const RegisterPage = () => {
         };
 
         try {
-          // Enviar el correo de confirmación
           await sendEmail(emailPayload);
           toast.success("Correo de confirmación enviado.");
         } catch (error) {
@@ -69,7 +64,6 @@ const RegisterPage = () => {
           toast.error("No se pudo enviar el correo de confirmación.");
         }
 
-        // Redirigir al login después de 2 segundos
         setTimeout(() => {
           navigate('/login');
         }, 2000);
@@ -84,7 +78,7 @@ const RegisterPage = () => {
     <div className="register-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="logo mb-4">
-        <img src={Logo} alt="Logo" className="mx-auto h-24" onClick={() => goto("")} />
+          <img src={Logo} alt="Logo" className="mx-auto h-24" onClick={() => goto("")} />
         </div>
         <h2 className="text-2xl font-bold text-center mb-6">Registrarse</h2>
 
