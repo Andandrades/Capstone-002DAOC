@@ -11,7 +11,7 @@ const NuevaContraseña = () => {
   const onSubmit = async () => {
     const { password, confirmPassword } = getValues();
 
-    // Validaciones personalizadas con mensajes de Toast
+  
     if (password.length < 8) {
       toast.warning("La contraseña debe tener al menos 8 caracteres.");
       return;
@@ -23,9 +23,9 @@ const NuevaContraseña = () => {
     }
 
     try {
-      // Simular la acción de cambiar la contraseña
+     
       toast.success("Contraseña actualizada correctamente.");
-      navigate("/login"); // Redirigir al inicio de sesión
+      navigate("/login"); 
     } catch (error) {
       console.error("Error al cambiar la contraseña:", error);
       toast.error("Ocurrió un error inesperado.");
