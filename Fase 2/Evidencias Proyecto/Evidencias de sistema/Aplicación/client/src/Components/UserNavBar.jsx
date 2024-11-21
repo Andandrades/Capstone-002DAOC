@@ -13,9 +13,15 @@ export const UserNavBar = () => {
   const navigate = useNavigate();
   const { userData ,fetchAuthData} = useUser();
   const RoleCliente = 1;
-  const LogoutSesion = () => {
-    Logout();
-    fetchAuthData();
+  
+  const LogoutSesion = async () => {
+    try {
+      await Logout();
+      await fetchAuthData();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error en el proceso de cierre de sesión:");
+    }
   };
 
   const goto = (url) => {

@@ -1,9 +1,10 @@
-import  { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './API/UserContext';
+import { toast } from 'react-toastify';
 
 export const BuyLoginmodal = (props) => {
-    const {onClose} = props 
+    const { onClose } = props
     const [error, setError] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,32 +22,25 @@ export const BuyLoginmodal = (props) => {
                 body: JSON.stringify({ email, password }),
                 credentials: "include",
             });
-    
-            if (response.status === 200) {
-                fetchAuthData();
-    
-                // Cambiar `authCheckResponse` por `response`
-                if (!response.ok) {
-                    throw new Error('Error en la verificación de autenticación');
-                }
-    
-                const authData = await response.json();
-                setIsAuth(authData.isAuth);
-                localStorage.setItem("isAuth", JSON.stringify(true));
-    
-            } else {
-                setError("Credenciales inválidas");
+
+            if (!response.ok) {
+                await response.json();
+                toast.error("Usuario o contraseña invalidos.");
+                return;
             }
+
+            fetchAuthData();
         } catch (err) {
-            setError("Error en el servidor");
+            toast.error("Usuario o contraseña invalidos.");
+            console.error(err);
         }
     };
-    
+
     const handleBackdropClick = (e) => {
         if (e.target.classList.contains('modal-backdrop')) {
-          onClose();
+            onClose();
         }
-      };
+    };
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 modal-backdrop"

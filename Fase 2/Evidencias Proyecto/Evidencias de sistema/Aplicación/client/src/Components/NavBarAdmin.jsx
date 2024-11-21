@@ -21,10 +21,16 @@ export const NavBarAdmin = () => {
     navigate(`/${url}`); 
   };
 
-  const LogoutSesion = () => {
-    Logout();
-    fetchAuthData();
+  const LogoutSesion = async () => {
+    try {
+      await Logout();
+      await fetchAuthData();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error en el proceso de cierre de sesión:");
+    }
   };
+  
 
   return (
     <div className="navbar z-10 fixed  shadow-inner">

@@ -28,7 +28,7 @@ const LoginPage = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        await response.json();
         toast.error("Usuario o contraseña invalidos.");
         return;
       }
