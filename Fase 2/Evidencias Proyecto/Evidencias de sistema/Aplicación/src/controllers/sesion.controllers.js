@@ -83,7 +83,6 @@ const registerUser = async (req, res) => {
 
 const checkAuth = async (req, res) => {
   const token = req.cookies.token;
-
   if (!token) {
     return res.status(200).json({ isAuth: false });
   }
