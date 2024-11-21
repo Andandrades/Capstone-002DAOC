@@ -124,7 +124,7 @@ const logOut = async (req, res) => {
     httpOnly: true, 
     secure: process.env.NODE_ENV === "production", 
     expires: new Date(0),
-    sameSite: "Strict",
+    sameSite: "None",
   });
 
   res.status(200).json({ message: "Sesión cerrada" });
