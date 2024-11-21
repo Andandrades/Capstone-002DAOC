@@ -13,7 +13,6 @@ const loginUser = async (req, res) => {
       [email]
     );
     const user = userResult.rows[0];
-    console.log(user)
     if (!user) {
       return res.status(401).json({ message: "Email inválido" });
     }
@@ -36,7 +35,7 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", 
-      sameSite: "Strict",
+      sameSite: "None",
       maxAge: 3600000,
     });
 

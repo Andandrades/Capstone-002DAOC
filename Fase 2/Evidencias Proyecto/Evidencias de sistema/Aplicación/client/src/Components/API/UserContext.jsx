@@ -8,8 +8,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
  const fetchAuthData = () => {
-  setLoading(true); // Establecer que está cargando al inicio
-
+  setLoading(true);
   fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
     method: "GET",
     credentials: "include",
