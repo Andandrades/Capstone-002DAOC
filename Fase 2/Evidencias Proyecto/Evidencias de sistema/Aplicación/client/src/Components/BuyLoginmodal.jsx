@@ -87,14 +87,14 @@ export const BuyLoginmodal = (props) => {
 
                     <button
                         type="submit"
-                        className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
                     >
                         Iniciar sesión
                     </button>
 
                     <button
                         type="button"
-                        className="w-full py-2 mt-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100"
                         onClick={() => navigate('/Register')}
                     >
                         Registrarse
@@ -102,12 +102,16 @@ export const BuyLoginmodal = (props) => {
 
                     <p className="mt-4 text-sm text-center text-gray-600">
                         ¿Olvidaste tu contraseña?{' '}
-                        <span className="text-blue-600 cursor-pointer hover:underline">Recupérala aquí</span>
+                        <span
+                            onClick={() => navigate("recover")}
+                            className="text-purple-600 cursor-pointer underline">
+                            Recupérala aquí
+                        </span>
                     </p>
                 </form>
                 {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
             </div>
-        </div>)
+        </div >)
 }
 
 
