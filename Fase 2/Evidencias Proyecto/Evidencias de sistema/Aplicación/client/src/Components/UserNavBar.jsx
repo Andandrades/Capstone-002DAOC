@@ -11,10 +11,11 @@ import { useUser } from './API/UserContext';
 
 export const UserNavBar = () => {
   const navigate = useNavigate();
-  const { userData } = useUser();
+  const { userData ,fetchAuthData} = useUser();
   const RoleCliente = 1;
   const LogoutSesion = () => {
     Logout();
+    fetchAuthData();
   };
 
   const goto = (url) => {
