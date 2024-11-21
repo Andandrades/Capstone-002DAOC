@@ -62,9 +62,6 @@ export const UserProvider = ({ children }) => {
     fetchAuthData();
   }, []);
 
-
-
-
   const userContextValue = useMemo(() => ({
     isAuth,
     setIsAuth,

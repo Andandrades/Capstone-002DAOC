@@ -14,11 +14,16 @@ import { useUser } from './API/UserContext';
 
 export const NavBarAdmin = () => {
   const navigate = useNavigate();
-  const { userData } = useUser();
+  const { userData,fetchAuthData } = useUser();
   const RoleCliente = 1;
 
   const goto = (url) => {
     navigate(`/${url}`); 
+  };
+
+  const LogoutSesion = () => {
+    Logout();
+    fetchAuthData();
   };
 
   return (
@@ -116,7 +121,7 @@ export const NavBarAdmin = () => {
                     {({ active }) => (
                       <span 
                       className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                      onClick={() =>Logout() }>
+                      onClick={() =>LogoutSesion()}>
                         Cerrar sesión
                       </span>
                     )}
