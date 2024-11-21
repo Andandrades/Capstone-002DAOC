@@ -7,7 +7,7 @@ import { sendEmail } from "../../Components/API/EmailSender";
 import { toast } from "react-toastify";
 import ConfirmRegisterTemplate from "../../assets/emailTemplate/confirmRegisterTemplate";
 import { renderToStaticMarkup } from "react-dom/server";
-import "./RegisterStyle.css";
+
 
 const RegisterPage = () => {
   const navigate = useNavigate();
