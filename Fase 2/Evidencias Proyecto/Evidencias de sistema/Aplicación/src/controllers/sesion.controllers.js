@@ -6,8 +6,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const tokenExpiry = "1h";
 
 const loginUser = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { email, password } = req.body;
   try {
     const userResult = await pool.query(

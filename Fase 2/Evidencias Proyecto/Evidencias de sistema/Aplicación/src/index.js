@@ -6,9 +6,16 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
 config(); 
-
+const PORT = process.env.PORT || 3000;
 const corsOptions = {
-  origin: process.env.FRONTEND_URL, 
+  origin: (origin, callback) => {
+    const allowedOrigins = [process.env.FRONTEND_URL];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true); // Permite el origen
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"], 
@@ -51,8 +58,6 @@ app.use(webpay);
 app.use(subscription);
 app.use(mailer);
 
-
-// Puerto del servidor
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Servidor en funcionamiento en el puerto ${PORT}`);
 });
