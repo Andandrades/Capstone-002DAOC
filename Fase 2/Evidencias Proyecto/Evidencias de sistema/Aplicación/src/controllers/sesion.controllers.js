@@ -119,6 +119,49 @@ const checkAuth = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "No estás autenticado" });
+  }
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    const userId = decoded.id;
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id = $1",
+      [userId]
+    );
+    const user = userResult.rows[0];
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "La contraseña actual es incorrecta" });
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        message: "La nueva contraseña debe tener al menos 8 caracteres",
+      });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await pool.query(
+      "UPDATE users SET password = $1 WHERE id = $2",
+      [hashedPassword, userId]
+    );
+    return res.status(200).json({ message: "Contraseña actualizada con éxito" });
+  } catch (error) {
+    console.error(error);
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expirado. Inicia sesión de nuevo" });
+    }
+    return res.status(500).json({ message: "Error al cambiar la contraseña" });
+  }
+};
+
+
 const logOut = async (req, res) => {
   res.cookie("token", "", {
     httpOnly: true, 
@@ -135,4 +178,5 @@ module.exports = {
   loginUser,
   checkAuth,
   logOut,
+  changePassword
 };

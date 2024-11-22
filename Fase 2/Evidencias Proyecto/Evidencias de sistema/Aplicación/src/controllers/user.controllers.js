@@ -94,7 +94,7 @@ const getUsersByRole = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT * FROM users WHERE fk_rol_id = $1",
+      "SELECT id, name, email, register_date, fk_rol_id,weight,height FROM users WHERE fk_rol_id =$1",
       [roleId]
     );
 

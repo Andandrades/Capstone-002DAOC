@@ -20,7 +20,6 @@ const NutriProfile = ({ userInfo }) => {
   const [consultasTomadas, setConsultasTomadas] = useState(0);
 
   const [isModalTotalOpen, setIsModalTotalOpen] = useState(false);
-  const [isModalTomadasOpen, setIsModalTomadasOpen] = useState(false);
 
   const [refresh, setRefresh] = useState(false);
 

@@ -3,16 +3,17 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useUser } from "../../Components/API/UserContext";
 import ProfileImage from "../../Components/ProfileImage";
 import { UserNavBar } from "../../Components/UserNavBar";
+import { ActualizarUsuario } from '../../Components/API/Users';
+import { useUser } from '../../Components/API/UserContext';
+import { changePassword } from '../../Components/API/sesion';
 
 const ProfilePage = () => {
-  const { userData } = useUser();
   const { register, handleSubmit, formState: { errors }, setError, } = useForm();
   const [showSecurity, setShowSecurity] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
+  const { userData } = useUser();
   const handleChangeFile = async (e) => {
     e.preventDefault();
     const selectedFile = e.target.files[0];
@@ -49,24 +50,45 @@ const ProfilePage = () => {
     }
   };
 
-  const ChangePassword = (data) => {
-    console.log("aprete cambiar contraseña")
-    if (data.password !== data.confirmPassword) {
-      return setError("confirmPassword", {
-        type: "manual",
-        message: "Las contraseñas no coinciden.",
-      });
+  const ChangePassword = async (data) => {
+    data.preventDefault();
+
+    const { oldPassword, password, confirmPassword } = data.target.elements;
+    const oldPasswordValue = oldPassword.value;
+    const passwordValue = password.value;
+    const confirmPasswordValue = confirmPassword.value;
+
+    if (passwordValue !== confirmPasswordValue) {
+      return (toast.info("Contraseña nueva y Comfirmar contraseña nueva no coinciden"))
+    }
+
+    try {
+      await changePassword(oldPasswordValue, passwordValue);
+      toast.success("Contraseña cambiada con éxito");
+    } catch (error) {
+      if (error.message === "La contraseña actual es incorrecta") {
+        toast.error("La contraseña actual es incorrecta.")
+      }
     }
   };
 
+
   const onSubmit = (data) => {
-    console.log("aprete cambiar el de los datos")
-    if (data.password !== data.confirmPassword) {
-      return setError("confirmPassword", {
-        type: "manual",
-        message: "Las contraseñas no coinciden.",
-      });
+    const Payload = {
+      name: userData.name,
+      email: userData.email,
+      weight: data.weight,
+      height: data.height,
+      fk_rol_id: userData.role
+    };
+    try {
+      ActualizarUsuario(userData.id, Payload);
+      toast.success("Datos actualizados correctamente.")
+
+    } catch {
+      toast.error("sucedio un error inesperado al intentar actualizar tus datos.")
     }
+
   };
 
   const toggleSecuritySection = () => {
@@ -80,8 +102,24 @@ const ProfilePage = () => {
       <h3 className="text-xl font-semibold text-gray-800">Configuración de Seguridad</h3>
 
       <form onSubmit={ChangePassword} className="space-y-4">
+        <label htmlFor="oldPassword" className="text-sm font-medium text-gray-700">
+          Contraseña actual
+        </label>
+        <input
+          type="password"
+          name="oldPassword"
+          id="oldPassword"
+          {...register("oldPassword", {
+            required: "La contraseña original es obligatoria",
+          })}
+          className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
+        />
+        {errors.oldPassword && (
+          <span className="text-red-600 text-sm">{errors.password.message}</span>
+        )}
+
         <label htmlFor="password" className="text-sm font-medium text-gray-700">
-          Contraseña
+          Contraseña nueva
         </label>
         <input
           type="password"
@@ -98,7 +136,7 @@ const ProfilePage = () => {
         )}
 
         <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
-          Confirmar contraseña
+          Confirmar contraseña nueva
         </label>
         <input
           type="password"
