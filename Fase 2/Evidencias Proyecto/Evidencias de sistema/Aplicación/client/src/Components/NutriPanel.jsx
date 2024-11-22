@@ -8,6 +8,8 @@ import "react-toastify/ReactToastify.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import HeightIcon from "@mui/icons-material/Height";
+import ScaleIcon from "@mui/icons-material/Scale";
 
 export const NutriPanel = ({
   userId,
@@ -41,7 +43,7 @@ export const NutriPanel = ({
 
     try {
       const respuesta = await axios.get(
-        `${import.meta.env.VITE_API_URL}/users/${clientId}`
+        `${import.meta.env.VITE_API_URL}/userData/${clientId}`
       );
       setUserData(respuesta.data[0]);
     } catch (error) {
@@ -58,8 +60,8 @@ export const NutriPanel = ({
     date: "",
   });
 
-  const [slotMinTime, setSlotMinTime] = useState("08:00"); // Hora mínima visible
-  const [slotMaxTime, setSlotMaxTime] = useState("18:00"); // Hora máxima visible
+  const [slotMinTime, setSlotMinTime] = useState("06:00"); // Hora mínima visible
+  const [slotMaxTime, setSlotMaxTime] = useState("21:00"); // Hora máxima visible
 
   useEffect(() => {
     fetchApoints();
@@ -121,8 +123,7 @@ export const NutriPanel = ({
             type="time"
             id="time"
             className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            min="09:00"
-            max="18:00"
+
             required
             value={slotMinTime}
             onChange={(e) => setSlotMinTime(e.target.value)}
@@ -134,8 +135,7 @@ export const NutriPanel = ({
             type="time"
             id="time"
             className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            min="09:00"
-            max="18:00"
+
             required
             value={slotMaxTime}
             onChange={(e) => setSlotMaxTime(e.target.value)}
@@ -272,6 +272,40 @@ export const NutriPanel = ({
               <div className="p-5 rounded-md  bg-slate-50">
                 <h1 className="font-semibold ">{`Nombre usuario reserva:`}</h1>
                 <h1>{`${userData.name}`}</h1>
+                <div className="flex w-full justify-center gap-2 my-4">
+                  {userData.height ? (
+                    <div className="flex-1 rounded-md bg-blue-500 text-white h-32 py-2 flex justify-center items-center flex-col">
+                      <div className="flex flex-row text-center items-center">
+                        <HeightIcon />
+                        <h1>{userData.height}CM</h1>
+                      </div>
+                      <h1>Estatura</h1>
+                    </div>
+                  ) : (
+                    <div className="flex-1 rounded-md bg-blue-500 text-white h-32 py-2 flex justify-center items-center flex-col">
+                      <div className="flex px-2 flex-row text-center items-center">
+                        <HeightIcon />
+                        <h1>Estatura no registrada</h1>
+                      </div>
+                    </div>
+                  )}
+                  {userData.weight ? (
+                    <div className="flex-1 rounded-md bg-blue-500 text-white h-32 py-2 flex justify-center items-center flex-col">
+                      <div className="flex flex-row text-center items-center justify-center">
+                        <ScaleIcon />
+                        <h1>{userData.weight}CM</h1>
+                      </div>
+                      <h1>Peso</h1>
+                    </div>
+                  ) : (
+                    <div className="flex-1 rounded-md bg-blue-500 text-white h-32 py-2 flex justify-center items-center flex-col">
+                      <div className="flex px-2 flex-row text-center items-center justify-center">
+                        <ScaleIcon />
+                        <h1>Peso no registrada</h1>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : null}
             {confirmDeleteHour ? (

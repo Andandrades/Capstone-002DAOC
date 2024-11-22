@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const { createNutriHour, getAllNutriHour, getNutriHour, updateNutriHour, deleteNutriHour, getHoursByDate, scheduleHour, cancelHour, createMultiHour, dragUpdate, getAvalibleSchedule } = require("../controllers/nutri_schedule.controllers");
+const { createNutriHour, getAllNutriHour, getNutriHour, updateNutriHour, deleteNutriHour, getHoursByDate, scheduleHour, cancelHour, createMultiHour, dragUpdate, getAvalibleSchedule , getNextHour } = require("../controllers/nutri_schedule.controllers");
 
 
 const router = Router();
@@ -8,6 +8,8 @@ const router = Router();
 router.get("/nutriSchedule", getAllNutriHour);
 
 router.get("/GetAvalibleNutriSchedule", getAvalibleSchedule);
+
+router.get("/getNextHour", getNextHour);
 
 router.get("/nutriSchedule/:id", getNutriHour);
 
