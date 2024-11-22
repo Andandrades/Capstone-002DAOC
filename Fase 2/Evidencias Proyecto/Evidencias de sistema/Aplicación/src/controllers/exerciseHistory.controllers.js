@@ -141,7 +141,8 @@ const getUserHistory = async (req, res) => {
   try {
     const resultado = await pool.query(
       `SELECT eh.*, 
-              gs.start_hour, -- Se agrega start_hour desde gym_schedule
+              gs.start_hour,
+              gs.schedule_date,
               COALESCE(json_agg(
                 json_build_object(
                   'exercise_id', e.exercise_id,
@@ -157,19 +158,20 @@ const getUserHistory = async (req, res) => {
               ) FILTER (WHERE e.exercise_id IS NOT NULL), '[]') AS exercises
       FROM exercise_history eh
       LEFT JOIN exercises e ON eh.history_id = e.history_id
-      LEFT JOIN schedule_classes sc ON eh.class_id = sc.class_id -- JOIN entre exercise_history y schedule_classes
-      LEFT JOIN gym_schedule gs ON sc.gym_schedule_id = gs.gym_schedule_id -- JOIN entre schedule_classes y gym_schedule
+      LEFT JOIN schedule_classes sc ON eh.class_id = sc.class_id
+      LEFT JOIN gym_schedule gs ON sc.gym_schedule_id = gs.gym_schedule_id 
       WHERE eh.user_id = $1
-      GROUP BY eh.history_id, gs.start_hour -- GROUP BY necesario para start_hour
+      GROUP BY eh.history_id, gs.start_hour,gs.schedule_date
       ORDER BY eh.created_date DESC`,
       [id]
     );
     if (resultado.rowCount === 0) {
-      res.status(400).json("Este usuario no posee clases registradas");
+      return res.status(202).json("Este usuario no posee clases registradas");
     }
 
     res.status(200).json(resultado.rows);
   } catch (error) {
+    res.status(400).json(error);
     console.error({ error: error });
   }
 };

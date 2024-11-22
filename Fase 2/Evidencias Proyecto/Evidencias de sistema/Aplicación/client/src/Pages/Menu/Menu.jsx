@@ -5,10 +5,12 @@ import { UserNavBar } from "../../Components/UserNavBar"
 import { useUser } from "../../Components/API/UserContext"
 import { subscriptionByUser } from "../../Components/API/subscriptions"
 import { useEffect, useState } from "react"
+import { GetNextClass } from "../../Components/API/Schedule"
 const Menu = () => {
 
     const { userData } = useUser();
     const [suscriptionData, setSuscriptionData] = useState();
+    const [nextClassData, setNextClassData] = useState();
 
     const fetchData = async () => {
         const payload = {
@@ -18,8 +20,14 @@ const Menu = () => {
             const data = await subscriptionByUser(payload);
             const datasuscripcion = JSON.parse(JSON.stringify(data[0]));
             setSuscriptionData(datasuscripcion);
-        } catch (err) {
-            console.log(err);
+        } catch {
+            console.log("error al obtener las suscripciones activas");
+        }
+        try {
+            const NextClass = await GetNextClass(userData.id);
+            setNextClassData(NextClass);
+        } catch {
+            console.log("error al obtener la siguiente clase.");
         }
     };
 
@@ -39,7 +47,8 @@ const Menu = () => {
                 <SuscriptionsCard
                     suscriptionData={suscriptionData} />
                 <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">Siguiente Clase</h1>
-                <NextClass />
+                <NextClass
+                    nextClassData={nextClassData} />
 
             </section>
             <UserNavBar />

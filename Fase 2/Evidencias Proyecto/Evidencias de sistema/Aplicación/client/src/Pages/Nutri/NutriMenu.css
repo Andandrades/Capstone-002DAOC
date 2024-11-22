@@ -50,3 +50,43 @@ input[type="checkbox"]:checked ~ span:nth-of-type(3) {
   background: #e0e0e0;
   box-shadow: 24px 24px 72px #bebebe, -24px -24px 72px #ffffff;
 }
+
+.custom-loader {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  color: #3B82F6;
+  box-shadow: 
+    19px -19px 0 0px, 38px -19px 0 0px, 57px -19px 0 0px,
+    19px 0     0 5px, 38px 0     0 5px, 57px 0     0 5px,
+    19px 19px  0 0px, 38px 19px  0 0px, 57px 19px  0 0px;
+  transform: translateX(-38px);
+  animation: d6 2s infinite linear;
+}
+
+@keyframes d6 {
+  12.5% {box-shadow: 
+    19px -19px 0 0px, 38px -19px 0 0px, 57px -19px 0 5px,
+    19px 0     0 5px, 38px 0     0 0px, 57px 0     0 5px,
+    19px 19px  0 0px, 38px 19px  0 0px, 57px 19px  0 0px}
+  25%   {box-shadow: 
+    19px -19px 0 5px, 38px -19px 0 0px, 57px -19px 0 5px,
+    19px 0     0 0px, 38px 0     0 0px, 57px 0     0 0px,
+    19px 19px  0 0px, 38px 19px  0 5px, 57px 19px  0 0px}
+  50%   {box-shadow: 
+    19px -19px 0 5px, 38px -19px 0 5px, 57px -19px 0 0px,
+    19px 0     0 0px, 38px 0     0 0px, 57px 0     0 0px,
+    19px 19px  0 0px, 38px 19px  0 0px, 57px 19px  0 5px}
+  62.5% {box-shadow: 
+    19px -19px 0 0px, 38px -19px 0 0px, 57px -19px 0 0px,
+    19px 0     0 5px, 38px 0     0 0px, 57px 0     0 0px,
+    19px 19px  0 0px, 38px 19px  0 5px, 57px 19px  0 5px}
+  75%   {box-shadow: 
+    19px -19px 0 0px, 38px -19px 0 5px, 57px -19px 0 0px,
+    19px 0     0 0px, 38px 0     0 0px, 57px 0     0 5px,
+    19px 19px  0 0px, 38px 19px  0 0px, 57px 19px  0 5px}
+  87.5% {box-shadow: 
+    19px -19px 0 0px, 38px -19px 0 5px, 57px -19px 0 0px,
+    19px 0     0 0px, 38px 0     0 5px, 57px 0     0 0px,
+    19px 19px  0 5px, 38px 19px  0 0px, 57px 19px  0 0px}
+}

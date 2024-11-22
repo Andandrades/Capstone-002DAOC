@@ -10,7 +10,9 @@ import { useUser } from '../../Components/API/UserContext';
 import { changePassword } from '../../Components/API/sesion';
 
 const ProfilePage = () => {
-  const { register, handleSubmit, formState: { errors }, setError, } = useForm();
+  const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: errorsProfile } } = useForm();
+  const { register: registerSecurity, handleSubmit: handleSubmitSecurity, formState: { errors: errorsSecurity } } = useForm();
+
   const [showSecurity, setShowSecurity] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const { userData } = useUser();
@@ -50,20 +52,15 @@ const ProfilePage = () => {
     }
   };
 
-  const ChangePassword = async (data) => {
-    data.preventDefault();
-
-    const { oldPassword, password, confirmPassword } = data.target.elements;
-    const oldPasswordValue = oldPassword.value;
-    const passwordValue = password.value;
-    const confirmPasswordValue = confirmPassword.value;
-
-    if (passwordValue !== confirmPasswordValue) {
+  const ChangePassword = async (e) => {
+    console.log(e)
+    const {password,oldPassword,confirmPassword} = e
+    if (password !== confirmPassword) {
       return (toast.info("Contraseña nueva y Comfirmar contraseña nueva no coinciden"))
     }
 
     try {
-      await changePassword(oldPasswordValue, passwordValue);
+      await changePassword(oldPassword, password);
       toast.success("Contraseña cambiada con éxito");
     } catch (error) {
       if (error.message === "La contraseña actual es incorrecta") {
@@ -72,23 +69,14 @@ const ProfilePage = () => {
     }
   };
 
-
   const onSubmit = (data) => {
-    const Payload = {
-      name: userData.name,
-      email: userData.email,
-      weight: data.weight,
-      height: data.height,
-      fk_rol_id: userData.role
-    };
+    const Payload = { name: userData.name, email: userData.email, weight: data.weight, height: data.height, fk_rol_id: userData.role };
     try {
       ActualizarUsuario(userData.id, Payload);
       toast.success("Datos actualizados correctamente.")
-
     } catch {
       toast.error("sucedio un error inesperado al intentar actualizar tus datos.")
     }
-
   };
 
   const toggleSecuritySection = () => {
@@ -97,11 +85,10 @@ const ProfilePage = () => {
 
 
 
-  const SecurityForm = ({ register, errors, onSubmit }) => (
+  const SecurityForm = ({ register, errors }) => (
     <div className="mt-4 space-y-4  p-6 rounded-lg shadow-lg">
       <h3 className="text-xl font-semibold text-gray-800">Configuración de Seguridad</h3>
-
-      <form onSubmit={ChangePassword} className="space-y-4">
+      <form onSubmit={handleSubmitSecurity(ChangePassword)} className="space-y-4">
         <label htmlFor="oldPassword" className="text-sm font-medium text-gray-700">
           Contraseña actual
         </label>
@@ -109,14 +96,12 @@ const ProfilePage = () => {
           type="password"
           name="oldPassword"
           id="oldPassword"
-          {...register("oldPassword", {
+          {...registerSecurity("oldPassword", {
             required: "La contraseña original es obligatoria",
           })}
           className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
         />
-        {errors.oldPassword && (
-          <span className="text-red-600 text-sm">{errors.password.message}</span>
-        )}
+      
 
         <label htmlFor="password" className="text-sm font-medium text-gray-700">
           Contraseña nueva
@@ -126,14 +111,12 @@ const ProfilePage = () => {
           name="password"
           id="password"
           autoComplete="new-password"
-          {...register("password", {
+          {...registerSecurity("password", {
             required: "La contraseña es obligatoria",
           })}
           className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
         />
-        {errors.password && (
-          <span className="text-red-600 text-sm">{errors.password.message}</span>
-        )}
+     
 
         <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
           Confirmar contraseña nueva
@@ -143,14 +126,12 @@ const ProfilePage = () => {
           name="confirmPassword"
           id="confirmPassword"
           autoComplete="new-password"
-          {...register("confirmPassword", {
+          {...registerSecurity("confirmPassword", {
             required: "Debe confirmar la contraseña",
           })}
           className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
         />
-        {errors.confirmPassword && (
-          <span className="text-red-600 text-sm">{errors.confirmPassword.message}</span>
-        )}
+       
 
         <div className="mt-6 flex items-center justify-around gap-x-6 pb-8">
           <button
@@ -171,7 +152,7 @@ const ProfilePage = () => {
         <section className="flex flex-col items-center pb-10 rounded-b-3xl shadow-lg w-[90%]  ">
           <form
             className="w-full bg-white rounded-lg pt-8 space-y-6 border-2  "
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmitProfile(onSubmit)}
           >
             <h1 className="text-4xl font-bold text-black text-center mb-6">
               Mi Perfil
@@ -210,11 +191,11 @@ const ProfilePage = () => {
                 name="email"
                 id="email"
                 value={userData.email}
-                {...register("email")}
+                {...registerProfile("email")}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
               />
-              {errors.email && (
-                <span className="text-red-600 text-sm">{errors.email.message}</span>
+              {errorsProfile.email && (
+                <span className="text-red-600 text-sm">{errorsProfile.email.message}</span>
               )}
 
               <label htmlFor="weight" className="text-sm font-medium text-gray-700">
@@ -225,11 +206,11 @@ const ProfilePage = () => {
                 name="weight"
                 id="weight"
                 defaultValue={userData.weight}
-                {...register("weight", { required: "El peso es obligatorio" })}
+                {...registerProfile("weight", { required: "El peso es obligatorio" })}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
               />
-              {errors.weight && (
-                <span className="text-red-600 text-sm">{errors.weight.message}</span>
+              {errorsProfile.weight && (
+                <span className="text-red-600 text-sm">{errorsProfile.weight.message}</span>
               )}
 
               <label htmlFor="height" className="text-sm font-medium text-gray-700">
@@ -240,11 +221,11 @@ const ProfilePage = () => {
                 name="height"
                 id="height"
                 defaultValue={userData.height}
-                {...register("height", { required: "La altura es obligatoria" })}
+                {...registerProfile("height", { required: "La altura es obligatoria" })}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
               />
-              {errors.height && (
-                <span className="text-red-600 text-sm">{errors.height.message}</span>
+              {errorsProfile.height && (
+                <span className="text-red-600 text-sm">{errorsProfile.height.message}</span>
               )}
             </div>
             <div className="mt-6 flex items-center justify-around gap-x-6 pb-8">
@@ -266,7 +247,7 @@ const ProfilePage = () => {
               Seguridad
             </button>
 
-            {showSecurity && <SecurityForm register={register} errors={errors} />}
+            {showSecurity && <SecurityForm register={registerSecurity} errors={errorsSecurity} />}
           </div>
         </section>
       </div>

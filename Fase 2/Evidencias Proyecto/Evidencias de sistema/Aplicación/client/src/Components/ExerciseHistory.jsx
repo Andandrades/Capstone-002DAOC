@@ -32,7 +32,7 @@ export const ExerciseHistory = ({ infoClass, userData  }) => {
         <div className="justify-start w-[5%] h-full pl-3 py-1 flex-col bg-button-primary rounded-l-xl"></div>
         <div className="flex flex-col justify-start">
           <h1 className="font-semibold ml-3 capitalize">
-            {formatDate(infoClass.created_date)}
+            {formatDate(infoClass.schedule_date)}
           </h1>
           <h1 className="font-semibold ml-3 text-button-primary">
             {infoClass.start_hour}
