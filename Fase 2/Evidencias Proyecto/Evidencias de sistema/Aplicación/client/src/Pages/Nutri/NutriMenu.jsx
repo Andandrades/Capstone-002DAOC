@@ -1,16 +1,18 @@
 import { useState } from "react";
-
 import { SideMenu } from "../../Components/SideMenu";
 import NutriImage from "../../assets/icons/Nutritionist.png";
 import { NutriPanel } from "../../Components/NutriPanel";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {CreateMultiHoursModal} from '../../Components/CreateMultiHoursModal'
+import { CreateMultiHoursModal } from "../../Components/CreateMultiHoursModal";
 
- const NutriMenu = ({ userId }) => {
+
+const NutriMenu = ({ userId }) => {
   const [apoints, setApoints] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+
+ 
 
 
   const fetchApoints = async () => {
@@ -38,19 +40,23 @@ import {CreateMultiHoursModal} from '../../Components/CreateMultiHoursModal'
       });
   };
 
-  const handleBulkSubmit = async ({ selectedDays, startTime, endTime, interval }) => {
+  const handleBulkSubmit = async ({
+    selectedDays,
+    startTime,
+    endTime,
+    interval,
+  }) => {
     try {
-  
       if (selectedDays.length === 0) {
         toast.error("Debe seleccionar al menos un día.");
         return;
       }
-  
+
       // Convertir horas de inicio y fin en objetos Date
       const start = new Date(`1970-01-01T${startTime}:00`);
       const end = new Date(`1970-01-01T${endTime}:00`);
       const bulkSchedules = [];
-  
+
       // Iterar sobre los días seleccionados
       for (let day of selectedDays) {
         // Asegurarse de que day es una fecha válida
@@ -58,34 +64,44 @@ import {CreateMultiHoursModal} from '../../Components/CreateMultiHoursModal'
           console.error("Elemento no es una fecha válida:", day);
           continue; // Saltar si no es una fecha válida
         }
-  
+
         // Crear las horas dentro del intervalo seleccionado
-        for (let current = new Date(start); current < end; current.setMinutes(current.getMinutes() + interval)) {
-          const formattedHour = current.toTimeString().split(' ')[0].slice(0, 5);
-  
+        for (
+          let current = new Date(start);
+          current < end;
+          current.setMinutes(current.getMinutes() + interval)
+        ) {
+          const formattedHour = current
+            .toTimeString()
+            .split(" ")[0]
+            .slice(0, 5);
+
           // Asignar la fecha completa con el día seleccionado y la hora calculada
           const scheduleDate = new Date(day);
           scheduleDate.setHours(current.getHours());
           scheduleDate.setMinutes(current.getMinutes());
-  
+
           const schedule = {
             date: scheduleDate, // Usar la fecha y hora correcta para cada día
             start_hour: formattedHour,
             available: true,
-            nutri_id: userId
+            nutri_id: userId,
           };
-  
+
           bulkSchedules.push(schedule);
         }
       }
-  
+
       // Llamada para crear horarios en lote
-      await axios.post(`${import.meta.env.VITE_API_URL}/nutriSchedule/bulk`, bulkSchedules);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/nutriSchedule/bulk`,
+        bulkSchedules
+      );
       fetchApoints(); // Refresca las horas en la vista
       toast.success("Horas creadas exitosamente.");
     } catch (error) {
-      console.error('Error al crear las horas:', error);
-      
+      console.error("Error al crear las horas:", error);
+
       toast.error("Error al crear las horas.");
     }
   };
@@ -101,13 +117,14 @@ import {CreateMultiHoursModal} from '../../Components/CreateMultiHoursModal'
               Administracion de Horas Nutricionales
             </h1>
           </div>
-          <div className="flex pr-10">
+          <div className="flex pr-10 items-center gap-4">
             <button
               className="bg-green-500 text-white px-4 py-2 rounded"
               onClick={() => setIsBulkModalOpen(true)}
             >
               Crear Horas Rápidamente
             </button>
+            
           </div>
         </div>
         <div className="h-full flex justify-evenly pt-5 bg-slate-100">

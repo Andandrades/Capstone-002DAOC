@@ -2,7 +2,16 @@ const pool = require("../db");
 
 const getAllNutriHour = async (req, res) => {
   try {
-    const resultado = await pool.query("SELECT * FROM nutri_schedule");
+    const resultado = await pool.query(`
+      SELECT ns.*, 
+            u.name, 
+            u.email, 
+            u.weight, 
+            u.height
+      FROM nutri_schedule ns
+      LEFT JOIN users u ON ns.client_id = u.id
+      ORDER BY ns.date ASC
+`);
     res.json(resultado.rows);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -11,7 +20,9 @@ const getAllNutriHour = async (req, res) => {
 
 const getAvalibleSchedule = async (req, res) => {
   try {
-    const resultado = await pool.query("SELECT * FROM nutri_schedule WHERE available = true AND ( date + start_hour ) > NOW();");
+    const resultado = await pool.query(
+      "SELECT * FROM nutri_schedule WHERE available = true AND ( date + start_hour ) > NOW();"
+    );
     res.json(resultado.rows);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -122,8 +133,6 @@ const scheduleHour = async (req, res) => {
   }
 };
 
-
-
 const cancelHour = async (req, res) => {
   const { id } = req.params;
   const { client_id } = req.body;
@@ -167,10 +176,8 @@ const createMultiHour = async (req, res) => {
   }
 
   try {
-    
     await pool.query("BEGIN");
 
-    
     for (const schedule of schedules) {
       const query = `
         INSERT INTO nutri_schedule (start_hour, available, client_id, nutri_id, date)
@@ -179,7 +186,7 @@ const createMultiHour = async (req, res) => {
       const values = [
         schedule.start_hour,
         schedule.available,
-        schedule.client_id || null, 
+        schedule.client_id || null,
         schedule.nutri_id,
         schedule.date,
       ];
@@ -187,28 +194,66 @@ const createMultiHour = async (req, res) => {
       await pool.query(query, values);
     }
 
-    
     await pool.query("COMMIT");
     res.status(200).json({ message: "Horas creadas exitosamente!" });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error al crear las horas" });
   }
 };
 
-const dragUpdate = async (req,res) => {
-  const {nutri_schedule_id , date , start_hour} =req.body;
+const dragUpdate = async (req, res) => {
+  const { nutri_schedule_id, date, start_hour } = req.body;
 
   try {
-    await pool.query('UPDATE nutri_schedule SET date=$1 , start_hour = $2 WHERE nutri_schedule_id = $3',[date, start_hour, nutri_schedule_id])
-     
-    res.status(200).json({message : 'Hora actualizada existosamente'})
+    await pool.query(
+      "UPDATE nutri_schedule SET date=$1 , start_hour = $2 WHERE nutri_schedule_id = $3",
+      [date, start_hour, nutri_schedule_id]
+    );
+
+    res.status(200).json({ message: "Hora actualizada existosamente" });
   } catch (error) {
-    console.error('Error al actualizar hora:', error);
-    res.status(500).json({ message: 'Error al actualizar hora' });
+    console.error("Error al actualizar hora:", error);
+    res.status(500).json({ message: "Error al actualizar hora" });
   }
-}
+};
+
+//Traer siguiente consulta nutricional
+const getNextHour = async (req, res) => {
+  try {
+    const resultado = await pool.query(
+      `
+        SELECT ns.*, 
+          u.name, 
+          u.email, 
+          u.weight, 
+          u.height
+        FROM nutri_schedule ns
+        JOIN users u ON ns.client_id = u.id
+        WHERE make_timestamp(
+                  CAST(EXTRACT(YEAR FROM ns.date) AS INTEGER), 
+                  CAST(EXTRACT(MONTH FROM ns.date) AS INTEGER), 
+                  CAST(EXTRACT(DAY FROM ns.date) AS INTEGER),
+                  CAST(EXTRACT(HOUR FROM ns.start_hour) AS INTEGER), 
+                  CAST(EXTRACT(MINUTE FROM ns.start_hour) AS INTEGER), 
+                  0
+              ) > NOW()
+        ORDER BY ns.date ASC, ns.start_hour ASC
+        LIMIT 1;
+      `
+    );
+    if (resultado === 0) {
+      return res
+        .status(404)
+        .json({ message: "No se encuentran consultas pendientes" });
+    }
+
+    res.status(200).json(resultado.rows[0]);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error de servidor" });
+  }
+};
 
 module.exports = {
   createNutriHour,
@@ -221,5 +266,6 @@ module.exports = {
   cancelHour,
   createMultiHour,
   dragUpdate,
-  getAvalibleSchedule
+  getAvalibleSchedule,
+  getNextHour,
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { UserNavBar } from "../../Components/UserNavBar";
 import { GymHourCard } from "../../Components/GymHourCard";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import "./ScheduleStyles.css";
 import "./SelectDayButton.css";
@@ -25,12 +25,23 @@ const ScheduleGym = () => {
 
   const fetchGymHours = async (day) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`
+      );
       if (!response.ok) {
         throw new Error("Error al obtener las horas");
       }
+
       const data = await response.json();
-      setScheduleInfo(data); // Guardar los datos en el estado
+
+      // Ordenar de temprano a tarde
+      const sortedData = data.sort((a, b) => {
+        const timeA = new Date(`1970-01-01T${a.start_hour}`).getTime();
+        const timeB = new Date(`1970-01-01T${b.start_hour}`).getTime();
+        return timeA - timeB; // Orden ascendente
+      });
+
+      setScheduleInfo(sortedData);
     } catch (error) {
       console.error(error);
     }
@@ -61,8 +72,11 @@ const ScheduleGym = () => {
                         setCurrentDay(day); // Actualizar el día actual
                         setIsOpen(false); // Cerrar la lista al seleccionar
                       }}
-                      className={`py-2 px-4 cursor-pointer ${currentDay === day ? "bg-blue-300" : "bg-blue-100 hover:bg-blue-200"
-                        }`}
+                      className={`py-2 px-4 cursor-pointer ${
+                        currentDay === day
+                          ? "bg-blue-300"
+                          : "bg-blue-100 hover:bg-blue-200"
+                      }`}
                     >
                       {day}
                     </div>
@@ -80,7 +94,9 @@ const ScheduleGym = () => {
               ))
             ) : (
               <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
-                <HelpOutlineIcon sx={{ fill: "#f1c21b", width: "40px", height: "40px" }} />
+                <HelpOutlineIcon
+                  sx={{ fill: "#f1c21b", width: "40px", height: "40px" }}
+                />
                 <p className="font-semibold text-gray-500">
                   No se encuentran horas registradas para este día
                 </p>
