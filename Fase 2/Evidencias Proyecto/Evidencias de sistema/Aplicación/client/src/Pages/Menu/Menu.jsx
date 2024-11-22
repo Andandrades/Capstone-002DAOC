@@ -24,7 +24,6 @@ const Menu = () => {
             console.log("error al obtener las suscripciones activas");
         }
         try {
-            console.log(userData)
             const NextClass = await GetNextClass(userData.id);
             setNextClassData(NextClass);
         } catch {

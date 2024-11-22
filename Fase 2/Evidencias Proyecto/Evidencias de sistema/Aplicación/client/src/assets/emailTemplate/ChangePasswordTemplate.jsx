@@ -73,7 +73,7 @@ const ChangePasswordTemplate = ({ resetLink }) => {
           <p>
             © 2024 MiAplicación |{" "}
             <a
-              href="https://miaplicacion.com/privacidad"
+              href="soldadogym.vercel.app/"
               style={{ color: "#ffd700", textDecoration: "none" }}
             >
               Política de privacidad

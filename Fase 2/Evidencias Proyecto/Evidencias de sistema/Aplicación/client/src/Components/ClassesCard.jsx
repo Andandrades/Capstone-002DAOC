@@ -32,7 +32,7 @@ export const ClassesCard = ({ routine , setIsOpen}) => {
             <h1 className="mb-3">Ultima clase</h1>
             <div className="h-[3px] rounded-full w-full bg-button-primary mb-3"></div>
             <p className="font-semibold capitalize text-button-primary">
-              {formatDate(routine.created_date)}
+              {formatDate(routine.schedule_date)}
             </p>
             <p className="font-semibold capitalize text-button-primary">
               {formatHour(routine.start_hour)}
@@ -47,14 +47,14 @@ export const ClassesCard = ({ routine , setIsOpen}) => {
               <li className="flex justify-start gap-2 items-center pt-3">
                 {" "}
                 <img src={Plus} alt="" />
-                <p>
+                <span>
                   Enfoque muscular:{" "}
                   {routine.target ? (
                     <p className="text-orange-500">{routine.target}</p>
                   ) : (
                     <p className="text-orange-500">Sin Definir</p>
                   )}{" "}
-                </p>
+                </span>
               </li>
             </ul>
             <button onClick={() => setIsOpen(true)} className="w-full bg-button-primary mt-5 py-2 rounded-lg">

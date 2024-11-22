@@ -1,15 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Logo from "../../assets/img/Logo.png";
 import { sendEmail } from '../../Components/API/EmailSender';
 import { toast } from "react-toastify";
 import ChangePasswordTemplate from '../../assets/emailTemplate/ChangePasswordTemplate';
 import { renderToStaticMarkup } from "react-dom/server";
+import { requestPasswordReset } from '../../Components/API/sesion';
 
 const RecoverPage = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const url = process.env.FRONTEND_URL;
 
   const generateEmailHTML = (props) => {
     const emailComponent = <ChangePasswordTemplate {...props} />;
@@ -21,19 +23,17 @@ const RecoverPage = () => {
   };
 
   const onSubmit = async (data) => {
-
-    const emailHTML = generateEmailHTML({
-      nombre: "Juan",
-      resetLink: "https://soldadogym.vercel.app/recover/cambio",
-    });
-
-    const payload = {
-      data,
-      subject: "Recuperar contraseña Soldado",
-      html: emailHTML
-    };
-
+    const response =await requestPasswordReset((data.email));
     try {
+      const emailHTML = generateEmailHTML({
+        nombre: "Juan",
+        resetLink: `${url}/RecoveryPassword?token=${response}`,
+      });
+      const payload = {
+        data,
+        subject: "Recuperar contraseña Soldado",
+        html: emailHTML
+      };
       await sendEmail(payload);
       toast.success("Se ha enviado un correo para recuperar la contraseña.");
     } catch (error) {
