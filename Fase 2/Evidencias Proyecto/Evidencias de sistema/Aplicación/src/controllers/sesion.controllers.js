@@ -49,6 +49,8 @@ const loginUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   const { name, email, password, fk_rol_id } = req.body;
+  const date = new Date();
+
   try {
     const userExists = await pool.query(
       "SELECT * FROM users WHERE email = $1",
@@ -61,8 +63,8 @@ const registerUser = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
-      "INSERT INTO users(name,email,password,register_date,fk_rol_id) VALUES ($1,$2,$3,NOW(),$4) RETURNING id,email,name,fk_rol_id",
-      [name, email, hashedPassword, fk_rol_id]
+      "INSERT INTO users(name,email,password,register_date,fk_rol_id) VALUES ($1,$2,$3,$5,$4) RETURNING id,email,name,fk_rol_id",
+      [name, email, hashedPassword, fk_rol_id,date]
     );
 
     return res
