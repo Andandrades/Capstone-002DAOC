@@ -35,7 +35,7 @@ const loginUser = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, 
+      secure: true,
       sameSite: "None",
       maxAge: 3600000,
     });
@@ -106,8 +106,8 @@ const checkAuth = async (req, res) => {
       role: user.fk_rol_id,
       remaining_classes: user.remaining_classes,
       plan_id: user.plan_id,
-      weight : user.weight,
-      height : user.height,
+      weight: user.weight,
+      height: user.height,
       suscription_id: user.suscription_id
     });
 
@@ -164,8 +164,8 @@ const changePassword = async (req, res) => {
 
 const logOut = async (req, res) => {
   res.cookie("token", "", {
-    httpOnly: true, 
-    secure: true, 
+    httpOnly: true,
+    secure: true,
     expires: new Date(0),
     sameSite: "None",
   });
@@ -173,18 +173,44 @@ const logOut = async (req, res) => {
   res.status(200).json({ message: "Sesión cerrada" });
 };
 
-const resetPassword = async (req, res) => {
-  const { newPassword } = req.body;
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ message: "No estás autenticado" });
+const requestPasswordReset = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    const user = userResult.rows[0];
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    const resetToken = jwt.sign(
+      { email: user.email },
+      jwtSecret,
+      { expiresIn: "15m" }
+    );
+    return res.status(200).json(resetToken);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error el correo no existe" });
   }
+};
+
+const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
 
   try {
+    // Verificar el token
     const decoded = jwt.verify(token, jwtSecret);
     const email = decoded.email;
 
+    // Validar nueva contraseña
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        message: "La nueva contraseña debe tener al menos 8 caracteres",
+      });
+    }
+
+    // Buscar al usuario por correo
     const userResult = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
@@ -195,36 +221,37 @@ const resetPassword = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    if (newPassword.length < 8) {
-      return res.status(400).json({
-        message: "La nueva contraseña debe tener al menos 8 caracteres",
-      });
-    }
-
+    // Hashear la nueva contraseña
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Actualizar la contraseña
     await pool.query(
       "UPDATE users SET password = $1 WHERE email = $2",
       [hashedPassword, email]
     );
 
-    return res.status(200).json({ message: "Contraseña actualizada con éxito" });
+    return res
+      .status(200)
+      .json({ message: "Contraseña restablecida con éxito" });
   } catch (error) {
-    console.error("Error al cambiar la contraseña:", error);
+    console.error(error);
 
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({
-        message: "Token expirado. Por favor, solicita un nuevo enlace de restablecimiento",
+        message: "El token ha expirado. Solicita un nuevo enlace de restablecimiento.",
       });
     }
 
-    return res.status(500).json({ message: "Error al cambiar la contraseña" });
+    return res.status(500).json({ message: "Error al restablecer la contraseña" });
   }
-}
+};
+
 module.exports = {
   registerUser,
   loginUser,
   checkAuth,
   logOut,
   changePassword,
+  requestPasswordReset,
   resetPassword
 };

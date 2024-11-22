@@ -4,7 +4,7 @@ const URL = `${import.meta.env.VITE_API_URL}`;
 export const Login = async (payload) => {
     try {
         const response = await axios.post(`${URL}/Nutri`, payload);
-        return response.data 
+        return response.data
     } catch (error) {
         console.error("Error al añadir el plan:", error);
     }
@@ -13,8 +13,8 @@ export const Login = async (payload) => {
 export const Register = async (payload) => {
     try {
         const response = await axios.post(`${URL}/register`, payload);
-        return response.data 
-        
+        return response.data
+
     } catch (error) {
         console.error("Error al añadir registrar el usuario:", error);
     }
@@ -30,11 +30,27 @@ export const Logout = async () => {
     }
 };
 
+export const requestPasswordReset = async (email) => {
+    try {
+        const response = await axios.post(
+            `${URL}/request-reset-password`,
+            { email },
+            { withCredentials: true }
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error al solicitar el cambio de contraseña:", error);
+        throw error;
+    }
+};
+
+
 export const changePassword = async (currentPassword, newPassword) => {
     try {
         const response = await axios.post(
-            `${URL}/change-password`, 
-            { currentPassword, newPassword }, 
+            `${URL}/change-password`,
+            { currentPassword, newPassword },
             { withCredentials: true }
         );
         return response.data;
@@ -43,3 +59,5 @@ export const changePassword = async (currentPassword, newPassword) => {
         throw error.response ? error.response.data : { message: "Error desconocido" };
     }
 };
+
+

@@ -4,21 +4,15 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Logo from "../../assets/img/Logo.png";
 import { toast } from "react-toastify";
 
-const NuevaContraseña = () => {
+const RecoveryPassword = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token'); 
   const { register, handleSubmit, getValues } = useForm();
-
-  useEffect(() => {
-    if (token) {
-      document.cookie = `token=${token}; path=/;`;
-    }
-  }, [token]);
+  const URL = `${import.meta.env.VITE_API_URL}`;
 
   const onSubmit = async () => {
     const { password, confirmPassword } = getValues();
-
     if (password.length < 8) {
       toast.warning("La contraseña debe tener al menos 8 caracteres.");
       return;
@@ -30,10 +24,10 @@ const NuevaContraseña = () => {
     }
 
     try {
-      const response = await fetch('/api/recover/reset-password', {
+      const response = await fetch(`${URL}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ newPassword: password })
+        body: JSON.stringify({ newPassword: password, token: token })
       });
 
       if (response.ok) {
@@ -53,8 +47,8 @@ const NuevaContraseña = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
         <div className="flex justify-center items-center mb-6 flex-col">
-          <img src={Logo} alt="Logo" className="w-50 h-auto" />
-          <h2>Actualizar Contraseña</h2>
+        <img src={Logo} alt="Logo" className="w-50 h-auto" onClick={() => navigate("/")} />
+        <h2>Actualizar Contraseña</h2>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
@@ -91,4 +85,4 @@ const NuevaContraseña = () => {
   );
 };
 
-export default NuevaContraseña;
+export default RecoveryPassword;
