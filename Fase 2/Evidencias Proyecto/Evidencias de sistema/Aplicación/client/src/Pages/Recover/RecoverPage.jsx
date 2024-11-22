@@ -23,25 +23,29 @@ const RecoverPage = () => {
   };
 
   const onSubmit = async (data) => {
-    const response =await requestPasswordReset((data.email));
     try {
-      const emailHTML = generateEmailHTML({
-        nombre: "Juan",
-        resetLink: `${url}/RecoveryPassword?token=${response}`,
-      });
-      const payload = {
-        data,
-        subject: "Recuperar contraseña Soldado",
-        html: emailHTML
-      };
-      await sendEmail(payload);
-      toast.success("Se ha enviado un correo para recuperar la contraseña.");
-    } catch (error) {
-      console.error("Error al enviar el correo:", error);
-      toast.error("Sucedió algo inesperado.");
-    }
-  };
+      const response = await requestPasswordReset((data.email));
 
+      try {
+        const emailHTML = generateEmailHTML({
+          nombre: "Juan",
+          resetLink: `${url}/RecoveryPassword?token=${response}`,
+        });
+        const payload = {
+          data,
+          subject: "Recuperar contraseña Soldado",
+          html: emailHTML
+        };
+        await sendEmail(payload);
+        toast.success("Se ha enviado un correo para recuperar la contraseña.");
+      } catch (error) {
+        console.error("Error al enviar el correo:", error);
+        toast.error("Sucedió algo inesperado.");
+      }
+    } catch {
+      toast.error("El email no existe en el sistema.");
+    }
+  }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
