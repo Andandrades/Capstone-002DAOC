@@ -3,7 +3,7 @@ const pool = require("../db");
 
 //import de los controladores
 
-const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , scheduleHour , deleteHour ,getUserClasses} = require("../controllers/scheduleClases.controllers");
+const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , scheduleHour , deleteHour ,getUserClasses,getNextClass} = require("../controllers/scheduleClases.controllers");
 
 const router = Router();
 
@@ -18,34 +18,21 @@ const corsOptions = {
     credentials: true, // Permitir cookies
 };
 
-
 router.get("/schedule", getAll);
-
-
-
 router.get("/schedule/:id", getbyid);
-
-
 router.get("/scheduleinfo/:id", getHourByGymId);
-
 router.post("/schedule", create);
-
 router.put("/schedule", update);
-
-
 router.delete("/schedule/:id", deletebyid);
-
 //Registrar asistencia (Endpoint usuarios)
 router.post("/scheduleHour", scheduleHour);
 //Eliminar hora registrada(Endpoint usuarios)
 router.delete("/scheduleHour/:class_id", deleteHour);
 //Conseguir horas de usuario
 router.get("/scheduleHour/:id/:class_id", getUserClasses);
-
 router.get("/scheduleHour/:id/:class_id", cors(corsOptions));
-
+router.get("/scheduleNextClass/:id", getNextClass);
 
 router.options("/schedule/:id", cors(corsOptions));
-
 
 module.exports = router;

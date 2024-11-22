@@ -189,7 +189,7 @@ const scheduleHour = async (req, res) => {
 const deleteHour = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  
+
   const { class_id } = req.params;
   const { suscription_id } = req.body;
 
@@ -220,7 +220,7 @@ const deleteHour = async (req, res) => {
     await pool.query("DELETE FROM exercise_history WHERE class_id = $1", [
       class_id,
     ]);
-    
+
 
     await pool.query("DELETE FROM schedule_classes WHERE class_id = $1", [
       class_id,
@@ -236,13 +236,13 @@ const deleteHour = async (req, res) => {
       [suscription_id]
     );
 
-   
-    
+
+
 
     res.status(200).json({ message: "Hora eliminada exitosamente" });
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({ error: "Error al eliminar asistencia" });
   }
 };
@@ -268,7 +268,28 @@ const getUserClasses = async (req, res) => {
   }
 };
 
-//Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
+
+const getNextClass = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      `SELECT * FROM gym_schedule gs LEFT JOIN schedule_classes sc ON gs.gym_schedule_id = sc.gym_schedule_id WHERE sc.client_id = $1   AND gs.schedule_date > CURRENT_TIMESTAMP
+ ORDER BY sc.scheduled_date DESC, gs.start_hour DESC LIMIT 1`,
+      [id]);
+
+    if (resultado.rows.length === 0) {
+      return res.json({ message: "No classes found for the given client" });
+    }
+
+    res.json(resultado.rows[0]);
+  } catch (error) {
+    return res.json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAll,
   getbyid,
@@ -279,4 +300,5 @@ module.exports = {
   scheduleHour,
   deleteHour,
   getUserClasses,
+  getNextClass
 };

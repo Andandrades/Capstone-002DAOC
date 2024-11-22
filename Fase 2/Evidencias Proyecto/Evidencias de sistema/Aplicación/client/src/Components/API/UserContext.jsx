@@ -21,7 +21,6 @@ export const UserProvider = ({ children }) => {
       localStorage.setItem("isAuth", JSON.stringify(isAuthenticated));
 
       if (isAuthenticated) {
-        // Si está autenticado, solo asignar datos válidos
         const user = {
           id: data.userId ,
           name: data.name ,
