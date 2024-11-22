@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 import Garant from "../assets/Guarantee.svg"
 import Bookmark from "../assets/Bookmark.svg"

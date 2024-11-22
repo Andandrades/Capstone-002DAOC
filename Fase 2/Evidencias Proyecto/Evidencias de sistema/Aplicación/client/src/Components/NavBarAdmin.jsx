@@ -25,7 +25,7 @@ export const NavBarAdmin = () => {
     try {
       await Logout();
       await fetchAuthData();
-      window.location.reload();
+      goto()
     } catch (error) {
       console.error("Error en el proceso de cierre de sesión:");
     }
