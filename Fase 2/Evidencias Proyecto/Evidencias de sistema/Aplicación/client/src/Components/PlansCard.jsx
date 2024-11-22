@@ -31,12 +31,12 @@ export const Plans = (props) => {
             <h2 className="font-bold text-[20px] line-through text-[#FF6666] mt-2">
               ${StringedAmount} CLP
             </h2>
-            <h2 className="font-bold text-[40px] mt-2 text-[#FFAE3A]">
+            <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]">
               ${StringedOfferPrice} CLP
             </h2>
           </>
         ) : (
-          <h2 className="font-bold text-[40px] mt-2 text-[#FFAE3A]">
+          <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]">
             ${StringedAmount} CLP
           </h2>
         )}

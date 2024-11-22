@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Icon } from "@mui/material";
 
 import "./css/NavBar.css";
 

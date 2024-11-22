@@ -1,6 +1,5 @@
 import React from 'react'
 import { NavBarAdmin } from '../../../Components/NavBarAdmin'
-
 export const AdminLandingPage = () => {
   return (
     <>
@@ -11,4 +10,4 @@ export const AdminLandingPage = () => {
     </>
   )
 }
- export default AdminLandingPage;
+export default AdminLandingPage;

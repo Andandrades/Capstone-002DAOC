@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,10 @@ export const NutriHourCard = ({
   const { nutri_schedule_id, start_hour, date, available, client_id } =
     appointments;
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
+
+  useEffect(() => {
+    console.log(userId);
+  }, []);
 
   const confirmModal = async () => {
     setIsOpenConfirm(!isOpenConfirm);
@@ -34,8 +38,7 @@ export const NutriHourCard = ({
     if (userId) {
       try {
         const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
+          `${import.meta.env.VITE_API_URL
           }/nutriScheduleClient/${nutri_schedule_id}`,
           {
             method: "PATCH",
@@ -64,8 +67,7 @@ export const NutriHourCard = ({
   const cancelHour = async () => {
     try {
       const res = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
+        `${import.meta.env.VITE_API_URL
         }/nutriScheduleClientcancel/${nutri_schedule_id}`,
         {
           method: "PATCH",
@@ -80,12 +82,14 @@ export const NutriHourCard = ({
 
       if (res.ok) {
         toast.success("Hora Eliminada correctamente");
-        setIsOpenConfirm(false); // Cierra el modal si es exitoso
+        setIsOpenConfirm(false); 
         setIsScheduled(!scheduled);
       } else {
         toast.error("Error al agendar la hora");
       }
-    } catch (error) {}
+    } catch (error) { 
+      toast.error("Error al cancelar la hora");
+    }
   };
 
   return (
@@ -96,20 +100,29 @@ export const NutriHourCard = ({
         {available ? (
           <span>Disponible</span>
         ) : (
-          <span className="text-red-600">No Disponible</span>
+          <>
+            {client_id === userId ? (
+              <span className="text-green-600">Hora registrada por ti</span>
+            ) : (
+              <span className="text-red-600">No Disponible</span>
+            )}
+          </>
         )}
       </div>
       <div className="w-full flex justify-center items-center">
         {available ? (
           <button
             onClick={() => confirmModal()}
-            className="bg-button-primary text-white rounded-full mt-2"
+            className="bg-button-primary text-white rounded-full px-2 mt-2"
           >
             Reservar
           </button>
         ) : null}
         {client_id === userId ? (
-          <button onClick={() => cancelHour()} className="bg-yellow-300 text-black font-medium rounded-full mt-2">
+          <button
+            onClick={() => cancelHour()}
+            className="bg-yellow-300 px-2 text-black font-medium rounded-full mt-2"
+          >
             Cancelar Hora
           </button>
         ) : null}

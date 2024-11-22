@@ -6,9 +6,16 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
 config(); 
-
+const PORT = process.env.PORT || 3000;
 const corsOptions = {
-  origin: process.env.FRONTEND_URL, 
+  origin: (origin, callback) => {
+    const allowedOrigins = [process.env.FRONTEND_URL];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true); // Permite el origen
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"], 
@@ -28,12 +35,14 @@ const rolesExercise = require("./routes/exercise.Routes");
 const ExercisesRecords = require("./routes/exerciseHistory.Routes");
 const nutriScheduleRoutes = require("./routes/nutri_schedule.routes");
 const schedule_classes = require("./routes/scheduleClases.routes");
-const transactionRoutes = require("./routes/transaction.routes");
 const sesionRoutes = require("./routes/sesion.routes");
 const plansRoutes = require("./routes/plans.Routes");
 const Nutri = require("./routes/nutri.Routes");
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
 const webpay = require("./routes/Webpay.Routes");
+const subscription = require("./routes/subscription.routes")
+const mailer = require("./routes/Mailer.Routes")
+
 // Inicializar Rutas
 app.use(rolesRoutes);
 app.use(usersRoutes);
@@ -42,13 +51,13 @@ app.use(ExercisesRecords);
 app.use(Nutri);
 app.use(nutriScheduleRoutes);
 app.use(schedule_classes);
-app.use(transactionRoutes);
 app.use(sesionRoutes);
 app.use(plansRoutes);
 app.use(gymHoursRoutes);
 app.use(webpay);
+app.use(subscription);
+app.use(mailer);
 
-// Puerto del servidor
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Servidor en funcionamiento en el puerto ${PORT}`);
 });

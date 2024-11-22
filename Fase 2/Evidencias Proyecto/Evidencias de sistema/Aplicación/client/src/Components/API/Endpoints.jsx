@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = "http://localhost:3000";
+const URL = `${import.meta.env.VITE_API_URL}`;
 
 
 //rutas de administrar planes
@@ -16,11 +16,17 @@ export const obtenerPlanes = async () => {
 export const deletePlan = async (id) => {
     try {
         const response = await axios.delete(`${URL}/plans/${id}`);
-        return response.data 
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            throw new Error('No se pudo eliminar el plan');
+        }
     } catch (error) {
         console.error("Error al eliminar el plan:", error);
+        throw error; 
     }
 };
+
 
 export const addPlan = async (payload) => {
     try {
@@ -79,14 +85,15 @@ export const addNutri = async (payload) => {
     }
 };
 
-//Manejo de sesiónes
 
-export const Register = async (payload) => {
+//agenta nutricionista 
+
+export const GetAvalibleNutriSchedule = async () => {
     try {
-        const response = await axios.post(`${URL}/register`, payload);
-        return response.data 
+        const response = await axios.get(`${URL}/GetAvalibleNutriSchedule`);
+        return response.data;
     } catch (error) {
-        return error.data
+        console.error("Error al obtener las consultas nutricionales:", error);
+        throw error;
     }
 };
-

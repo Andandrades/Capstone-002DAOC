@@ -3,7 +3,6 @@ const pool = require("../db");
 const cors = require("cors");
 const express = require("express");
 const app = express();
-app.use(cors());
 
 //Traer todas las horas
 const getGymHours = async (req, res) => {
@@ -27,7 +26,7 @@ const getHoursByDate = async (req, res) => {
 
     if (resultado.rows.length === 0) {
       return res
-        .status(400)
+        .status(202)
         .json({ message: "No se encuentran clases para esta fecha" });
     }
 

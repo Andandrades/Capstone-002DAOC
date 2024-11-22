@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import registrate from "../../assets/img/Registrate.webp";
-import { Register } from "../../Components/API/Endpoints";
+import Logo from "../../assets/img/Logo.png";
+import { Register } from "../../Components/API/sesion";
 import "./RegisterStyle.css";
+import { sendEmail } from "../../Components/API/EmailSender";
 import { toast } from "react-toastify";
+import ConfirmRegisterTemplate from "../../assets/emailTemplate/confirmRegisterTemplate";
+import { renderToStaticMarkup } from "react-dom/server";
+
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -11,13 +15,21 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
+
+  const goto = (url) => {
+    navigate(`/${url}`);
+  };
+
+  const generateEmailHTML = (props) => {
+    const emailComponent = <ConfirmRegisterTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.warn("Las contraseñas no coinciden.");
+      toast.info("Las contraseñas no coinciden.");
       return;
     }
 
@@ -29,24 +41,44 @@ const RegisterPage = () => {
     };
 
     Register(payload)
-      .then(response => {
-        toast.success(`${response.message}`);
+      .then(async (response) => {
+        console.log("response", response);
+        toast.success(`Usuario registrado correctamente: ${response.message}`);
+
+        const emailHTML = generateEmailHTML({
+          nombre: name,
+          email: email,
+        });
+
+        const emailPayload = {
+          data: { email },
+          subject: "¡Bienvenido a Soldado Gym!",
+          html: emailHTML,
+        };
+
+        try {
+          await sendEmail(emailPayload);
+          toast.success("Correo de confirmación enviado.");
+        } catch (error) {
+          console.error("Error al enviar el correo de confirmación:", error);
+          toast.error("No se pudo enviar el correo de confirmación.");
+        }
+
         setTimeout(() => {
           navigate('/login');
         }, 2000);
       })
       .catch(error => {
-        toast.warning(`Error al registrar: `, error);
-        console.log("error",error)
+        console.log("error", error);
+        toast.error(`Error al registrarte: ${error.message}`);
       });
   };
 
   return (
     <div className="register-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-
       <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="logo mb-4">
-          <img src={registrate} alt="Registro" className="mx-auto w-24 h-auto" />
+          <img src={Logo} alt="Logo" className="mx-auto h-24" onClick={() => goto("")} />
         </div>
         <h2 className="text-2xl font-bold text-center mb-6">Registrarse</h2>
 
@@ -54,7 +86,7 @@ const RegisterPage = () => {
           <label htmlFor="name" className="block text-gray-700 mb-2">Nombre de usuario</label>
           <input
             type="text"
-            id="Username"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -82,6 +114,7 @@ const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength="8"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -98,8 +131,12 @@ const RegisterPage = () => {
           />
         </div>
 
-        <button type="submit" className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200 btn-primary">Registrarse</button>
-        <button type="button" className="w-full mt-4 text-indigo-500 py-2 hover:underline" onClick={() => navigate('/login')}>Volver</button>
+        <button type="submit" className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200 btn-primary">
+          Registrarse
+        </button>
+        <button type="button" className="w-full mt-4 text-indigo-500 py-2 hover:underline" onClick={() => navigate('/login')}>
+          Volver
+        </button>
       </form>
     </div>
   );

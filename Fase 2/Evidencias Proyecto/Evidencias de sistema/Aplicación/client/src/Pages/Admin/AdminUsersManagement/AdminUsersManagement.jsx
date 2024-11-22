@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import './AdminUsersManagement.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SportsIcon from '@mui/icons-material/Sports';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import GroupsIcon from '@mui/icons-material/Groups'; 
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import { ObtenerClientes, ObtenerEntrenadores, ObtenerNutricionistas, ObtenerAdministradores, EliminarUsuario, CrearUsuario, ActualizarUsuario } from '../../../Components/API/Users';
+import UserRoleCard from '../../../Components/UserRoleCard';
+import Spinner from '../../../Components/Spinner';
+import './AdminUsersManagement.css'; 
 
 const AdminUsersManagement = () => {
   const [clients, setClients] = useState([]);
@@ -28,31 +32,30 @@ const AdminUsersManagement = () => {
   const [newUserName, setNewUserName] = useState('');
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
-  const [newUserWeight, setNewUserWeight] = useState('');
-  const [newUserHeight, setNewUserHeight] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [editUserName, setEditUserName] = useState('');
   const [editUserEmail, setEditUserEmail] = useState('');
-  const [editUserPassword, setEditUserPassword] = useState('');
   const [editUserWeight, setEditUserWeight] = useState('');
   const [editUserHeight, setEditUserHeight] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Función para obtener usuarios agrupados por rol
+  const fetchUsersByRole = async () => {
+    try {
+      const clientsData = await ObtenerClientes();
+      const trainersData = await ObtenerEntrenadores();
+      const nutritionistsData = await ObtenerNutricionistas();
+      const administratorsData = await ObtenerAdministradores();
+      setClients(clientsData.map(user => user));
+      setNutritionists(nutritionistsData.map(user => user));
+      setTrainers(trainersData.map(user => user));
+      setAdministrators(administratorsData.map(user => user));
+    } catch (error) {
+      console.error('Error al obtener los usuarios por rol:', error);
+      toast.error('Error al obtener los usuarios, por favor intente de nuevo.');
+    }
+  };
+
   useEffect(() => {
-    const fetchUsersByRole = async () => {
-      try {
-        const clientsData = await ObtenerClientes();
-        const trainersData = await ObtenerEntrenadores();
-        const nutritionistsData = await ObtenerNutricionistas();
-        const administratorsData = await ObtenerAdministradores();
-        setClients(clientsData.map(user => user));
-        setNutritionists(nutritionistsData.map(user => user));
-        setTrainers(trainersData.map(user => user));
-        setAdministrators(administratorsData.map(user => user));
-      } catch (error) {
-        console.error('Error al obtener los usuarios por rol:', error);
-      }
-    };
-
     fetchUsersByRole();
   }, []);
 
@@ -64,19 +67,28 @@ const AdminUsersManagement = () => {
 
   const confirmDelete = async () => {
     try {
-      await EliminarUsuario(selectedUser.id);
-      if (userType === 'nutritionist') {
-        setNutritionists(nutritionists.filter(nutritionist => nutritionist.id !== selectedUser.id));
-      } else if (userType === 'trainer') {
-        setTrainers(trainers.filter(trainer => trainer.id !== selectedUser.id));
-      } else if (userType === 'administrator') {
-        setAdministrators(administrators.filter(admin => admin.id !== selectedUser.id));
-      } else if (userType === 'client') {
-        setClients(clients.filter(client => client.id !== selectedUser.id));
+      const response = await EliminarUsuario(selectedUser.id);
+      if (response.message === 'Usuario eliminado con éxito') {
+        if (userType === 'nutritionist') {
+          setNutritionists(nutritionists.filter(nutritionist => nutritionist.id !== selectedUser.id));
+        } else if (userType === 'trainer') {
+          setTrainers(trainers.filter(trainer => trainer.id !== selectedUser.id));
+        } else if (userType === 'administrator') {
+          setAdministrators(administrators.filter(admin => admin.id !== selectedUser.id));
+        } else if (userType === 'client') {
+          setClients(clients.filter(client => client.id !== selectedUser.id));
+        }
+        toast.success(response.message);
+      } else {
+        toast.error('Error al eliminar al usuario');
       }
       setShowPopup(false);
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
+      toast.error('Error al eliminar al usuario');
+    } finally {
+      setLoading(false);
+      fetchUsersByRole();
     }
   };
 
@@ -102,7 +114,17 @@ const AdminUsersManagement = () => {
 
   const confirmAddUser = async () => {
     if (!validateEmail(newUserEmail)) {
-      alert('Verifique que el correo que escribio es valido.');
+      toast.info('El correo electrónico que ingresó no es válido, por favor verifíquelo o ingrese uno nuevo.');
+      return;
+    }
+
+    if (newUserPassword.length < 8) {
+      toast.error('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    if (newUserPassword !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden. Por favor, vuelva a poner las contraseñas');
       return;
     }
 
@@ -110,29 +132,29 @@ const AdminUsersManagement = () => {
       name: newUserName,
       email: newUserEmail,
       password: newUserPassword,
-      fk_rol_id: userType === 'client' ? 1 : userType === 'nutritionist' ? 3 : userType === 'trainer' ? 2 : 4,
-      weight: newUserWeight,
-      height: newUserHeight
+      fk_rol_id: userType === 'clientes' ? 1 : userType === 'nutricionistas' ? 3 : userType === 'entrenadores' ? 2 : 4
     };
     try {
-      const createdUser = await CrearUsuario(newUser);
-      if (userType === 'client') {
+      const response = await CrearUsuario(newUser);
+      const createdUser = response.user;
+      if (userType === 'clientes') {
         setClients([...clients, createdUser]);
-      } else if (userType === 'nutritionist') {
+      } else if (userType === 'nutricionistas') {
         setNutritionists([...nutritionists, createdUser]);
-      } else if (userType === 'trainer') {
+      } else if (userType === 'entrenadores') {
         setTrainers([...trainers, createdUser]);
-      } else if (userType === 'administrator') {
+      } else if (userType === 'administradores') {
         setAdministrators([...administrators, createdUser]);
       }
       setNewUserName('');
       setNewUserEmail('');
       setNewUserPassword('');
-      setNewUserWeight('');
-      setNewUserHeight('');
+      setConfirmPassword('');
       setShowAddPopup(false);
+      toast.success('El usuario se ha creado con éxito');
     } catch (error) {
       console.error('Error al crear el usuario:', error);
+      toast.error('El usuario no se ha podido crear correctamente');
     }
   };
 
@@ -140,7 +162,6 @@ const AdminUsersManagement = () => {
     setSelectedUser(user);
     setEditUserName(user.name || '');
     setEditUserEmail(user.email || '');
-    setEditUserPassword(user.password || '');
     setEditUserWeight(user.weight || '');
     setEditUserHeight(user.height || '');
     setUserType(type); 
@@ -148,165 +169,134 @@ const AdminUsersManagement = () => {
   };
 
   const confirmEditUser = async () => {
-    if (!validateEmail(editUserEmail)) {
-      alert('Ingresa un correo electrónico válido.');
-      return;
-    }
-
-    const updatedUser = {
+    const Payload = {
       name: editUserName,
       email: editUserEmail,
-      password: editUserPassword,
       weight: editUserWeight,
       height: editUserHeight,
       fk_rol_id: selectedUser.fk_rol_id 
     };
+
+    // Verificar si hay cambios
+    const hasChanges = (
+      editUserName !== selectedUser.name ||
+      editUserEmail !== selectedUser.email ||
+      editUserWeight !== selectedUser.weight ||
+      editUserHeight !== selectedUser.height
+    );
+
+    if (!hasChanges) {
+      toast.warn('Por favor, realice cambios antes de guardar.');
+      return;
+    }
+
     try {
-      const updated = await ActualizarUsuario(selectedUser.id, updatedUser);
-      if (userType === 'client') {
-        setClients(clients.map(client => (client.id === selectedUser.id ? updated : client)));
-      } else if (userType === 'nutritionist') {
-        setNutritionists(nutritionists.map(nutritionist => (nutritionist.id === selectedUser.id ? updated : nutritionist)));
-      } else if (userType === 'trainer') {
-        setTrainers(trainers.map(trainer => (trainer.id === selectedUser.id ? updated : trainer)));
-      } else if (userType === 'administrator') {
-        setAdministrators(administrators.map(admin => (admin.id === selectedUser.id ? updated : admin)));
+      const response = await ActualizarUsuario(selectedUser.id, Payload);
+      if (response.message === 'Usuario actualizado con éxito') {
+        const updated = response.user; 
+        if (userType === 'clientes') {
+          setClients(clients.map(client => (client.id === selectedUser.id ? updated : client)));
+        } else if (userType === 'nutricionistas') {
+          setNutritionists(nutritionists.map(nutritionist => (nutritionist.id === selectedUser.id ? updated : nutritionist)));
+        } else if (userType === 'entrenadores') {
+          setTrainers(trainers.map(trainer => (trainer.id === selectedUser.id ? updated : trainer)));
+        } else if (userType === 'administradores') {
+          setAdministrators(administrators.map(admin => (admin.id === selectedUser.id ? updated : admin)));
+        }
+        toast.success('El usuario se ha editado con éxito');
+      } else {
+        toast.success('El usuario se ha editado con éxito');
       }
       setShowEditPopup(false);
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
+      toast.error('Error al editar al usuario, por favor intente de nuevo.');
+    } finally {
+      setLoading(false);
+      fetchUsersByRole();
     }
   };
 
   return (
     <>
       <NavBarAdmin />
+      {loading ? (
+        <Spinner />
+      ) : (
       <div className="roles-container">
         <h1 className="roles-title">Administrar roles</h1>
 
-        {/* Clientes */}
-        <div className="roles-menu">
-          <h2 onClick={() => setShowClients(!showClients)} className="roles-menuTitle" style={{ color: 'blue' }}>
-            <DirectionsBikeIcon style={{ marginRight: '8px' }} />
-            Clientes
-            <AddBoxIcon style={{ marginLeft: '8px', color: 'green', cursor: 'pointer' }} onClick={() => handleAddUser('client')} />
-          </h2>
-          {showClients && (
-            <ul className="roles-list">
-              {clients.map((client, index) => (
-                <li key={index} className="roles-listItem">
-                  <span>{client.name}</span>
-                  <div className="dropdown">
-                    <button className="dropdown-button" onClick={() => toggleDropdown(client, 'client')}>
-                      <KeyboardDoubleArrowDownIcon />
-                    </button>
-                    {selectedUser === client && (
-                      <div className="dropdown-content">
-                        <button className="edit-button" onClick={() => handleEditClick(client, 'client')}>Editar</button>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+          <UserRoleCard
+            title="Clientes"
+            color="blue"
+            icon={DirectionsBikeIcon}
+            users={clients}
+            showUsers={showClients}
+            setShowUsers={setShowClients}
+            handleAddUser={handleAddUser}
+            toggleDropdown={toggleDropdown}
+            handleEditClick={handleEditClick}
+            handleDeleteClick={handleDeleteClick}
+            selectedUser={selectedUser}
+          />
 
-        {/* Nutricionistas */}
-        <div className="roles-menu">
-          <h2 onClick={() => setShowNutritionists(!showNutritionists)} className="roles-menuTitle" style={{ color: 'purple' }}>
-            <LocalDiningIcon style={{ marginRight: '8px' }} />
-            Nutricionistas
-            <AddBoxIcon style={{ marginLeft: '8px', color: 'green', cursor: 'pointer' }} onClick={() => handleAddUser('nutritionist')} />
-          </h2>
-          {showNutritionists && (
-            <ul className="roles-list">
-              {nutritionists.map((nutritionist, index) => (
-                <li key={index} className="roles-listItem">
-                  <span>{nutritionist.name}</span>
-                  <div className="dropdown">
-                    <button className="dropdown-button" onClick={() => toggleDropdown(nutritionist, 'nutritionist')}>
-                      <KeyboardDoubleArrowDownIcon />
-                    </button>
-                    {selectedUser === nutritionist && (
-                      <div className="dropdown-content">
-                        <button className="delete-button" onClick={() => handleDeleteClick(nutritionist, 'nutritionist')}>Borrar</button>
-                        <button className="edit-button" onClick={() => handleEditClick(nutritionist, 'nutritionist')}>Editar</button>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+          <UserRoleCard
+            title="Nutricionistas"
+            color="purple"
+            icon={LocalDiningIcon}
+            users={nutritionists}
+            showUsers={showNutritionists}
+            setShowUsers={setShowNutritionists}
+            handleAddUser={handleAddUser}
+            toggleDropdown={toggleDropdown}
+            handleEditClick={handleEditClick}
+            handleDeleteClick={handleDeleteClick}
+            selectedUser={selectedUser}
+          />
 
-        {/* Entrenadores */}
-        <div className="roles-menu">
-          <h2 onClick={() => setShowTrainers(!showTrainers)} className="roles-menuTitle" style={{ color: 'red' }}>
-            <SportsIcon style={{ marginRight: '8px' }} />
-            Entrenadores
-            <AddBoxIcon style={{ marginLeft: '8px', color: 'green', cursor: 'pointer' }} onClick={() => handleAddUser('trainer')} />
-          </h2>
-          {showTrainers && (
-            <ul className="roles-list">
-              {trainers.map((trainer, index) => (
-                <li key={index} className="roles-listItem">
-                  <span>{trainer.name}</span>
-                  <div className="dropdown">
-                    <button className="dropdown-button" onClick={() => toggleDropdown(trainer, 'trainer')}>
-                      <KeyboardDoubleArrowDownIcon />
-                    </button>
-                    {selectedUser === trainer && (
-                      <div className="dropdown-content">
-                        <button className="delete-button" onClick={() => handleDeleteClick(trainer, 'trainer')}>Borrar</button>
-                        <button className="edit-button" onClick={() => handleEditClick(trainer, 'trainer')}>Editar</button>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+          <UserRoleCard
+            title="Entrenadores"
+            color="red"
+            icon={SportsIcon}
+            users={trainers}
+            showUsers={showTrainers}
+            setShowUsers={setShowTrainers}
+            handleAddUser={handleAddUser}
+            toggleDropdown={toggleDropdown}
+            handleEditClick={handleEditClick}
+            handleDeleteClick={handleDeleteClick}
+            selectedUser={selectedUser}
+          />
 
-        {/* Administradores */}
-        <div className="roles-menu">
-          <h2 onClick={() => setShowAdministrators(!showAdministrators)} className="roles-menuTitle" style={{ color: 'green' }}>
-            <GroupsIcon style={{ marginRight: '8px' }} />
-            Administradores
-            <AddBoxIcon style={{ marginLeft: '8px', color: 'green', cursor: 'pointer' }} onClick={() => handleAddUser('administrator')} />
-          </h2>
-          {showAdministrators && (
-            <ul className="roles-list">
-              {administrators.map((admin, index) => (
-                <li key={admin.id} className="roles-listItem">
-                  <span>{admin.name}</span>
-                  <div className="dropdown">
-                    <button className="dropdown-button" onClick={() => toggleDropdown(admin, 'administrator')}>
-                      <KeyboardDoubleArrowDownIcon />
-                    </button>
-                    {selectedUser === admin && (
-                      <div className="dropdown-content">
-                        <button className="delete-button" onClick={() => handleDeleteClick(admin, 'administrator')}>Borrar</button>
-                        <button className="edit-button" onClick={() => handleEditClick(admin, 'administrator')}>Editar</button>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+          <UserRoleCard
+            title="Administradores"
+            color="green"
+            icon={GroupsIcon}
+            users={administrators}
+            showUsers={showAdministrators}
+            setShowUsers={setShowAdministrators}
+            handleAddUser={handleAddUser}
+            toggleDropdown={toggleDropdown}
+            handleEditClick={handleEditClick}
+            handleDeleteClick={handleDeleteClick}
+            selectedUser={selectedUser}
+          />
         </div>
-      </div>
+      )}
 
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
             <p>¿Estás seguro de que deseas borrar a {selectedUser.name}?</p>
-            <div className="popup-buttons">
-              <button className="popup-button confirm-button" onClick={confirmDelete}>Sí, borrar</button>
-              <button className="popup-button cancel-button" onClick={() => setShowPopup(false)}>Cancelar</button>
+            <div className="flex justify-between mt-4">
+              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmDelete}>
+                <CheckCircleIcon style={{ color: 'white' }} />
+                Sí, borrar
+              </button>
+              <button className="cancel-button" onClick={() => setShowPopup(false)}>
+                <CancelIcon style={{ color: 'white' }} />
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
@@ -321,40 +311,44 @@ const AdminUsersManagement = () => {
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
               placeholder="Nombre del nuevo usuario"
+              className="w-full p-2 border rounded mb-2"
             />
             <input
               type="email"
               value={newUserEmail}
               onChange={(e) => setNewUserEmail(e.target.value)}
               placeholder="Email del nuevo usuario"
+              className="w-full p-2 border rounded mb-2"
             />
             <input
               type="password"
               value={newUserPassword}
               onChange={(e) => setNewUserPassword(e.target.value)}
               placeholder="Contraseña del nuevo usuario"
+              className="w-full p-2 border rounded mb-2"
             />
             <input
-              type="number"
-              value={newUserWeight}
-              onChange={(e) => setNewUserWeight(e.target.value)}
-              placeholder="Peso del nuevo usuario"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirmar Contraseña"
+              className="w-full p-2 border rounded mb-2"
             />
-            <input
-              type="number"
-              value={newUserHeight}
-              onChange={(e) => setNewUserHeight(e.target.value)}
-              placeholder="Altura del nuevo usuario"
-            />
-            <div className="popup-buttons">
-              <button className="popup-button confirm-button" onClick={confirmAddUser}>Agregar</button>
-              <button className="popup-button cancel-button" onClick={() => setShowAddPopup(false)}>Cancelar</button>
+            <div className="flex justify-between mt-4">
+              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmAddUser}>
+                <CheckCircleIcon style={{ color: 'white' }} />
+                Agregar
+              </button>
+              <button className="cancel-button" onClick={() => setShowAddPopup(false)}>
+                <CancelIcon style={{ color: 'white' }} />
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {showEditPopup && ( // Popup de edición
+      {showEditPopup && (
         <div className="popup-overlay">
           <div className="popup">
             <h2>Editar {userType}</h2>
@@ -363,38 +357,44 @@ const AdminUsersManagement = () => {
               value={editUserName}
               onChange={(e) => setEditUserName(e.target.value)}
               placeholder="Nuevo nombre"
+              className="w-full p-2 border rounded mb-2"
             />
             <input
               type="email"
               value={editUserEmail}
               onChange={(e) => setEditUserEmail(e.target.value)}
               placeholder="Nuevo email"
-            />
-            <input
-              type="password"
-              value={editUserPassword}
-              onChange={(e) => setEditUserPassword(e.target.value)}
-              placeholder="Nueva contraseña"
+              className="w-full p-2 border rounded mb-2"
             />
             <input
               type="number"
               value={editUserWeight}
               onChange={(e) => setEditUserWeight(e.target.value)}
               placeholder="Nuevo peso"
+              className="w-full p-2 border rounded mb-2"
             />
             <input
               type="number"
               value={editUserHeight}
               onChange={(e) => setEditUserHeight(e.target.value)}
               placeholder="Nueva altura"
+              className="w-full p-2 border rounded mb-2"
             />
-            <div className="popup-buttons">
-              <button className="popup-button confirm-button" onClick={confirmEditUser}>Confirmar</button>
-              <button className="popup-button cancel-button" onClick={() => setShowEditPopup(false)}>Cancelar</button>
+            <div className="flex justify-between mt-4">
+              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmEditUser}>
+                <CheckCircleIcon style={{ color: 'white' }} />
+                Confirmar
+              </button>
+              <button className="cancel-button" onClick={() => setShowEditPopup(false)}>
+                <CancelIcon style={{ color: 'white' }} />
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      <ToastContainer />
     </>
   );
 };

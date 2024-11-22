@@ -112,14 +112,30 @@ const deletebyid = async (req, res) => {
 
 //Agendar hora (Endpoint de usuarios)
 const scheduleHour = async (req, res) => {
-  const { gym_schedule_id, client_id } = req.body;
+  const { gym_schedule_id, client_id, suscription_id } = req.body;
+
+  if (suscription_id === null) {
+    return res.status(400).json({ error: "No cuentas con un plan activo" });
+  }
 
   try {
+    const remainingClasesResult = await pool.query(
+      "SELECT remaining_classes FROM public.suscription WHERE suscription_id = $1",
+      [suscription_id]
+    );
+
+    const remainingClases = remainingClasesResult.rows[0].remaining_classes;
+
+    if (remainingClases < 1) {
+      return res
+        .status(400)
+        .json({ error: "No hay clases restantes para tomar." });
+    }
+
     const existingRegistration = await pool.query(
       "SELECT * FROM schedule_classes WHERE gym_schedule_id = $1 AND client_id = $2",
       [gym_schedule_id, client_id]
     );
-
     if (existingRegistration.rows.length > 0) {
       return res
         .status(400)
@@ -127,7 +143,7 @@ const scheduleHour = async (req, res) => {
     }
 
     const gymCap = await pool.query(
-      "SELECT max_cap , actual_cap FROM gym_schedule WHERE gym_schedule_id = $1",
+      "SELECT max_cap, actual_cap FROM gym_schedule WHERE gym_schedule_id = $1",
       [gym_schedule_id]
     );
 
@@ -144,7 +160,7 @@ const scheduleHour = async (req, res) => {
     const currentDate = new Date().toISOString();
 
     const resultado = await pool.query(
-      "INSERT INTO schedule_classes (gym_schedule_id , client_id , scheduled_date, actual_cap) VALUES ($1,$2,$3 , $4) RETURNING class_id",
+      "INSERT INTO schedule_classes (gym_schedule_id, client_id, scheduled_date, actual_cap) VALUES ($1, $2, $3, $4) RETURNING class_id",
       [gym_schedule_id, client_id, currentDate, actual_cap + 1]
     );
 
@@ -153,9 +169,19 @@ const scheduleHour = async (req, res) => {
       [gym_schedule_id]
     );
 
+    await pool.query(
+      "UPDATE suscription SET remaining_classes = remaining_classes - 1 WHERE suscription_id = $1",
+      [suscription_id]
+    );
+
+    await pool.query(
+      "INSERT INTO exercise_history (created_date, user_id, class_id) VALUES ($1, $2, $3)",
+      [currentDate, client_id, resultado.rows[0].class_id]
+    );
+
     res.status(201).json({ class_id: resultado.rows[0].class_id });
   } catch (error) {
-    res.status(500).json({ eror: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -163,7 +189,9 @@ const scheduleHour = async (req, res) => {
 const deleteHour = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   res.setHeader("Access-Control-Allow-Credentials", "true");
+
   const { class_id } = req.params;
+  const { suscription_id } = req.body;
 
   try {
     const scheduledClass = await pool.query(
@@ -183,6 +211,17 @@ const deleteHour = async (req, res) => {
         .json({ error: "Error: No se puede restar más cupos" });
     }
 
+
+    await pool.query(
+      "DELETE FROM exercises WHERE history_id IN (SELECT history_id FROM exercise_history WHERE class_id = $1)",
+      [class_id]
+    );
+
+    await pool.query("DELETE FROM exercise_history WHERE class_id = $1", [
+      class_id,
+    ]);
+
+
     await pool.query("DELETE FROM schedule_classes WHERE class_id = $1", [
       class_id,
     ]);
@@ -192,8 +231,18 @@ const deleteHour = async (req, res) => {
       [gym_schedule_id]
     );
 
+    await pool.query(
+      "UPDATE suscription SET remaining_classes = remaining_classes + 1 WHERE suscription_id = $1",
+      [suscription_id]
+    );
+
+
+
+
     res.status(200).json({ message: "Hora eliminada exitosamente" });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ error: "Error al eliminar asistencia" });
   }
 };
@@ -210,7 +259,7 @@ const getUserClasses = async (req, res) => {
     );
 
     if (resultado.rows.length === 0) {
-      return 
+      return;
     }
 
     res.json(resultado.rows);
@@ -219,7 +268,28 @@ const getUserClasses = async (req, res) => {
   }
 };
 
-//Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
+
+const getNextClass = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      `SELECT * FROM gym_schedule gs LEFT JOIN schedule_classes sc ON gs.gym_schedule_id = sc.gym_schedule_id WHERE sc.client_id = $1   AND gs.schedule_date > CURRENT_TIMESTAMP
+ ORDER BY sc.scheduled_date DESC, gs.start_hour DESC LIMIT 1`,
+      [id]);
+
+    if (resultado.rows.length === 0) {
+      return res.json({ message: "No classes found for the given client" });
+    }
+
+    res.json(resultado.rows[0]);
+  } catch (error) {
+    return res.json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAll,
   getbyid,
@@ -230,4 +300,5 @@ module.exports = {
   scheduleHour,
   deleteHour,
   getUserClasses,
+  getNextClass
 };

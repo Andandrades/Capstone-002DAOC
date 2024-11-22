@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { useUser } from './Components/API/UserContext';  
+import { useUser } from './Components/API/UserContext';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,7 @@ const AdminLandingPage = lazy(() => import('./Pages/Admin/AdminLandingPage/Admin
 const AdminNutri = lazy(() => import('./Pages/Admin/AdminNutriCheck/AdminNutri.Page'));
 const AdminPlans = lazy(() => import('./Pages/Admin/AdminPlans/AdminPlans.Page'));
 const AdminUsersManagement = lazy(() => import('./Pages/Admin/AdminUsersManagement/AdminUsersManagement'));
+const AdminExercisesMain = lazy(() => import('./Pages/Admin/AdminExercises/AdminExercisesMain'));
 const ClassesPage = lazy(() => import('./Pages/Classes/ClassesPage'));
 const LandingPage = lazy(() => import('./Pages/LandingPage/LandingPage'));
 const LoginPage = lazy(() => import('./Pages/Login/LoginPage'));
@@ -24,12 +25,14 @@ const ScheduleGym = lazy(() => import('./Pages/Schedule/ScheduleGym'));
 const SchedulePage = lazy(() => import('./Pages/Schedule/SchedulePage'));
 const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
-
+const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
+const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutines'));
+const ConfirmarRecover = lazy(() => import('./Pages/Recover/ConfirmarRecover'));
 
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
 
-  const permisosAdmin = [ 1, 2, 3, 4];
+  const permisosAdmin = [2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
 
   if (loading) {
@@ -46,8 +49,21 @@ function App() {
 
   // Componente para redireccionar si el usuario ya está autenticado
   const RedirectIfAuthenticated = ({ children }) => {
-    return isAuth ? <Navigate to="/inicio" /> : children;
+    if (isAuth) {
+      switch (userData.role) {
+        case 4:
+          return <Navigate to="/admin" />;
+        case 3:
+          return <Navigate to="/admin" />;
+        case 2:
+          return <Navigate to="/consultasnutricionales" />;
+        default:
+          return <Navigate to="/inicio" />;
+      }
+    }
+    return children;
   };
+
 
   return (
     <>
@@ -61,27 +77,34 @@ function App() {
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
+            <Route path="/recover/cambio" element={<RedirectIfAuthenticated><ConfirmarRecover /></RedirectIfAuthenticated>} />
             <Route path="/login" element={<RedirectIfAuthenticated><LoginPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/register" element={<RedirectIfAuthenticated><RegisterPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
 
             {/* Rutas de administrador protegidas */}
 
-            <Route path="/nutri" element={<NutriMenu userId={userData.id} />} />
+            <Route path="/consultasnutricionales" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><NutriMenu userId={userData.id} /></RoleProtectedRoute>} />
+            <Route path="/consultasnutricionales/profile" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><NutriProfile userInfo={userData} /></RoleProtectedRoute>} />
 
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />
+
             <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses  userId={userData.id}/></RoleProtectedRoute>} />
+            <Route path="/Admin/Clases/Rutina/:id" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminRoutines /></RoleProtectedRoute>} />
+
+
             <Route path="/Admin/PaginaInicio" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminLandingPage /></RoleProtectedRoute>} />
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
+            <Route path="/Admin/Ejercicios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminExercisesMain /></RoleProtectedRoute>} />
 
 
             {/* Rutas protegidas para el perfil del usuario */}
             <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
             <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><SchedulePage /></RoleProtectedRoute>} />
-            <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym /></RoleProtectedRoute>} />
-            <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri /></RoleProtectedRoute>} />
-            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage /></RoleProtectedRoute>} />
+            <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym userId={userData.id} /></RoleProtectedRoute>} />
+            <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri userId={userData.id} /></RoleProtectedRoute>} />
+            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage userData={userData} /></RoleProtectedRoute>} />
             <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
           </Routes>

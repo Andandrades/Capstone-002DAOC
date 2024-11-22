@@ -9,6 +9,15 @@ const getAllNutriHour = async (req, res) => {
   }
 };
 
+const getAvalibleSchedule = async (req, res) => {
+  try {
+    const resultado = await pool.query("SELECT * FROM nutri_schedule WHERE available = true AND ( date + start_hour ) > NOW();");
+    res.json(resultado.rows);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const getNutriHour = async (req, res) => {
   const { id } = req.params;
   try {
@@ -91,22 +100,17 @@ const scheduleHour = async (req, res) => {
   const { client_id } = req.body;
 
   try {
-    console.log("Client ID recibido:", client_id);
     const hourInfo = await pool.query(
       "SELECT available,client_id FROM nutri_schedule WHERE nutri_schedule_id = $1",
       [id]
     );
-
     if (hourInfo.rows.length === 0) {
       return res.status(404).json({ error: "Hora no encontrada" });
     }
-
     const { available, client_id: currentClientId } = hourInfo.rows[0];
-
     if (!available || currentClientId != null) {
       return res.status(400).json({ error: "Hora ya ocupada" });
     }
-
     const resultado = await pool.query(
       "UPDATE nutri_schedule SET available = false , client_id = $1 WHERE nutri_schedule_id = $2 RETURNING *",
       [client_id, id]
@@ -117,6 +121,8 @@ const scheduleHour = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
 
 const cancelHour = async (req, res) => {
   const { id } = req.params;
@@ -214,5 +220,6 @@ module.exports = {
   scheduleHour,
   cancelHour,
   createMultiHour,
-  dragUpdate
+  dragUpdate,
+  getAvalibleSchedule
 };

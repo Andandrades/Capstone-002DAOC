@@ -2,22 +2,30 @@ import React, { useState } from 'react'
 import menu from "../../../../assets/Certificate.svg";
 import { deletePlan } from '../../../../Components/API/Endpoints';
 import ModifyPlanModal from '../../AdminPlans/Components/ModifyPlanModal';
+import { toast } from 'react-toastify';
 
-export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans }) => {
+export const ManagePlans = ({ id, name, amount, offer_price, n_class, description, fetchPlans }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
-    const DeletePlan = (id) => {
-        deletePlan(id).then(response => {
-            console.log('Plan modificado:', response);
-            fetchPlans(true)
-        })
-    }
+    const DeletePlan = async (id) => {
+        try {
+            const response = await deletePlan(id);
+            if (response) {
+                fetchPlans(true);
+                toast.success('Plan eliminado exitosamente.');
+            } else {
+                toast.error('Ha ocurrido un error, Intentalo nuevamente.');
+            }
+        } catch (error) {
+            console.error("Error al eliminar el plan:", error);
+            toast.error('El plan no se puede eliminar, usuarios tienen ese plan...');
+        }
+    };
+
     const ModifyPlan = (id) => {
         setIsModalOpen(true);
 
@@ -29,7 +37,6 @@ export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans 
                     className="absolute top-[-15px] right-[0px] m-0 p-0"
                     src={menu}
                     alt=""
-                    fill="blue"
                 />
                 <div>
                     <div className="flex flex-col justify-center items-center font-semibold pt-6">
@@ -62,10 +69,11 @@ export const ManagePlans = ({ id, name, amount, n_class,description, fetchPlans 
                 onClose={() => setIsModalOpen(false)}
                 id={id}
                 name={name}
-                description= {description}
-                amount= {amount}
-                n_class= {n_class}
-                fetchPlans= {fetchPlans}
+                description={description}
+                offer_price={offer_price}
+                amount={amount}
+                n_class={n_class}
+                fetchPlans={fetchPlans}
 
             />
         </>
