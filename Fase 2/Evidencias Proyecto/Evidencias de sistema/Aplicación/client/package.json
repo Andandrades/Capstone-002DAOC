@@ -20,6 +20,7 @@
     "@heroicons/react": "^2.1.5",
     "@mui/icons-material": "^6.1.4",
     "@mui/material": "^6.1.4",
+    "@vitejs/plugin-react": "^4.3.3",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
@@ -33,7 +34,8 @@
     "react-router-dom": "^6.26.2",
     "react-toastify": "^10.0.6",
     "sharp": "^0.33.5",
-    "transbank-sdk": "^5.0.0"
+    "transbank-sdk": "^5.0.0",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

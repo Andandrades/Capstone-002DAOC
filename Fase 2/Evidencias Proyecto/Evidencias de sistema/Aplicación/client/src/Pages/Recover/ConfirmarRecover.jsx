@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Logo from "../../assets/img/Logo.png";
 import { toast } from "react-toastify";
 
 const NuevaContraseña = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, watch, getValues } = useForm();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token'); 
+  const { register, handleSubmit, getValues } = useForm();
+
+  useEffect(() => {
+    if (token) {
+      document.cookie = `token=${token}; path=/;`;
+    }
+  }, [token]);
 
   const onSubmit = async () => {
     const { password, confirmPassword } = getValues();
 
-  
     if (password.length < 8) {
       toast.warning("La contraseña debe tener al menos 8 caracteres.");
       return;
@@ -23,9 +30,19 @@ const NuevaContraseña = () => {
     }
 
     try {
-     
-      toast.success("Contraseña actualizada correctamente.");
-      navigate("/login"); 
+      const response = await fetch('/api/recover/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newPassword: password })
+      });
+
+      if (response.ok) {
+        toast.success("Contraseña actualizada correctamente.");
+        navigate("/login");
+      } else {
+        const data = await response.json();
+        toast.error(data.message || "Ocurrió un error inesperado.");
+      }
     } catch (error) {
       console.error("Error al cambiar la contraseña:", error);
       toast.error("Ocurrió un error inesperado.");

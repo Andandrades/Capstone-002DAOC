@@ -1,11 +1,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Logo from "../../assets/img/Logo.png";
 import { sendEmail } from '../../Components/API/EmailSender';
 import { toast } from "react-toastify";
 import ChangePasswordTemplate from '../../assets/emailTemplate/ChangePasswordTemplate';
 import { renderToStaticMarkup } from "react-dom/server";
+import { v4 as uuidv4 } from 'uuid';
 
 const RecoverPage = () => {
   const navigate = useNavigate();
@@ -21,10 +22,13 @@ const RecoverPage = () => {
   };
 
   const onSubmit = async (data) => {
+    const token = uuidv4(); // Generamos un token único
+    const baseUrl = process.env.REACT_APP_FRONTEND_URL; // Obtener la URL base desde las variables de entorno
+    console.log(baseUrl, "variable de entorno URL")
 
     const emailHTML = generateEmailHTML({
       nombre: "Juan",
-      resetLink: "https://soldadogym.vercel.app/recover/cambio",
+      resetLink: `${baseUrl}/recover/cambio?token=${token}`, // Incluir el token en el enlace
     });
 
     const payload = {
