@@ -19,6 +19,9 @@ const AdminRoutines = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const [newTarget, setNewTarget] = useState("");
+
+
   const fetchExerciseHistory = async () => {
     setLoading(true);
 
@@ -27,7 +30,7 @@ const AdminRoutines = () => {
         `${import.meta.env.VITE_API_URL}/ExercisesClass/${id}`
       );
       setExerciseHistory(response.data[0]);
-
+      setNewTarget(response.data[0].target);
       const userResponse = await axios.get(
         `${import.meta.env.VITE_API_URL}/userData/${response.data[0].user_id}`
       );
@@ -48,6 +51,20 @@ const AdminRoutines = () => {
     }
   };
 
+  const updateHistoryTarget = async () => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL}/exerciseHistory/${exerciseHistory.history_id}/target`,
+        { target: newTarget }
+      );
+      toast.success("Enfoque actualizado correctamente");
+      fetchExerciseHistory(); // Refrescar los datos
+    } catch (error) {
+      toast.error("Error actualizando el enfoque");
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchExerciseHistory();
   }, [id]);
@@ -58,7 +75,6 @@ const AdminRoutines = () => {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
-
     return `${day}/${month}/${year}`;
   };
 
@@ -111,6 +127,26 @@ const AdminRoutines = () => {
               <h1 className="text-gray-500 font-medium">
                 Fecha clase:{formattedDate}
               </h1>
+            </div>
+          </div>
+          <div className="w-full flex flex-col bg-slate-100 p-6 mt-4 rounded-md mb-4">
+            <h2 className="text-lg font-semibold text-gray-500">
+              Editar enfoque muscular de la clase
+            </h2>
+            <div className="flex gap-2 mt-2">
+              <input
+                type="text"
+                className="border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Nuevo enfoque"
+                value={newTarget}
+                onChange={(e) => setNewTarget(e.target.value)}
+              />
+              <button
+                onClick={updateHistoryTarget}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              >
+                Actualizar
+              </button>
             </div>
           </div>
           <div className="w-full flex items-center bg-gray-100 rounded-b-lg">

@@ -103,7 +103,7 @@ export const NavBarAdmin = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a 
-                      className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm`} 
+                      className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`} 
                       onClick={() => goto('profile')}>
                         Ver mi perfil
                       </a>
@@ -114,10 +114,22 @@ export const NavBarAdmin = () => {
                     {({ active }) => (
                       userData.role !== RoleCliente ? (
                         <span
-                          className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                          className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`}
                           onClick={() => goto('admin')}
                         >
                           Menú de administrador
+                        </span>
+                      ) : null
+                    )}
+                  </Menu.Item>
+                  <Menu.Item as="a">
+                    {({ active }) => (
+                      userData.role !== RoleCliente ? (
+                        <span
+                          className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`}
+                          onClick={() => goto('admin/ganancias')}
+                        >
+                          Ganancias
                         </span>
                       ) : null
                     )}
@@ -126,7 +138,7 @@ export const NavBarAdmin = () => {
                   <Menu.Item >
                     {({ active }) => (
                       <span 
-                      className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`}
                       onClick={() =>LogoutSesion()}>
                         Cerrar sesión
                       </span>
