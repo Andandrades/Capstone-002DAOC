@@ -13,7 +13,7 @@ export const iniciarTransaccion = async (props) => {
             amount: amount, 
             sessionId: "mi_sesion",
             buyOrder: name,
-            user_id:userId
+            user_id: userId
         });
 
         window.location.href = response.data.url + "?token_ws=" + response.data.token;

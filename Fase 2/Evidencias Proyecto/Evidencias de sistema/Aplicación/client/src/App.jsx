@@ -27,8 +27,12 @@ const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
 const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutines'));
+
 const ConfirmarRecover = lazy(() => import('./Pages/Recover/ConfirmarRecover'));
 const AdminPurchases = lazy(() => import('./Pages/Admin/AdminPurchases/AdminPurchases'));
+
+const RecoveryPassword = lazy(() => import('./Pages/Recover/RecoveryPassword'));
+
 
 function App() {
   const { isAuth, setIsAuth, userData, loading } = useUser();
@@ -78,7 +82,7 @@ function App() {
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
-            <Route path="/recover/cambio" element={<RedirectIfAuthenticated><ConfirmarRecover /></RedirectIfAuthenticated>} />
+            <Route path="/RecoveryPassword" element={<RedirectIfAuthenticated><RecoveryPassword/></RedirectIfAuthenticated>} />
             <Route path="/login" element={<RedirectIfAuthenticated><LoginPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/register" element={<RedirectIfAuthenticated><RegisterPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />

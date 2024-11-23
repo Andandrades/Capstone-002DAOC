@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import ConfirmRegisterTemplate from "../../assets/emailTemplate/confirmRegisterTemplate";
 import { renderToStaticMarkup } from "react-dom/server";
 
-
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
