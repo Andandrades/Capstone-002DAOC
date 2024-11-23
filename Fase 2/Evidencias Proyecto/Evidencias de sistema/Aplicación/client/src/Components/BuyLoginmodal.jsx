@@ -67,7 +67,7 @@ export const BuyLoginmodal = (props) => {
                         <input
                             type="email"
                             placeholder="Email"
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -78,7 +78,7 @@ export const BuyLoginmodal = (props) => {
                         <input
                             type="password"
                             placeholder="Contraseña"
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-4 py-2 border border-gray-300 rounded-lg text-black  focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
