@@ -27,10 +27,7 @@ const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
 const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutines'));
-
-const ConfirmarRecover = lazy(() => import('./Pages/Recover/ConfirmarRecover'));
 const AdminPurchases = lazy(() => import('./Pages/Admin/AdminPurchases/AdminPurchases'));
-
 const RecoveryPassword = lazy(() => import('./Pages/Recover/RecoveryPassword'));
 
 
