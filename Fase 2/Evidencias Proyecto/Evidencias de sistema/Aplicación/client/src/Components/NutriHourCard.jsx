@@ -1,20 +1,12 @@
 import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-export const NutriHourCard = ({
-  appointments,
-  userId,
-  setIsScheduled,
-  scheduled,
-}) => {
-  const { nutri_schedule_id, start_hour, date, available, client_id } =
-    appointments;
+export const NutriHourCard = ({appointments,userId,setIsScheduled,scheduled,}) => {
+  const { nutri_schedule_id, start_hour, date, available, client_id } = appointments;
   const [isOpenConfirm, setIsOpenConfirm] = useState(false);
-
-  useEffect(() => {
-    console.log(userId);
-  }, []);
+  const navigate = useNavigate();
 
   const confirmModal = async () => {
     setIsOpenConfirm(!isOpenConfirm);
@@ -35,33 +27,39 @@ export const NutriHourCard = ({
     formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   const scheduleHour = async () => {
-    if (userId) {
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL
-          }/nutriScheduleClient/${nutri_schedule_id}`,
-          {
-            method: "PATCH",
-            body: JSON.stringify({
-              client_id: userId,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
 
-        if (res.ok) {
-          toast.success("Hora añadida correctamente");
-          setIsOpenConfirm(false); // Cierra el modal si es exitoso
-          setIsScheduled(!scheduled);
-        } else {
-          toast.error("Error al agendar la hora");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    const Navigate = () => {
+        navigate("/", { state: { scrollToNutri: true } });
+    };
+
+    // if (userId) {
+    //   try {
+    //     const res = await fetch(
+    //       `${import.meta.env.VITE_API_URL
+    //       }/nutriScheduleClient/${nutri_schedule_id}`,
+    //       {
+    //         method: "PATCH",
+    //         body: JSON.stringify({
+    //           client_id: userId,
+    //         }),
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       }
+    //     );
+
+    //     if (res.ok) {
+    //       toast.success("Hora añadida correctamente");
+    //       setIsOpenConfirm(false); // Cierra el modal si es exitoso
+    //       setIsScheduled(!scheduled);
+    //     } else {
+    //       toast.error("Error al agendar la hora");
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+    Navigate("/")
   };
 
   const cancelHour = async () => {

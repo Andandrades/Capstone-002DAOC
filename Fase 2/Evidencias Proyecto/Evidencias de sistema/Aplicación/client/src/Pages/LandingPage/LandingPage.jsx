@@ -64,6 +64,11 @@ const LandingPage = () => {
       navigate("/", { state: { scrollToPlans: false } });
     }
 
+    if (location.state?.scrollToNutri && sectionRef7.current) {
+      scrollToSection(sectionRef7);
+      navigate("/", { state: { scrollToNutri: false } });
+    }
+
     fetchPlanes();
     fetchNutri();
   }, [location]);
@@ -237,12 +242,9 @@ const LandingPage = () => {
         </div>
       </section>
       <div className="separator" />
-      <section
-        ref={sectionRef7}
-        className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col"
-      >
+      <section className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col" >
         <div className="w-full flex justify-center items-center text-center ">
-          <h1 className="text-3xl font-bold uppercase text-white">Consultas nutricionales</h1>
+          <h1 className="text-3xl font-bold uppercase text-white"   ref={sectionRef7} >Consultas nutricionales</h1>
         </div>
         <div className="flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
           {dataNutri && dataNutri.length > 0 ? (
