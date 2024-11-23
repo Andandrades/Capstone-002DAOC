@@ -56,9 +56,9 @@ function App() {
         case 4:
           return <Navigate to="/admin" />;
         case 3:
-          return <Navigate to="/admin" />;
-        case 2:
           return <Navigate to="/consultasnutricionales" />;
+        case 2:
+          return <Navigate to="/admin" />;
         default:
           return <Navigate to="/inicio" />;
       }
@@ -79,7 +79,7 @@ function App() {
             <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
-            <Route path="/RecoveryPassword" element={<RedirectIfAuthenticated><RecoveryPassword/></RedirectIfAuthenticated>} />
+            <Route path="/RecoveryPassword" element={<RedirectIfAuthenticated><RecoveryPassword /></RedirectIfAuthenticated>} />
             <Route path="/login" element={<RedirectIfAuthenticated><LoginPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/register" element={<RedirectIfAuthenticated><RegisterPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
@@ -92,7 +92,7 @@ function App() {
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
             <Route path="/Admin/Planes" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPlans /></RoleProtectedRoute>} />
 
-            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses  userId={userData.id}/></RoleProtectedRoute>} />
+            <Route path="/Admin/Clases" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminClasses userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/Admin/Clases/Rutina/:id" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminRoutines /></RoleProtectedRoute>} />
 
 
