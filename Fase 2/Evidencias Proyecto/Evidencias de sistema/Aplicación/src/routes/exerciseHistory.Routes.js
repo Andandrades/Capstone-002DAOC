@@ -3,7 +3,7 @@ const pool = require("../db");
 
 //import de los controladores
 
-const {  getAll, getbyid, create, update, deletebyid , getbyClassId , getUserHistory} = require("../controllers/exerciseHistory.controllers");
+const {  getAll, getbyid, create, update, deletebyid , getbyClassId , getUserHistory , updateExerciseTarget} = require("../controllers/exerciseHistory.controllers");
 
 const router = Router();
 
@@ -18,6 +18,8 @@ router.get("/ExercisesClass/:id", getbyClassId);
 router.post("/createExerciseRecords", create);
 
 router.put("/updateExercisesRecords", update);
+
+router.put("/exerciseHistory/:history_id/target", updateExerciseTarget);
 
 router.delete("/deleteExercisesRecords", deletebyid);
 

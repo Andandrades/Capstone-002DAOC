@@ -176,6 +176,31 @@ const getUserHistory = async (req, res) => {
   }
 };
 
+const updateExerciseTarget = async (req,res) =>{
+  const { history_id } = req.params;
+  const { target } = req.body;
+
+  if (!target) {
+    return res.status(400).json({ error: "El campo target es requerido" });
+  }
+
+  try {
+    const result = await pool.query(
+      "UPDATE exercise_history SET target = $1 WHERE history_id = $2 RETURNING *",
+      [target, history_id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Registro no encontrado" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error actualizando target en exercise_history:", error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
+}
+
 //Al momento de escribir una funcion, se tiene que exportar en esta parte del codigo
 module.exports = {
   getAll,
@@ -185,4 +210,5 @@ module.exports = {
   deletebyid,
   getbyClassId,
   getUserHistory,
+  updateExerciseTarget
 };

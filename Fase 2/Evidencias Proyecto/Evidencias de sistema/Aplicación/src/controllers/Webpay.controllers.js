@@ -14,11 +14,24 @@ const iniciarTransaccion = async (req, res) => {
   const { amount, sessionId, buyOrder, user_id, idplan } = req.body;
   const returnUrl = `${API_URL}/confirmar-pago`; // Usa la variable de entorno
   try {
-    const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
+    const response = await transaction.create(
+      buyOrder,
+      sessionId,
+      amount,
+      returnUrl
+    );
     const transaction_date = new Date();
     await pool.query(
       "INSERT INTO transactions (buy_order, session_id, amount, token, user_id, plan_id, transaction_date) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-      [buyOrder, sessionId, amount, response.token, user_id, idplan, transaction_date]
+      [
+        buyOrder,
+        sessionId,
+        amount,
+        response.token,
+        user_id,
+        idplan,
+        transaction_date,
+      ]
     );
 
     res.json({
@@ -40,7 +53,9 @@ const confirmarPago = async (req, res) => {
         "UPDATE transactions SET status = $1, transaction_date = $2 WHERE token = $3",
         ["Cancelada", transaction_date, TBK_TOKEN]
       );
-      return res.redirect(`${FRONT_URL}/TransactionResponse/?token=${TBK_TOKEN}`);
+      return res.redirect(
+        `${FRONT_URL}/TransactionResponse/?token=${TBK_TOKEN}`
+      );
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -69,7 +84,13 @@ const confirmarPago = async (req, res) => {
       try {
         await pool.query(
           "INSERT INTO public.suscription (start_date, additional_user, user_id, plan_id, remaining_classes) VALUES($1, $2, $3, $4, $5)",
-          [transaction_date, additional_user, user_id, plan_id, remaining_classes]
+          [
+            transaction_date,
+            additional_user,
+            user_id,
+            plan_id,
+            remaining_classes,
+          ]
         );
         res.redirect(`${FRONT_URL}/TransactionResponse/?token=${token}`);
       } catch (error) {
@@ -90,7 +111,12 @@ const iniciarConsulta = async (req, res) => {
   const returnUrl = `${API_URL}/confirmar-pago-consulta?user_id=${user_id}&nutriScheduleId=${nutriScheduleId}`;
 
   try {
-    const response = await transaction.create(buyOrder, sessionId, amount, returnUrl);
+    const response = await transaction.create(
+      buyOrder,
+      sessionId,
+      amount,
+      returnUrl
+    );
     const transaction_date = new Date();
     await pool.query(
       "INSERT INTO transactions (buy_order, session_id, amount, token, user_id, transaction_date) VALUES ($1, $2, $3, $4, $5, $6)",
@@ -117,7 +143,9 @@ const confirmarPagoconsulta = async (req, res) => {
         "Cancelada",
         TBK_TOKEN,
       ]);
-      return res.redirect(`${FRONT_URL}/TransactionResponse/?token=${TBK_TOKEN}`);
+      return res.redirect(
+        `${FRONT_URL}/TransactionResponse/?token=${TBK_TOKEN}`
+      );
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -155,9 +183,10 @@ const obtenerEstadoTransaccion = async (req, res) => {
   const { token_ws: token } = req.query;
 
   try {
-    const response = await pool.query("SELECT * FROM transactions WHERE token = $1", [
-      token,
-    ]);
+    const response = await pool.query(
+      "SELECT * FROM transactions WHERE token = $1",
+      [token]
+    );
 
     if (response.rows.length === 0) {
       return res.status(404).json({ error: "Transacción no encontrada." });
@@ -169,10 +198,30 @@ const obtenerEstadoTransaccion = async (req, res) => {
   }
 };
 
+const getMonthPurchases = async (req, res) => {
+
+  const { startDate , endDate } = req.body;
+
+  try {
+    const resultado = await pool.query(
+      `SELECT * FROM transactions 
+      WHERE transaction_date BETWEEN $1 AND $2
+      `,
+      [startDate, endDate]
+    );
+
+    res.status(200).json(resultado.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message : 'Error interno de servidor'})
+  }
+};
+
 module.exports = {
   iniciarTransaccion,
   confirmarPago,
   obtenerEstadoTransaccion,
   iniciarConsulta,
   confirmarPagoconsulta,
+  getMonthPurchases
 };
