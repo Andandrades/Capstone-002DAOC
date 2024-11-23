@@ -4,6 +4,7 @@ import axios from "axios";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import PurchaseCard from "../../../Components/PurchaseCard";
+import { format } from "date-fns";
 
 const AdminPurchases = () => {
   const [purchases, setPurchases] = useState([]);
@@ -11,6 +12,7 @@ const AdminPurchases = () => {
 
   const [selectedRange, setSelectedRange] = useState();
   const [isLoading, setIsLoading] = useState(false); // Estado para mostrar carga
+  const [totalSales, setTotalSales] = useState(0); // Estado para total de ventas
 
   const handleSubmit = async () => {
     if (!selectedRange?.from || !selectedRange?.to) {
@@ -29,12 +31,29 @@ const AdminPurchases = () => {
         }
       );
 
-      setPurchases(response.data); // Actualizar las compras con los datos del backend
+      setPurchases(response.data);
+      calculateTotalSales(response.data);
+      setIsModalDate(false);
     } catch (error) {
       console.error("Error al obtener los datos:", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const formatCLP = (amount) => {
+    return new Intl.NumberFormat("es-CL", {
+      style: "currency",
+      currency: "CLP",
+    }).format(amount);
+  };
+
+  const calculateTotalSales = (data) => {
+    const total = data.reduce((sum, purchase) => {
+      const amount = Number(purchase.amount); // Asegúrate de convertir el valor a número
+      return sum + (isNaN(amount) ? 0 : amount); // Si el valor no es un número, suma 0
+    }, 0);
+    setTotalSales(total);
   };
 
   return (
@@ -49,7 +68,7 @@ const AdminPurchases = () => {
               className="bg-blue-500 text-white py-5 px-5 rounded-md "
               onClick={() => setIsModalDate(!isModalDate)}
             >
-              Seleccionar Mes
+              Seleccionar Rango
             </button>
           </div>
 
@@ -67,19 +86,37 @@ const AdminPurchases = () => {
                   defaultMonth={new Date()}
                 />
                 <div className="w-full flex justify-center">
-                <button
-                  className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                  onClick={handleSubmit}
-                  disabled={isLoading}
-                >
-                  Filtrar
-                </button>
+                  <button
+                    className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                  >
+                    Filtrar
+                  </button>
                 </div>
               </div>
             </div>
           </div>
           <div className="w-full flex justify-center flex-col items-center py-4">
             <h1 className="py-5 text-xl font-bold">Historial de compras</h1>
+            {selectedRange?.from && selectedRange?.to && (
+              <div className="flex flex-col text-start justify-start items-start w-full px-6 py-3 gap-2">
+                <p className="text-gray-600 mt-2 text-center w-full text-xl">
+                  Ventas:
+                  <span className="font-semibold text-green-500">
+                    {formatCLP(totalSales)}
+                  </span>{" "}
+                </p>
+                <div>
+                  <span className="font-semibold">
+                    Desde {format(selectedRange.from, "dd/MM/yyyy")}
+                  </span>
+                  <span className="font-semibold">
+                    Hasta {format(selectedRange.to, "dd/MM/yyyy")}
+                  </span>
+                </div>
+              </div>
+            )}
             <div className="flex justify-center flex-col w-full px-6">
               {purchases ? (
                 <>
