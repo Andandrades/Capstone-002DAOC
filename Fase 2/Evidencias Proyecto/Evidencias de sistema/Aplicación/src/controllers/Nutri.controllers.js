@@ -28,18 +28,18 @@ const getbyid = async (req, res) => {
 
 const create = async (req, res) => {
   const { name, description, price } = req.body;
-  try {
-    const result = await pool.query(`INSERT INTO public.nutrition (name, description, price) 
-      VALUES(${name}, ${description}, ${price});`);
-    res.status(200);
-    res.json(" añadido correctamente!.");
 
+  try {
+    const query = `INSERT INTO public.nutrition (name, description, price) VALUES ($1, $2, $3)`;
+    const values = [name, description, price];
+    await pool.query(query, values);
+    res.status(200).json("¡Añadido correctamente!");
   } catch (error) {
-    console.log(error.message)
-    res.status(400);
-    res.json("error al añadir!.");
+    console.error(error.message);
+    res.status(400).json("¡Error al añadir!");
   }
 };
+
 
 const update = async (req, res) => {
   const { id } = req.params;
