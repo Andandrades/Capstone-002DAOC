@@ -2,17 +2,19 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './API/UserContext';
 import { toast } from 'react-toastify';
+import { Button as Boton } from "antd";
 
 export const BuyLoginmodal = (props) => {
     const { onClose } = props
     const [error, setError] = useState("");
     const [email, setEmail] = useState("");
+    const [loadingButton, setLoadingButton] = useState(false);
     const [password, setPassword] = useState("");
     const { setIsAuth, fetchAuthData } = useUser();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        setLoadingButton(true)
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
                 method: "POST",
@@ -26,9 +28,10 @@ export const BuyLoginmodal = (props) => {
             if (!response.ok) {
                 await response.json();
                 toast.error("Usuario o contraseña invalidos.");
+                setLoadingButton(false)
                 return;
             }
-
+            setLoadingButton(false)
             fetchAuthData();
         } catch (err) {
             toast.error("Usuario o contraseña invalidos.");
@@ -85,20 +88,22 @@ export const BuyLoginmodal = (props) => {
                         />
                     </div>
 
-                    <button
+                    <Boton
                         type="submit"
                         className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
+                        loading={loadingButton}
+                        onClick={()=>{handleSubmit()}}
                     >
                         Iniciar sesión
-                    </button>
+                    </Boton>
 
-                    <button
+                    <Boton
                         type="button"
                         className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100"
                         onClick={() => navigate('/Register')}
                     >
                         Registrarse
-                    </button>
+                    </Boton>
 
                     <p className="mt-4 text-sm text-center text-gray-600">
                         ¿Olvidaste tu contraseña?{' '}

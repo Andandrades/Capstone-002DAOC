@@ -256,7 +256,6 @@ const LandingPage = () => {
                 amount={nutri.price}
                 offer_price={nutri.offer_price}
                 description={nutri.description}
-             
               />
             ))
           ) : (
