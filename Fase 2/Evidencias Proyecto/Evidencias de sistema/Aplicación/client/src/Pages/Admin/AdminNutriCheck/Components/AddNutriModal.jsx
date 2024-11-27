@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { addNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
 
 const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   if (!isOpen) return null;
+
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const {
     register,
@@ -14,14 +17,17 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoadingButton(true);
     try {
       const payload = { ...data };
-      const response = await addNutri(payload);
+      await addNutri(payload);
       toast.success('Consulta nutricional agregada.');
       fetchPlans(true);
       onClose();
     } catch (error) {
-      toast.error('Error al agregar la consulta nutricional:');
+      toast.error('Error al agregar la consulta nutricional');
+    } finally {
+      setLoadingButton(false);
     }
   };
 
@@ -92,17 +98,19 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
               <div className="modal-footer flex justify-end mt-4">
                 <button
                   type="button"
-                  className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md"
+                  className="p-2 bg-gray-300 text-black rounded-md mr-2"
                   onClick={onClose}
                 >
                   Cerrar
                 </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary p-2 bg-blue-500 text-white rounded-md"
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loadingButton}
+                  className="p-2 bg-blue-500 text-white rounded-md"
                 >
                   Guardar consulta
-                </button>
+                </Button>
               </div>
             </form>
           </div>

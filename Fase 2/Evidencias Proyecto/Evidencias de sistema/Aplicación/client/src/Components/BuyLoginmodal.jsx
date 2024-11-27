@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './API/UserContext';
 import { toast } from 'react-toastify';
-import { Button as Boton } from "antd";
+import { Button } from "antd";
 
 export const BuyLoginmodal = (props) => {
     const { onClose } = props
@@ -88,22 +88,22 @@ export const BuyLoginmodal = (props) => {
                         />
                     </div>
 
-                    <Boton
+                    <Button
                         type="submit"
                         className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
                         loading={loadingButton}
                         onClick={()=>{handleSubmit()}}
                     >
                         Iniciar sesión
-                    </Boton>
+                    </Button>
 
-                    <Boton
+                    <Button
                         type="button"
                         className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100"
                         onClick={() => navigate('/Register')}
                     >
                         Registrarse
-                    </Boton>
+                    </Button>
 
                     <p className="mt-4 text-sm text-center text-gray-600">
                         ¿Olvidaste tu contraseña?{' '}

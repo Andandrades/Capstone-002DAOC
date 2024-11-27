@@ -7,7 +7,7 @@ import { DayPicker } from "react-day-picker";
 import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
 import { UsersListCard } from "./UsersListCard";
-
+import { Button } from "antd";
 export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
   const {
     gym_schedule_id,
@@ -18,23 +18,17 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
     schedule_date: ogScheduleDate,
   } = schedule;
 
-  const [isModalOpen, setIsModalOpen] = useState(false); //Estado Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [scheduledUsers, setScheduledUsers] = useState([]);
   const [editModal, setEditModal] = useState(false);
-
+  const [loadingButton, setLoadingButton] = useState(false);
   const [usersModal, setUserModal] = useState(false)
-  const [deleteModal , setDeleteModal] = useState(false)
-
+  const [deleteModal, setDeleteModal] = useState(false)
   const [startHour, setStartHour] = useState(ogStarHour);
   const [endHour, setEndHour] = useState(ogEndHour);
   const [maxCap, setMaxCap] = useState(ogMaxCap);
   const [scheduleDate, setScheduleDate] = useState(ogScheduleDate);
-
-
-
-
   //Funcion para cambiar el estado del Modal
-
   const fetchScheduledUsers = async () => {
     try {
       const response = await fetch(
@@ -80,13 +74,12 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
     const remainingMinutes = minutes % 60; // Calcular los minutos restantes
 
     // Retornar la duración en formato 'X horas Y minutos'
-    return `${hours > 0 ? hours + "h " : ""}${
-      remainingMinutes > 0 ? remainingMinutes + "min" : ""
-    }`;
+    return `${hours > 0 ? hours + "h " : ""}${remainingMinutes > 0 ? remainingMinutes + "min" : ""
+      }`;
   };
 
   const handleEdit = async (e) => {
-    e.preventDefault();
+    setLoadingButton(true);
 
     if (maxCap < actual_cap) {
       toast.error(
@@ -117,27 +110,35 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
         setEditModal(false);
         toast.success("Hora editada correctamente!");
         refreshGymHours();
+        setLoadingButton(false);
       } else {
+        setLoadingButton(false);
         toast.error("Se produjo un error al intentar editar la clase");
       }
     } catch (error) {
+      setLoadingButton(false);
       console.error("Error:", error);
     }
   };
 
   const deleteClass = async () => {
+    setLoadingButton(true)
     try {
-      const resultado = await fetch(`${import.meta.env.VITE_API_URL}/gymHours/${gym_schedule_id}`,{
-        method : "DELETE"
+      const resultado = await fetch(`${import.meta.env.VITE_API_URL}/gymHours/${gym_schedule_id}`, {
+        method: "DELETE"
       })
 
-      if(resultado.ok){
+      if (resultado.ok) {
         setDeleteModal(false)
         refreshGymHours()
         toast.success("Hora Eliminada Correctamente!")
       }
+      setLoadingButton(false)
+
     } catch (error) {
       console.error(error);
+      setLoadingButton(false)
+
       toast.error("Error al Eliminar la Clase")
     }
   }
@@ -292,28 +293,30 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
                 </div>
               </div>
 
-              <button
+              <Button
                 type="submit"
                 className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                loading={loadingButton}
+                onClick={() => { handleEdit() }}
               >
-                Submit
-              </button>
+                Editar
+              </Button>
             </form>
           </div>
         </div>
       ) : null}
       {usersModal ? (
-        <UsersListCard setUserModal={setUserModal} schedule={schedule}/>
+        <UsersListCard setUserModal={setUserModal} schedule={schedule} />
       ) : null}
       {deleteModal ? (
         <div className="fixed py-32 z-20 inset-0 px-6 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-            <div className="bg-white text-center rounded-md p-6">
-                <span className="font-medium text-xl">Está seguro que quiere eliminar esta clase?</span>
-                <div className="w-full flex justify-evenly py-6">
-                  <button onClick={() => deleteClass()} className="bg-red-500 text-white px-3 rounded-sm">Eliminar</button>
-                  <button onClick={() => setDeleteModal(false)} className="bg-blue-400 text-white px-3 rounded-sm">Cancelar</button>
-                </div>
+          <div className="bg-white text-center rounded-md p-6">
+            <span className="font-medium text-xl">¿Está seguro que quiere eliminar esta clase?</span>
+            <div className="w-full flex justify-evenly py-6">
+              <Button onClick={() => deleteClass()} className="bg-red-500 text-white p-4 rounded-x" loading={loadingButton}>Eliminar</Button>
+              <Button onClick={() => setDeleteModal(false)} className="bg-blue-400 text-white p-4 rounded-x">Cancelar</Button>
             </div>
+          </div>
         </div>
       ) : null}
     </div>

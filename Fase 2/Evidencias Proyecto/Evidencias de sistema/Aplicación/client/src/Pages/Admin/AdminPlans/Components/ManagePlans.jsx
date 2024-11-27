@@ -3,15 +3,18 @@ import menu from "../../../../assets/Certificate.svg";
 import { deletePlan } from '../../../../Components/API/Endpoints';
 import ModifyPlanModal from '../../AdminPlans/Components/ModifyPlanModal';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
 
 export const ManagePlans = ({ id, name, amount, offer_price, n_class, description, fetchPlans }) => {
 
+    const [loadingButton, setLoadingButton] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const DeletePlan = async (id) => {
+        setLoadingButton(true)
         try {
             const response = await deletePlan(id);
             if (response) {
@@ -20,7 +23,10 @@ export const ManagePlans = ({ id, name, amount, offer_price, n_class, descriptio
             } else {
                 toast.error('Ha ocurrido un error, Intentalo nuevamente.');
             }
+            setLoadingButton(false)
+
         } catch (error) {
+            setLoadingButton(false)
             console.error("Error al eliminar el plan:", error);
             toast.error('El plan no se puede eliminar, usuarios tienen ese plan...');
         }
@@ -53,17 +59,21 @@ export const ManagePlans = ({ id, name, amount, offer_price, n_class, descriptio
                     </div>
                 </div>
                 <div className="flex space-x-4">
-                    <button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#EFDD37]"
+                    <Button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#EFDD37]"
                         onClick={() => { ModifyPlan() }}>
                         Modificar
-                    </button>
-                    <button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#fc0317]"
-                        onClick={() => { DeletePlan(id) }}>
+                    </Button>
+                    <Button
+                        type="submit"
+                        className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#FF0000]"
+                        loading={loadingButton}
+                        onClick={() => { DeletePlan(id) }}
+                    >
                         Eliminar
-                    </button>
+                    </Button>
                 </div>
 
-            </div>
+            </div >
             <ModifyPlanModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
