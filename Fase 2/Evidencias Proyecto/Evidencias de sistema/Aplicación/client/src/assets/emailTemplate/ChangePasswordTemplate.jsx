@@ -33,7 +33,7 @@ const ChangePasswordTemplate = ({ resetLink }) => {
         {/* Contenido principal */}
         <div style={{ padding: "30px", textAlign: "center" }}>
           <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
-            Hola!
+          Restablecer Contraseña.
           </h2>
           <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
             Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta

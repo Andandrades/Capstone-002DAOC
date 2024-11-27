@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { updateNutri } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
 
 const ModifyNutriModal = ({ isOpen, onClose, id, name, price, description, fetchPlans }) => {
-  if (!isOpen) return null;
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const {
     register,
@@ -13,16 +14,21 @@ const ModifyNutriModal = ({ isOpen, onClose, id, name, price, description, fetch
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoadingButton(true);
     try {
       const payload = { ...data };
       const response = await updateNutri(id, payload);
       toast.success('Consulta modificada correctamente.');
       fetchPlans(true);
+      setLoadingButton(false);
       onClose(); 
     } catch (error) {
+      setLoadingButton(false);
+
       toast.error('Error al modificar la consulta.');
     }
   };
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -104,19 +110,22 @@ const ModifyNutriModal = ({ isOpen, onClose, id, name, price, description, fetch
               </div>
 
               <div className="modal-footer flex justify-end mt-4">
-                <button
+                <Button
                   type="button"
                   className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md"
                   onClick={onClose}
                 >
                   Cerrar
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary p-2 bg-blue-500 text-white rounded-md"
+                </Button>
+                
+                <Button
+                  type="primary"
+                  htmlType="submit" // Esto asegura que el formulario se envíe
+                  loading={loadingButton}
+                  className="p-2 bg-blue-500 text-white rounded-md"
                 >
-                  Guardar cambios
-                </button>
+                  Guardar consulta
+                </Button>
               </div>
             </form>
           </div>

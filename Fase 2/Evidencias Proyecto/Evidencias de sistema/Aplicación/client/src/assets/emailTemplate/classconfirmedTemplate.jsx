@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ClassConfirmedTemplate = ({  nombre, fecha, hora }) => {
+const ClassConfirmedTemplate = ({ nombre, fecha, hora }) => {
   return (
     <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f9f9f9", padding: "30px 0" }}>
       <div
@@ -23,16 +23,19 @@ const ClassConfirmedTemplate = ({  nombre, fecha, hora }) => {
           }}
         >
           <img src="https://i.imgur.com/GTIQ1BN.png" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
-          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+          <h1 style={{ position: "relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
         </div>
 
         {/* Contenido principal */}
         <div style={{ padding: "30px", textAlign: "center" }}>
           <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
-            Hola {nombre}! tu clase ha sido confirmada!
+            ¡Hola {nombre}! Tu clase ha sido confirmada
           </h2>
           <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
-            {nombre} nos agrada infirmale que la clase que reservo para el dia {fecha} a las {hora} se ha confirmado con exito lo esperamos en nuetras instalaciones.
+            Nos complace informarte que tu clase reservada para el día <strong>{fecha}</strong> a las <strong>{hora}</strong> ha sido confirmada exitosamente. Te esperamos en nuestras instalaciones para disfrutar de una experiencia increíble.
+          </p>
+          <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
+            Si tienes alguna consulta o necesitas modificar tu reserva, no dudes en contactarnos. ¡Estamos aquí para ayudarte!
           </p>
         </div>
 
@@ -47,7 +50,7 @@ const ClassConfirmedTemplate = ({  nombre, fecha, hora }) => {
           }}
         >
           <p>
-            © 2024 MiAplicación |{" "}
+            © 2024 Soldado Gym |{" "}
             <a
               href="https://miaplicacion.com/privacidad"
               style={{ color: "#ffd700", textDecoration: "none" }}

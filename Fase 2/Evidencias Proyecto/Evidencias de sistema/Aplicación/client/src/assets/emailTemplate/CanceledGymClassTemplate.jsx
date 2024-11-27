@@ -1,6 +1,6 @@
 import React from "react";
 
-const ClassCancelledTemplate = ({ nombre, fecha }) => {
+const CanceledGymClassTemplate = ({ nombre, fecha }) => {
   const scheduleUrl = `${import.meta.env.VITE_APP_BASE_URL}/schedule/gym`;
 
   return (
@@ -25,32 +25,21 @@ const ClassCancelledTemplate = ({ nombre, fecha }) => {
           }}
         >
           <img src="https://i.imgur.com/GTIQ1BN.png" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
-          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+          <h1 style={{ position: "relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
         </div>
 
         {/* Contenido principal */}
         <div style={{ padding: "30px", textAlign: "center" }}>
           <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
-            Clase Cancelada!
+            Clase Cancelada
           </h2>
           <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
-            Hola {nombre}, lamentamos informarle que la clase que tenía programada para el día {fecha} se ha cancelado. Le pedimos disculpas por los inconvenientes. Si desea volver a agendar una clase, por favor haga clic en el botón de abajo.
+            Hola <strong>{nombre}</strong>, lamentamos informarte que la clase que tenías programada para el día <strong>{fecha}</strong> ha sido cancelada. 
           </p>
-          <a
-            href={scheduleUrl}
-            style={{
-              display: "inline-block",
-              padding: "15px 25px",
-              fontSize: "16px",
-              color: "#fff",
-              backgroundColor: "#007bff",
-              textDecoration: "none",
-              borderRadius: "5px",
-              boxShadow: "0 2px 10px rgba(0, 123, 255, 0.3)",
-            }}
-          >
-            Reagendar
-          </a>
+          <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
+            Te pedimos disculpas por los inconvenientes. Sabemos lo importante que es para ti mantenerte activo, y por eso te invitamos a reservar una nueva clase en el horario que más te convenga.
+          </p>
+    
         </div>
 
         {/* Pie de página */}
@@ -64,7 +53,7 @@ const ClassCancelledTemplate = ({ nombre, fecha }) => {
           }}
         >
           <p>
-            © 2024 MiAplicación |{" "}
+            © 2024 Soldado Gym |{" "}
             <a
               href="https://miaplicacion.com/privacidad"
               style={{ color: "#ffd700", textDecoration: "none" }}
@@ -78,4 +67,4 @@ const ClassCancelledTemplate = ({ nombre, fecha }) => {
   );
 };
 
-export default ClassCancelledTemplate;
+export default CanceledGymClassTemplate;

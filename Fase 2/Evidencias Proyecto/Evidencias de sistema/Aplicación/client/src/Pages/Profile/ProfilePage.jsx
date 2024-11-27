@@ -8,10 +8,12 @@ import { UserNavBar } from "../../Components/UserNavBar";
 import { ActualizarUsuario } from '../../Components/API/Users';
 import { useUser } from '../../Components/API/UserContext';
 import { changePassword } from '../../Components/API/sesion';
+import { Button } from 'antd';
 
 const ProfilePage = () => {
   const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: errorsProfile } } = useForm();
   const { register: registerSecurity, handleSubmit: handleSubmitSecurity, formState: { errors: errorsSecurity } } = useForm();
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const [showSecurity, setShowSecurity] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -53,16 +55,18 @@ const ProfilePage = () => {
   };
 
   const ChangePassword = async (e) => {
-    console.log(e)
-    const {password,oldPassword,confirmPassword} = e
+    setLoadingButton(true);
+    const { password, oldPassword, confirmPassword } = e
     if (password !== confirmPassword) {
+      setLoadingButton(false);
       return (toast.info("Contraseña nueva y Comfirmar contraseña nueva no coinciden"))
     }
-
     try {
       await changePassword(oldPassword, password);
+      setLoadingButton(false);
       toast.success("Contraseña cambiada con éxito");
     } catch (error) {
+      setLoadingButton(false);
       if (error.message === "La contraseña actual es incorrecta") {
         toast.error("La contraseña actual es incorrecta.")
       }
@@ -70,11 +74,14 @@ const ProfilePage = () => {
   };
 
   const onSubmit = (data) => {
+    setLoadingButton(true);
     const Payload = { name: userData.name, email: userData.email, weight: data.weight, height: data.height, fk_rol_id: userData.role };
     try {
       ActualizarUsuario(userData.id, Payload);
+      setLoadingButton(false);
       toast.success("Datos actualizados correctamente.")
     } catch {
+      setLoadingButton(false);
       toast.error("sucedio un error inesperado al intentar actualizar tus datos.")
     }
   };
@@ -101,8 +108,6 @@ const ProfilePage = () => {
           })}
           className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
         />
-      
-
         <label htmlFor="password" className="text-sm font-medium text-gray-700">
           Contraseña nueva
         </label>
@@ -110,14 +115,11 @@ const ProfilePage = () => {
           type="password"
           name="password"
           id="password"
-          autoComplete="new-password"
           {...registerSecurity("password", {
             required: "La contraseña es obligatoria",
           })}
           className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
         />
-     
-
         <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
           Confirmar contraseña nueva
         </label>
@@ -125,21 +127,21 @@ const ProfilePage = () => {
           type="password"
           name="confirmPassword"
           id="confirmPassword"
-          autoComplete="new-password"
           {...registerSecurity("confirmPassword", {
             required: "Debe confirmar la contraseña",
           })}
           className="block w-full rounded-md py-2 px-4 bg-indigo-100 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600"
         />
-       
+
 
         <div className="mt-6 flex items-center justify-around gap-x-6 pb-8">
-          <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-          >
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loadingButton}
+            className="w-full !bg-purple-600 !text-white p-6 rounded-lg mb-4">
             Cambiar contraseña
-          </button>
+          </Button>
         </div>
       </form>
     </div>
@@ -229,12 +231,14 @@ const ProfilePage = () => {
               )}
             </div>
             <div className="mt-6 flex items-center justify-around gap-x-6 pb-8">
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              >
+             
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loadingButton}
+                className="w-[75%] !bg-purple-600 !text-white p-6 rounded-lg mb-4">
                 Actualizar datos
-              </button>
+              </Button>
             </div>
           </form>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../../assets/img/Logo.png";
@@ -7,10 +7,13 @@ import { toast } from "react-toastify";
 import ChangePasswordTemplate from '../../assets/emailTemplate/ChangePasswordTemplate';
 import { renderToStaticMarkup } from "react-dom/server";
 import { requestPasswordReset } from '../../Components/API/sesion';
+import { Button } from 'antd';
 
 const RecoverPage = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const [loadingButton, setLoadingButton] = useState(false);
+
   const url = process.env.FRONTEND_URL;
 
   const generateEmailHTML = (props) => {
@@ -23,9 +26,9 @@ const RecoverPage = () => {
   };
 
   const onSubmit = async (data) => {
+    setLoadingButton(true);
     try {
       const response = await requestPasswordReset((data.email));
-
       try {
         const emailHTML = generateEmailHTML({
           nombre: "Juan",
@@ -37,12 +40,15 @@ const RecoverPage = () => {
           html: emailHTML
         };
         await sendEmail(payload);
+        setLoadingButton(false);
         toast.success("Se ha enviado un correo para recuperar la contraseña.");
       } catch (error) {
+        setLoadingButton(false);
         console.error("Error al enviar el correo:", error);
         toast.error("Sucedió algo inesperado.");
       }
     } catch {
+      setLoadingButton(false);
       toast.error("El email no existe en el sistema.");
     }
   }
@@ -68,12 +74,13 @@ const RecoverPage = () => {
               className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
-          >
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loadingButton}
+            className="w-full !bg-purple-600 !text-white p-6 rounded-lg mb-4">
             Recuperar contraseña
-          </button>
+          </Button>
           <span
             className="text-purple-600 cursor-pointer underline mt-4 text-gray-600"
             onClick={() => navigate(`/login`)}

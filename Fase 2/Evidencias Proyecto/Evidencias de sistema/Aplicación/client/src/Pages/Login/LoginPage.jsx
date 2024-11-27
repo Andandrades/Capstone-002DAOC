@@ -3,19 +3,20 @@ import Logo from "../../assets/img/Logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../Components/API/UserContext";
 import { toast } from "react-toastify";
+import { Button } from "antd";
 
 const LoginPage = () => {
   const { fetchAuthData } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
-
+  const [loadingButton, setLoadingButton] = useState(false);
   const goto = (url) => {
     navigate(`/${url}`);
   };
 
   const handleSubmit = async (e) => {
+    setLoadingButton(true)
     e.preventDefault();
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
@@ -29,12 +30,15 @@ const LoginPage = () => {
 
       if (!response.ok) {
         await response.json();
+        setLoadingButton(false)
         toast.error("Usuario o contraseña invalidos.");
         return;
       }
-
+      setLoadingButton(false)
       fetchAuthData();
     } catch (err) {
+      setLoadingButton(false)
+
       toast.error("Usuario o contraseña invalidos.");
       console.error(err);
     }
@@ -68,21 +72,19 @@ const LoginPage = () => {
               className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 mb-4"
-          >
+          <Button
+            htmlType="submit"
+            loading={loadingButton}
+            className="w-full !bg-purple-600 !text-white p-6 rounded-lg mb-4">
             Iniciar sesión
-          </button>
-
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => goto("Register")}
-            className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg hover:bg-gray-100"
+            className="w-full border-2 border-purple-600 text-purple-600 p-6 rounded-lg hover:bg-gray-100"
           >
             Registrarse
-          </button>
+          </Button>
 
           <p className="mt-4 text-gray-600">
             ¿Olvidaste tu contraseña?{" "}

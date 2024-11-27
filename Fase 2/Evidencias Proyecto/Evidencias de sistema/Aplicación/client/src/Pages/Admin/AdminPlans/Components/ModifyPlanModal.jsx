@@ -2,33 +2,45 @@ import React, { useState } from 'react';
 import { updatePlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
 
 const ModifyPlanModal = (props) => {
   const { isOpen, onClose, id, name, amount, offer_price, n_class, fetchPlans, description } = props;
 
   const [selectedColor, setSelectedColor] = useState('#007bff');
   const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const [loadingButton, setLoadingButton] = useState(false);
   const colors = ['#007bff', '#28a745', '#ffc107', '#6f42c1',];
   const handleColorChange = (color) => {
     setSelectedColor(color);
   };
 
   const onSubmit = (data) => {
+    setLoadingButton(true);
+
     const payload = {
       ...data,
       color: selectedColor,
       id: { id }
     };
-    updatePlan(id, payload)
-      .then(response => {
-        toast.success('Plan editado correctamente.');
-        fetchPlans(true)
-      })
-      .catch(error => {
-        toast.error('Sucedio algo inesperado al editar el plan.');
-      });
-    onClose();
+    try {
+      updatePlan(id, payload)
+        .then(response => {
+          toast.success('Plan editado correctamente.');
+          fetchPlans(true)
+          setLoadingButton(false);
+          onClose();
+        })
+        .catch(error => {
+          setLoadingButton(false);
+          onClose();
+          toast.error('Sucedio algo inesperado al editar el plan.');
+        });
+    } catch {
+      setLoadingButton(false);
+      toast.error('Sucedio algo inesperado al editar el plan.');
+
+    }
   };
   if (!isOpen) return null;
 
@@ -152,19 +164,22 @@ const ModifyPlanModal = (props) => {
               </div>
 
               <div className="modal-footer flex justify-end mt-4">
-                <button
+                <Button
                   type="button"
                   className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md"
                   onClick={onClose}
                 >
                   Cerrar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md"
+                  loading={loadingButton}
+                  onClick={() => { onSubmit() }}
+
                 >
                   Guardar Plan
-                </button>
+                </Button>
               </div>
             </form>
           </div>

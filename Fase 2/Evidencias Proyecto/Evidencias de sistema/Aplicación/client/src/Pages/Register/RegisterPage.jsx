@@ -7,6 +7,7 @@ import { sendEmail } from "../../Components/API/EmailSender";
 import { toast } from "react-toastify";
 import ConfirmRegisterTemplate from "../../assets/emailTemplate/confirmRegisterTemplate";
 import { renderToStaticMarkup } from "react-dom/server";
+import { Button } from "antd";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const goto = (url) => {
     navigate(`/${url}`);
@@ -26,7 +28,7 @@ const RegisterPage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
+    setLoadingButton(true);
     if (password !== confirmPassword) {
       toast.info("Las contraseñas no coinciden.");
       return;
@@ -62,14 +64,15 @@ const RegisterPage = () => {
           console.error("Error al enviar el correo de confirmación:", error);
           toast.error("No se pudo enviar el correo de confirmación.");
         }
-
+        setLoadingButton(false);
         setTimeout(() => {
           navigate('/login');
         }, 2000);
       })
       .catch(error => {
+        setLoadingButton(false);
         console.log("error", error);
-        toast.error(`Error al registrarte: ${error.message}`);
+        toast.info(`El usuario ya existe.`);
       });
   };
 
@@ -130,11 +133,14 @@ const RegisterPage = () => {
           />
         </div>
 
-        <button type="submit" className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200 btn-primary">
+        <Button
+          htmlType="submit"
+          loading={loadingButton}
+          className="w-full !bg-purple-600 !text-white p-6 rounded-lg mb-4">
           Registrarse
-        </button>
+        </Button>
         <button type="button" className="w-full mt-4 text-indigo-500 py-2 hover:underline" onClick={() => navigate('/login')}>
-          Volver
+          Volver a iniciar sesión
         </button>
       </form>
     </div>

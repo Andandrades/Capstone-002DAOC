@@ -4,12 +4,9 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Button } from 'antd';
 
-const CreateGymHourModal = ({
-  setCreateModal,
-  storedUser,
-  refreshGymHours
-}) => {
+const CreateGymHourModal = ({setCreateModal,storedUser,refreshGymHours}) => {
   const [formData, setFormData] = useState({
     start_hour: "00:00",
     end_hour: "00:00",
@@ -18,6 +15,7 @@ const CreateGymHourModal = ({
     schedule_date: "",
     admin_id: parseInt(storedUser),
   });
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -32,9 +30,9 @@ const CreateGymHourModal = ({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
+    setLoadingButton(true)  
     if(!formData.schedule_date){
+      setLoadingButton(false);
       toast.warning("Favor seleccione una fecha para la clase")
       return
     }
@@ -46,11 +44,12 @@ const CreateGymHourModal = ({
       console.log("Respuesta:", response.data);
       toast.success("Hora añadida correctamente");
       setCreateModal(false);
+      setLoadingButton(false);
       refreshGymHours();
-
     } catch (error) {
       console.log("Error al crear la clase", error);
       toast.error("Error al agendar la hora");
+      setLoadingButton(false);
     }
   };
 
@@ -149,12 +148,13 @@ const CreateGymHourModal = ({
             </div>
           </div>
 
-          <button
-            type="submit"
+          <Button
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            loading={loadingButton}
+            onClick={()=>{handleSubmit()}}
           >
-            Submit
-          </button>
+            Crear nueva clase
+          </Button>
         </form>
       </div>
     </div>

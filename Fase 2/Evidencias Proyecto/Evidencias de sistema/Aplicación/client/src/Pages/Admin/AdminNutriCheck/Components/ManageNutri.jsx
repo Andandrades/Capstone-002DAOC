@@ -3,17 +3,18 @@ import menu from "../../../../assets/Certificate.svg";
 import { deleteNutri } from '../../../../Components/API/Endpoints';
 import ModifyNutriModal from './ModifyNutriModal';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
 
 export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-
+    const [loadingButton, setLoadingButton] = useState(false);
     const formatPriceWithDots = (amount) => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const DeleteNutri = async (id) => {
+        setLoadingButton(true)
         try {
             const response = await deleteNutri(id);
             if (response) {
@@ -22,7 +23,9 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
             } else {
                 toast.error('Ha ocurrido un error, Intentalo nuevamente.');
             }
+            setLoadingButton(false)
         } catch (error) {
+            setLoadingButton(false)
             console.error("Error al eliminar el plan:", error);
             toast.error('La consulta no se puede eliminar, Usuarios han tenien esta consulta en el historial de transaciones...');
         }
@@ -50,14 +53,18 @@ export const ManageNutri = ({ id, name, amount,description, fetchPlans }) => {
                     </div>
                 </div>
                 <div className="flex space-x-4">
-                    <button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#EFDD37]"
+                    <Button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#EFDD37]"
                         onClick={() => { ModifyPlan() }}>
                         Modificar
-                    </button>
-                    <button className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#fc0317]"
-                        onClick={() => { DeleteNutri(id) }}>
+                    </Button>
+                    <Button
+                        type="submit"
+                        className="text-base rounded-full py-2 pl-4 pr-4 text-black font-bold bg-[#FF0000]"
+                        loading={loadingButton}
+                        onClick={() => { DeleteNutri(id) }}
+                    >
                         Eliminar
-                    </button>
+                    </Button>
                 </div>
 
             </div>

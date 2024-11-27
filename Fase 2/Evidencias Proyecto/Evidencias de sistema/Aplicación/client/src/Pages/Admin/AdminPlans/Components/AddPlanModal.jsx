@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { addPlan } from '../../../../Components/API/Endpoints';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Button } from 'antd';
 
 const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   const [selectedColor, setSelectedColor] = useState('#007bff');
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const colors = ['#007bff', '#28a745', '#ffc107', '#6f42c1'];
 
@@ -15,6 +17,7 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
   };
 
   const onSubmit = (data) => {
+    setLoadingButton(true);
     const payload = {
       ...data,
       color: selectedColor,
@@ -23,11 +26,16 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
       .then(response => {
         toast.success('Plan agregado correctamente.');
         fetchPlans(true);
+        setLoadingButton(false);
+        onClose();
+
       })
       .catch(error => {
         toast.error('Sucedio algo inesperado al agregar el plan.');
+        setLoadingButton(false);
+        onClose();
+
       });
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -153,9 +161,9 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
                 <button type="button" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md" onClick={onClose}>
                   Cerrar
                 </button>
-                <button type="submit" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md">
+                <Button type="submit" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md" onClick={()=>{onSubmit()}} loading={loadingButton}>
                   Guardar Plan
-                </button>
+                </Button>
               </div>
             </form>
           </div>
