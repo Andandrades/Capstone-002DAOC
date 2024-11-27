@@ -30,6 +30,7 @@ const RegisterPage = () => {
     event.preventDefault();
     setLoadingButton(true);
     if (password !== confirmPassword) {
+      setLoadingButton(false);
       toast.info("Las contraseñas no coinciden.");
       return;
     }
@@ -43,7 +44,6 @@ const RegisterPage = () => {
 
     Register(payload)
       .then(async (response) => {
-        console.log("response", response);
         toast.success(`Usuario registrado correctamente: ${response.message}`);
 
         const emailHTML = generateEmailHTML({
@@ -60,7 +60,9 @@ const RegisterPage = () => {
         try {
           await sendEmail(emailPayload);
           toast.success("Correo de confirmación enviado.");
+          setLoadingButton(false);
         } catch (error) {
+          setLoadingButton(false);
           console.error("Error al enviar el correo de confirmación:", error);
           toast.error("No se pudo enviar el correo de confirmación.");
         }
