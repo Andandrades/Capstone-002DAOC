@@ -5,12 +5,12 @@ import Certificate from "../assets/Verified.svg";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useUser } from "./API/UserContext";
 import { toast } from "react-toastify";
-
 import UsersProfilePicture from "./UsersProfilePicture";
-
+import { Button } from "antd";
 import ClassConfirmedTemplate from "../assets/emailTemplate/classconfirmedTemplate";
 import { renderToStaticMarkup } from "react-dom/server";
 import { sendEmail } from "./API/EmailSender";
+import CanceledGymClassTemplate from "../assets/emailTemplate/CanceledGymClassTemplate";
 
 export const GymHourCard = ({ schedule }) => {
   const {
@@ -27,12 +27,17 @@ export const GymHourCard = ({ schedule }) => {
   const [reservation, setReservation] = useState(null);
   const [userId, setUserId] = useState("");
   const [classId, setClassId] = useState({});
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const generateEmailHTML = (props) => {
     const emailComponent = <ClassConfirmedTemplate {...props} />;
     return renderToStaticMarkup(emailComponent);
   };
 
+  const generateEmailCancelSchedule = (props) => {
+    const emailComponent = <CanceledGymClassTemplate {...props} />;
+    return renderToStaticMarkup(emailComponent);
+  };
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -47,18 +52,15 @@ export const GymHourCard = ({ schedule }) => {
   const searchReservation = async () => {
     try {
       const respuesta = await fetch(
-        `${
-          import.meta.env.VITE_API_URL
+        `${import.meta.env.VITE_API_URL
         }/scheduleHour/${userId}/${gym_schedule_id}`
       );
       if (respuesta.ok) {
         const data = await respuesta.json();
         setReservation(true);
         setClassId(data[0].class_id);
-        //console.log(respuesta);
       } else {
         setReservation(false);
-        //console.log(respuesta);
       }
     } catch (error) {
       console.log(error);
@@ -110,13 +112,13 @@ export const GymHourCard = ({ schedule }) => {
     const remainingMinutes = minutes % 60; // Calcular los minutos restantes
 
     // Retornar la duración en formato 'X horas Y minutos'
-    return `${hours > 0 ? hours + "h " : ""}${
-      remainingMinutes > 0 ? remainingMinutes + "min" : ""
-    }`;
+    return `${hours > 0 ? hours + "h " : ""}${remainingMinutes > 0 ? remainingMinutes + "min" : ""
+      }`;
   };
 
   //Funcion para eliminar hora
   const eliminateClass = async () => {
+    setLoadingButton(true);
     const resultado = await fetch(
       `${import.meta.env.VITE_API_URL}/scheduleHour/${classId}`,
       {
@@ -134,18 +136,38 @@ export const GymHourCard = ({ schedule }) => {
       toast.success(
         "¡La clase ha sido cancelada correctamente y tu cupo ha sido devuleto!"
       );
+      const { email, name } = userData
+        const emailHTML = generateEmailCancelSchedule({
+          nombre: name,
+          fecha: "12/12/12",
+          hora: "12:12"
+        });
+        const payload = {
+          data: { email },
+          subject: "Cancelacion de clase Soldadogym",
+          html: emailHTML
+        };
+        try {
+          await sendEmail(payload);
+          setLoadingButton(false);
+
+        } catch (error) {
+          setLoadingButton(false);
+          console.error("Error al enviar el correo:", error);
+          toast.error("Sucedió algo inesperado.");
+        }
+      setLoadingButton(false);
       setReservation(false);
       fetchScheduledUsers();
       setClassId(null);
     }
+    setLoadingButton(false);
   };
-
-
   //Fuincion para agendar hora
   const scheduleHour = async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
-
-    try {      
+    setLoadingButton(true);
+    try {
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/scheduleHour`,
         {
@@ -160,35 +182,42 @@ export const GymHourCard = ({ schedule }) => {
           }),
         }
       );
-
+      setLoadingButton(false);
       if (resultado.ok) {
         const data = await resultado.json();
         setReservation(true);
         setClassId(data.class_id);
         fetchScheduledUsers();
         toast.success("¡Se reservó la clase correctamente!");
-
+        const { email, name } = userData
         const emailHTML = generateEmailHTML({
-          nombre:"Juan", 
-          fecha:"12/12/12", 
-          hora:"12:12"
+          nombre: name,
+          fecha: "12/12/12",
+          hora: "12:12"
         });
         const payload = {
-          data,
-          subject: "Recuperar contraseña Soldado",
+          data: { email },
+          subject: "Confirmacion de clase Soldadogym",
           html: emailHTML
         };
         try {
           await sendEmail(payload);
+          setLoadingButton(false);
+
         } catch (error) {
+          setLoadingButton(false);
           console.error("Error al enviar el correo:", error);
           toast.error("Sucedió algo inesperado.");
         }
       } else {
+        setLoadingButton(false);
         const errorData = await resultado.json();
         toast.info(errorData.error || "Error desconocido");
+        toast.info("Sucedio un error inesperado.");
+
       }
     } catch (error) {
+      setLoadingButton(false);
       toast.error("Error en la solicitud: " + error.message);
     }
   };
@@ -230,9 +259,9 @@ export const GymHourCard = ({ schedule }) => {
         className="w-full flex mt-5 justify-center items-center"
       >
         {!reservation ? (
-          <button className="bg-[#FCDE3B] font-medium rounded-full w-1/2">
+          <Button className="bg-[#FCDE3B] font-medium rounded-full w-1/2">
             Reservar
-          </button>
+          </Button>
         ) : (
           <button className="bg-[#6bf18f] font-medium rounded-full w-1/2">
             Ver detalles
@@ -256,9 +285,9 @@ export const GymHourCard = ({ schedule }) => {
                 scheduledUsers.map((reservation, index) => (
                   <div key={index} className="p-2 bg-white">
                     <div className="flex gap-2 justify-start items-center">
-                        <UsersProfilePicture userId={reservation.client_id} height={'30px'} width={'30px'}/>
-                        <p className="truncate ...">{reservation.client_name}</p>
-                      </div>
+                      <UsersProfilePicture userId={reservation.client_id} height={'30px'} width={'30px'} />
+                      <p className="truncate ...">{reservation.client_name}</p>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -284,19 +313,21 @@ export const GymHourCard = ({ schedule }) => {
             </div>
             <div className="w-full flex justify-center items-center">
               {!reservation ? (
-                <button
+                <Button
                   onClick={scheduleHour}
-                  className="bg-[#FCDE3B] rounded-full w-1/2"
+                  className="!bg-[#FCDE3B] !rounded-full !text-black w-1/2"
+                  loading={loadingButton}
                 >
                   Reservar
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   onClick={eliminateClass}
-                  className="bg-[#e94c4c] rounded-full text-white w-1/2"
+                  className="!bg-[#e94c4c] !rounded-full !text-white w-1/2"
+                  loading={loadingButton}
                 >
                   Cancelar Hora
-                </button>
+                </Button>
               )}
             </div>
           </div>

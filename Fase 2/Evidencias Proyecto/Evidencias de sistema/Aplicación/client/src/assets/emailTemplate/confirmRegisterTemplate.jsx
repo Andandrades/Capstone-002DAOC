@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ConfirmRegisterTemplate = ({ nombre, email}) => {
+const ConfirmRegisterTemplate = ({ nombre, email }) => {
   return (
     <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f9f9f9", padding: "30px 0" }}>
       <div
@@ -22,20 +22,40 @@ const ConfirmRegisterTemplate = ({ nombre, email}) => {
             textAlign: "center",
           }}
         >
-          <img src="https://i.imgur.com/GTIQ1BN.png" alt="Logo" style={{ width: "200px", height: "auto", margin: "auto" }} />
-          <h1 style={{ position:"relative", margin: "0", fontSize: "24px" }}>Soldado Gym</h1>
+          <img
+            src="https://i.imgur.com/GTIQ1BN.png"
+            alt="Logo"
+            style={{ width: "200px", height: "auto", margin: "auto" }}
+          />
+          <h1 style={{ margin: "0", fontSize: "24px" }}>¡Bienvenido a Soldado Gym!</h1>
         </div>
 
         {/* Contenido principal */}
         <div style={{ padding: "30px", textAlign: "center" }}>
           <h2 style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
-            Hola {nombre}, ¡tu cuenta se creó sin problemas!
+            Hola {nombre}, ¡tu viaje comienza aquí!
           </h2>
           <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
-            Nos agrada informarte que tu cuenta que creaste con {email} se creo sin problemas. nos da gusto que te unas a la familia de soldados gym.
+            Estamos emocionados de darte la bienvenida a la familia de **Soldado Gym**. Tu cuenta registrada con el correo <strong>{email}</strong> ya está lista. Ahora tienes acceso a un mundo de oportunidades para alcanzar tus metas de salud y bienestar.
           </p>
-          <p style={{ color: "#333", fontSize: "22px", marginBottom: "15px" }}>
+          <p style={{ color: "#444", fontSize: "16px", lineHeight: "1.6", marginBottom: "25px" }}>
+            Mantente fuerte, motivado y enfocado en cada paso de tu camino. ¡Estamos aquí para apoyarte en cada repetición, cada movimiento y cada meta alcanzada!
           </p>
+          <a
+            href="https://miaplicacion.com/iniciar-sesion"
+            style={{
+              display: "inline-block",
+              background: "#333",
+              color: "#fff",
+              padding: "12px 25px",
+              fontSize: "16px",
+              borderRadius: "5px",
+              textDecoration: "none",
+              marginTop: "20px",
+            }}
+          >
+            Comienza Ahora
+          </a>
         </div>
 
         {/* Pie de página */}
@@ -49,7 +69,7 @@ const ConfirmRegisterTemplate = ({ nombre, email}) => {
           }}
         >
           <p>
-            © 2024 MiAplicación |{" "}
+            © 2024 Soldado Gym |{" "}
             <a
               href="https://miaplicacion.com/privacidad"
               style={{ color: "#ffd700", textDecoration: "none" }}
@@ -57,6 +77,7 @@ const ConfirmRegisterTemplate = ({ nombre, email}) => {
               Política de privacidad
             </a>
           </p>
+          <p style={{ marginTop: "10px" }}>Gracias por confiar en nosotros. ¡Te esperamos en el gimnasio!</p>
         </div>
       </div>
     </div>
