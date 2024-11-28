@@ -12,18 +12,18 @@ import { ObtenerClientes, ObtenerEntrenadores, ObtenerNutricionistas, ObtenerAdm
 import UserRoleCard from '../../../Components/UserRoleCard';
 import Spinner from '../../../Components/Spinner';
 import './AdminUsersManagement.css'; 
+import { Button } from 'antd';
 
 const AdminUsersManagement = () => {
   const [clients, setClients] = useState([]);
   const [nutritionists, setNutritionists] = useState([]);
   const [trainers, setTrainers] = useState([]);
   const [administrators, setAdministrators] = useState([]); 
-
   const [showClients, setShowClients] = useState(false);
   const [showNutritionists, setShowNutritionists] = useState(false);
   const [showTrainers, setShowTrainers] = useState(false);
   const [showAdministrators, setShowAdministrators] = useState(false); 
-
+  const [loadingButton, setLoadingButton] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false); 
@@ -66,6 +66,7 @@ const AdminUsersManagement = () => {
   };
 
   const confirmDelete = async () => {
+    setLoadingButton(true);
     try {
       const response = await EliminarUsuario(selectedUser.id);
       if (response.message === 'Usuario eliminado con éxito') {
@@ -80,13 +81,15 @@ const AdminUsersManagement = () => {
         }
         toast.success(response.message);
       } else {
-        toast.error('Error al eliminar al usuario');
+        toast.info('El usuario tiene registros no es posible eliminarlo');
       }
+      setLoadingButton(false);
       setShowPopup(false);
-    } catch (error) {
-      console.error('Error al eliminar el usuario:', error);
-      toast.error('Error al eliminar al usuario');
+    } catch {
+      setLoadingButton(false);
+      toast.info('El usuario tiene registros no es posible eliminarlo');
     } finally {
+      setLoadingButton(false);
       setLoading(false);
       fetchUsersByRole();
     }
@@ -113,18 +116,22 @@ const AdminUsersManagement = () => {
   };
 
   const confirmAddUser = async () => {
+    setLoadingButton(true)
     if (!validateEmail(newUserEmail)) {
       toast.info('El correo electrónico que ingresó no es válido, por favor verifíquelo o ingrese uno nuevo.');
+      setLoadingButton(false)
       return;
     }
 
     if (newUserPassword.length < 8) {
       toast.error('La contraseña debe tener al menos 8 caracteres.');
+      setLoadingButton(false)
       return;
     }
 
     if (newUserPassword !== confirmPassword) {
       toast.error('Las contraseñas no coinciden. Por favor, vuelva a poner las contraseñas');
+      setLoadingButton(false)
       return;
     }
 
@@ -151,8 +158,10 @@ const AdminUsersManagement = () => {
       setNewUserPassword('');
       setConfirmPassword('');
       setShowAddPopup(false);
+      setLoadingButton(false)
       toast.success('El usuario se ha creado con éxito');
     } catch (error) {
+      setLoadingButton(false)
       console.error('Error al crear el usuario:', error);
       toast.error('El usuario no se ha podido crear correctamente');
     }
@@ -169,6 +178,7 @@ const AdminUsersManagement = () => {
   };
 
   const confirmEditUser = async () => {
+    setLoadingButton(true)
     const Payload = {
       name: editUserName,
       email: editUserEmail,
@@ -187,6 +197,7 @@ const AdminUsersManagement = () => {
 
     if (!hasChanges) {
       toast.warn('Por favor, realice cambios antes de guardar.');
+      setLoadingButton(false)
       return;
     }
 
@@ -207,12 +218,15 @@ const AdminUsersManagement = () => {
       } else {
         toast.success('El usuario se ha editado con éxito');
       }
+      setLoadingButton(false)
       setShowEditPopup(false);
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
+      setLoadingButton(false)
       toast.error('Error al editar al usuario, por favor intente de nuevo.');
     } finally {
       setLoading(false);
+      setLoadingButton(false)
       fetchUsersByRole();
     }
   };
@@ -289,14 +303,14 @@ const AdminUsersManagement = () => {
           <div className="popup">
             <p>¿Estás seguro de que deseas borrar a {selectedUser.name}?</p>
             <div className="flex justify-between mt-4">
-              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmDelete}>
+              <Button className="bg-green-500 text-white p-5 rounded" loading={loadingButton} onClick={confirmDelete}>
                 <CheckCircleIcon style={{ color: 'white' }} />
                 Sí, borrar
-              </button>
-              <button className="cancel-button" onClick={() => setShowPopup(false)}>
+              </Button>
+              <Button className="bg-red-500 text-white p-5 rounded" onClick={() => setShowPopup(false)}>
                 <CancelIcon style={{ color: 'white' }} />
                 Cancelar
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -334,15 +348,15 @@ const AdminUsersManagement = () => {
               placeholder="Confirmar Contraseña"
               className="w-full p-2 border rounded mb-2"
             />
-            <div className="flex justify-between mt-4">
-              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmAddUser}>
+            <div className="flex justify-around mt-4">
+              <Button className="!bg-green-500 !text-white p-5 rounded" loading={loadingButton} onClick={confirmAddUser}>
                 <CheckCircleIcon style={{ color: 'white' }} />
                 Agregar
-              </button>
-              <button className="cancel-button" onClick={() => setShowAddPopup(false)}>
+              </Button>
+              <Button className="!bg-red-500 !text-white p-5 rounded" onClick={() => setShowAddPopup(false)}>
                 <CancelIcon style={{ color: 'white' }} />
                 Cancelar
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -381,14 +395,14 @@ const AdminUsersManagement = () => {
               className="w-full p-2 border rounded mb-2"
             />
             <div className="flex justify-between mt-4">
-              <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={confirmEditUser}>
-                <CheckCircleIcon style={{ color: 'white' }} />
+              <Button className="!bg-green-500 !text-white p-5 rounded" loading={loadingButton} onClick={confirmEditUser}>
+                <CheckCircleIcon className='color-white-500' />
                 Confirmar
-              </button>
-              <button className="cancel-button" onClick={() => setShowEditPopup(false)}>
-                <CancelIcon style={{ color: 'white' }} />
+              </Button>
+              <Button className="!bg-red-500 !text-white p-5 rounded"  onClick={() => setShowEditPopup(false)}>
+                <CancelIcon className='color-white-500' />
                 Cancelar
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -172,11 +172,9 @@ const ModifyPlanModal = (props) => {
                   Cerrar
                 </Button>
                 <Button
-                  type="submit"
+                  htmlType="submit"
                   className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md"
                   loading={loadingButton}
-                  onClick={() => { onSubmit() }}
-
                 >
                   Guardar Plan
                 </Button>
