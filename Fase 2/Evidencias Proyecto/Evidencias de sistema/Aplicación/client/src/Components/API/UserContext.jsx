@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   const fetchAuthData = () => {
-    setLoading(false);
+    setLoading(true);
     fetch(`${import.meta.env.VITE_API_URL}/checkauth`, {
       method: "GET",
       credentials: "include",
@@ -50,7 +50,7 @@ export const UserProvider = ({ children }) => {
         setUserData({ id: null, name: null, email: null, role: null });
         setLoading(false);
       })
-
+      setLoading(false);
   };
 
   useEffect(() => {
