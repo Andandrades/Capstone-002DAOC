@@ -15,7 +15,8 @@ const AdminPlans = lazy(() => import('./Pages/Admin/AdminPlans/AdminPlans.Page')
 const AdminUsersManagement = lazy(() => import('./Pages/Admin/AdminUsersManagement/AdminUsersManagement'));
 const AdminExercisesMain = lazy(() => import('./Pages/Admin/AdminExercises/AdminExercisesMain'));
 const ClassesPage = lazy(() => import('./Pages/Classes/ClassesPage'));
-const LandingPage = lazy(() => import('./Pages/LandingPage/LandingPage'));
+//const LandingPage = lazy(() => import('./Pages/LandingPage/LandingPage'));
+import LandingPage from './Pages/LandingPage/LandingPage';
 const LoginPage = lazy(() => import('./Pages/Login/LoginPage'));
 const Menu = lazy(() => import('./Pages/Menu/Menu'));
 const ProfilePage = lazy(() => import('./Pages/Profile/ProfilePage'));
@@ -32,14 +33,10 @@ const RecoveryPassword = lazy(() => import('./Pages/Recover/RecoveryPassword'));
 
 
 function App() {
-  const { isAuth, setIsAuth, userData, loading } = useUser();
+  const { isAuth, setIsAuth, userData } = useUser();
 
   const permisosAdmin = [2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   // Ruta protegida por roles
   const RoleProtectedRoute = ({ children, requiredRoles }) => {
