@@ -16,7 +16,7 @@ const Menu = () => {
     const [loadingNextClass, setLoadingNextClass] = useState(true);
     const userDataString = localStorage.getItem("userData");
     const LocaluserData = userDataString ? JSON.parse(userDataString) : null;
-    
+
     const fetchData = async () => {
         console.log(userData)
         const payload = {
