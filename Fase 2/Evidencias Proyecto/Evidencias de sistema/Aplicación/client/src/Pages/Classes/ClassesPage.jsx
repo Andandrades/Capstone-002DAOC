@@ -10,20 +10,26 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import NotFound from '../../assets/img/NotFound.webp'
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../Components/Spinner";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+
 const ClassesPage = ({ userData }) => {
   const [classes, setClasses] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const userDataString = localStorage.getItem("userData");
+  const LocaluserData = userDataString ? JSON.parse(userDataString) : null;
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const fetchClasses = async () => {
     const resultado = await axios.get(
-      `${import.meta.env.VITE_API_URL}/userRecords/${userData.id}`
+      `${import.meta.env.VITE_API_URL}/userRecords/${LocaluserData.id}`
     );
-
     if (resultado.status === 200) {
       setClasses(resultado.data);
     }
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -33,9 +39,9 @@ const ClassesPage = ({ userData }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
-      weekday: "long", // Día de la semana (Lunes, Martes...)
-      month: "long", // Mes (Enero, Febrero...)
-      day: "numeric", // Día
+      weekday: "long",
+      month: "long",
+      day: "numeric",
     };
     return date.toLocaleString("es-CL", options);
   };
@@ -46,37 +52,57 @@ const ClassesPage = ({ userData }) => {
         className="bg-[radial-gradient(circle, rgb(255, 255, 255) 8%, rgb(177, 174, 174) 100%)] 
       backgroundPrimary w-full flex justify-start py-10 flex-col px-4 backgroundPrimary min-h-[100vh] pb-28 "
       >
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center">
           <h1 className="text-2xl font-bold  mb-10">Historial de clases</h1>
-        </div>
-        {classes.length > 0 ? (
-          <ClassesCard
-            routine={classes[0]}
-            setIsOpen={setIsOpen}
-            classes={classes}
-          />
-        ) : (
-          <div className="bg-slate-300 rounded-md grow flex justify-center items-center gap-2 text-center flex-col">
-            <img className="relative w-24" src={NotFound} alt="" />
-            <h1 className="font-semibold">No posees clases registradas</h1>
-            <button onClick={() => navigate('/schedule')} className="bg-button-primary text-white p-3 rounded-full">Agendar aqui</button>
-          </div>
-        )}
+          <div >
+            {loading ? (
+              <div className="relative flex justify-center items-center min-h-[200px]">
+                <Spinner />
+              </div>
+            ) : (
+              <>
+                <div className="w-screen"></div>
+                {classes.length > 0 ? (
+                  <ClassesCard
+                    routine={classes[0]}
+                    setIsOpen={setIsOpen}
+                    classes={classes}
+                  />
+                ) : (
+                  <div className="bg-slate-300  rounded-md grow flex justify-center items-center gap-2 text-center flex-col">
+                    <img className="relative w-24" src={NotFound} alt="" />
+                    <h1 className="font-semibold">No posees clases registradas</h1>
+                    <button onClick={() => navigate('/schedule')} className="bg-button-primary text-white p-3 rounded-full">Agendar aqui</button>
+                  </div>
+                )}
+                <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2 text-center"> Ultimas clases</h1>
+                {classes.length > 1 ? (
+                  <>
 
-        {classes.length > 1 ? (
-          <>
-            <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">
-              Historial de clases
-            </h1>
-            {classes.slice(1).map((prevClass) => (
-              <ExerciseHistory
-                infoClass={prevClass}
-                key={prevClass.class_id}
-                userData={userData}
-              />
-            ))}
-          </>
-        ) : null}
+                    {classes.slice(1).map((prevClass) => (
+                      <ExerciseHistory
+                        infoClass={prevClass}
+                        key={prevClass.class_id}
+                        userData={userData}
+                      />
+                    ))}
+                  </>
+                ) :
+                  <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
+                    <HelpOutlineIcon
+                      sx={{ fill: "#f1c21b", width: "40px", height: "40px" }}
+                    />
+                    <p className="font-semibold text-gray-500">
+                      No hay más clases disponibles.
+                    </p>
+                  </div>
+                }
+              </>
+            )}
+          </div>
+        </div>
+
+
 
         {isOpen ? (
           <div className="fixed inset-0 bg-black px-6 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">

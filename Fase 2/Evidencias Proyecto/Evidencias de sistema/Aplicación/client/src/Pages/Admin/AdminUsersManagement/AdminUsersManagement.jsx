@@ -4,29 +4,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SportsIcon from '@mui/icons-material/Sports';
-import GroupsIcon from '@mui/icons-material/Groups'; 
+import GroupsIcon from '@mui/icons-material/Groups';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import { ObtenerClientes, ObtenerEntrenadores, ObtenerNutricionistas, ObtenerAdministradores, EliminarUsuario, CrearUsuario, ActualizarUsuario } from '../../../Components/API/Users';
 import UserRoleCard from '../../../Components/UserRoleCard';
 import Spinner from '../../../Components/Spinner';
-import './AdminUsersManagement.css'; 
+import './AdminUsersManagement.css';
 import { Button } from 'antd';
 
 const AdminUsersManagement = () => {
   const [clients, setClients] = useState([]);
   const [nutritionists, setNutritionists] = useState([]);
   const [trainers, setTrainers] = useState([]);
-  const [administrators, setAdministrators] = useState([]); 
+  const [administrators, setAdministrators] = useState([]);
   const [showClients, setShowClients] = useState(false);
   const [showNutritionists, setShowNutritionists] = useState(false);
   const [showTrainers, setShowTrainers] = useState(false);
-  const [showAdministrators, setShowAdministrators] = useState(false); 
+  const [showAdministrators, setShowAdministrators] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showAddPopup, setShowAddPopup] = useState(false);
-  const [showEditPopup, setShowEditPopup] = useState(false); 
+  const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [userType, setUserType] = useState('');
   const [newUserName, setNewUserName] = useState('');
@@ -173,8 +173,8 @@ const AdminUsersManagement = () => {
     setEditUserEmail(user.email || '');
     setEditUserWeight(user.weight || '');
     setEditUserHeight(user.height || '');
-    setUserType(type); 
-    setShowEditPopup(true); 
+    setUserType(type);
+    setShowEditPopup(true);
   };
 
   const confirmEditUser = async () => {
@@ -184,7 +184,7 @@ const AdminUsersManagement = () => {
       email: editUserEmail,
       weight: editUserWeight,
       height: editUserHeight,
-      fk_rol_id: selectedUser.fk_rol_id 
+      fk_rol_id: selectedUser.fk_rol_id
     };
 
     // Verificar si hay cambios
@@ -204,7 +204,7 @@ const AdminUsersManagement = () => {
     try {
       const response = await ActualizarUsuario(selectedUser.id, Payload);
       if (response.message === 'Usuario actualizado con éxito') {
-        const updated = response.user; 
+        const updated = response.user;
         if (userType === 'clientes') {
           setClients(clients.map(client => (client.id === selectedUser.id ? updated : client)));
         } else if (userType === 'nutricionistas') {
@@ -234,70 +234,62 @@ const AdminUsersManagement = () => {
   return (
     <>
       <NavBarAdmin />
-      {loading ? (
-        <Spinner />
-      ) : (
       <div className="roles-container">
         <h1 className="roles-title">Administrar roles</h1>
+        <UserRoleCard
+          title="Clientes"
+          color="blue"
+          icon={DirectionsBikeIcon}
+          users={clients}
+          showUsers={showClients}
+          setShowUsers={setShowClients}
+          handleAddUser={handleAddUser}
+          toggleDropdown={toggleDropdown}
+          handleEditClick={handleEditClick}
+          handleDeleteClick={handleDeleteClick}
+          selectedUser={selectedUser}
+        />
+        <UserRoleCard
+          title="Nutricionistas"
+          color="purple"
+          icon={LocalDiningIcon}
+          users={nutritionists}
+          showUsers={showNutritionists}
+          setShowUsers={setShowNutritionists}
+          handleAddUser={handleAddUser}
+          toggleDropdown={toggleDropdown}
+          handleEditClick={handleEditClick}
+          handleDeleteClick={handleDeleteClick}
+          selectedUser={selectedUser}
+        />
+        <UserRoleCard
+          title="Entrenadores"
+          color="red"
+          icon={SportsIcon}
+          users={trainers}
+          showUsers={showTrainers}
+          setShowUsers={setShowTrainers}
+          handleAddUser={handleAddUser}
+          toggleDropdown={toggleDropdown}
+          handleEditClick={handleEditClick}
+          handleDeleteClick={handleDeleteClick}
+          selectedUser={selectedUser}
+        />
 
-          <UserRoleCard
-            title="Clientes"
-            color="blue"
-            icon={DirectionsBikeIcon}
-            users={clients}
-            showUsers={showClients}
-            setShowUsers={setShowClients}
-            handleAddUser={handleAddUser}
-            toggleDropdown={toggleDropdown}
-            handleEditClick={handleEditClick}
-            handleDeleteClick={handleDeleteClick}
-            selectedUser={selectedUser}
-          />
-
-          <UserRoleCard
-            title="Nutricionistas"
-            color="purple"
-            icon={LocalDiningIcon}
-            users={nutritionists}
-            showUsers={showNutritionists}
-            setShowUsers={setShowNutritionists}
-            handleAddUser={handleAddUser}
-            toggleDropdown={toggleDropdown}
-            handleEditClick={handleEditClick}
-            handleDeleteClick={handleDeleteClick}
-            selectedUser={selectedUser}
-          />
-
-          <UserRoleCard
-            title="Entrenadores"
-            color="red"
-            icon={SportsIcon}
-            users={trainers}
-            showUsers={showTrainers}
-            setShowUsers={setShowTrainers}
-            handleAddUser={handleAddUser}
-            toggleDropdown={toggleDropdown}
-            handleEditClick={handleEditClick}
-            handleDeleteClick={handleDeleteClick}
-            selectedUser={selectedUser}
-          />
-
-          <UserRoleCard
-            title="Administradores"
-            color="green"
-            icon={GroupsIcon}
-            users={administrators}
-            showUsers={showAdministrators}
-            setShowUsers={setShowAdministrators}
-            handleAddUser={handleAddUser}
-            toggleDropdown={toggleDropdown}
-            handleEditClick={handleEditClick}
-            handleDeleteClick={handleDeleteClick}
-            selectedUser={selectedUser}
-          />
-        </div>
-      )}
-
+        <UserRoleCard
+          title="Administradores"
+          color="green"
+          icon={GroupsIcon}
+          users={administrators}
+          showUsers={showAdministrators}
+          setShowUsers={setShowAdministrators}
+          handleAddUser={handleAddUser}
+          toggleDropdown={toggleDropdown}
+          handleEditClick={handleEditClick}
+          handleDeleteClick={handleDeleteClick}
+          selectedUser={selectedUser}
+        />
+      </div>
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
@@ -399,7 +391,7 @@ const AdminUsersManagement = () => {
                 <CheckCircleIcon className='color-white-500' />
                 Confirmar
               </Button>
-              <Button className="!bg-red-500 !text-white p-5 rounded"  onClick={() => setShowEditPopup(false)}>
+              <Button className="!bg-red-500 !text-white p-5 rounded" onClick={() => setShowEditPopup(false)}>
                 <CancelIcon className='color-white-500' />
                 Cancelar
               </Button>
