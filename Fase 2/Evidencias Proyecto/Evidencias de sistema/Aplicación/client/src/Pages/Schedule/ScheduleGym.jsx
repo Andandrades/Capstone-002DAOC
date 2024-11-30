@@ -5,11 +5,13 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import "./ScheduleStyles.css";
 import "./SelectDayButton.css";
+import Spinner from "../../Components/Spinner";
 
 const ScheduleGym = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scheduleInfo, setScheduleInfo] = useState("");
   const [currentDay, setCurrentDay] = useState("");
+  const [loading, setLoading] = useState(true);
   const days = ["D", "L", "M", "X", "J", "V", "S"];
   const todayIndex = new Date().getDay();
   const today = days[todayIndex];
@@ -24,6 +26,7 @@ const ScheduleGym = () => {
   }, []);
 
   const fetchGymHours = async (day) => {
+    setLoading(true)
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`
@@ -45,6 +48,7 @@ const ScheduleGym = () => {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false)
   };
 
   return (
@@ -72,11 +76,10 @@ const ScheduleGym = () => {
                         setCurrentDay(day); // Actualizar el día actual
                         setIsOpen(false); // Cerrar la lista al seleccionar
                       }}
-                      className={`py-2 px-4 cursor-pointer ${
-                        currentDay === day
-                          ? "bg-blue-300"
-                          : "bg-blue-100 hover:bg-blue-200"
-                      }`}
+                      className={`py-2 px-4 cursor-pointer ${currentDay === day
+                        ? "bg-blue-300"
+                        : "bg-blue-100 hover:bg-blue-200"
+                        }`}
                     >
                       {day}
                     </div>
@@ -86,28 +89,38 @@ const ScheduleGym = () => {
             )}
           </div>
         </div>
-        <div className="w-full mb-32 px-6 z-10 h-full">
-          <div className="w-full h-full flex flex-col">
-            {scheduleInfo.length > 0 ? (
-              scheduleInfo.map((hour) => (
-                <GymHourCard key={hour.gym_schedule_id} schedule={hour} />
-              ))
-            ) : (
-              <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
-                <HelpOutlineIcon
-                  sx={{ fill: "#f1c21b", width: "40px", height: "40px" }}
-                />
-                <p className="font-semibold text-gray-500">
-                  No se encuentran horas registradas para este día
-                </p>
-              </div>
-            )}
+        {loading ? (
+          <div className="relative flex justify-center items-center min-h-[200px]">
+            <Spinner />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="w-full mb-32 px-6 z-10 h-full">
+              <div className="w-full h-full flex flex-col">
+                {scheduleInfo.length > 0 ? (
+                  scheduleInfo.map((hour) => (
+                    <GymHourCard key={hour.gym_schedule_id} schedule={hour} />
+                  ))
+                ) : (
+                  <div className="w-full bg-white mt-5 p-5 rounded flex justify-center items-center gap-8">
+                    <HelpOutlineIcon
+                      sx={{ fill: "#f1c21b", width: "40px", height: "40px" }}
+                    />
+                    <p className="font-semibold text-gray-500">
+                      No se encuentran horas registradas para este día
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+        <UserNavBar />
       </section>
-      <UserNavBar />
+
     </>
   );
-};
+}
+
 
 export default ScheduleGym;

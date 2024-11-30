@@ -32,13 +32,13 @@ const RecoveryPassword = lazy(() => import('./Pages/Recover/RecoveryPassword'));
 
 
 function App() {
-  const { isAuth, setIsAuth, loading,userData } = useUser();
+  const { isAuth, setIsAuth, loading, userData, fetchAuthData } = useUser();
   const userDataString = localStorage.getItem("userData");
   const LocaluserData = userDataString ? JSON.parse(userDataString) : null;
   const permisosAdmin = [2, 3, 4];
   const permisosVistaCliente = [1, 2, 3, 4];
-
   if (loading) {
+    fetchAuthData()
     return <Spinner />;
   }
   // Ruta protegida por roles

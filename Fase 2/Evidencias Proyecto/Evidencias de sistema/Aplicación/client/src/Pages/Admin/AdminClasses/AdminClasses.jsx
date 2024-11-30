@@ -7,6 +7,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useUser } from "../../../Components/API/UserContext";
+import Spinner from "../../../Components/Spinner";
 
 const AdminClasses = () => {
   const { userData } = useUser();
@@ -14,8 +15,10 @@ const AdminClasses = () => {
   const [dayModal, setDayModal] = useState();
   const [date, setDate] = useState(new Date());
   const [createModal, setCreateModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchGymHours = async (date) => {
+    setLoading(true)
     const formattedDate = date.toLocaleDateString('en-CA');
 
     try {
@@ -27,6 +30,7 @@ const AdminClasses = () => {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -68,21 +72,27 @@ const AdminClasses = () => {
             </button>
           </div>
         </div>
-        <div className="px-6">
-          {scheduleInfo.length > 0 ? (
-            scheduleInfo.map((schedue) => (
-              <GymHourEditCard
-                refreshGymHours={() => fetchGymHours(date)}
-                key={schedue.gym_schedule_id}
-                schedule={schedue}
-              />
-            ))
-          ) : (
-            <div className="w-full flex justify-center text-center pt-10">
-              <h1>No se encuentran clases registradas para este día</h1>
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="relative flex justify-center items-center min-h-[200px]">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="px-6">
+            {scheduleInfo.length > 0 ? (
+              scheduleInfo.map((schedue) => (
+                <GymHourEditCard
+                  refreshGymHours={() => fetchGymHours(date)}
+                  key={schedue.gym_schedule_id}
+                  schedule={schedue}
+                />
+              ))
+            ) : (
+              <div className="w-full flex justify-center text-center pt-10">
+                <h1>No se encuentran clases registradas para este día</h1>
+              </div>
+            )}
+          </div>
+        )}
         {dayModal ? (
           <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
             <div className="bg-white p-3 rounded-lg">

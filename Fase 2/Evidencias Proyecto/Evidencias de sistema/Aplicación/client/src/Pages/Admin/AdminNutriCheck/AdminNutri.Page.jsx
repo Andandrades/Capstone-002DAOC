@@ -4,16 +4,19 @@ import { NavBarAdmin } from '../../../Components/NavBarAdmin';
 import { obtenerNutri } from '../../../Components/API/Endpoints';
 import AddPlanModal from './Components/AddNutriModal';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Spinner from '../../../Components/Spinner';
 
  const AdminNutri = () => {
   const [data, setData] = useState([]);
   const [fetchPlans, setFetchPlans] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchPlanes = async () => {
     try {
       const data = await obtenerNutri();
       setData(data);
+      setLoading(false)
     } catch (err) {
       console.log(err);
     }
@@ -36,6 +39,9 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
             Añadir consulta
           </button>
         </div>
+        {loading ? (
+          <Spinner/>
+        ) : (
         <div className="planes">
           {data && data.length > 0 ? (
             data.map((data) => (
@@ -56,6 +62,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
           </div>
           )}
         </div>
+          )}
       </section>
       <div className="pad pb-10"></div>
       <NavBarAdmin />
@@ -65,6 +72,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
         fetchPlans={setFetchPlans}
       />
     </div >
+      
   );
 };
 
