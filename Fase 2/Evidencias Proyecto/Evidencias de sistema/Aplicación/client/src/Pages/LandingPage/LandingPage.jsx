@@ -209,6 +209,8 @@ const LandingPage = () => {
       </section>
       <div className="separator" />
       <FisicoComponent />
+      <div className="separator" />
+
       <section
         ref={sectionRef4}
         className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col"
