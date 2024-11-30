@@ -52,9 +52,9 @@ const ClassesPage = ({ userData }) => {
         className="bg-[radial-gradient(circle, rgb(255, 255, 255) 8%, rgb(177, 174, 174) 100%)] 
       backgroundPrimary w-full flex justify-start py-10 flex-col px-4 backgroundPrimary min-h-[100vh] pb-28 "
       >
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center ">
           <h1 className="text-2xl font-bold  mb-10">Historial de clases</h1>
-          <div >
+          <div className="w-11/12">
             {loading ? (
               <div className="relative flex justify-center items-center min-h-[200px]">
                 <Spinner />
