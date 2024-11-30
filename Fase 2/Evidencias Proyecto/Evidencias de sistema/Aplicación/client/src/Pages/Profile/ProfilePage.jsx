@@ -18,6 +18,8 @@ const ProfilePage = () => {
   const [showSecurity, setShowSecurity] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const { userData } = useUser();
+  const userDataString = localStorage.getItem("userData");
+  const LocaluserData = userDataString ? JSON.parse(userDataString) : null;
   const handleChangeFile = async (e) => {
     e.preventDefault();
     const selectedFile = e.target.files[0];
@@ -182,7 +184,7 @@ const ProfilePage = () => {
               </div>
             </div>
             <p className="text-gray-900 mt-2 text-lg font-medium text-center">
-              {userData.name}
+              {LocaluserData.name}
             </p>
             <div className="flex flex-col justify-center w-[90%]  mx-auto space-y-4">
               <label htmlFor="email" className="text-sm font-medium text-gray-700">
@@ -192,7 +194,7 @@ const ProfilePage = () => {
                 type="email"
                 name="email"
                 id="email"
-                value={userData.email}
+                value={LocaluserData.email}
                 {...registerProfile("email")}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
               />
@@ -204,10 +206,10 @@ const ProfilePage = () => {
                 Peso
               </label>
               <input
-                type="text"
+                type="number"
                 name="weight"
                 id="weight"
-                defaultValue={userData.weight}
+                defaultValue={LocaluserData.weight}
                 {...registerProfile("weight", { required: "El peso es obligatorio" })}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
               />
@@ -219,10 +221,10 @@ const ProfilePage = () => {
                 Altura
               </label>
               <input
-                type="text"
+                type="number"
                 name="height"
                 id="height"
-                defaultValue={userData.height}
+                defaultValue={LocaluserData.height}
                 {...registerProfile("height", { required: "La altura es obligatoria" })}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
               />
