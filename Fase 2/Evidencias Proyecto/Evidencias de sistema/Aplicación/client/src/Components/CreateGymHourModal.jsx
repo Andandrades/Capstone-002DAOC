@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/style.css";
+import "react-day-picker/dist/style.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from 'antd';

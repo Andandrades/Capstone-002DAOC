@@ -33,6 +33,12 @@ const loginUser = async (req, res) => {
       { expiresIn: tokenExpiry }
     );
 
+    const now = new Date();
+    await pool.query(
+      "UPDATE users SET last_login = $1 WHERE id = $2",
+      [now, user.id]
+    );
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
@@ -49,7 +55,7 @@ const loginUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   const { name, email, password, fk_rol_id } = req.body;
-  const date = new Date();
+  const date = new Date().toISOString().split('T')[0];
 
   try {
     const userExists = await pool.query(
@@ -63,9 +69,10 @@ const registerUser = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
-      "INSERT INTO users(name,email,password,register_date,fk_rol_id) VALUES ($1,$2,$3,$5,$4) RETURNING id,email,name,fk_rol_id",
-      [name, email, hashedPassword, fk_rol_id,date]
+      "INSERT INTO users(name,email,password,register_date,fk_rol_id) VALUES ($1,$2,$3,$4,$5) RETURNING id,email,name,register_date,fk_rol_id",
+      [name, email, hashedPassword,date, fk_rol_id]
     );
+    
 
     return res
       .status(201)
