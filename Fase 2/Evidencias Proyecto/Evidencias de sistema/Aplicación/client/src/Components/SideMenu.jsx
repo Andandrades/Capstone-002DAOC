@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "../Pages/Nutri/NutriMenu.css";
-import "react-day-picker/style.css";
+import "react-day-picker/dist/style.css";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 

@@ -111,11 +111,14 @@ const getUsersByRole = async (req, res) => {
 // Crear usuario
 const createUser = async (req, res) => {
   const { name, email, password, fk_rol_id, weight, height } = req.body;
+  const date = new Date().toISOString().split('T')[0];
+
+  
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUserResult = await pool.query(
-      "INSERT INTO users (name, email, password, fk_rol_id, weight, height) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [name, email, hashedPassword, fk_rol_id, weight || null, height || null]
+      "INSERT INTO users (name, email, password, fk_rol_id, weight, height, register_date) VALUES ($1, $2, $3, $4, $5, $6 , $7) RETURNING *",
+      [name, email, hashedPassword, fk_rol_id, weight || null, height || null, date]
     );
     const newUser = newUserResult.rows[0];
     res.status(201).json({
@@ -191,6 +194,7 @@ const getProfilePicture = async (req,res) =>{
 }
 
 
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -200,5 +204,5 @@ module.exports = {
   createUser,
   uploadPicture,
   getProfilePicture,
-  getUserData
+  getUserData,
 };
