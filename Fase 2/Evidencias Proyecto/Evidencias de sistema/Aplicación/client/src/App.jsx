@@ -27,7 +27,7 @@ const ScheduleNutri = lazy(() => import('./Pages/Schedule/ScheduleNutri'));
 const NutriMenu = lazy(() => import('./Pages/Nutri/NutriMenu'));
 const NutriProfile = lazy(() => import('./Pages/Nutri/NutriProfile'));
 const AdminRoutines = lazy(() => import('./Pages/Admin/AdminRoutine/AdminRoutines'));
-const AdminPurchases = lazy(() => import('./Pages/Admin/AdminPurchases/AdminPurchases'));
+const AdminDashboard = lazy(() => import('./Pages/Admin/AdminDashBoard/AdminDashboard'));
 const RecoveryPassword = lazy(() => import('./Pages/Recover/RecoveryPassword'));
 
 
@@ -95,7 +95,7 @@ function App() {
             <Route path="/Admin/PaginaInicio" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminLandingPage /></RoleProtectedRoute>} />
             <Route path="/Admin/Usuarios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminUsersManagement /></RoleProtectedRoute>} />
             <Route path="/Admin/Ejercicios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminExercisesMain /></RoleProtectedRoute>} />
-            <Route path="/Admin/Ganancias" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminPurchases /></RoleProtectedRoute>} />
+            <Route path="/Admin/AdminDashboard" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminDashboard /></RoleProtectedRoute>} />
 
 
             {/* Rutas protegidas para el perfil del usuario */}

@@ -42,6 +42,7 @@ const gymHoursRoutes = require("./routes/gym_schedule.routes");
 const webpay = require("./routes/Webpay.Routes");
 const subscription = require("./routes/subscription.routes")
 const mailer = require("./routes/Mailer.Routes")
+const dashboard = require("./routes/dashboard.routes")
 
 // Inicializar Rutas
 app.use(rolesRoutes);
@@ -57,6 +58,7 @@ app.use(gymHoursRoutes);
 app.use(webpay);
 app.use(subscription);
 app.use(mailer);
+app.use(dashboard);
 
 app.listen(PORT, () => {
   console.log(`Servidor en funcionamiento en el puerto ${PORT}`);

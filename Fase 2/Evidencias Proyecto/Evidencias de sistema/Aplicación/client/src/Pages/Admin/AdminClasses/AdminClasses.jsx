@@ -4,6 +4,9 @@ import CreateGymHourModal from "../../../Components/CreateGymHourModal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { GymHourEditCard } from "../../../Components/GymHourEditCard";
 import { DayPicker } from "react-day-picker";
+
+import "react-day-picker/dist/style.css";
+
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useUser } from "../../../Components/API/UserContext";
 import Spinner from "../../../Components/Spinner";

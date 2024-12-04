@@ -7,12 +7,11 @@ import TodayIcon from '@mui/icons-material/Today';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
 import RunCircleIcon from '@mui/icons-material/RunCircle';
-import './css/ProfileNavBar.css';
 import { Logout } from './API/sesion';
 import { useUser } from './API/UserContext';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
-
-export const NavBarAdmin = () => {
+const AdminSideMenu = () => {
   const navigate = useNavigate();
   const { userData,fetchAuthData } = useUser();
   const RoleCliente = 1;
@@ -33,72 +32,82 @@ export const NavBarAdmin = () => {
   
 
   return (
-    <div className="navbar z-10 fixed shadow-inner">
-     <Disclosure as="nav">
-        <div className="relative flex h-16 items-center justify-around">
-          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+    <div className="bg-[#1C1C1C] z-10 min-w-60 px-2 shadow-inner">
+     <Disclosure as="menu">
+        <div className="relative flex min-h-screen w-full flex-col items-center justify-start gap-2  pt-10">
+          <div className="flex flex-col pl-2 items-start py-3 w-full text-gray-400 hover:text-white hover:bg-[#272727] transition-all ease-in-out">
             <button
               type="button"
               onClick={() => goto('Admin/Clases')}
-              className="flex flex-col items-center gap-1"
+              className="flex items-center w-full gap-1"
             >
               <TodayIcon />
-              <h3 className="text-xs">Clases</h3>
+              <h3 className="text-base">Clases</h3>
             </button>
           </div>
 
-          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+          <div className="flex flex-col pl-2 items-start py-3 w-full text-gray-400 hover:text-white hover:bg-[#272727] transition-all ease-in-out">
             <button
               type="button"
               onClick={() => goto('Admin/Usuarios')}
-              className="flex flex-col items-center gap-1"
+              className="flex w-full items-center gap-1"
             >
               <PersonIcon />
-              <h3 className="text-xs">Usuarios</h3>
+              <h3 className="text-base">Usuarios</h3>
             </button>
           </div>
 
-          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+          <div className="flex flex-col pl-2 items-start py-3 text-gray-400 hover:text-white w-full hover:bg-[#272727] transition-all ease-in-out">
             <button
               type="button"
               onClick={() => goto('Admin/Planes')}
-              className="flex flex-col items-center gap-1"
+              className="flex w-full items-center gap-1"
             >
               <FitnessCenterIcon />
-              <h3 className="text-xs">Planes</h3>
+              <h3 className="text-base">Planes</h3>
             </button>
           </div>
 
-          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+          <div className="flex flex-col pl-2 items-start py-3 text-gray-400 hover:text-white w-full hover:bg-[#272727] transition-all ease-in-out">
             <button
               type="button"
               onClick={() => goto('Admin')}
-              className="flex flex-col items-center gap-1"
+              className="flex  w-full  items-center gap-1"
             >
               <FavoriteIcon />
-              <h3 className="text-xs">Consultas</h3>
+              <h3 className="text-base">Consultas</h3>
             </button>
           </div>
 
-          <div className="flex flex-col items-center text-gray-400 hover:text-white">
+          <div className="flex flex-col pl-2 items-start py-3 text-gray-400 hover:text-white w-full hover:bg-[#272727] transition-all ease-in-out">
             <button
               type="button"
               onClick={() => goto('Admin/Ejercicios')}
-              className="flex flex-col items-center gap-1"
+              className="flex  w-full  items-center gap-1"
             >
               <RunCircleIcon />
-              <h3 className="text-xs">Ejercicios</h3>
+              <h3 className="text-base">Ejercicios</h3>
+            </button>
+          </div>
+          <div className="flex flex-col pl-2 items-start py-3 text-gray-400 active:bg-slate-100 hover:text-white w-full hover:bg-[#272727] transition-all ease-in-out">
+            <button
+              type="button"
+              onClick={() => goto('admin/AdminDashboard')}
+              className="flex  w-full  items-center gap-1"
+            >
+              <DashboardIcon />
+              <h3 className="text-base">Dashboard</h3>
             </button>
           </div>
 
-          <div className="flex flex-col items-center text-gray-400 hover:text-white">
-            <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button type="button" className="flex flex-col items-center gap-1" >
+          <div className="flex flex-col pl-2 items-start py-3 text-gray-400 hover:text-white w-full hover:bg-[#272727] transition-all ease-in-out">
+            <Menu as="div" className="relative  w-full inline-block text-left">
+              <Menu.Button type="button" className="flex items-center w-full gap-1" >
                 <PersonIcon />
-                <h3 className="text-xs">Perfil</h3>
+                <h3 className="text-base">Perfil</h3>
               </Menu.Button>
 
-              <Menu.Items className="absolute right-0 bottom-full mb-2 w-32 origin-bottom-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-[-50] bottom-[-100] mb-2 w-32 bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
@@ -154,3 +163,5 @@ export const NavBarAdmin = () => {
     </div>
   );
 };
+
+export default AdminSideMenu

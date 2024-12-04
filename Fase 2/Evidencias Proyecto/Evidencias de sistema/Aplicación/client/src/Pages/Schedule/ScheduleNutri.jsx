@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { UserNavBar } from "../../Components/UserNavBar";
 import { NutriHourCard } from "../../Components/NutriHourCard";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/style.css";
+import "react-day-picker/dist/style.css";
 import "./ScheduleNutriStyle.css";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
