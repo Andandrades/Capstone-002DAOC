@@ -6,15 +6,21 @@ import { useUser } from "../../Components/API/UserContext"
 import { subscriptionByUser } from "../../Components/API/subscriptions"
 import { useEffect, useState } from "react"
 import { GetNextClass } from "../../Components/API/Schedule"
+import Spinner from "../../Components/Spinner"
 const Menu = () => {
 
     const { userData } = useUser();
     const [suscriptionData, setSuscriptionData] = useState();
     const [nextClassData, setNextClassData] = useState();
+    const [loading, setLoading] = useState(true);
+    const [loadingNextClass, setLoadingNextClass] = useState(true);
+    const userDataString = localStorage.getItem("userData");
+    const LocaluserData = userDataString ? JSON.parse(userDataString) : null;
 
     const fetchData = async () => {
+        console.log(userData)
         const payload = {
-            userId: userData.id,
+            userId: LocaluserData.id,
         };
         try {
             const data = await subscriptionByUser(payload);
@@ -24,11 +30,13 @@ const Menu = () => {
             console.log("error al obtener las suscripciones activas");
         }
         try {
-            const NextClass = await GetNextClass(userData.id);
+            const NextClass = await GetNextClass(LocaluserData.id);
             setNextClassData(NextClass);
         } catch {
             console.log("error al obtener la siguiente clase.");
         }
+        setLoading(false)
+        setLoadingNextClass(false)
     };
 
     useEffect(() => {
@@ -44,11 +52,25 @@ const Menu = () => {
 
                 </div>
                 <h1 className="text-2xl font-semibold text-gray-700 mb-5">Tu Plan</h1>
-                <SuscriptionsCard
-                    suscriptionData={suscriptionData} />
+                <div >
+                    {loading ? (
+                        <div className="relative flex justify-center items-center min-h-[200px]">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <SuscriptionsCard suscriptionData={suscriptionData} />
+                    )}
+                </div>
                 <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">Siguiente Clase</h1>
-                <NextClass
-                    nextClassData={nextClassData} />
+                <div >
+                    {loadingNextClass ? (
+                        <div className="relative flex justify-center items-center min-h-[200px]">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <NextClass nextClassData={nextClassData} />)}
+                </div>
+
 
             </section>
             <UserNavBar />

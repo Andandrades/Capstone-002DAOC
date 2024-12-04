@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BuyModal from "../Pages/LandingPage/Components/BuyModal";
-import Certificate from "../assets/Certificate";
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 export const Plans = (props) => {
   const { id, name, description, price, offer_price, type, n_class, color, isAuth, setIsAuth } = props;
@@ -22,7 +22,7 @@ export const Plans = (props) => {
   return (
     <div className="flex flex-col items-center justify-between min-h-96 relative text-white py-7 px-6 rounded-md bg-[#1C1C1C] w-[300px] h-[600px]">
       <div className="absolute top-[-15px] right-[-15px] m-0 p-0">
-        <Certificate fill={color} />
+      <VerifiedIcon sx={{ color, fontSize: '50px' }} />
       </div>
       <div className="flex flex-col items-center text-center">
         <h1 className="text-3xl font-bold">{name}</h1>

@@ -158,10 +158,10 @@ const AddPlanModal = ({ isOpen, onClose, fetchPlans }) => {
               </div>
 
               <div className="modal-footer flex justify-end mt-4">
-                <button type="button" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md" onClick={onClose}>
+                <Button type="button"  className="btn btn-secondary mr-2 p-5 bg-gray-300 rounded-md" onClick={onClose}>
                   Cerrar
-                </button>
-                <Button type="submit" className="btn btn-secondary mr-2 p-2 bg-gray-300 rounded-md" onClick={()=>{onSubmit()}} loading={loadingButton}>
+                </Button>
+                <Button htmlType="submit" className="btn btn-secondary mr-2 p-5 bg-gray-300 rounded-md" onClick={() => { onSubmit() }} loading={loadingButton}>
                   Guardar Plan
                 </Button>
               </div>

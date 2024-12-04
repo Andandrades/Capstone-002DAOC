@@ -112,16 +112,16 @@ const LandingPage = () => {
             <img src={Trainer} className="h-[250px]" alt="" />
             <h1 className="text-3xl font-semibold ">David Fuentes</h1>
             <p className="w-auto pt-2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Assumenda corporis ea veritatis recusandae natus optio est
+              Me comprometo a mejorar tu estado fisico para que 
+              cumplan tus objetivos y metas
             </p>
           </div>
           <div className="p-10 h-[600px] md:h-[500px] w-[300px] md:w-[400px] flex justify-center items-center flex-col bg-[#ffffff] rounded-lg shadow-sm">
             <img src={Nutri} className="h-[250px]" alt="" />
             <h1 className="text-3xl font-semibold ">Sol Nuñez</h1>
             <p className="w-auto pt-2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Assumenda corporis ea veritatis recusandae natus optio est
+              Vamos a trabajar en equipo para que puedas mejorar
+              tu salud y bienestar o mantenerte en un buen estado
             </p>
           </div>
         </div>
@@ -146,8 +146,7 @@ const LandingPage = () => {
                 <p className="text-lg">Evaluacion física</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repudiandae, nisi illo! Quaerat
+                Te mantendremos al tanto de tu progeso y te vamos a ayudar para que sigas mejorando
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
@@ -155,8 +154,7 @@ const LandingPage = () => {
                 <p className="text-lg">Clases Personalizadas</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repudiandae, nisi illo! Quaerat
+                Podras revertir tus clases los dias que mas se te acomode 
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
@@ -166,8 +164,8 @@ const LandingPage = () => {
                 </p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repudiandae, nisi illo! Quaerat
+                No tengas miedo si no sabes como hacer un ejercicio, estamos para apoyarte
+                y enseñarte las formas correctas para realizar los ejercios de manera correcta
               </span>
             </ul>
           </div>
@@ -183,28 +181,27 @@ const LandingPage = () => {
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
                 <ChecklistRtlIcon sx={{ color: "#3936C1" }} />{" "}
-                <p>Primera Visita</p>
+                <p>Analisis Fisico</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repudiandae, nisi illo! Quaerat
+                Vamos a analizar tu estado fisico y tu alimentacion para poder 
+                entregarte un plan alimenticio para mejorar tu salud
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
                 <ClassIcon sx={{ color: "#3936C1" }} /> <p>Seguimiento</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repudiandae, nisi illo! Quaerat
+                Tendras un seguimiento de tu estado fisico y veas los cambios que lograste  
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
                 <FitnessCenterIcon sx={{ color: "#3936C1" }} />
-                <p>Mantenimiento</p>
+                <p>Consultas</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repudiandae, nisi illo! Quaerat
+                Podrias agendar consultas para que podamos ver como avanza tu estado fisico
+                y veamos en que cosas mejorar o mantener 
               </span>
             </ul>
           </div>
@@ -212,6 +209,8 @@ const LandingPage = () => {
       </section>
       <div className="separator" />
       <FisicoComponent />
+      <div className="separator" />
+
       <section
         ref={sectionRef4}
         className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col"
