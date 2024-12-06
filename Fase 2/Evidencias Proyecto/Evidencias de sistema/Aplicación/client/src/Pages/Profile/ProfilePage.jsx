@@ -233,7 +233,7 @@ const ProfilePage = () => {
               <select
                 {...registerProfile("Gender", { required: "El género es obligatorio" })}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
-                defaultValue=""
+                defaultValue={LocaluserData.gender}
               >
                 <option value="" disabled>Selecciona un género</option>
                 <option value="M">Masculino</option>

@@ -29,7 +29,8 @@ export const UserProvider = ({ children }) => {
             plan_id: data.plan_id,
             weight: data.weight,
             height: data.height,
-            suscription_id: data.suscription_id
+            suscription_id: data.suscription_id,
+            gender: data.gender
           };
           if (user.id !== null || user.email !== null) {
             setUserData(user);
