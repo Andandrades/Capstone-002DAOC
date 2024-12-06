@@ -46,7 +46,7 @@ const getUserData = async (req, res) => {
 
 // Actualizar usuarios
 const updateUser = async (req, res) => {
-  const { name, weight, height, email } = req.body;
+  const { name, weight, height, email, gender } = req.body;
   const { id } = req.params;
 
   try {
@@ -62,8 +62,8 @@ const updateUser = async (req, res) => {
 
     // Actualizar el usuario manteniendo el valor de fk_rol_id
     const result = await pool.query(
-      "UPDATE users SET name = $1, weight = $2, height = $3, email = $4, fk_rol_id = $5 WHERE id = $6 RETURNING *",
-      [name, weight, height, email, fk_rol_id, id]
+      "UPDATE users SET name = $1, weight = $2, height = $3, email = $4, fk_rol_id = $5, gender = $7 WHERE id = $6 RETURNING *",
+      [name, weight, height, email, fk_rol_id, id, gender]
     );
 
     res.json(result.rows[0]);
@@ -113,7 +113,7 @@ const createUser = async (req, res) => {
   const { name, email, password, fk_rol_id, weight, height } = req.body;
   const date = new Date().toISOString().split('T')[0];
 
-  
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUserResult = await pool.query(
@@ -147,14 +147,14 @@ const uploadPicture = async (req, res) => {
     let processedImage;
 
     if (req.file.mimetype === 'image/gif') {
-      
+
       processedImage = req.file.buffer;
     } else {
       // Si es una imagen estática, procesarla con sharp
       processedImage = await sharp(req.file.buffer)
         .resize(200, 200) // Redimensionar la imagen
-        .toFormat('jpeg') 
-        .toBuffer(); 
+        .toFormat('jpeg')
+        .toBuffer();
     }
 
     // Guardar el archivo (ya sea GIF o imagen procesada)
@@ -168,7 +168,7 @@ const uploadPicture = async (req, res) => {
   }
 };
 
-const getProfilePicture = async (req,res) =>{
+const getProfilePicture = async (req, res) => {
   try {
     const userId = req.params.id;
 
@@ -186,7 +186,7 @@ const getProfilePicture = async (req,res) =>{
 
 
     res.set('Content-Type', 'image/jpeg');
-    res.send(profilePicture); 
+    res.send(profilePicture);
   } catch (error) {
     console.error('Error fetching profile picture:', error);
     res.status(500).json({ message: 'Error fetching profile picture' });

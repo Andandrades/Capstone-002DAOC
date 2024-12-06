@@ -70,9 +70,9 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
       "INSERT INTO users(name,email,password,register_date,fk_rol_id) VALUES ($1,$2,$3,$4,$5) RETURNING id,email,name,register_date,fk_rol_id",
-      [name, email, hashedPassword,date, fk_rol_id]
+      [name, email, hashedPassword, date, fk_rol_id]
     );
-    
+
 
     return res
       .status(201)
@@ -100,7 +100,7 @@ const checkAuth = async (req, res) => {
   try {
     const decoded = jwt.verify(token, jwtSecret);
     const userResult = await pool.query(
-      "SELECT id, name, email, fk_rol_id,weight,height,s.plan_id,s.suscription_id , s.remaining_classes FROM users u left join suscription s on u.id = s.user_id WHERE id = $1 order by start_date desc limit 1",
+      "SELECT id, name, email,gender , fk_rol_id,weight,height,s.plan_id,s.suscription_id , s.remaining_classes FROM users u left join suscription s on u.id = s.user_id WHERE id = $1 order by start_date desc limit 1",
       [decoded.id]
     );
     const user = userResult.rows[0];
@@ -117,7 +117,8 @@ const checkAuth = async (req, res) => {
       plan_id: user.plan_id,
       weight: user.weight,
       height: user.height,
-      suscription_id: user.suscription_id
+      suscription_id: user.suscription_id,
+      gender: user.gender
     });
 
   } catch (error) {
