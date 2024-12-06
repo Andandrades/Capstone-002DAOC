@@ -8,7 +8,7 @@ import { UserNavBar } from "../../Components/UserNavBar";
 import { ActualizarUsuario } from '../../Components/API/Users';
 import { useUser } from '../../Components/API/UserContext';
 import { changePassword } from '../../Components/API/sesion';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 
 const ProfilePage = () => {
   const { register: registerProfile, handleSubmit: handleSubmitProfile, formState: { errors: errorsProfile } } = useForm();
@@ -231,9 +231,24 @@ const ProfilePage = () => {
               {errorsProfile.height && (
                 <span className="text-red-600 text-sm">{errorsProfile.height.message}</span>
               )}
+              <label htmlFor="height" className="text-sm font-medium text-gray-700">
+                Genero
+              </label>
+              <Select
+                type="number"
+                name="height"
+                allowClear="false"
+                id="height"
+                defaultValue={LocaluserData.height}
+                {...registerProfile("height", { required: "La altura es obligatoria" })}
+                className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
+              />
+              {errorsProfile.height && (
+                <span className="text-red-600 text-sm">{errorsProfile.height.message}</span>
+              )}
             </div>
             <div className="mt-6 flex items-center justify-around gap-x-6 pb-8">
-             
+
               <Button
                 type="primary"
                 htmlType="submit"
