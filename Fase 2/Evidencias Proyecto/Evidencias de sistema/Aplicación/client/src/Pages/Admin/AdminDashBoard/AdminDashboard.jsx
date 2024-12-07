@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavBarAdmin } from "../../../Components/NavBarAdmin";
 import AdminSideMenu from "../../../Components/AdminSideMenu";
-import { Card, Metric, Text, AreaChart , BarChart } from "@tremor/react";
+import { Card, Metric, Text, AreaChart, BarChart } from "@tremor/react";
 import { es } from "date-fns/locale";
 
 import { DayPicker } from "react-day-picker";
@@ -54,8 +54,9 @@ const AdminDashboard = () => {
   const [isModalSellsOpen, setIsModaSellsOpen] = useState(false);
   const [startDate, setStartDate] = useState(null); // Fecha de inicio seleccionada
 
-  // Obtener la fecha de hoy (endDate siempre será hoy)
+  const [timeRange, setTimeRange] = useState("3m"); // Rango por defecto
   const today = new Date();
+
   const endDate = today.toISOString().split("T")[0];
   const newDate = new Date(today);
   newDate.setMonth(today.getMonth() - 6);
@@ -93,40 +94,24 @@ const AdminDashboard = () => {
   }, []);
 
   const fetchVentasPorMes = async () => {
-    if (startDate) {
-      try {
-        const response = await axios.get(
-          `${URL}/dashboard/transactionsPerMonth`,
-          {
-            params: {
-              start_date: startDate,
-              end_date: endDate, // La fecha de fin es siempre el día de hoy
-            },
-          }
-        );
-        setTransactionsHistory({
-          ventasPorMes: response.data,
-        });
-      } catch (error) {
-        console.error("Error al obtener las ventas por mes:", error);
-      }
+    try {
+      const response = await axios.get(
+        `${URL}/dashboard/transactionsPerMonth`,
+        {
+          params: { time_range: timeRange, end_date: endDate },
+        }
+      );
+      setTransactionsHistory({
+        ventasPorMes: response.data,
+      });
+    } catch (error) {
+      console.error("Error al obtener las ventas por mes:", error);
     }
   };
 
-  // Actualiza la fecha de inicio cuando se seleccione una nueva en el calendario
-  const handleDateChange = (date) => {
-    if (date) {
-      setStartDate(date);
-      setdateSelector(false);
-    }
-  };
-
-  // Llamar a la API cada vez que se cambie la fecha de inicio
   useEffect(() => {
-    if (startDate) {
-      fetchVentasPorMes();
-    }
-  }, [startDate]);
+    fetchVentasPorMes();
+  }, [timeRange]);
 
   const maxValue = Math.max(
     ...(transactionsHistory.ventasPorMes || []).map((item) =>
@@ -216,34 +201,40 @@ const AdminDashboard = () => {
               ) : null}
             </Card>
           </div>
-          <div className="flex lg:flex-row flex-col px-5">
-            <div className="w-full lg:w-1/2">
-              <h1 className="pt-5 text-xl px-5">
+          <div className="flex lg:flex-row flex-col px-5 pt-4">
+            <div className="">
+              <h1 className="pt-5 text-xl px-5 pb-4">
                 Cantidad de ingresos por mes
               </h1>
-              <div className="w-full relative flex justify-end pr-5">
-                <button
-                  onClick={() => setdateSelector(!dateSelector)}
-                  className=" bg-blue-500 text-white p-1 rounded-md m-5"
-                >
-                  <RiCalendarTodoFill />
-                </button>
-                {dateSelector ? (
-                  <div className="absolute bg-white top-[80%] shadow-lg z-30">
-                    <DayPicker
-                      selected={startDate}
-                      onDayClick={handleDateChange}
-                      disabled={{ after: today }}
-                      defaultMonth={startDateDefault}
-                      locale={es}
-                    />
-                  </div>
-                ) : null}
+              <div className="flex gap-2 mb-4">
+                {["1w", "1m", "3m", "5m", "1y", "max"].map((range) => (
+                  <button
+                    key={range}
+                    onClick={() => setTimeRange(range)}
+                    className={`px-4 py-2 rounded ${
+                      timeRange === range
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    {range === "1w"
+                      ? "1 Semana"
+                      : range === "1m"
+                      ? "1 Mes"
+                      : range === "3m"
+                      ? "3 Meses"
+                      : range === "5m"
+                      ? "5 Meses"
+                      : range === "1y"
+                      ? "1 Año"
+                      : "Máximo"}
+                  </button>
+                ))}
               </div>
               <AreaChart
                 data={transactionsHistory.ventasPorMes}
                 index="month"
-                className="px-4"
+                className="px-4 w-full h-[200px]"
                 categories={["ventas_totales_por_mes"]}
                 valueFormatter={(value) =>
                   new Intl.NumberFormat("es-CL", {
@@ -257,15 +248,15 @@ const AdminDashboard = () => {
               />
             </div>
             <div className="w-full lg:w-1/2 flex flex-col justify-between">
-              <div className="p-5">
+              <div className="p-5 pb-4">
                 <h1 className="text-xl">Cantidad de ventas</h1>
               </div>
               <BarChart
-              data={transactions.ventasPorProducto}
-              index="plan_name"
-              categories={["cantidad_de_ventas"]} 
-              showAnimation={true}
-
+                data={transactions.ventasPorProducto}
+                index="plan_name"
+                categories={["cantidad_de_ventas"]}
+                showAnimation={true}
+                className="px-4 w-[500px] h-[200px]"
               />
             </div>
           </div>

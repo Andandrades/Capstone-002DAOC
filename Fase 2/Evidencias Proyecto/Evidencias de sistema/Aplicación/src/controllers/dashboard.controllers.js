@@ -119,9 +119,46 @@ const getTransactionsData = async (req,res) => {
 }
 
 const getVentasPorMes = async (req, res) => {
-  const { start_date, end_date } = req.query;
-
   try {
+    const { time_range, end_date } = req.query;
+
+    // Validar time_range y establecer start_date
+    const endDate = end_date ? new Date(end_date) : new Date();
+    let startDate;
+
+    switch (time_range) {
+      case "1w":
+        startDate = new Date(endDate);
+        startDate.setDate(endDate.getDate() - 7);
+        break;
+      case "1m":
+        startDate = new Date(endDate);
+        startDate.setMonth(endDate.getMonth() - 1);
+        break;
+      case "3m":
+        startDate = new Date(endDate);
+        startDate.setMonth(endDate.getMonth() - 3);
+        break;
+      case "5m":
+        startDate = new Date(endDate);
+        startDate.setMonth(endDate.getMonth() - 5);
+        break;
+      case "1y":
+        startDate = new Date(endDate);
+        startDate.setFullYear(endDate.getFullYear() - 1);
+        break;
+      case "max":
+        startDate = new Date(0); // Fecha mínima en Unix (1970-01-01)
+        break;
+      default:
+        return res.status(400).json({ error: "Rango de tiempo no válido" });
+    }
+
+    // Convertir fechas a formato ISO para SQL
+    const formattedStartDate = startDate.toISOString().split("T")[0];
+    const formattedEndDate = endDate.toISOString().split("T")[0];
+
+    // Consulta SQL para ventas por mes
     const query = `
       SELECT TO_CHAR(t.transaction_date, 'YYYY-MM') AS month,
              SUM(t.amount) AS ventas_totales_por_mes,
@@ -131,11 +168,13 @@ const getVentasPorMes = async (req, res) => {
       GROUP BY month
       ORDER BY month ASC;
     `;
-    const result = await pool.query(query, [start_date, end_date]);
+
+    const result = await pool.query(query, [formattedStartDate, formattedEndDate]);
+
     res.json(result.rows);
   } catch (error) {
-    console.error("Error al obtener ventas por mes:", error);
-    res.status(500).json({ error: "Error en el servidor" });
+    console.error("Error al obtener transacciones por rango:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
