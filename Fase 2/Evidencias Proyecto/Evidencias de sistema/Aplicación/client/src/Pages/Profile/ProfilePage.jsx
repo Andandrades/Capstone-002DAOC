@@ -73,7 +73,7 @@ const ProfilePage = () => {
 
   const onSubmit = (data) => {
     setLoadingButton(true);
-    const Payload = { name: userData.name, email: userData.email, weight: data.weight, height: data.height,gender: data.Gender, fk_rol_id: userData.role };
+    const Payload = { name: userData.name, email: userData.email, weight: data.weight, height: data.height, gender: data.Gender, fk_rol_id: userData.role };
     try {
       ActualizarUsuario(userData.id, Payload);
       setLoadingButton(false);
@@ -234,7 +234,7 @@ const ProfilePage = () => {
                 {...registerProfile("Gender", { required: "El género es obligatorio" })}
                 className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
                 defaultValue={LocaluserData?.gender || ""}
-                >
+              >
                 <option value="" disabled>Selecciona un género</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
