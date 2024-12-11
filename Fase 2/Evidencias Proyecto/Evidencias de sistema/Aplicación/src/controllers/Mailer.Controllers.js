@@ -20,7 +20,7 @@ const sendEmail = async (req, res) => {
   const { to, subject, html } = req.body;
 
   const mailOptions = {
-    from: '"Tu App" <tu_correo@gmail.com>', 
+    from: 'contacto@soldadogym.com>', 
     to, 
     subject, 
     html, 
