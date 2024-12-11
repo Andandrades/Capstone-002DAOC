@@ -36,12 +36,10 @@ const ScheduleGym = () => {
       }
 
       const data = await response.json();
-
-      // Ordenar de temprano a tarde
       const sortedData = data.sort((a, b) => {
         const timeA = new Date(`1970-01-01T${a.start_hour}`).getTime();
         const timeB = new Date(`1970-01-01T${b.start_hour}`).getTime();
-        return timeA - timeB; // Orden ascendente
+        return timeA - timeB;
       });
 
       setScheduleInfo(sortedData);

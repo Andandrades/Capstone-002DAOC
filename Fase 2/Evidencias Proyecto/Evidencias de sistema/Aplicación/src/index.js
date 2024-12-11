@@ -4,8 +4,10 @@ const cors = require("cors");
 const { config } = require('dotenv');
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cron = require("node-cron");
+const axios = require("axios");
 
-config(); 
+config();
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
   origin: (origin, callback) => {
@@ -18,7 +20,7 @@ const corsOptions = {
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"], 
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
@@ -40,9 +42,10 @@ const plansRoutes = require("./routes/plans.Routes");
 const Nutri = require("./routes/nutri.Routes");
 const gymHoursRoutes = require("./routes/gym_schedule.routes");
 const webpay = require("./routes/Webpay.Routes");
-const subscription = require("./routes/subscription.routes")
-const mailer = require("./routes/Mailer.Routes")
-const dashboard = require("./routes/dashboard.routes")
+const subscription = require("./routes/subscription.routes");
+const mailer = require("./routes/Mailer.Routes");
+const dashboard = require("./routes/dashboard.routes");
+const nextClassesRemember = require("./routes/rememberSchedule.routes");
 
 // Inicializar Rutas
 app.use(rolesRoutes);
@@ -59,6 +62,35 @@ app.use(webpay);
 app.use(subscription);
 app.use(mailer);
 app.use(dashboard);
+app.use(nextClassesRemember);
+
+// Programar tarea para ejecutar la ruta todos los días a las 12:00
+cron.schedule("0 12 * * *", async () => {
+  console.log("Ejecutando recordatorio de clases del día siguiente");
+  try {
+    const URL = process.env.VITE_API_URL;
+    const response = await axios.get(`${URL}/next-day`);
+    console.log("Recordatorio enviado con éxito:", response.data);
+    res.status(200).json({ message: "Recordatorio ejecutado con éxito" });
+  } catch (error) {
+    console.error("Error al ejecutar el recordatorio manualmente:", error.message);
+    res.status(500).json({ message: "Error al ejecutar el recordatorio", error: error.message });
+  }
+});
+
+app.get("/trigger-reminder", async (req, res) => {
+  console.log("Ejecutando recordatorio de clases manualmente");
+  try {
+    const URL = process.env.VITE_API_URL;
+    const response = await axios.get(`${URL}/next-day`);
+    console.log("Recordatorio enviado con éxito:", response.data);
+    res.status(200).json({ message: "Recordatorio ejecutado con éxito" });
+  } catch (error) {
+    console.error("Error al ejecutar el recordatorio manualmente:", error.message);
+    res.status(500).json({ message: "Error al ejecutar el recordatorio", error: error.message });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Servidor en funcionamiento en el puerto ${PORT}`);

@@ -1,10 +1,5 @@
 const { Router } = require("express");
-const pool = require("../db");
-
-//import de los controladores
-
 const {  getAll, getbyid, create, update, deletebyid} = require("../controllers/Nutri.controllers");
-
 const router = Router();
 
 router.get("/Nutri", getAll);
