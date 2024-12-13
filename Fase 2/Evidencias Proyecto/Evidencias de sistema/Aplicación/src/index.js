@@ -70,27 +70,13 @@ cron.schedule("0 12 * * *", async () => {
   try {
     const URL = process.env.VITE_API_URL;
     const response = await axios.get(`${URL}/next-day`);
-    console.log("Recordatorio enviado con éxito:", response.data);
+    const responseNutri = await axios.get(`${URL}/next-schedule`);
     res.status(200).json({ message: "Recordatorio ejecutado con éxito" });
   } catch (error) {
     console.error("Error al ejecutar el recordatorio manualmente:", error.message);
     res.status(500).json({ message: "Error al ejecutar el recordatorio", error: error.message });
   }
 });
-
-app.get("/trigger-reminder", async (req, res) => {
-  console.log("Ejecutando recordatorio de clases manualmente");
-  try {
-    const URL = process.env.VITE_API_URL;
-    const response = await axios.get(`${URL}/next-day`);
-    console.log("Recordatorio enviado con éxito:", response.data);
-    res.status(200).json({ message: "Recordatorio ejecutado con éxito" });
-  } catch (error) {
-    console.error("Error al ejecutar el recordatorio manualmente:", error.message);
-    res.status(500).json({ message: "Error al ejecutar el recordatorio", error: error.message });
-  }
-});
-
 
 app.listen(PORT, () => {
   console.log(`Servidor en funcionamiento en el puerto ${PORT}`);
