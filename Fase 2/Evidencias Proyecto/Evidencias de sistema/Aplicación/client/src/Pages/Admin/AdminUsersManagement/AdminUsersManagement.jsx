@@ -311,29 +311,37 @@ const AdminUsersManagement = () => {
       {showAddPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h2>Agregar nuevo {userType}</h2>
+            <h2 className='mb-4'>Agregar nuevo {userType}</h2>
+            <label htmlFor="userName">Nombre</label>
             <input
+              id='userName'
               type="text"
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
               placeholder="Nombre del nuevo usuario"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="email">Email</label>
             <input
+              id='email'
               type="email"
               value={newUserEmail}
               onChange={(e) => setNewUserEmail(e.target.value)}
               placeholder="Email del nuevo usuario"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="password">Contraseña</label>
             <input
+              id='password'
               type="password"
               value={newUserPassword}
               onChange={(e) => setNewUserPassword(e.target.value)}
               placeholder="Contraseña del nuevo usuario"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="confirm">Confirmar contraseña</label>
             <input
+              id='confirm'
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
