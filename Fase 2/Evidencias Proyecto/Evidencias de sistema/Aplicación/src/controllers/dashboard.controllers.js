@@ -44,6 +44,7 @@ const getUserList = async (req, res) => {
         users.email,
         users.register_date,
         users.last_login,
+        users.gender,
         COALESCE(suscription.user_id IS NOT NULL, false) AS suscription,
         plans.name AS subscription_name
       FROM 
@@ -71,8 +72,54 @@ const getUserList = async (req, res) => {
   }
 };
 
+//Traer Lista de generos
+
+const getGenders = async (req, res) => {
+  try {
+    const resultado = await pool.query(`SELECT 
+        COALESCE(gender, 'Undefined') AS gender, 
+        COUNT(*) AS total 
+      FROM users 
+      GROUP BY COALESCE(gender, 'Undefined');`);
+
+    const genderCounts = resultado.rows.reduce((acc, row) => {
+      acc[row.gender] = parseInt(row.total, 10);
+      return acc;
+    }, {});
+
+    res.json({
+      success: true,
+      data: genderCounts,
+    });
+  } catch (error) {
+    console.error("Error interno");
+  }
+};
+
+const getAvg = async (req, res) => {
+  try {
+    const resultado = await pool.query(`
+      SELECT 
+        gender, 
+        ROUND(AVG(height), 2) AS altura_promedio,
+        ROUND(AVG(weight), 2) AS peso_promedio
+      FROM 
+          users
+      GROUP BY 
+          gender
+      ORDER BY 
+          gender;
+    `);
+
+    res.json(resultado.rows)
+
+  } catch (error) {
+    console.error(`Error interno del servidor: ${error}` );
+  }
+};
+
 //Traer Datos de transacciones
-const getTransactionsData = async (req,res) => {
+const getTransactionsData = async (req, res) => {
   try {
     //Traer ventas totales de cada producto, con su nombre
     const resultadoVentasPorProducto = await pool.query(`
@@ -83,10 +130,10 @@ const getTransactionsData = async (req,res) => {
       FROM transactions t
       JOIN plans p ON t.plan_id = p.plan_id
       GROUP BY p.name;
-      `)
+      `);
 
     //Traer resumen ultimos 31 dias
-    const today = new Date()
+    const today = new Date();
     const resultadoVentas31Dias = await pool.query(
       `
         SELECT
@@ -94,29 +141,32 @@ const getTransactionsData = async (req,res) => {
           COUNT(*) AS total_transactions_31_days
         FROM transactions t
         WHERE t.transaction_date >= $1;
-      `
-    ,[new Date(today.setDate(today.getDate() - 31)).toISOString().split('T')[0]])
+      `,
+      [
+        new Date(today.setDate(today.getDate() - 31))
+          .toISOString()
+          .split("T")[0],
+      ]
+    );
 
-    const resultadoVentasTotales  = await pool.query(
+    const resultadoVentasTotales = await pool.query(
       `
         SELECT
           COUNT(*) AS total_transactions
         FROM transactions
       `
-    )
+    );
 
     res.json({
-      ventasUltimos31Dias : resultadoVentas31Dias.rows[0],
-      ventasPorProducto : resultadoVentasPorProducto.rows,
-      cantidadTransacciones : resultadoVentasTotales.rows,
-    })
-
+      ventasUltimos31Dias: resultadoVentas31Dias.rows[0],
+      ventasPorProducto: resultadoVentasPorProducto.rows,
+      cantidadTransacciones: resultadoVentasTotales.rows,
+    });
   } catch (error) {
-    console.error('Error interno del servidor:', error);
-    res.status(500).json({error : 'Error interno del servidor'})
-    
+    console.error("Error interno del servidor:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
-}
+};
 
 const getVentasPorMes = async (req, res) => {
   try {
@@ -169,7 +219,10 @@ const getVentasPorMes = async (req, res) => {
       ORDER BY month ASC;
     `;
 
-    const result = await pool.query(query, [formattedStartDate, formattedEndDate]);
+    const result = await pool.query(query, [
+      formattedStartDate,
+      formattedEndDate,
+    ]);
 
     res.json(result.rows);
   } catch (error) {
@@ -179,7 +232,7 @@ const getVentasPorMes = async (req, res) => {
 };
 
 //Listar transacciones
-const getTransactionsList = async (req,res) => {
+const getTransactionsList = async (req, res) => {
   try {
     // Obtener parámetros de la URL
     const page = parseInt(req.params.page) || 1;
@@ -209,7 +262,7 @@ const getTransactionsList = async (req,res) => {
     // Ejecutar ambas consultas en paralelo
     const [resultTransacciones, resultTotal] = await Promise.all([
       pool.query(queryTransacciones, [limit, offset]),
-      pool.query(queryTotalTransacciones)
+      pool.query(queryTotalTransacciones),
     ]);
 
     const transactions = resultTransacciones.rows;
@@ -222,16 +275,17 @@ const getTransactionsList = async (req,res) => {
       totalTransactions,
     });
   } catch (err) {
-    console.error('Error al obtener el historial de transacciones:', err);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error("Error al obtener el historial de transacciones:", err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
-}
-
+};
 
 module.exports = {
   getKpis,
   getUserList,
   getTransactionsData,
   getTransactionsList,
-  getVentasPorMes
+  getVentasPorMes,
+  getGenders,
+  getAvg
 };

@@ -56,6 +56,7 @@ const AdminDashBoardUsersList = ({ handleCloseModal , formatDate }) => {
             <TableRow>
               <TableHeaderCell>Id</TableHeaderCell>
               <TableHeaderCell>Nombre</TableHeaderCell>
+              <TableHeaderCell>Genero</TableHeaderCell>
               <TableHeaderCell>Correo</TableHeaderCell>
               <TableHeaderCell>Suscription</TableHeaderCell>
               <TableHeaderCell>Tipo de suscripción</TableHeaderCell>
@@ -76,6 +77,7 @@ const AdminDashBoardUsersList = ({ handleCloseModal , formatDate }) => {
                 <TableRow key={user.id}>
                   <TableCell className="truncate">{user.id}</TableCell>
                   <TableCell className="truncate">{user.name}</TableCell>
+                  <TableCell className="truncate">{user.gender ? user.gender : 'No definido'}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   {user.suscription ? (
                     <TableCell className="flex justify-center">

@@ -32,7 +32,7 @@ const AdminSideMenu = () => {
   
 
   return (
-    <div className="bg-[#1C1C1C] z-10 min-w-60 px-2 shadow-inner">
+    <div className="bg-[#1C1C1C] z-10 min-w-60 min-h-screen h-full px-2 shadow-inner">
      <Disclosure as="menu">
         <div className="relative flex min-h-screen w-full flex-col items-center justify-start gap-2  pt-10">
           <div className="flex flex-col pl-2 items-start py-3 w-full text-gray-400 hover:text-white hover:bg-[#272727] transition-all ease-in-out">
