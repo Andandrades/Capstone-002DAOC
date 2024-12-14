@@ -12,16 +12,15 @@ import NotFound from '../../assets/img/NotFound.webp'
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../Components/Spinner";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-
-const ClassesPage = ({ userData }) => {
+import { useUser } from "../../Components/API/UserContext";
+const ClassesPage = () => {
+  const { userData } = useUser();
   const [classes, setClasses] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const userDataString = localStorage.getItem("userData");
   const LocaluserData = userDataString ? JSON.parse(userDataString) : null;
   const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
-
   const fetchClasses = async () => {
     const resultado = await axios.get(
       `${import.meta.env.VITE_API_URL}/userRecords/${LocaluserData.id}`
@@ -31,7 +30,6 @@ const ClassesPage = ({ userData }) => {
     }
     setLoading(false)
   };
-
   useEffect(() => {
     fetchClasses();
   }, []);

@@ -3,7 +3,7 @@ import { GetAvalibleNutriSchedule } from '../../../Components/API/Endpoints';
 import { useUser } from '../../../Components/API/UserContext';
 import { IniciarConsulta } from '../../../Components/API/WebPayApi';
 import { BuyLoginmodal } from '../../../Components/BuyLoginmodal';
-
+import { Select } from 'antd';
 const BuyConsultationModal = ({ onClose, id, name, amount, description }) => {
   const { userData, isAuth } = useUser();
   const [step, setStep] = useState(1);
@@ -59,25 +59,27 @@ const BuyConsultationModal = ({ onClose, id, name, amount, description }) => {
       <p className="text-black mb-4">{description}</p>
       <div className="mb-4">
         <label htmlFor="FechaConsulta" className="text-black">Seleccionar Fecha y Hora</label>
-        <select
+        <Select
           id="FechaConsulta"
-          value={idConsulta}
-          onChange={(e) => {
-            setIdConsulta(e.target.value); 
-            setFechaConsulta(e.target.options[e.target.selectedIndex].text);
+          value={idConsulta || undefined} // Usa undefined para mantener la consistencia con Ant Design
+          onChange={(value, option) => {
+            setIdConsulta(value);
+            setFechaConsulta(option?.children || ""); // Obtiene el texto del <option>
           }}
-          className="border border-gray-300 rounded-md p-2 w-full"
+          placeholder="Selecciona una fecha" // Texto que aparece cuando no hay selección
+          className="w-full"
         >
           {AvailableTimes?.map((timeObj, index) => {
             const formatted = `${new Date(timeObj.date).toLocaleDateString()} - ${timeObj.start_hour}`;
-
             return timeObj.available && (
-              <option key={index} value={timeObj.nutri_schedule_id}>
+              <Select.Option key={index} value={timeObj.nutri_schedule_id}>
                 {formatted}
-              </option>
+              </Select.Option>
             );
           })}
-        </select>
+        </Select>
+
+
       </div>
 
       <button
