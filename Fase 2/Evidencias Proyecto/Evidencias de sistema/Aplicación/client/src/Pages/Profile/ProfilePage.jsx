@@ -23,21 +23,17 @@ const ProfilePage = () => {
   const handleChangeFile = async (e) => {
     e.preventDefault();
     const selectedFile = e.target.files[0];
-
     if (!selectedFile) {
       alert("Por favor, seleccione un archivo");
       return;
     }
-
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
     if (!allowedTypes.includes(selectedFile.type)) {
       alert("Solo se permiten imágenes (JPG, PNG, GIF).");
       return;
     }
-
     const formData = new FormData();
     formData.append("profile_picture", selectedFile);
-
     try {
       await axios.put(
         `${import.meta.env.VITE_API_URL}/uploadProfilePicture/${userData.id}`,
@@ -77,7 +73,7 @@ const ProfilePage = () => {
 
   const onSubmit = (data) => {
     setLoadingButton(true);
-    const Payload = { name: userData.name, email: userData.email, weight: data.weight, height: data.height, fk_rol_id: userData.role };
+    const Payload = { name: userData.name, email: userData.email, weight: data.weight, height: data.height, gender: data.Gender, fk_rol_id: userData.role };
     try {
       ActualizarUsuario(userData.id, Payload);
       setLoadingButton(false);
@@ -231,9 +227,26 @@ const ProfilePage = () => {
               {errorsProfile.height && (
                 <span className="text-red-600 text-sm">{errorsProfile.height.message}</span>
               )}
+              <label htmlFor="height" className="text-sm font-medium text-gray-700">
+                Genero
+              </label>
+              <select
+                {...registerProfile("Gender", { required: "El género es obligatorio" })}
+                className="text-sm font-medium text-gray-700 bg-indigo-100 border-2 p-2 rounded-md"
+                defaultValue={LocaluserData?.gender || ""}
+              >
+                <option value="" disabled>Selecciona un género</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="X">Otro</option>
+              </select>
+              {errorsProfile.Gender && (
+                <span className="text-red-600 text-sm">{errorsProfile.Gender.message}</span>
+              )}
+
             </div>
             <div className="mt-6 flex items-center justify-around gap-x-6 pb-8">
-             
+
               <Button
                 type="primary"
                 htmlType="submit"

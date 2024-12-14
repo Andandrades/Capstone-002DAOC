@@ -103,7 +103,7 @@ function App() {
             <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><SchedulePage /></RoleProtectedRoute>} />
             <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri userId={userData.id} /></RoleProtectedRoute>} />
-            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage userData={userData} /></RoleProtectedRoute>} />
+            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage/></RoleProtectedRoute>} />
             <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
           </Routes>
