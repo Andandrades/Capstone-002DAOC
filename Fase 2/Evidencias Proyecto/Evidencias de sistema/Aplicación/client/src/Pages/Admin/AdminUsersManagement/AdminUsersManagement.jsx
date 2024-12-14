@@ -365,29 +365,37 @@ const AdminUsersManagement = () => {
       {showEditPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h2>Editar {userType}</h2>
+            <h2 className='mb-4'>Editar {userType}</h2>
+            <label htmlFor="editName">Nombre</label>
             <input
+              id='editName'
               type="text"
               value={editUserName}
               onChange={(e) => setEditUserName(e.target.value)}
               placeholder="Nuevo nombre"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="editEmail">Email</label>
             <input
+              id='editEmail'
               type="email"
               value={editUserEmail}
               onChange={(e) => setEditUserEmail(e.target.value)}
               placeholder="Nuevo email"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="editWeight">{`Peso (Kg)`}</label>
             <input
+              id='editWeight'
               type="number"
               value={editUserWeight}
               onChange={(e) => setEditUserWeight(e.target.value)}
               placeholder="Nuevo peso"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="editHeight">{`Altura (Cm)`} </label>
             <input
+              id='editHeight'
               type="number"
               value={editUserHeight}
               onChange={(e) => setEditUserHeight(e.target.value)}
