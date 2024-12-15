@@ -96,7 +96,7 @@ const getHoursByDate = async (req, res) => {
 
   try {
     const resultado = await pool.query(
-      "SELECT * FROM nutri_schedule WHERE date = $1",
+      "SELECT * FROM nutri_schedule WHERE date::date = $1 AND start_hour > CURRENT_TIME; ",
       [date]
     );
     res.json(resultado.rows);

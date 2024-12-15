@@ -1,5 +1,6 @@
 const { Router } = require("express");
-
+const authenticateToken = require('../middlewares/authenticateToken')
+const autorizeRole = require('../middlewares/authorizeRole')
 
 //import de los controladores
 const {
@@ -13,14 +14,14 @@ const {
 
 const router = Router();
 
-router.get("/roles", getAllRoles);
+router.get("/roles",authenticateToken, autorizeRole([4]), getAllRoles);
 
-router.get("/roles/:id", getRol);
+router.get("/roles/:id",authenticateToken, autorizeRole([4]), getRol);
 
-router.post("/roles", createRol);
+router.post("/roles", authenticateToken, autorizeRole([4]),createRol);
 
-router.put("/roles/:id", updateRol);
+router.put("/roles/:id",authenticateToken, autorizeRole([4]), updateRol);
 
-router.delete("/roles/:id", deleteRol);
+router.delete("/roles/:id", authenticateToken, autorizeRole([4]),deleteRol);
 
 module.exports = router;

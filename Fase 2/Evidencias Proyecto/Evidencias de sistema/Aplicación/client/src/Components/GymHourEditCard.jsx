@@ -32,7 +32,7 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
   const fetchScheduledUsers = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`
+        `${import.meta.env.VITE_API_URL}/scheduleinfo/${gym_schedule_id}`,{credentials: "include",}
       );
       if (!response.ok) {
         throw new Error("Error al obtener los usuarios agendados");
@@ -103,6 +103,7 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedData),
+          credentials: "include",
         }
       );
 
@@ -125,7 +126,7 @@ export const GymHourEditCard = ({ schedule, refreshGymHours }) => {
     setLoadingButton(true)
     try {
       const resultado = await fetch(`${import.meta.env.VITE_API_URL}/gymHours/${gym_schedule_id}`, {
-        method: "DELETE"
+        method: "DELETE",credentials: "include",
       })
 
       if (resultado.ok) {

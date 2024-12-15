@@ -5,6 +5,7 @@ import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from './Components/Spinner';
+import axios from 'axios';
 
 // Importación de páginas con lazy loading
 const TransactionResponse = lazy(() => import('./Pages/TransactionResponse/TransactionResponsePage'));
@@ -66,7 +67,11 @@ function App() {
     return children;
   };
 
+  // Configuración global de Axios
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL
+  axios.defaults.withCredentials = true;
 
+  
   return (
     <>
       <ToastContainer />

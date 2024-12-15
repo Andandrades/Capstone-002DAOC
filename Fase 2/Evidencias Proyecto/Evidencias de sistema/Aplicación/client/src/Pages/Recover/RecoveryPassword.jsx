@@ -27,7 +27,8 @@ const RecoveryPassword = () => {
       const response = await fetch(`${URL}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ newPassword: password, token: token })
+        body: JSON.stringify({ newPassword: password, token: token }),
+        credentials : 'include'
       });
 
       if (response.ok) {
@@ -74,7 +75,7 @@ const RecoveryPassword = () => {
             Cambiar contraseña
           </button>
           <span
-            className="text-purple-600 cursor-pointer underline mt-4 text-gray-600"
+            className="text-purple-600 cursor-pointer underline mt-4"
             onClick={() => navigate(`/login`)}
           >
             Volver atrás

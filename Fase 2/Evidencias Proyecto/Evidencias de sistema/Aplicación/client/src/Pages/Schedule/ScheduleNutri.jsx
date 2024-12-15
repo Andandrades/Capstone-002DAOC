@@ -17,6 +17,8 @@ const ScheduleNutri = ({ userId }) => {
   const [scheduled, setIsScheduled] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const today = new Date()
+
   //Obtener Horas por Fecha (Por Default es la fecha del dia de la consulta)
   const getHours = async () => {
     if (!date) return
@@ -25,7 +27,12 @@ const ScheduleNutri = ({ userId }) => {
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/nutriScheduleDate/${formattedDate
         }`,
-        {method: "GET",}
+
+        {
+          method: "GET",
+          credentials : 'include'
+        }
+
       );
       const data = await resultado.json();
       const sortedAppointments = data.sort((a, b) => {
@@ -120,6 +127,7 @@ const ScheduleNutri = ({ userId }) => {
                   mode="single"
                   selected={date}
                   onSelect={handleDateSelect}
+                  fromDate={today}
                 />
               </div>
             </div>
