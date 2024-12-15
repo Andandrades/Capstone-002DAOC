@@ -217,7 +217,7 @@ const LandingPage = () => {
 
       <section
         ref={fisicoChange}
-        className="w-full bgColor flex 2xl:h-[100vh] justify-center 2xl:relative items-center box-border gap-8 px-20 py-10 flex-col "
+        className="flex  justify-center items-center box-border gap-8 px-20 py-10  "
       >
         <FisicoComponent />
       </section>
