@@ -5,14 +5,14 @@ import Profile from "../assets/User.svg";
 import { useUser } from "./API/UserContext";
 import { useNavigate } from "react-router-dom";
 
-export const NextClass = ({ nextClassData }) => {
+export const NextClass = ({ nextClassData, buttonNavigate}) => {
     const navigate = useNavigate();
     const { userData } = useUser();
     if (!nextClassData || !nextClassData.schedule_date) {
         return (
             <div className="flex justify-center items-center bg-white px-4 py-6 rounded-lg text-[20px] border border-gray-300 flex-col">
                 <p>No hay clases pendientes.</p>
-                <button className="w-full bg-button-primary mt-5 py-2 rounded-lg" onClick={() => { navigate("/schedule/gym") }}>
+                <button className="w-full bg-button-primary mt-5 py-2 rounded-lg" onClick={() => { navigate(buttonNavigate) }}>
                     <p className="text-white">ver horarios de clases</p>
                 </button>
             </div>

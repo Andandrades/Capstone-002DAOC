@@ -290,6 +290,27 @@ const getNextClass = async (req, res) => {
   }
 };
 
+const getNextConsultation = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  const { id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      `SELECT * FROM gym_schedule gs LEFT JOIN schedule_classes sc ON gs.gym_schedule_id = sc.gym_schedule_id WHERE sc.client_id = $1   AND gs.schedule_date > CURRENT_TIMESTAMP
+ ORDER BY sc.scheduled_date DESC, gs.start_hour DESC LIMIT 1`,
+      [id]);
+
+    if (resultado.rows.length === 0) {
+      return res.json({ message: "No classes found for the given client" });
+    }
+
+    res.json(resultado.rows[0]);
+  } catch (error) {
+    return res.json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAll,
   getbyid,
@@ -300,5 +321,6 @@ module.exports = {
   scheduleHour,
   deleteHour,
   getUserClasses,
-  getNextClass
+  getNextClass,
+  getNextConsultation
 };

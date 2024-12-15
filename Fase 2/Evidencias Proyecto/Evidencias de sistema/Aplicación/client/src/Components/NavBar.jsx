@@ -35,9 +35,8 @@ export const NavBar = ({ scrollToSection, refs }) => {
       </nav>
 
       <div
-        className={`fixed top-0 left-0 w-64 h-full bg-[#232323]  text-white transform ${
-          isOpen ? "translate-x-0 z-50" : "-translate-x-full z-50"
-        } transition-transform duration-300 ease-in-out`}
+        className={`fixed top-0 left-0 w-64 h-full bg-[#232323]  text-white transform ${isOpen ? "translate-x-0 z-50" : "-translate-x-full z-50"
+          } transition-transform duration-300 ease-in-out`}
       >
         <div className="p-4">
           <h2 className="text-4xl mb-10 mt-4 text-white font-bold text-center">Menú</h2>
@@ -68,6 +67,15 @@ export const NavBar = ({ scrollToSection, refs }) => {
               className="mb-2 hover:scale-105 transition-all cursor-pointer ease-in-out"
             >
               Servicios
+            </li>
+            <li
+              onClick={() => {
+                toggleSidebar();
+                scrollToSection(refs.fisicoChange);
+              }}
+              className="mb-2 hover:scale-105 transition-all cursor-pointer ease-in-out"
+            >
+              Cambios fisicos
             </li>
             <li
               onClick={() => {

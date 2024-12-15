@@ -36,7 +36,7 @@ export const NutriCard = ({ name, amount, description, offer_price }) => {
             )}
           </div>
           <div className="flex flex-col justify-center items-center font-semibold">
-            <span className="w-60 text-[15px] md:text-sm lg:min-h-25 md:w-72 mt-2">{description}</span>
+            <span className="w-60 text-[15px] md:text-sm lg:min-h-25 md:w-72 mt-2 text-center">{description}</span>
           </div>
         <div >
           <button className=" text-base px-4 rounded-full py-2 text-black font-bold  bg-[#0036C1]"

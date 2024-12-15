@@ -22,34 +22,34 @@ export const Plans = (props) => {
   return (
     <div className="flex flex-col items-center justify-between min-h-96 relative text-white py-7 px-6 rounded-md bg-[#1C1C1C] w-[300px] h-[600px]">
       <div className="absolute top-[-15px] right-[-15px] m-0 p-0">
-      <VerifiedIcon sx={{ color, fontSize: '50px' }} />
+        <VerifiedIcon sx={{ color, fontSize: '50px' }} />
       </div>
       <div className="flex flex-col items-center text-center">
         <h1 className="text-3xl font-bold">{name}</h1>
         {offer_price ? (
           <>
-            <h2 className="font-bold text-[20px] line-through text-[#FF6666] mt-2">
+            <h2 className="font-bold text-[20px] line-through text-[#FF6666] mt-2" style={{ color: color }}>
               ${StringedAmount} CLP
             </h2>
-            <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]">
+            <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]" style={{ color: color }}>
               ${StringedOfferPrice} CLP
             </h2>
           </>
         ) : (
-          <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]">
+          <h2 className="font-bold text-[40px] mt-2 text-[#EFDD37]" style={{ color: color }}>
             ${StringedAmount} CLP
           </h2>
         )}
 
         <div className="flex flex-col items-center font-semibold mt-5">
           <span className="w-60 text-[15px] md:text-sm mt-2 pb-2">
-            Tipo de plan: <span className="text-yellow-300">{type}</span>
+            Tipo de plan: <span style={{ color: color }}>{type}</span>
           </span>
           <span className="text-lg">
-            Cantidad de clases: <span className="text-yellow-300">{n_class}</span>
+            Cantidad de clases: <span style={{ color: color }}>{n_class}</span>
           </span>
 
-          <span className="w-60 text-[15px] md:text-sm mt-4">{description}</span>
+          <span className="w-60 text-[15px] md:text-sm mt-4 text-center">{description}</span>
 
         </div>
       </div>
