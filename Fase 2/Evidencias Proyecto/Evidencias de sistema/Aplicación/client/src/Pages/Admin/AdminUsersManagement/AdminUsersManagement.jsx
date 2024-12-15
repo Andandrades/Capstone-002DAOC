@@ -311,29 +311,37 @@ const AdminUsersManagement = () => {
       {showAddPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h2>Agregar nuevo {userType}</h2>
+            <h2 className='mb-4'>Agregar nuevo {userType}</h2>
+            <label htmlFor="userName">Nombre</label>
             <input
+              id='userName'
               type="text"
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
               placeholder="Nombre del nuevo usuario"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="email">Email</label>
             <input
+              id='email'
               type="email"
               value={newUserEmail}
               onChange={(e) => setNewUserEmail(e.target.value)}
               placeholder="Email del nuevo usuario"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="password">Contraseña</label>
             <input
+              id='password'
               type="password"
               value={newUserPassword}
               onChange={(e) => setNewUserPassword(e.target.value)}
               placeholder="Contraseña del nuevo usuario"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="confirm">Confirmar contraseña</label>
             <input
+              id='confirm'
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -357,29 +365,37 @@ const AdminUsersManagement = () => {
       {showEditPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h2>Editar {userType}</h2>
+            <h2 className='mb-4'>Editar {userType}</h2>
+            <label htmlFor="editName">Nombre</label>
             <input
+              id='editName'
               type="text"
               value={editUserName}
               onChange={(e) => setEditUserName(e.target.value)}
               placeholder="Nuevo nombre"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="editEmail">Email</label>
             <input
+              id='editEmail'
               type="email"
               value={editUserEmail}
               onChange={(e) => setEditUserEmail(e.target.value)}
               placeholder="Nuevo email"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="editWeight">{`Peso (Kg)`}</label>
             <input
+              id='editWeight'
               type="number"
               value={editUserWeight}
               onChange={(e) => setEditUserWeight(e.target.value)}
               placeholder="Nuevo peso"
               className="w-full p-2 border rounded mb-2"
             />
+            <label htmlFor="editHeight">{`Altura (Cm)`} </label>
             <input
+              id='editHeight'
               type="number"
               value={editUserHeight}
               onChange={(e) => setEditUserHeight(e.target.value)}

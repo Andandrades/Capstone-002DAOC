@@ -91,8 +91,9 @@ const registerUser = async (req, res) => {
   }
 };
 
-const checkAuth = async (req, res) => {
+const checkAuth = async (req, res , next) => {
   const token = req.cookies.token;
+
   if (!token) {
     return res.status(200).json({ isAuth: false });
   }
@@ -103,6 +104,7 @@ const checkAuth = async (req, res) => {
       "SELECT id, name, email,gender , fk_rol_id,weight,height,s.plan_id,s.suscription_id , s.remaining_classes FROM users u left join suscription s on u.id = s.user_id WHERE id = $1 order by start_date desc limit 1",
       [decoded.id]
     );
+
     const user = userResult.rows[0];
     if (!user) {
       return res.status(404).json({ isAuth: false, message: "Usuario no encontrado" });
@@ -120,6 +122,7 @@ const checkAuth = async (req, res) => {
       suscription_id: user.suscription_id,
       gender: user.gender
     });
+    
 
   } catch (error) {
     if (error.name === "TokenExpiredError") {

@@ -46,7 +46,7 @@ const createPlan = async (req, res) => {
 };
 
 // Editar el planconst 
-updatePlan = async (req, res) => {
+const updatePlan = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description, price, n_class, type, offer_price, color } = req.body;
