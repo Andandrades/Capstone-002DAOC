@@ -7,7 +7,7 @@ const autorizeRole = require('../middlewares/authorizeRole')
 
 //import de los controladores
 
-const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , scheduleHour , deleteHour ,getUserClasses,getNextClass} = require("../controllers/scheduleClases.controllers");
+const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , scheduleHour , deleteHour ,getUserClasses,getNextClass, getNextConsultation} = require("../controllers/scheduleClases.controllers");
 
 const router = Router();
 
@@ -36,6 +36,9 @@ router.delete("/scheduleHour/:class_id", authenticateToken, autorizeRole([1,2,3,
 router.get("/scheduleHour/:id/:class_id",authenticateToken, autorizeRole([1,2,3,4]), getUserClasses);
 router.get("/scheduleHour/:id/:class_id", authenticateToken, autorizeRole([1,2,3,4]),cors(corsOptions));
 router.get("/scheduleNextClass/:id", authenticateToken, autorizeRole([1,2,3,4]),getNextClass);
+router.get("/scheduleHour/:id/:class_id", cors(corsOptions));
+router.get("/scheduleNextConsultation/:id", getNextConsultation);
+
 
 router.options("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]), cors(corsOptions));
 
