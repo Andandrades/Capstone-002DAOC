@@ -15,7 +15,6 @@ const RecoverPage = () => {
   const [loadingButton, setLoadingButton] = useState(false);
 
   const url = process.env.FRONTEND_URL;
-
   const generateEmailHTML = (props) => {
     const emailComponent = <ChangePasswordTemplate {...props} />;
     return renderToStaticMarkup(emailComponent);
