@@ -5,7 +5,7 @@ const sharp = require("sharp");
 // Listar Usuarios
 const getAllUsers = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM users");
+    const result = await pool.query("SELECT id,name,email,register_date,fk_rol_id,height,weight,last_login,gender FROM users");
     res.json(result.rows);
   } catch (error) {
     res.json({ error: error.message });

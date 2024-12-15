@@ -14,7 +14,7 @@ export const UsersListCard = ({ setUserModal, schedule }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/scheduleinfo/${schedule.gym_schedule_id}`
+        `${import.meta.env.VITE_API_URL}/scheduleinfo/${schedule.gym_schedule_id}`,{credentials: "include",}
       );
       if (!response.ok) {
         throw new Error("Error al obtener los usuarios agendados");

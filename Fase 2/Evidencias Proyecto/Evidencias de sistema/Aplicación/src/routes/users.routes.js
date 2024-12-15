@@ -1,5 +1,8 @@
 const { Router } = require("express");
 
+const authenticateToken = require('../middlewares/authenticateToken')
+const autorizeRole = require('../middlewares/authorizeRole')
+
 const {
   getAllUsers,
   getUser,
@@ -18,25 +21,29 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.get("/users", getAllUsers);
-router.get("/users/:id", getUser);
+router.get("/users",authenticateToken, autorizeRole([2,3,4]),getAllUsers);
+router.get("/users/:id", authenticateToken, autorizeRole([2,3,4]), getUser);
 
-router.get("/userData/:id", getUserData);
-router.put("/users/:id", updateUser);
-router.delete("/users/:id", deleteUser);
+router.get("/userData/:id", authenticateToken, autorizeRole([2,3,4]), getUserData);
+router.put("/users/:id", authenticateToken, autorizeRole([2,3,4]), updateUser);
+router.delete("/users/:id", authenticateToken, autorizeRole([2,3,4]), deleteUser);
 //router.post("/register", createUser);
 
 router.get("/users/role/Clientes", (req, res) =>
-  getUsersByRole({ ...req, params: { roleId: 1 } }, res)
+  getUsersByRole({ ...req, params: { roleId: 1 } }, res),
+  authenticateToken, autorizeRole([2,3,4]),
 );
 router.get("/users/role/Entrenadores", (req, res) =>
-  getUsersByRole({ ...req, params: { roleId: 2 } }, res)
+  getUsersByRole({ ...req, params: { roleId: 2 } }, res),
+  authenticateToken, autorizeRole([2,3,4]),
 );
 router.get("/users/role/Nutricionistas", (req, res) =>
-  getUsersByRole({ ...req, params: { roleId: 3 } }, res)
+  getUsersByRole({ ...req, params: { roleId: 3 } }, res),
+  authenticateToken, autorizeRole([2,3,4]),
 );
 router.get("/users/role/Administradores", (req, res) =>
-  getUsersByRole({ ...req, params: { roleId: 4 } }, res)
+  getUsersByRole({ ...req, params: { roleId: 4 } }, res),
+  authenticateToken, autorizeRole([2,3,4]),
 );
 
 router.put('/uploadProfilePicture/:id', upload.single('profile_picture'), uploadPicture);
