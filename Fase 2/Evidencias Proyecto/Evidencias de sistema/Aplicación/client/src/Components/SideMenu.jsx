@@ -19,7 +19,6 @@ export const SideMenu = () => {
     try {
       await Logout();
       await fetchAuthData();
-      goto()
     } catch (error) {
       console.error("Error en el proceso de cierre de sesión:");
     }
