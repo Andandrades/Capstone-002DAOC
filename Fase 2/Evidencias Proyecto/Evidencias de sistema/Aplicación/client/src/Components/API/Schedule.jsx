@@ -9,3 +9,12 @@ export const GetNextClass = async (id) => {
         console.error("Error al obtener la siguiente clase.", error);
     }
 };
+
+export const GetNextConsultation = async (id) => {
+    try {
+        const response = await axios.get(`${URL}/scheduleNextConsultation/${id}`);
+        return response.data 
+    } catch (error) {
+        console.error("Error al obtener la siguiente clase.", error);
+    }
+};
