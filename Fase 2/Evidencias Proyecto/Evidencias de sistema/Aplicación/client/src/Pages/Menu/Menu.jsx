@@ -78,6 +78,7 @@ const Menu = () => {
                         <NextClass
                             Data={nextClassData}
                             buttonNavigate="/schedule/gym"
+                            tipo="clase"
                         />
                     )}
                 </div>
@@ -92,6 +93,7 @@ const Menu = () => {
                         <NextClass
                             Data={nextConsultationData}
                             buttonNavigate="/schedule/nutri"
+                            tipo="consultas"
                         />)}
                 </div>
 
