@@ -36,7 +36,7 @@ const AdminSideMenu = () => {
     <div className="bg-[#1C1C1C] z-10 min-w-60 min-h-screen h-full px-2 shadow-inner">
       <Disclosure as="menu">
         <div className="flex flex-col items-center justify-center  w-64 p-6">
-          <img src={Logo} alt="Logo" className="w-32 h-32 mb-4" />
+          <img src={Logo} alt="Logo" className="w-32 h-32 mb-4"  onClick={() => goto("")}/>
           <h1 className="text-center text-2xl font-bold text-gray-400">Soldado Gym</h1>
         </div>
         <div className="relative flex min-h-screen w-full flex-col items-center justify-start gap-2  pt-10">
