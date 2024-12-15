@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export const NextClass = ({ Data, buttonNavigate, tipo}) => {
     const navigate = useNavigate();
     const { userData } = useUser();
-    const {schedule_date} =  Data;
     if (!Data || !Data.schedule_date) {
         return (
             <div className="flex justify-center items-center bg-white px-4 py-6 rounded-lg text-[20px] border border-gray-300 flex-col">
