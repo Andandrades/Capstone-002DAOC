@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu} from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -10,14 +10,15 @@ import RunCircleIcon from '@mui/icons-material/RunCircle';
 import { Logout } from './API/sesion';
 import { useUser } from './API/UserContext';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import Logo from "../assets/img/Logo.png";
 
 const AdminSideMenu = () => {
   const navigate = useNavigate();
-  const { userData,fetchAuthData } = useUser();
+  const { userData, fetchAuthData } = useUser();
   const RoleCliente = 1;
 
   const goto = (url) => {
-    navigate(`/${url}`); 
+    navigate(`/${url}`);
   };
 
   const LogoutSesion = async () => {
@@ -29,11 +30,15 @@ const AdminSideMenu = () => {
       console.error("Error en el proceso de cierre de sesión:");
     }
   };
-  
+
 
   return (
     <div className="bg-[#1C1C1C] z-10 min-w-60 min-h-screen h-full px-2 shadow-inner">
-     <Disclosure as="menu">
+      <Disclosure as="menu">
+        <div className="flex flex-col items-center justify-center  w-64 p-6">
+          <img src={Logo} alt="Logo" className="w-32 h-32 mb-4"  onClick={() => goto("")}/>
+          <h1 className="text-center text-2xl font-bold text-gray-400">Soldado Gym</h1>
+        </div>
         <div className="relative flex min-h-screen w-full flex-col items-center justify-start gap-2  pt-10">
           <div className="flex flex-col pl-2 items-start py-3 w-full text-gray-400 hover:text-white hover:bg-[#272727] transition-all ease-in-out">
             <button
@@ -111,9 +116,9 @@ const AdminSideMenu = () => {
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <a 
-                      className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`} 
-                      onClick={() => goto('profile')}>
+                      <a
+                        className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`}
+                        onClick={() => goto('profile')}>
                         Ver mi perfil
                       </a>
                     )}
@@ -146,9 +151,9 @@ const AdminSideMenu = () => {
 
                   <Menu.Item >
                     {({ active }) => (
-                      <span 
-                      className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`}
-                      onClick={() =>LogoutSesion()}>
+                      <span
+                        className={`${active ? 'bg-blue-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm cursor-pointer`}
+                        onClick={() => LogoutSesion()}>
                         Cerrar sesión
                       </span>
                     )}

@@ -50,6 +50,9 @@ export const GymHourCard = ({ schedule }) => {
   }, [userId]);
 
   const searchReservation = async () => {
+    const userDataString = localStorage.getItem("userData");
+    const userData = JSON.parse(userDataString);
+    const { id } = userData;
     try {
       const respuesta = await fetch(
         `${import.meta.env.VITE_API_URL
@@ -143,7 +146,7 @@ export const GymHourCard = ({ schedule }) => {
       const { email, name } = userData
       const emailHTML = generateEmailCancelSchedule({
         nombre: name,
-        fecha: "12/12/12",
+        fecha: formattedDate,
         hora: start_hour
       });
       const payload = {
@@ -197,8 +200,8 @@ export const GymHourCard = ({ schedule }) => {
         const { email, name } = userData
         const emailHTML = generateEmailHTML({
           nombre: name,
-          fecha: "12/12/12",
-          hora: "12:12"
+          fecha: formattedDate,
+          hora: start_hour
         });
         const payload = {
           data: { email },
@@ -237,9 +240,9 @@ export const GymHourCard = ({ schedule }) => {
   return (
     <div className="mt-10 pb-3 z-20 bg-white rounded-lg">
       <div className="w-full pt-3 flex justify-start text-start px-5">
-      
+
         <h1 className="text-[#3936C1] font-bold">
-        {formattedDate}, {`${formatHour( start_hour )} - ${formatHour(end_hour)}`}</h1>
+          {formattedDate}, {`${formatHour(start_hour)} - ${formatHour(end_hour)}`}</h1>
       </div>
       <div className="w-full flex pt-3 justify-around">
         <div className="flex gap-1 justify-center items-center flex-col">

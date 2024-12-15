@@ -92,8 +92,13 @@ const LandingPage = () => {
 
         }}
       />
-      <div ref={sectionRef1} className="SoldadoContainer">
+      <div ref={sectionRef1} className="SoldadoContainer" >
         <h1 className="title text-center z-0">Soldado Gym</h1>
+        <div class="scroll-indicator">
+          <span>Desplázate hacia abajo</span>
+          <div class="arrow"></div>
+        </div>
+
       </div>
       <div className="separator" />
       <div
@@ -217,7 +222,7 @@ const LandingPage = () => {
 
       <section
         ref={fisicoChange}
-        className="w-full bgColor flex 2xl:h-[100vh] justify-center 2xl:relative items-center box-border gap-8 px-20 py-10 flex-col "
+        className="flex  justify-center items-center box-border gap-8 px-20 py-10  "
       >
         <FisicoComponent />
       </section>
