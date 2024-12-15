@@ -42,16 +42,31 @@ const AdminUsersManagement = () => {
   const fetchUsersByRole = async () => {
     try {
       const clientsData = await ObtenerClientes();
-      const trainersData = await ObtenerEntrenadores();
-      const nutritionistsData = await ObtenerNutricionistas();
-      const administratorsData = await ObtenerAdministradores();
-      setClients(clientsData.map(user => user));
-      setNutritionists(nutritionistsData.map(user => user));
-      setTrainers(trainersData.map(user => user));
-      setAdministrators(administratorsData.map(user => user));
+      setClients(clientsData);
     } catch (error) {
       console.error('Error al obtener los usuarios por rol:', error);
-      toast.error('Error al obtener los usuarios, por favor intente de nuevo.');
+      toast.error('Error al obtener los clientes, por favor intente de nuevo.');
+    }
+    try {
+      const trainersData = await ObtenerEntrenadores();
+      setTrainers(trainersData);
+    } catch (error) {
+      console.error('Error al obtener los usuarios por rol:', error);
+      toast.error('Error al obtener los entrenador, por favor intente de1 nuevo.');
+    }
+    try {
+      const administratorsData = await ObtenerAdministradores();
+      setAdministrators(administratorsData);
+    } catch (error) {
+      console.error('Error al obtener los usuarios por rol:', error);
+      toast.error('Error al obtener los administrador, por favor intente de2 nuevo.');
+    }
+    try {
+      const nutritionistsData = await ObtenerNutricionistas();
+      setNutritionists(nutritionistsData);
+    } catch (error) {
+      console.error('Error al obtener los usuarios por rol:', error);
+      toast.error('Error al obtener los nutricionistas, por favor intente de2 nuevo.');
     }
   };
 
