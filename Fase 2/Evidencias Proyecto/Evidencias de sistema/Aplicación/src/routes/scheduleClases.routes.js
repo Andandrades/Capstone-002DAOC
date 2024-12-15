@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const pool = require("../db");
 
+const authenticateToken = require('../middlewares/authenticateToken')
+const autorizeRole = require('../middlewares/authorizeRole')
+
+
 //import de los controladores
 
 const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , scheduleHour , deleteHour ,getUserClasses,getNextClass} = require("../controllers/scheduleClases.controllers");
@@ -18,21 +22,21 @@ const corsOptions = {
     credentials: true, // Permitir cookies
 };
 
-router.get("/schedule", getAll);
-router.get("/schedule/:id", getbyid);
-router.get("/scheduleinfo/:id", getHourByGymId);
-router.post("/schedule", create);
-router.put("/schedule", update);
-router.delete("/schedule/:id", deletebyid);
+router.get("/schedule",authenticateToken, autorizeRole([1,2,3,4]), getAll);
+router.get("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]), getbyid);
+router.get("/scheduleinfo/:id",authenticateToken, autorizeRole([1,2,3,4]), getHourByGymId);
+router.post("/schedule", authenticateToken, autorizeRole([2,3,4]),create);
+router.put("/schedule",authenticateToken, autorizeRole([2,4]), update);
+router.delete("/schedule/:id",authenticateToken, autorizeRole([2,4]),deletebyid);
 //Registrar asistencia (Endpoint usuarios)
-router.post("/scheduleHour", scheduleHour);
+router.post("/scheduleHour",authenticateToken, autorizeRole([1,2,3,4]), scheduleHour);
 //Eliminar hora registrada(Endpoint usuarios)
-router.delete("/scheduleHour/:class_id", deleteHour);
+router.delete("/scheduleHour/:class_id", authenticateToken, autorizeRole([1,2,3,4]),deleteHour);
 //Conseguir horas de usuario
-router.get("/scheduleHour/:id/:class_id", getUserClasses);
-router.get("/scheduleHour/:id/:class_id", cors(corsOptions));
-router.get("/scheduleNextClass/:id", getNextClass);
+router.get("/scheduleHour/:id/:class_id",authenticateToken, autorizeRole([1,2,3,4]), getUserClasses);
+router.get("/scheduleHour/:id/:class_id", authenticateToken, autorizeRole([1,2,3,4]),cors(corsOptions));
+router.get("/scheduleNextClass/:id", authenticateToken, autorizeRole([1,2,3,4]),getNextClass);
 
-router.options("/schedule/:id", cors(corsOptions));
+router.options("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]), cors(corsOptions));
 
 module.exports = router;
