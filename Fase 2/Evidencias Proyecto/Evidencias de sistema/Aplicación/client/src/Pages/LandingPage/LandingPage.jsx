@@ -29,7 +29,9 @@ const LandingPage = () => {
   const sectionRef5 = useRef(null);
   const sectionRef6 = useRef(null);
   const sectionRef7 = useRef(null);
-  
+  const fisicoChange = useRef(null);
+
+
   const goto = (url) => {
     navigate(`/${url}`);
   };
@@ -86,6 +88,8 @@ const LandingPage = () => {
           sectionRef5,
           sectionRef6,
           sectionRef7,
+          fisicoChange,
+
         }}
       />
       <div ref={sectionRef1} className="SoldadoContainer">
@@ -96,11 +100,11 @@ const LandingPage = () => {
         ref={sectionRef2}
         className="w-full About py-20 h-auto lg:h-[100vh] gap-10 flex flex-col justify-start items-center"
       >
-        <div className="w-3/4 md:w-2/4  flex-col flex items-start md:px-10 gap-3">
-          <h1 className="text-white font-bold text-5xl uppercase">
+        <div className="w-3/4 md:w-2/4  flex-col flex  md:px-10 gap-3">
+          <h1 className="text-white text-center font-bold text-5xl uppercase">
             Quienes somos
           </h1>
-          <span className="text-gray-300 text-xl">
+          <span className="text-gray-300 text-xl text-center">
             En nuestra plataforma, combinamos nutrición y actividad física en un
             espacio creado por profesionales, enfocado en mejorar la salud y
             bienestar de nuestra comunidad a través de atención personalizada y
@@ -108,18 +112,20 @@ const LandingPage = () => {
           </span>
         </div>
         <div className="flex justify-center flex-col lg:flex-row items-center gap-20">
+
           <div className="p-10 h-[600px] sm:h-[500px] transition-all ease-in-out hover:scale-105 w-[300px] md:w-[400px] flex justify-center items-center flex-col bg-[#ffffff] rounded-lg shadow-sm">
             <img src={Trainer} className="h-[250px]" alt="" />
             <h1 className="text-3xl font-semibold ">David Fuentes</h1>
-            <p className="w-auto pt-2">
-              Me comprometo a mejorar tu estado fisico para que 
+            <p className="w-auto pt-2 text-center">
+              Me comprometo a mejorar tu estado fisico para que
               cumplan tus objetivos y metas
             </p>
           </div>
-          <div className="p-10 h-[600px] md:h-[500px] w-[300px] md:w-[400px] flex justify-center items-center flex-col bg-[#ffffff] rounded-lg shadow-sm">
+
+          <div className="p-10 h-[600px] sm:h-[500px] transition-all ease-in-out hover:scale-105 w-[300px] md:w-[400px] flex justify-center items-center flex-col bg-[#ffffff] rounded-lg shadow-sm">
             <img src={Nutri} className="h-[250px]" alt="" />
             <h1 className="text-3xl font-semibold ">Sol Nuñez</h1>
-            <p className="w-auto pt-2">
+            <p className="w-auto pt-2 text-center">
               Vamos a trabajar en equipo para que puedas mejorar
               tu salud y bienestar o mantenerte en un buen estado
             </p>
@@ -154,7 +160,7 @@ const LandingPage = () => {
                 <p className="text-lg">Clases Personalizadas</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Podras revertir tus clases los dias que mas se te acomode 
+                Podras revertir tus clases los dias que mas se te acomode
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
@@ -184,7 +190,7 @@ const LandingPage = () => {
                 <p>Analisis Fisico</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Vamos a analizar tu estado fisico y tu alimentacion para poder 
+                Vamos a analizar tu estado fisico y tu alimentacion para poder
                 entregarte un plan alimenticio para mejorar tu salud
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
@@ -192,7 +198,7 @@ const LandingPage = () => {
                 <ClassIcon sx={{ color: "#3936C1" }} /> <p>Seguimiento</p>
               </li>
               <span className="text-sm px-8 text-gray-600">
-                Tendras un seguimiento de tu estado fisico y veas los cambios que lograste  
+                Tendras un seguimiento de tu estado fisico y veas los cambios que lograste
               </span>
               <li className="text-base md:text-xl flex justify-start items-center gap-2">
                 {" "}
@@ -201,14 +207,20 @@ const LandingPage = () => {
               </li>
               <span className="text-sm px-8 text-gray-600">
                 Podrias agendar consultas para que podamos ver como avanza tu estado fisico
-                y veamos en que cosas mejorar o mantener 
+                y veamos en que cosas mejorar o mantener
               </span>
             </ul>
           </div>
         </div>
       </section>
       <div className="separator" />
-      <FisicoComponent />
+
+      <section
+        ref={fisicoChange}
+        className="w-full bgColor flex 2xl:h-[100vh] justify-center 2xl:relative items-center box-border gap-8 px-20 py-10 flex-col "
+      >
+        <FisicoComponent />
+      </section>
       <div className="separator" />
 
       <section
@@ -243,7 +255,7 @@ const LandingPage = () => {
       <div className="separator" />
       <section className="w-full flex 2xl:h-[100vh] h-auto bg-[#151515] justify-center items-center box-border gap-8 px-20 py-10 flex-col" >
         <div className="w-full flex justify-center items-center text-center ">
-          <h1 className="text-3xl font-bold uppercase text-white"   ref={sectionRef7} >Consultas nutricionales</h1>
+          <h1 className="text-3xl font-bold uppercase text-white" ref={sectionRef7} >Consultas nutricionales</h1>
         </div>
         <div className="flex flex-col lg:flex-row w-full h-full gap-10 justify-center items-center box-border">
           {dataNutri && dataNutri.length > 0 ? (

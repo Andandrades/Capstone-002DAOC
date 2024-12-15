@@ -26,6 +26,7 @@ const Menu = () => {
             const data = await subscriptionByUser(payload);
             const datasuscripcion = JSON.parse(JSON.stringify(data[0]));
             setSuscriptionData(datasuscripcion);
+            console.log(suscriptionData)
         } catch {
             console.log("error al obtener las suscripciones activas");
         }
@@ -61,6 +62,7 @@ const Menu = () => {
                         <SuscriptionsCard suscriptionData={suscriptionData} />
                     )}
                 </div>
+
                 <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">Siguiente Clase</h1>
                 <div >
                     {loadingNextClass ? (
@@ -68,9 +70,25 @@ const Menu = () => {
                             <Spinner />
                         </div>
                     ) : (
-                        <NextClass nextClassData={nextClassData} />)}
+                        <NextClass
+                            nextClassData={nextClassData}
+                            buttonNavigate="/schedule/gym"
+                        />
+                    )}
                 </div>
 
+                <h1 className="text-2xl font-semibold text-gray-700 mt-5 mb-2">Siguiente consulta nutricional</h1>
+                <div >
+                    {loadingNextClass ? (
+                        <div className="relative flex justify-center items-center min-h-[200px]">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <NextClass
+                            nextClassData={nextClassData}
+                            buttonNavigate="/schedule/nutri"
+                        />)}
+                </div>
 
             </section>
             <UserNavBar />
