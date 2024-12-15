@@ -27,7 +27,8 @@ const RecoveryPassword = () => {
       const response = await fetch(`${URL}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ newPassword: password, token: token })
+        body: JSON.stringify({ newPassword: password, token: token }),
+        credentials : 'include'
       });
 
       if (response.ok) {

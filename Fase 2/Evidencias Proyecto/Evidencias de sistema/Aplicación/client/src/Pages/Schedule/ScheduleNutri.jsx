@@ -27,6 +27,7 @@ const ScheduleNutri = ({ userId }) => {
         }`,
         {
           method: "GET",
+          credentials : 'include'
         }
       );
       const data = await resultado.json();

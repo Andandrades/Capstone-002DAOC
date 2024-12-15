@@ -53,7 +53,7 @@ export const GymHourCard = ({ schedule }) => {
     try {
       const respuesta = await fetch(
         `${import.meta.env.VITE_API_URL
-        }/scheduleHour/${userId}/${gym_schedule_id}`
+        }/scheduleHour/${userId}/${gym_schedule_id}`,{credentials: "include",}
       );
       if (respuesta.ok) {
         const data = await respuesta.json();
@@ -132,6 +132,7 @@ export const GymHourCard = ({ schedule }) => {
         body: JSON.stringify({
           suscription_id: userData.suscription_id,
         }),
+        credentials: "include",
       }
     );
 
@@ -183,6 +184,7 @@ export const GymHourCard = ({ schedule }) => {
             client_id: userId,
             suscription_id: userData.suscription_id,
           }),
+          credentials: "include",
         }
       );
       setLoadingButton(false);

@@ -75,6 +75,7 @@ export const NutriHourCard = ({appointments,userId,setIsScheduled,scheduled,}) =
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
         }
       );
 

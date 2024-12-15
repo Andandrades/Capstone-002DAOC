@@ -29,7 +29,7 @@ const ScheduleGym = () => {
     setLoading(true)
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`
+        `${import.meta.env.VITE_API_URL}/gymHoursDay/${day}`, {credentials : 'include'}
       );
       if (!response.ok) {
         throw new Error("Error al obtener las horas");
