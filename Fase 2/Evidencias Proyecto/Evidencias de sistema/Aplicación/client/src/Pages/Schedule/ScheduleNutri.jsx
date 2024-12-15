@@ -25,9 +25,7 @@ const ScheduleNutri = ({ userId }) => {
       const resultado = await fetch(
         `${import.meta.env.VITE_API_URL}/nutriScheduleDate/${formattedDate
         }`,
-        {
-          method: "GET",
-        }
+        {method: "GET",}
       );
       const data = await resultado.json();
       const sortedAppointments = data.sort((a, b) => {
