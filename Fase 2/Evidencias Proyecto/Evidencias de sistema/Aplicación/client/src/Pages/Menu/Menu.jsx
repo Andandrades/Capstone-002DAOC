@@ -5,13 +5,14 @@ import { UserNavBar } from "../../Components/UserNavBar"
 import { useUser } from "../../Components/API/UserContext"
 import { subscriptionByUser } from "../../Components/API/subscriptions"
 import { useEffect, useState } from "react"
-import { GetNextClass } from "../../Components/API/Schedule"
+import { GetNextClass, GetNextConsultation } from "../../Components/API/Schedule"
 import Spinner from "../../Components/Spinner"
 const Menu = () => {
 
     const { userData } = useUser();
     const [suscriptionData, setSuscriptionData] = useState();
     const [nextClassData, setNextClassData] = useState();
+    const [nextConsultationData, setNextConsultationData] = useState();
     const [loading, setLoading] = useState(true);
     const [loadingNextClass, setLoadingNextClass] = useState(true);
     const userDataString = localStorage.getItem("userData");
@@ -28,12 +29,16 @@ const Menu = () => {
             setSuscriptionData(datasuscripcion);
             console.log(suscriptionData)
         } catch {
+            setLoading(false)
             console.log("error al obtener las suscripciones activas");
         }
         try {
             const NextClass = await GetNextClass(LocaluserData.id);
             setNextClassData(NextClass);
+            const datanutri = await GetNextConsultation(LocaluserData.id);
+            setNextConsultationData(datanutri);
         } catch {
+            setLoading(false)
             console.log("error al obtener la siguiente clase.");
         }
         setLoading(false)
@@ -71,7 +76,7 @@ const Menu = () => {
                         </div>
                     ) : (
                         <NextClass
-                            nextClassData={nextClassData}
+                            Data={nextClassData}
                             buttonNavigate="/schedule/gym"
                         />
                     )}
@@ -85,7 +90,7 @@ const Menu = () => {
                         </div>
                     ) : (
                         <NextClass
-                            nextClassData={nextClassData}
+                            Data={nextConsultationData}
                             buttonNavigate="/schedule/nutri"
                         />)}
                 </div>
