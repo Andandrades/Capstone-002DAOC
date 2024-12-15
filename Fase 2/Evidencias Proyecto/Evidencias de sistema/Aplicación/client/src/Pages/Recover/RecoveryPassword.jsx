@@ -75,7 +75,7 @@ const RecoveryPassword = () => {
             Cambiar contraseña
           </button>
           <span
-            className="text-purple-600 cursor-pointer underline mt-4 text-gray-600"
+            className="text-purple-600 cursor-pointer underline mt-4"
             onClick={() => navigate(`/login`)}
           >
             Volver atrás

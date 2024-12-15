@@ -160,6 +160,7 @@ const getHourByDay = async (req, res) => {
       WHERE EXTRACT(DOW FROM schedule_date) = $1
       AND schedule_date >= DATE_TRUNC('week', CURRENT_DATE)
       AND schedule_date < DATE_TRUNC('week', CURRENT_DATE) + INTERVAL '7 days';
+      AND schedule_date::time > CURRENT_TIME;
     `;
 
     const values = [dayOfTheWeek]; // Asegúrate de que esto sea un número
