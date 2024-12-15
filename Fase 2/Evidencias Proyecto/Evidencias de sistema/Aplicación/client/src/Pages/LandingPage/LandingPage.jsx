@@ -92,8 +92,13 @@ const LandingPage = () => {
 
         }}
       />
-      <div ref={sectionRef1} className="SoldadoContainer">
+      <div ref={sectionRef1} className="SoldadoContainer" >
         <h1 className="title text-center z-0">Soldado Gym</h1>
+        <div class="scroll-indicator">
+          <span>Desplázate hacia abajo</span>
+          <div class="arrow"></div>
+        </div>
+
       </div>
       <div className="separator" />
       <div
