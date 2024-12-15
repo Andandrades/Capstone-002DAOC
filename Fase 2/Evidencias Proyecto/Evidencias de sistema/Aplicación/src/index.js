@@ -23,13 +23,11 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-app.use(cors(corsOptions));
-
 // Middleware
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors(corsOptions));
 // Importar Rutas
 const rolesRoutes = require("./routes/roles.routes");
 const usersRoutes = require("./routes/users.routes");

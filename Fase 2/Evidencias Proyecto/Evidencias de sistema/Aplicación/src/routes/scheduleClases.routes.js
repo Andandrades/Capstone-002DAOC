@@ -11,17 +11,6 @@ const {  getAll, getbyid, create, update, deletebyid , getHourByGymId , schedule
 
 const router = Router();
 
-const cors = require("cors");
-
-
-
-// Configuración de CORS
-const corsOptions = {
-    origin: process.env.FRONTEND_URL, // URL de tu cliente
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Métodos permitidos
-    credentials: true, // Permitir cookies
-};
-
 router.get("/schedule",authenticateToken, autorizeRole([1,2,3,4]), getAll);
 router.get("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]), getbyid);
 router.get("/scheduleinfo/:id",authenticateToken, autorizeRole([1,2,3,4]), getHourByGymId);
@@ -34,12 +23,12 @@ router.post("/scheduleHour",authenticateToken, autorizeRole([1,2,3,4]), schedule
 router.delete("/scheduleHour/:class_id", authenticateToken, autorizeRole([1,2,3,4]),deleteHour);
 //Conseguir horas de usuario
 router.get("/scheduleHour/:id/:class_id",authenticateToken, autorizeRole([1,2,3,4]), getUserClasses);
-router.get("/scheduleHour/:id/:class_id", authenticateToken, autorizeRole([1,2,3,4]),cors(corsOptions));
+router.get("/scheduleHour/:id/:class_id", authenticateToken, autorizeRole([1,2,3,4]));
 router.get("/scheduleNextClass/:id", authenticateToken, autorizeRole([1,2,3,4]),getNextClass);
-router.get("/scheduleHour/:id/:class_id", cors(corsOptions));
+router.get("/scheduleHour/:id/:class_id" );
 router.get("/scheduleNextConsultation/:id", getNextConsultation);
 
 
-router.options("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]), cors(corsOptions));
+router.options("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]));
 
 module.exports = router;
