@@ -20,7 +20,13 @@ const getHoursByDate = async (req, res) => {
 
   try {
     const resultado = await pool.query(
-      "SELECT * FROM gym_schedule WHERE schedule_date = $1",
+      `SELECT * 
+        FROM gym_schedule
+        WHERE schedule_date = $1
+        AND (
+          schedule_date > CURRENT_DATE OR
+          (schedule_date = CURRENT_DATE AND start_hour > CURRENT_TIME)
+        )`,
       [date]
     );
 
@@ -37,6 +43,33 @@ const getHoursByDate = async (req, res) => {
     
   }
 };
+//Traer horas por fecha
+const getHoursByDateAdmin = async (req, res) => {
+  const { date } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      `SELECT * 
+      FROM gym_schedule
+      WHERE schedule_date = $1`,
+      [date]
+    );
+
+    if (resultado.rows.length === 0) {
+      return res
+        .status(202)
+        .json({ message: "No se encuentran clases para esta fecha" });
+    }
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error:" , error);
+    res.status(500).json({message : "Error al intentar obtener horas"})
+    
+  }
+};
+
+
 
 //Crear Hora
 const createGymHour = async (req, res) => {
@@ -158,9 +191,12 @@ const getHourByDay = async (req, res) => {
       SELECT * 
       FROM gym_schedule
       WHERE EXTRACT(DOW FROM schedule_date) = $1
+      AND (
+        schedule_date > CURRENT_DATE OR
+        (schedule_date = CURRENT_DATE AND start_hour > CURRENT_TIME)
+      )
       AND schedule_date >= DATE_TRUNC('week', CURRENT_DATE)
       AND schedule_date < DATE_TRUNC('week', CURRENT_DATE) + INTERVAL '7 days';
-      AND schedule_date::time > CURRENT_TIME;
     `;
 
     const values = [dayOfTheWeek]; // Asegúrate de que esto sea un número
@@ -212,4 +248,5 @@ module.exports = {
   getSingleHour,
   getHourByDay,
   updateActualCap,
+  getHoursByDateAdmin
 };

@@ -235,7 +235,7 @@ export const GymHourCard = ({ schedule }) => {
   }, [isModalOpen, gym_schedule_id]);
 
   return (
-    <div className="mt-10 pb-3 bg-white rounded-lg">
+    <div className="mt-10 pb-3 z-20 bg-white rounded-lg">
       <div className="w-full pt-3 flex justify-start text-start px-5">
       
         <h1 className="text-[#3936C1] font-bold">

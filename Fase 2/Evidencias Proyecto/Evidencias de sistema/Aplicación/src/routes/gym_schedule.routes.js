@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const { getGymHours,getHoursByDate, createGymHour , updateGymHour, deleteGymHour, getSingleHour , getHourByDay , updateActualCap} = require("../controllers/gym_schedule.controllers");
+const { getGymHours,getHoursByDate, createGymHour , updateGymHour, deleteGymHour, getSingleHour , getHourByDay , updateActualCap , getHoursByDateAdmin} = require("../controllers/gym_schedule.controllers");
 const authenticateToken = require('../middlewares/authenticateToken')
 const autorizeRole = require('../middlewares/authorizeRole')
 
@@ -19,6 +19,7 @@ const corsOptions = {
   
 router.get("/gymHours", authenticateToken, autorizeRole([1,2,3,4]),getGymHours);
 router.get("/gymHoursDate/:date", authenticateToken, autorizeRole([1,2,3,4]),getHoursByDate);
+router.get("/gymHoursDateAdmin/:date", authenticateToken, autorizeRole([4]),getHoursByDateAdmin);
 router.post("/gymHours", authenticateToken, autorizeRole([2,3,4]),createGymHour);
 router.options("/gymHours/:id", authenticateToken, autorizeRole([2,3,4]),cors(corsOptions));
 router.put("/gymHours/:id", authenticateToken, autorizeRole([2,3,4]), updateGymHour);

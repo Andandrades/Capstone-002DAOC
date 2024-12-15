@@ -25,7 +25,7 @@ const AdminClasses = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/gymHoursDate/${formattedDate}`,{credentials: "include",}
+        `${import.meta.env.VITE_API_URL}/gymHoursDateAdmin/${formattedDate}`,{credentials: "include",}
       );
       const data = await response.json();
       setScheduleInfo(data);
