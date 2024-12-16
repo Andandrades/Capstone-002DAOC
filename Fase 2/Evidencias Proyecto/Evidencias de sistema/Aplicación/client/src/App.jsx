@@ -71,7 +71,7 @@ function App() {
   axios.defaults.baseURL = import.meta.env.VITE_API_URL
   axios.defaults.withCredentials = true;
 
-  
+
   return (
     <>
       <ToastContainer />
@@ -81,7 +81,6 @@ function App() {
             {/* Rutas principales */}
             <Route path="*" element={<Navigate to="/" />} />
             <Route path="/" element={<LandingPage />} />
-            <Route path="/inicio" element={<Menu />} />
 
             {/* Manejo de sesiones */}
             <Route path="/RecoveryPassword" element={<RedirectIfAuthenticated><RecoveryPassword /></RedirectIfAuthenticated>} />
@@ -90,7 +89,6 @@ function App() {
             <Route path="/recover" element={<RedirectIfAuthenticated><RecoverPage setIsAuth={setIsAuth} /></RedirectIfAuthenticated>} />
 
             {/* Rutas de administrador protegidas */}
-
             <Route path="/consultasnutricionales" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><NutriMenu userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/consultasnutricionales/profile" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><NutriProfile userInfo={userData} /></RoleProtectedRoute>} />
             <Route path="/Admin" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminNutri /></RoleProtectedRoute>} />
@@ -102,13 +100,13 @@ function App() {
             <Route path="/Admin/Ejercicios" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminExercisesMain /></RoleProtectedRoute>} />
             <Route path="/Admin/AdminDashboard" element={<RoleProtectedRoute requiredRoles={permisosAdmin}><AdminDashboard /></RoleProtectedRoute>} />
 
-
             {/* Rutas protegidas para el perfil del usuario */}
+            <Route path="/inicio" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
             <Route path="/menu" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><Menu /></RoleProtectedRoute>} />
             <Route path="/schedule" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><SchedulePage /></RoleProtectedRoute>} />
             <Route path="/schedule/gym" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleGym userId={userData.id} /></RoleProtectedRoute>} />
             <Route path="/schedule/nutri" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ScheduleNutri userId={userData.id} /></RoleProtectedRoute>} />
-            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage/></RoleProtectedRoute>} />
+            <Route path="/classes" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ClassesPage /></RoleProtectedRoute>} />
             <Route path="/profile" element={<RoleProtectedRoute requiredRoles={permisosVistaCliente}><ProfilePage /></RoleProtectedRoute>} />
             <Route path="/TransactionResponse" element={<TransactionResponse />} />
           </Routes>
