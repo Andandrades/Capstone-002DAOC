@@ -268,22 +268,16 @@ const getUserClasses = async (req, res) => {
   }
 };
 
-
 const getNextClass = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id } = req.params;
-
   try {
     const resultado = await pool.query(
       `SELECT gs.gym_schedule_id,gs.start_hour,gs.end_hour,gs.max_cap,gs.actual_cap, gs.schedule_date,sc.client_id FROM gym_schedule gs LEFT JOIN schedule_classes sc ON gs.gym_schedule_id = sc.gym_schedule_id where sc.client_id = $1 and (gs.schedule_date + gs.start_hour::time) > CURRENT_TIMESTAMP
  ORDER BY sc.scheduled_date DESC, gs.start_hour DESC LIMIT 1`,
       [id]);
-
     if (resultado.rows.length === 0) {
       return res.json({ message: "No classes found for the given client" });
     }
-
     res.json(resultado.rows[0]);
   } catch (error) {
     return res.json({ error: error.message });
@@ -291,20 +285,14 @@ const getNextClass = async (req, res) => {
 };
 
 const getNextConsultation = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id } = req.params;
-
   try {
     const resultado = await pool.query(
-      `SELECT ns.nutri_schedule_id, ns.start_hour,ns.client_id,ns.nutri_id,ns."date" as schedule_date FROM nutri_schedule ns WHERE ns.client_id = $1  AND (ns.date + ns.start_hour::time) >= CURRENT_TIMESTAMP order by (ns.date + ns.start_hour::time) asc limit 1
-`,
+      `SELECT ns.nutri_schedule_id, ns.start_hour,ns.client_id,ns.nutri_id,ns."date" as schedule_date FROM nutri_schedule ns WHERE ns.client_id = $1  AND (ns.date + ns.start_hour::time) >= CURRENT_TIMESTAMP order by (ns.date + ns.start_hour::time) asc limit 1`,
       [id]);
-
     if (resultado.rows.length === 0) {
       return res.json({ message: "No classes found for the given client" });
     }
-
     res.json(resultado.rows[0]);
   } catch (error) {
     return res.json({ error: error.message });

@@ -24,11 +24,9 @@ router.delete("/scheduleHour/:class_id", authenticateToken, autorizeRole([1,2,3,
 //Conseguir horas de usuario
 router.get("/scheduleHour/:id/:class_id",authenticateToken, autorizeRole([1,2,3,4]), getUserClasses);
 router.get("/scheduleHour/:id/:class_id", authenticateToken, autorizeRole([1,2,3,4]));
-router.get("/scheduleNextClass/:id", authenticateToken, autorizeRole([1,2,3,4]),getNextClass);
-router.get("/scheduleHour/:id/:class_id" );
-router.get("/scheduleNextConsultation/:id", getNextConsultation);
-
-
 router.options("/schedule/:id",authenticateToken, autorizeRole([1,2,3,4]));
+
+router.get("/scheduleNextClass/:id",getNextClass);
+router.get("/scheduleNextConsultation/:id", getNextConsultation);
 
 module.exports = router;

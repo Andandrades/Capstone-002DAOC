@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const URL = `${import.meta.env.VITE_API_URL}`;
 
 export const GetNextClass = async (id) => {
@@ -9,7 +8,8 @@ export const GetNextClass = async (id) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error al obtener la siguiente clase.", error);
+        console.error("Error al obtener la siguiente clase:", error.message);
+        return null;  // Regresar null si hay error
     }
 };
 
@@ -20,6 +20,7 @@ export const GetNextConsultation = async (id) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error al obtener la siguiente consulta.", error);
+        console.error("Error al obtener la siguiente consulta:", error.message);
+        return null;  // Regresar null si hay error
     }
 };
