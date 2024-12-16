@@ -145,17 +145,21 @@ const AdminUsersManagement = () => {
       fk_rol_id: userType === 'clientes' ? 1 : userType === 'nutricionistas' ? 3 : userType === 'entrenadores' ? 2 : 4
     };
     try {
+
       const response = await CrearUsuario(newUser);
       const createdUser = response.user;
+
       if (userType === 'clientes') {
-        setClients([...clients, createdUser]);
+        setClients(prev => (Array.isArray(prev) ? [...prev, createdUser] : [createdUser]));
       } else if (userType === 'nutricionistas') {
-        setNutritionists([...nutritionists, createdUser]);
+        setNutritionists(prev => (Array.isArray(prev) ? [...prev, createdUser] : [createdUser]));
       } else if (userType === 'entrenadores') {
-        setTrainers([...trainers, createdUser]);
+        setTrainers(prev => (Array.isArray(prev) ? [...prev, createdUser] : [createdUser]));
       } else if (userType === 'administradores') {
-        setAdministrators([...administrators, createdUser]);
+        setAdministrators(prev => (Array.isArray(prev) ? [...prev, createdUser] : [createdUser]));
       }
+  
+
       setNewUserName('');
       setNewUserEmail('');
       setNewUserPassword('');
@@ -352,7 +356,7 @@ const AdminUsersManagement = () => {
               className="w-full p-2 border rounded mb-2"
             />
             <div className="flex justify-around mt-4">
-              <Button className="!bg-green-500 !text-white p-5 rounded" loading={loadingButton} onClick={confirmAddUser}>
+              <Button className="!bg-green-500 !text-white p-5 rounded" loading={loadingButton} onClick={() => confirmAddUser()}>
                 <CheckCircleIcon style={{ color: 'white' }} />
                 Agregar
               </Button>
@@ -406,7 +410,7 @@ const AdminUsersManagement = () => {
               className="w-full p-2 border rounded mb-2"
             />
             <div className="flex justify-between mt-4">
-              <Button className="!bg-green-500 !text-white p-5 rounded" loading={loadingButton} onClick={confirmEditUser}>
+              <Button className="!bg-green-500 !text-white p-5 rounded" loading={loadingButton} onClick={() => confirmEditUser()}>
                 <CheckCircleIcon className='color-white-500' />
                 Confirmar
               </Button>
