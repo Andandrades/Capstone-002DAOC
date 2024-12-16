@@ -29,10 +29,7 @@ const getbyid = async (req, res) => {
 
 //traer datos segun al id de la hora
 const getHourByGymId = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id } = req.params;
-
   try {
     const result = await pool.query(
       `
@@ -51,8 +48,6 @@ const getHourByGymId = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   const { scheduled_date, actual_cap, gym_schedule_id, client_id } = req.body;
   try {
@@ -88,10 +83,7 @@ const update = async (req, res) => {
 };
 
 const deletebyid = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id } = req.params;
-
   try {
     const result = await pool.query(
       `DELETE FROM schedule_classes WHERE class_id = $1 RETURNING *`,
@@ -112,6 +104,9 @@ const deletebyid = async (req, res) => {
 
 //Agendar hora (Endpoint de usuarios)
 const scheduleHour = async (req, res) => {
+  
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { gym_schedule_id, client_id, suscription_id } = req.body;
 
   if (suscription_id === null) {
@@ -187,8 +182,6 @@ const scheduleHour = async (req, res) => {
 
 //Eliminar hora (Endpoint de usuario)
 const deleteHour = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   const { class_id } = req.params;
   const { suscription_id } = req.body;
@@ -248,8 +241,6 @@ const deleteHour = async (req, res) => {
 };
 
 const getUserClasses = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   const { id, class_id } = req.params;
 
   try {
