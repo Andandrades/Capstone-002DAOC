@@ -40,34 +40,22 @@ const AdminUsersManagement = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchUsersByRole = async () => {
-    try {
+   try {
       const clientsData = await ObtenerClientes();
       setClients(clientsData);
-    } catch (error) {
-      console.error('Error al obtener los usuarios por rol:', error);
-      toast.error('Error al obtener los clientes, por favor intente de nuevo.');
-    }
-    try {
+
       const trainersData = await ObtenerEntrenadores();
       setTrainers(trainersData);
-    } catch (error) {
-      console.error('Error al obtener los usuarios por rol:', error);
-      toast.error('Error al obtener los entrenador, por favor intente de1 nuevo.');
-    }
-    try {
+
       const administratorsData = await ObtenerAdministradores();
       setAdministrators(administratorsData);
-    } catch (error) {
-      console.error('Error al obtener los usuarios por rol:', error);
-      toast.error('Error al obtener los administrador, por favor intente de2 nuevo.');
-    }
-    try {
+
       const nutritionistsData = await ObtenerNutricionistas();
       setNutritionists(nutritionistsData);
-    } catch (error) {
-      console.error('Error al obtener los usuarios por rol:', error);
-      toast.error('Error al obtener los nutricionistas, por favor intente de2 nuevo.');
-    }
+
+   } catch (error) {
+    console.error(error);
+   }
   };
 
   useEffect(() => {
